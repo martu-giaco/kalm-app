@@ -84,7 +84,7 @@
         </nav>
 
         <!-- Contenido principal -->
-        <main class="container-fluid grow py-4">
+        <main class="w-full py-4 bg-white rounded-t-3xl min-h-[87%]">
             @if (session()->has('feedback.message'))
                 <div class="alert alert-{{ session()->get('feedback.type', 'success') }}">
                     {!! session()->get('feedback.message') !!}
