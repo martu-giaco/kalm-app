@@ -58,13 +58,14 @@ h3, h4, h5, h6{
 }
 main p{
     color: #2A4043;
-    font-weight: bolder;
+    font-weight: bold;
+    font-family: 'Mulish', sans-serif;
 }
 
 body {
     width: 100%;
     font-family: 'Mulish', sans-serif;
-    font-weight: bolder;
+    font-weight: bold;
     /*NAVBAR VARIABLES*/
     --c-glass: #bbbbbc;
     --c-light: #fff;
@@ -204,7 +205,7 @@ body {
 }
 
 .header-bg {
-    background-image: url('../images/fondo.png');
+    background-image: url('/images/fondo.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
