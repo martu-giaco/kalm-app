@@ -12,6 +12,6 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::tables('products')->insert([]);
+        DB::table('products')->insert([]);
     }
 }

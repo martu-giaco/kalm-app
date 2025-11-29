@@ -12,6 +12,6 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::tables('brands')->insert([]);
+        DB::table('brands')->insert([]);
     }
 }
