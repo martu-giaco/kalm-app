@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="container my-5">
+    <div class="container my-5 bg-white rounded-t-3xl min-h-[87%]">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h3 class="mb-0">{{ $user->name ?? 'Nombre Desconocido' }}</h3>

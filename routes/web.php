@@ -23,5 +23,14 @@ Route::get('/community', [CommunityController::class, 'community'])->name('commu
 Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
 
 // Vistas Admin
-Route::get('/view-users', [AuthController::class, 'admin.users.index'])->middleware(\App\Http\Middleware\AdminMiddleware::class)->name('admin.users.index')->middleware('auth');
-Route::get('/view-users/{user}', [AuthController::class, 'admin.users.view'])->middleware(\App\Http\Middleware\AdminMiddleware::class)->name('admin.users.view')->whereNumber('user')->middleware('auth');
+    // CRUD users
+    Route::get('/view-users', [AuthController::class, 'admin.users.index'])->middleware(\App\Http\Middleware\AdminMiddleware::class)->name('admin.users.index')->middleware('auth');
+    Route::get('/view-users/{user}', [AuthController::class, 'admin.users.view'])->middleware(\App\Http\Middleware\AdminMiddleware::class)->name('admin.users.view')->whereNumber('user')->middleware('auth');
+
+    // CRUD blogs
+    Route::get('/blog', [BlogController::class, 'blog'])->name('blog.index');
+    Route::get('/blog', [BlogController::class, 'blog'])->name('blog.view');
+    Route::get('/blog/create', [BlogController::class, 'blog'])->name('blog.create');
+    Route::get('/blog/{blog_id}', [BlogController::class, 'blog'])->name('blog.edit');
+    Route::get('/blog', [BlogController::class, 'blog'])->name('blog.destroy');
+

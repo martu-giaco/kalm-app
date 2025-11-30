@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Storage;
 ?>
 
 <x-layout>
-    <div class="container my-5">
+    <div class="container my-5 bg-white rounded-t-3xl min-h-[87%]">
         <x-slot:title>Detalle de Post — {{ $blog->title ?? 'Detalle' }}</x-slot:title>
 
         @php
@@ -24,13 +24,9 @@ use Illuminate\Support\Facades\Storage;
         {{-- Imagen principal / placeholder --}}
         <div class="mb-4 d-flex justify-content-center">
             @if($imageUrl)
-                <img src="{{ $imageUrl }}"
-                     alt="{{ $blog->title }}"
-                     class="img-fluid rounded"
-                     style="max-width: 100%; max-height: 480px; object-fit: cover;">
+                <img src="{{ $imageUrl }}" alt="{{ $blog->title }}" class="img-fluid rounded" style="max-width: 100%; max-height: 480px; object-fit: cover;">
             @else
-                <div class="border rounded bg-light d-flex align-items-center justify-content-center"
-                     style="width:100%;max-width:800px;height:240px;">
+                <div class="border rounded bg-light d-flex align-items-center justify-content-center" style="width:100%;max-width:800px;height:240px;">
                     <span class="text-muted">Sin imagen disponible</span>
                 </div>
             @endif

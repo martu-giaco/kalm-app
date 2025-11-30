@@ -1,7 +1,7 @@
 <!-- resources/views/users/index.blade.php -->
 
 <x-layout>
-    <div class="container my-5">
+    <div class="container my-5 bg-white rounded-t-3xl min-h-[87%]">
         <h1 class="mb-4">Usuarios</h1>
 
         @if(session('feedback.message'))

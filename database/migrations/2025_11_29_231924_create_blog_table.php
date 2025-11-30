@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('blog', function (Blueprint $table) {
             $table->id();
+            $table->string('author');
+            $table->string('title');
+            $table->text('content');
+            //faltaria la imagen
             $table->timestamps();
         });
     }

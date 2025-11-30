@@ -1,5 +1,5 @@
 <x-layout>
-    <section class="w-full mt-15 flex flex-col items-start p-4">
+    <section class="w-full mt-15 flex flex-col items-start p-4 bg-white rounded-t-3xl min-h-[87%]">
         <a class="rounded-xl" href="">
             <img src="" alt="banner home kälm premium">
         </a>
