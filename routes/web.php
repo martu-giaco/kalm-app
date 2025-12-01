@@ -105,6 +105,13 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view')->whereNumber('user');
 
     // Aquí irían otras rutas de administración (e.g., /admin/products, /admin/stats)
+
+    // CRUD blogs
+    Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.index');
+    Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.view');
+    Route::get('/admin/blog/create', [BlogController::class, 'blog'])->name('blog.create');
+    Route::get('/admin/blog/{blog_id}', [BlogController::class, 'blog'])->name('blog.edit');
+    Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.destroy');
 });
 
 Route::middleware('auth')->group(function () {
@@ -126,8 +133,5 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 
 // Detalle del post (no requiere auth para ver)
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-
-
 Route::get('/community', [CommunityController::class, 'community'])->name('community');
-
 Route::get('/community', [PostController::class, 'community'])->name('community');

@@ -27,7 +27,7 @@ class ProductSeeder extends Seeder
                     'activos' => 'Ceramidas, Ácido Hialurónico',
                     'formato' => '355ml',
                     'rating' => 5,
-                    'dondeComprar' => 'Farmacias, Amazon'
+                    'dondeComprar' => 'Farmacity, MercadoLibre'
                 ],
                 [
                     'name' => 'La Roche-Posay Effaclar Gel',
@@ -38,7 +38,7 @@ class ProductSeeder extends Seeder
                     'activos' => 'Zinc PCA',
                     'formato' => '200ml',
                     'rating' => 4,
-                    'dondeComprar' => 'Farmacias, Tiendas Online'
+                    'dondeComprar' => 'Farmacity, Mercado Libre'
                 ],
                 [
                     'name' => 'Neutrogena Hydro Boost Water Gel Cleanser',
@@ -49,7 +49,7 @@ class ProductSeeder extends Seeder
                     'activos' => 'Ácido Hialurónico',
                     'formato' => '200ml',
                     'rating' => 5,
-                    'dondeComprar' => 'Farmacias, Amazon'
+                    'dondeComprar' => 'Farmacity, Mercado Libre'
                 ],
                 [
                     'name' => 'Bioderma Sensibio H2O',
@@ -60,7 +60,7 @@ class ProductSeeder extends Seeder
                     'activos' => 'Extracto de pepino',
                     'formato' => '250ml',
                     'rating' => 5,
-                    'dondeComprar' => 'Farmacias, Tiendas Online'
+                    'dondeComprar' => 'Farmacity, Mercado Libre'
                 ],
             ];
 
