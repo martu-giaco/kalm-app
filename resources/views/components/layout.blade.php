@@ -75,10 +75,10 @@
                     @if ($feedbackMessage)
                         <div class="mx-4 my-4">
                             <div class="rounded-xl p-4 shadow-lg
-                            @if($feedbackType === 'success') bg-green-50 text-green-800
-                            @elseif(in_array($feedbackType, ['error', 'danger'])) bg-red-50 text-red-800
-                            @elseif($feedbackType === 'warning') bg-yellow-50 text-yellow-800
-                            @else bg-blue-50 text-blue-800 @endif">
+                                @if($feedbackType === 'success') bg-green-50 text-green-800
+                                @elseif(in_array($feedbackType, ['error', 'danger'])) bg-red-50 text-red-800
+                                @elseif($feedbackType === 'warning') bg-yellow-50 text-yellow-800
+                                @else bg-blue-50 text-blue-800 @endif">
                                 {!! $feedbackMessage !!}
                             </div>
                         </div>
@@ -112,8 +112,12 @@
             </div>
 
             @auth
-                <nav
-                    class="flex items-center justify-between w-full max-w-[95%] mx-auto px-4 h-16 rounded-full fixed bottom-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect shadow-[0_8px_30px_rgba(55,160,175,0.3)]">
+                <nav class="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-3xl px-5 h-16 rounded-full flex items-center justify-between
+                bg-[color-mix(in_srgb,var(--c-glass)_20%,transparent)]
+                backdrop-blur-[3px] backdrop-saturate-[1.8]
+                shadow-[0_8px_30px_rgba(55,160,175,0.3)]
+                border border-[var(--kälm-lighter)]
+                transition-all duration-500 ease-in-out">
 
                     <ul class="flex flex-1 items-center justify-evenly w-full">
                         <!-- Inicio -->
@@ -218,9 +222,9 @@
                             </div>
                             <div class="py-2">
                                 <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full
-                                                            @if(auth()->user()->role === 'admin') bg-red-500 text-white
-                                                            @elseif(auth()->user()->role === 'premium') bg-green-500 text-white
-                                                            @else bg-gray-300 text-gray-800 @endif">
+                                                                @if(auth()->user()->role === 'admin') bg-red-500 text-white
+                                                                @elseif(auth()->user()->role === 'premium') bg-green-500 text-white
+                                                                @else bg-gray-300 text-gray-800 @endif">
                                     {{ ucfirst(auth()->user()->role) }}
                                 </span>
                             </div>
@@ -309,7 +313,7 @@
                                 <form action="{{ route('auth.logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="flex flex-row text-lg text-white w-full justify-center items-center
-                                       bg-red-600 rounded-md px-6 py-2 transition-colors duration-300">
+                                           bg-red-600 rounded-md px-6 py-2 transition-colors duration-300">
                                         Cerrar sesión
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                             width="24px" fill="white" class="ml-2">

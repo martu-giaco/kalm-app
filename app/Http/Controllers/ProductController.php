@@ -78,7 +78,7 @@ class ProductController extends Controller
             ->with(['brand', 'type'])
             ->get();
 
-        return view('products.by_category', compact('category', 'products'));
+        return view('products.category', compact('category', 'products'));
     }
 
     // ProductController.php
@@ -121,22 +121,31 @@ class ProductController extends Controller
     }
 
 
+    // app/Http/Controllers/ProductController.php
+
     public function search(Request $request)
     {
+        // Obtener la consulta del input
         $query = $request->input('q');
 
-        $products = Product::with('brand', 'type')
-            ->where('name', 'like', "%{$query}%")
-            ->orWhereHas('brand', function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%");
-            })
-            ->orWhereHas('type', function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%");
+        // Buscar productos filtrando por nombre, marca o tipo
+        $products = Product::with(['brand', 'type', 'category'])
+            ->when($query, function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                    ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$query}%"))
+                    ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$query}%"))
+                    ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$query}%"));
             })
             ->paginate(12);
 
-        return view('products.search', compact('products', 'query'));
+
+        // Pasar los datos a la vista
+        return view('products.search', [
+            'products' => $products,
+            'query' => $query
+        ]);
     }
+
 
 
 
