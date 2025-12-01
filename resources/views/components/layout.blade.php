@@ -113,10 +113,8 @@
 
             @auth
                 <nav class="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-3xl px-5 h-16 rounded-full flex items-center justify-between
-                bg-[color-mix(in_srgb,var(--c-glass)_20%,transparent)]
-                backdrop-blur-[3px] backdrop-saturate-[1.8]
-                shadow-[0_8px_30px_rgba(55,160,175,0.3)]
-                border border-[var(--kälm-lighter)]
+
+                glass-effect
                 transition-all duration-500 ease-in-out">
 
                     <ul class="flex flex-1 items-center justify-evenly w-full">
@@ -196,7 +194,7 @@
 
         <div class="drawer-side z-50">
             <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="menu bg-base-200 min-h-full w-80 p-0 rounded-l-4xl flex flex-col justify-between">
+            <div class="menu bg-white min-h-full w-80 p-0 rounded-l-4xl flex flex-col justify-between">
                 @auth
                     <div>
                         <div class="flex flex-col border-b p-5 pt-5 border-[var(--kalm-lighter)]">

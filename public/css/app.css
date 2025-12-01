@@ -84,14 +84,33 @@
 
 
 .header-bg {
-    background-image: url('/images/fondo.png');
+    background-image: url('/images/bg-desktop.jpg'); /* Imagen por defecto */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 400px;
 }
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+    .header-bg {
+        background-image: url('/images/fondo.jpg'); /* Imagen para tablet */
+    }
+}
+
+/* Móviles (≤640px) */
+@media (max-width: 640px) {
+    .header-bg {
+        background-image: url('/images/bg-desktop.jpg'); /* Imagen para móvil */
+    }
+}
+
+
+
 
 h1 {
     font-family: 'Tropiline Bold';
