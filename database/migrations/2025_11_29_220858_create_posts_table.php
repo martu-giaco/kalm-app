@@ -4,15 +4,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     public function up(): void
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id('post_id');
-            $table->unsignedBigInteger('user_id');
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('content');
-            $table->string('category');
+            $table->string('category')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('is_reported')->default(false);
+            $table->boolean('is_deleted')->default(false);
+            $table->text('admin_notes')->nullable();
             $table->timestamps();
         });
     }

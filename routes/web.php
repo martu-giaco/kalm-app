@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\PostController;
 
 
 /*
@@ -69,7 +70,7 @@ Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
 
 Route::get('/products', [ProductController::class, 'index'])
     ->name('products.index');
-    Route::get('/productos/buscar', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
+Route::get('/productos/buscar', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
 
 
 Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])
@@ -105,3 +106,28 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
 
     // Aquí irían otras rutas de administración (e.g., /admin/products, /admin/stats)
 });
+
+Route::middleware('auth')->group(function () {
+    // Ver detalle de un post
+// Detalle de un post
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::post('/posts/{post}/report', [PostController::class, 'report'])
+        ->name('posts.report')
+        ->whereNumber('post');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+    // Likes y guardados
+    Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
+    Route::post('/posts/{post}/save', [PostController::class, 'save'])->name('posts.save');
+});
+
+// Detalle del post (no requiere auth para ver)
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+
+Route::get('/community', [CommunityController::class, 'community'])->name('community');
+
+Route::get('/community', [PostController::class, 'community'])->name('community');
