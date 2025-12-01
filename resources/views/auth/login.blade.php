@@ -5,22 +5,26 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Kälm | Log In</title>
-
-    <!-- Tailwind CDN (prototipo) -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}" />
+    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- DaisyUI (opcional CDN precompilado) -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.css" rel="stylesheet" />
-
-    <!-- Tu CSS compilado (si existe) -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/fondo.png') }}')">
+<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
-    <div class="max-w-2xl mx-auto p-6 flex flex-col justify-around">
+    <div class="max-w-2xl mx-auto p-6 flex flex-col justify-between min-h-screen">
         <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-20 mb-5">
-        <h1 class="text-2xl font-bold mb-6 text-[var(--kalm-text)]">Iniciar Sesión</h1>
+        <div>
+            <h1 class="text-2xl font-bold text-[#2A4043]">Iniciar Sesión</h1>
 
         {{-- BLOQUE DE FEEDBACK: muestra feedback.message, status, message y errores --}}
         @php
@@ -62,30 +66,33 @@
             <div>
                 <label for="email" class="block mb-1 text-sm">Email</label>
                 <input id="email" name="email" type="email" placeholder="Email"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[var(--kalm-light)] placeholder-[var(--kalm-lighter)] focus:outline-[var(--kalm-light)] text-md text-[var(--kalm-text)]"
+                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
                     required>
             </div>
 
             <div>
                 <label for="password" class="block mb-1 text-sm">Contraseña</label>
                 <input id="password" name="password" type="password" placeholder="Contraseña"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[var(--kalm-light)] placeholder-[var(--kalm-lighter)] focus:outline-[var(--kalm-light)] text-md text-[var(--kalm-text)]"
+                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
                     required>
             </div>
 
             <input type="submit" value="Ingresar"
-                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[var(--kalm-dark)]">
+                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
 
-            <a class="block text-center font-bold text-sm text-[var(--kalm-text)] mt-2" href="#">Olvidé la
+            <a class="block text-center font-bold text-sm text-[#2A4043] mt-2" href="#">Olvidé la
                 contraseña</a>
         </form>
+        </div>
 
-        <p class="decorated text-[var(--kalm-text)] text-sm mt-6 mb-3">No tengo cuenta</p>
+        <div>
+            <p class="decorated text-[#2A4043] text-sm mt-6 mb-3">No tengo cuenta</p>
 
-        <a href="{{ route('auth.register') }}"
-            class="w-full inline-flex border-2 border-[var(--kalm-dark)] text-[var(--kalm-text)] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
-            Crear cuenta
-        </a>
+            <a href="{{ route('auth.register') }}"
+                class="w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                Crear cuenta
+            </a>
+        </div>
 
     </div>
 

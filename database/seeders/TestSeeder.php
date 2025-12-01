@@ -12,9 +12,7 @@ class TestSeeder extends Seeder
      */
     public function run(): void
     {
-        // ---------------------------
         // TEST 1 — CABELLO
-        // ---------------------------
         DB::table('tests')->insert([
             'key' => 'cabello',
             'title' => 'Tu rutina ideal de Haircare',
@@ -50,9 +48,7 @@ class TestSeeder extends Seeder
             ])
         ]);
 
-        // ---------------------------
         // TEST 2 — PIEL
-        // ---------------------------
         DB::table('tests')->insert([
             'key' => 'piel',
             'title' => 'Tu rutina ideal de Skincare',
