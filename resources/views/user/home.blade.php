@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <x-layout title="Kälm | Inicio">
 
     {{-- Categorías --}}
@@ -74,6 +75,18 @@
                 @foreach ($products_with_tag as $product)
                     @include('components.product_card', ['product' => $product, 'class' => 'w-40 md:w-44'])
                 @endforeach
+=======
+<x-layout>
+    <section class="w-full mt-15 flex flex-col items-start p-4 bg-white rounded-t-3xl min-h-[87%]">
+        <a class="rounded-xl" href="">
+            <img src="" alt="banner home kälm premium">
+        </a>
+        <div class="text-start">
+            <h2>Para vos</h2>
+            <p class="text-sm text-(--kälm-lighter)">Probá productos que se adaptan a vos</p>
+            <div class="overflow-x-scroll">
+            /*tarjetas de productos verticales*/
+>>>>>>> ca0f397ef967df8a968b1590b9d92a10975084e0
             </div>
         </div>
     @endforeach

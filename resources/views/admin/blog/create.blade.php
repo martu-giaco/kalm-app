@@ -3,7 +3,7 @@
 ?>
 
 <x-layout>
-    <div class="container my-5">
+    <div class="container my-5 bg-white rounded-t-3xl min-h-[87%]">
         <x-slot:title>Crear Blog</x-slot:title>
 
         <h1 class="mb-3">Crear Blog</h1>

@@ -3,7 +3,7 @@
 ?>
 
 <x-layout>
-    <div class="container my-5">
+    <div class="container my-5 bg-white rounded-t-3xl min-h-[87%]" >
         <x-slot:title>Editar Blog</x-slot:title>
 
         <h1 class="mb-3">Editar Blog</h1>
@@ -12,7 +12,7 @@
             <div class="alert alert-danger">La información contiene errores.</div>
         @endif
 
-        <form action="{{ route('blogs.update', $blog) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('blog.edit', $blog) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-3">
