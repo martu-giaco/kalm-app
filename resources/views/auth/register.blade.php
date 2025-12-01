@@ -1,48 +1,92 @@
-<!-- filepath: resources/views/auth/register.blade.php -->
-<x-layout>
-    <div class="container my-5">
-        <x-slot:title>Registrate</x-slot:title>
+<!DOCTYPE html>
+<html lang="es">
 
-        <h1 class="mb-3">Crear una cuenta</h1>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kälm | Register</title>
 
-        <form action="{{ route('auth.register.store') }}" method="POST" novalidate>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- DaisyUI (opcional) -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.css" rel="stylesheet" />
+
+    <!-- Tu CSS compilado -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+
+<body class="min-h-screen bg-cover bg-center"
+      style="background-image: url('{{ asset('images/fondo.png') }}')">
+
+    <div class="max-w-2xl mx-auto p-6 flex flex-col justify-around">
+
+        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-20 mb-5">
+
+        <h1 class="text-2xl font-bold mb-6 text-[var(--kalm-text)]">Crear una cuenta</h1>
+
+        <form action="{{ route('auth.register.store') }}" method="POST" class="space-y-4" novalidate>
             @csrf
 
-            <div class="mb-3">
-                <label for="name" class="form-label">Nombre y apellido</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
+            <div>
+                <label for="name" class="block mb-1 text-sm">Nombre y apellido</label>
+                <input id="name" name="name" value="{{ old('name') }}" type="text"
+                       class="w-full p-3 bg-transparent rounded-xl border-2 border-[var(--kalm-light)]
+                              placeholder-[var(--kalm-lighter)] focus:outline-[var(--kalm-light)]
+                              text-md text-[var(--kalm-text)]"
+                       required>
+
                 @error('name')
-                    <div class="text-danger small mt-1">{{ $message }}</div>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+            <div>
+                <label for="email" class="block mb-1 text-sm">Email</label>
+                <input id="email" name="email" value="{{ old('email') }}" type="email"
+                       class="w-full p-3 bg-transparent rounded-xl border-2 border-[var(--kalm-light)]
+                              placeholder-[var(--kalm-lighter)] focus:outline-[var(--kalm-light)]
+                              text-md text-[var(--kalm-text)]"
+                       required>
+
                 @error('email')
-                    <div class="text-danger small mt-1">{{ $message }}</div>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" name="password" id="password" class="form-control" required>
+            <div>
+                <label for="password" class="block mb-1 text-sm">Contraseña</label>
+                <input id="password" name="password" type="password"
+                       class="w-full p-3 bg-transparent rounded-xl border-2 border-[var(--kalm-light)]
+                              placeholder-[var(--kalm-lighter)] focus:outline-[var(--kalm-light)]
+                              text-md text-[var(--kalm-text)]"
+                       required>
+
                 @error('password')
-                    <div class="text-danger small mt-1">{{ $message }}</div>
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="password_confirmation" class="form-label">Repetir contraseña</label>
-                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
-                    required>
+            <div>
+                <label for="password_confirmation" class="block mb-1 text-sm">Repetir contraseña</label>
+                <input id="password_confirmation" name="password_confirmation" type="password"
+                       class="w-full p-3 bg-transparent rounded-xl border-2 border-[var(--kalm-light)]
+                              placeholder-[var(--kalm-lighter)] focus:outline-[var(--kalm-light)]
+                              text-md text-[var(--kalm-text)]"
+                       required>
             </div>
 
-            <input type="submit" value="Registrarme" class="btn btn-primary">
+            <input type="submit" value="Registrarme"
+                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition
+                       cursor-pointer bg-[var(--kalm-dark)]">
 
-            <p class="mt-3 small">
-                ¿Ya tenés una cuenta? <a href="{{ route('auth.login') }}">Ingresar</a>
+            <p class="block text-center font-bold text-sm text-[var(--kalm-text)] mt-2">
+                ¿Ya tenés una cuenta?
+                <a href="{{ route('auth.login') }}" class="underline">Ingresar</a>
             </p>
         </form>
+
     </div>
-</x-layout>
+
+</body>
+</html>

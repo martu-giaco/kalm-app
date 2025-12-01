@@ -18,21 +18,25 @@ class AuthController extends Controller
     // Procesar login (mantengo tu implementación)
     public function authenticate(Request $request)
     {
-        //TODO: Validar
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
 
-        $credentials = $request->only(['email', 'password']);
+        if (Auth::attempt($credentials)) {
+            // Seguridad: regenerar sesión para evitar fixation
+            $request->session()->regenerate();
 
-        if(Auth::attempt($credentials)){
             return redirect()
                 ->intended(route('home'))
-                ->with('feedback.message', 'Sesión Iniciada con éxito. ¡Bienvenido de nuevo!');
+                ->with('feedback.message', 'Sesión iniciada con éxito.');
         }
 
-        return redirect()
-                ->back()
-                ->withInput()
-                ->with('feedback.message', 'Las credenciales ingresadas no coinciden con nuestros registros!');
+        return back()
+            ->withInput($request->only('email'))
+            ->withErrors(['email' => 'Las credenciales ingresadas no coinciden con nuestros registros.']);
     }
+
 
     // Mostrar formulario de registro
     public function register()
@@ -43,28 +47,28 @@ class AuthController extends Controller
     // Procesar registro
     public function store(Request $request)
     {
-        // Validación
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Crear usuario
-        $user = User::create([
+        User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'role' => 'free',
         ]);
 
-        // Loguear al usuario recién creado
-        Auth::login($user);
-
         return redirect()
-            ->route('home')
-            ->with('feedback.message', 'Registro exitoso. ¡Bienvenido!')
-            ->with('feedback.type', 'success');
+            ->route('auth.login')
+            ->with('feedback.message', 'Cuenta creada correctamente. Inicia sesión.')
+            ->with('feedback.type', 'success')
+            ->with('status', 'Cuenta creada correctamente. Inicia sesión.');
+
     }
+
+
 
     // Logout (mantengo tu implementación)
     public function logout(Request $request)
@@ -77,7 +81,7 @@ class AuthController extends Controller
 
         return redirect()
             ->route('auth.login')
-            ->with('feedback.message', 'Sesion Cerrada con exito ¡Te esperamos pronto!');
+            ->with('feedback.message', 'Sesión cerrada.');
     }
 
     public function index()

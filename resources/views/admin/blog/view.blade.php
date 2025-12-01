@@ -49,7 +49,7 @@ use Illuminate\Support\Facades\Storage;
         </p>
 
         <div class="mb-4 fs-5" style="white-space:pre-wrap; line-height:1.6;">
-            {!! nl2br(e($blog->content)) !!}
+            {nl2br(e($blog->content)) }
         </div>
 
         <div class="d-flex gap-2 flex-wrap">
