@@ -59,8 +59,7 @@
             {{-- Contenedor para el padding fijo del header (para que el contenido no quede debajo) --}}
             <div class="pt-24 min-h-screen flex flex-col">
 
-                <main
-                    class="fixed top-24 bottom-0 left-0 right-0 mx-auto w-screen grow bg-white rounded-t-3xl overflow-hidden overflow-y-auto px-3">
+                <main class="fixed top-24 bottom-0 left-0 right-0 mx-auto w-screen grow bg-white rounded-t-3xl overflow-hidden overflow-y-auto px-5">
 
                     @php
                         // Mensajes de feedback

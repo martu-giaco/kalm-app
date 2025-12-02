@@ -3,19 +3,19 @@
 
     {{-- Categorías --}}
     <div class="mb-6">
-        <h2 class="text-xl font-semibold text-[var(--kalm-dark)] mb-4">Categorías</h2>
+        <h2 class="text-xl font-semibold text-(--kalm-dark) mb-4">Categorías</h2>
         @if($categories->isNotEmpty())
             <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
                 @foreach ($categories as $category)
                     @if(!empty($category->slug))
                         <a href="{{ route('products.byCategory', ['slug' => $category->slug]) }}"
-                            class="flex-shrink-0 w-20 flex flex-col items-center">
+                            class="shrink-0 w-20 flex flex-col items-center">
                             <div
-                                class="h-16 w-16 bg-[var(--kalm-light)] rounded-full flex items-center justify-center p-3 text-[var(--kalm-dark)]">
+                                class="h-16 w-16 bg-(--kalm-light) rounded-full flex items-center justify-center p-3 text-(--kalm-dark)">
                                 {!! $category->icon_svg !!}
                             </div>
 
-                            <span class="text-xs font-medium text-[var(--kalm-text)] mt-2 text-center leading-tight">
+                            <span class="text-xs font-medium text-(--kalm-text) mt-2 text-center leading-tight">
                                 {{ $category->name }}
                             </span>
                         </a>
@@ -23,7 +23,7 @@
                 @endforeach
             </div>
         @else
-            <p class="text-sm text-[var(--kalm-text)]">No hay categorías disponibles.</p>
+            <p class="text-sm text-(--kalm-text)]">No hay categorías disponibles.</p>
         @endif
     </div>
 
@@ -41,7 +41,7 @@
 
             <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes" value="{{ request('q') }}"
                 class="w-full pl-10 p-3 rounded-xl border border-gray-400 bg-white text-gray-700 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-[var(--kalm-main)] focus:border-[var(--kalm-main)]">
+                      focus:outline-none focus:ring-2 focus:ring-(--kalm-main) focus:border-(--kalm-main)">
         </form>
     </div>
 
@@ -70,7 +70,7 @@
         @endphp
 
         <div class="mb-8">
-            <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-4">{{ $section['title'] }}</h2>
+            <h2 class="text-lg font-semibold text-(--kalm-dark)] mb-4">{{ $section['title'] }}</h2>
             <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
                 @foreach ($products_with_tag as $product)
                     @include('components.product_card', ['product' => $product, 'class' => 'w-40 md:w-44'])
@@ -83,7 +83,7 @@
 
     {{-- Favoritos --}}
     <div class="mb-8">
-        <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-4">Favoritos de la Comunidad</h2>
+        <h2 class="text-lg font-semibold text-(--kalm-dark)] mb-4">Favoritos de la Comunidad</h2>
         <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
             @foreach ($topRatedProducts as $product)
                 @include('components.product_card', ['product' => $product, 'class' => 'w-40 md:w-44'])
