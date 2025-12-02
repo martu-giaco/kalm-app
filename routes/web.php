@@ -107,11 +107,12 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     // Aquí irían otras rutas de administración (e.g., /admin/products, /admin/stats)
 
     // CRUD blogs
-    Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.index');
-    Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.view');
-    Route::get('/admin/blog/create', [BlogController::class, 'blog'])->name('blog.create');
-    Route::get('/admin/blog/{blog_id}', [BlogController::class, 'blog'])->name('blog.edit');
+    Route::get('/admin/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/admin/blog', [BlogController::class, 'view'])->name('blog.view');
+    Route::get('/admin/blog/create', [BlogController::class, 'create'])->name('blog.create');
+    Route::get('/admin/blog/{blog_id}', [BlogController::class, 'edit'])->name('blog.edit');
     Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.destroy');
+    Route::post('/admin/blog', [PostController::class, 'store'])->name('blog.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -136,8 +137,9 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 Route::get('/community', [CommunityController::class, 'community'])->name('community');
 Route::get('/community', [PostController::class, 'community'])->name('community');
 
-Route::get('/{user_id}}/routine', [RoutineController::class, 'routine'])->name('routines.index');
-Route::get('/{user_id}}/routine', [RoutineController::class, 'routine'])->name('routines.view');
-Route::get('/{user_id}}/routine/create', [RoutineController::class, 'routine'])->name('routines.create');
-Route::get('/{user_id}}/routine/{routine_id}', [RoutineController::class, 'routine'])->name('routines.edit');
-Route::get('/{user_id}}/routine', [RoutineController::class, 'routine'])->name('routines.destroy');
+Route::get('/routine', [RoutineController::class, 'index'])->name('routines.index');
+Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create');
+Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
+Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit');
+Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy');
+Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store');

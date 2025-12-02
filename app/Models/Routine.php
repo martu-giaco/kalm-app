@@ -18,21 +18,19 @@ class Routine extends Model
         'products' => 'array', // convierte JSON <-> array automáticamente
     ];
 
-    // Solo permite 'dia' o 'noche'
-    public function setTypeAttribute($value)
-    {
-        $allowed = ['dia', 'noche'];
-
-        if (!in_array($value, $allowed)) {
-            throw new \InvalidArgumentException("El tipo de rutina debe ser 'dia' o 'noche'.");
-        }
-
-        $this->attributes['type'] = $value;
-    }
-
     // Relación con usuario
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+    public function types()
+{
+    return $this->belongsToMany(
+        RoutineType::class,
+        'routines_have_types',
+        'routine_fk',
+        'type_fk'
+    );
+}
 }

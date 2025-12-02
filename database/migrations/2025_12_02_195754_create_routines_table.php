@@ -18,9 +18,6 @@ return new class extends Migration
 
             $table->string('name');
 
-            // Solo permite 'dia' o 'noche'
-            $table->enum('type', ['dia', 'noche']);
-
             // Productos en JSON (lista, ids, etc.)
             $table->json('products')->nullable();
 

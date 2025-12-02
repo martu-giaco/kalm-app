@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Routine;
+use App\Models\RoutineType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoutineController extends Controller
 {
@@ -12,7 +14,7 @@ class RoutineController extends Controller
      */
     public function index()
     {
-        $routines = Routine::with('user')
+        $routines = Routine::with(['user', 'types'])
                             ->latest()
                             ->paginate(10);
 
@@ -24,7 +26,9 @@ class RoutineController extends Controller
      */
     public function create()
     {
-        return view('routines.create');
+            return view('routines.create',[
+            'types' => RoutineType::orderBy('name')->get(),
+        ]);
     }
 
     /**
@@ -34,14 +38,12 @@ class RoutineController extends Controller
     {
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
-            'type'     => 'required|string|max:50',
             'products' => 'nullable|array',
         ]);
 
         Routine::create([
             'user_id'  => auth()->id(),
             'name'     => $validated['name'],
-            'type'     => $validated['type'],
             'products' => json_encode($validated['products'] ?? []),
         ]);
 
@@ -52,9 +54,9 @@ class RoutineController extends Controller
     /**
      * Ver una rutina individual (público).
      */
-    public function show(Routine $routine)
+    public function view(Routine $routine)
     {
-        return view('routines.show', compact('routine'));
+        return view('routines.view', compact('routine'));
     }
 
     /**
@@ -76,17 +78,15 @@ class RoutineController extends Controller
 
         $validated = $request->validate([
             'name'     => 'required|string|max:255',
-            'type'     => 'required|string|max:50',
             'products' => 'nullable|array',
         ]);
 
         $routine->update([
             'name'     => $validated['name'],
-            'type'     => $validated['type'],
             'products' => json_encode($validated['products'] ?? []),
         ]);
 
-        return redirect()->route('routines.show', $routine)
+        return redirect()->route('routines.view', $routine)
                         ->with('success', 'Rutina actualizada correctamente.');
     }
 
@@ -100,7 +100,7 @@ class RoutineController extends Controller
         $routine->delete();
 
         return redirect()->route('routines.index')
-                         ->with('success', 'Rutina eliminada correctamente.');
+                        ->with('success', 'Rutina eliminada correctamente.');
     }
 
     /**
