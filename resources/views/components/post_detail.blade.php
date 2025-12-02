@@ -20,7 +20,7 @@
                         class="mt-2 rounded-lg w-full object-cover">
                 @endif
 
-                <div class="flex items-center mt-4 space-x-4 text-gray-500">
+                <div class="flex items-center mt-4 space-x-4 text-[#CCE2E5]">
 
                     <!-- Like / Heart -->
                     <div class="flex items-center space-x-1">
@@ -70,7 +70,7 @@
                 </div>
             </div>
         @empty
-            <p class="text-gray-500">No hay comentarios aún.</p>
+            <p class="text-[#CCE2E5]">No hay comentarios aún.</p>
         @endforelse
     </div>
 </x-layout>

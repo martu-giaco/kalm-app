@@ -7,7 +7,7 @@
         @forelse($posts as $post)
             <x-community_post :post="$post" />
         @empty
-            <p class="text-gray-500">No hay posts para mostrar.</p>
+            <p class="text-[#CCE2E5]">No hay posts para mostrar.</p>
         @endforelse
 
         {{-- Paginación --}}

@@ -32,7 +32,7 @@
                 </a>
 
                 {{-- Marca --}}
-                <p class="text-xs text-gray-500 mt-0.5">
+                <p class="text-xs text-[#CCE2E5] mt-0.5">
                     {{ $product->brand->name ?? 'Marca Desconocida' }}
                 </p>
 
