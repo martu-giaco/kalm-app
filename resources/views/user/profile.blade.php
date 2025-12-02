@@ -61,10 +61,17 @@
 
             <section>
                 {{-- tabs con posts, reviews y rutinas --}}
-                <div role="tablist" class="tabs tabs-box">
-                    <a role="tab" class="tab">Tab 1</a>
-                    <a role="tab" class="tab tab-active">Tab 2</a>
-                    <a role="tab" class="tab">Tab 3</a>
+                <div class="tabs tabs-border">
+    <input type="radio" name="my_tabs_2" id="tab-1" class="tab" aria-label="Posteos" checked />
+                <div class="tab-content border-base-300 bg-base-100 p-10">
+                    posteoooos
+                </div>
+
+                <input type="radio" name="my_tabs_2" class="tab" aria-label="Reviews" />
+                <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 2</div>
+
+                <input type="radio" name="my_tabs_2" class="tab" aria-label="Rutinas" />
+                <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 3</div>
                 </div>
             </section>
         </div>

@@ -43,11 +43,22 @@ class PostController extends Controller
 {
     // Traer los posts activos con su autor
     $posts = Post::with('user')
-                 ->active() // Scope para posts no eliminados
-                 ->latest()
-                 ->paginate(10);
+                    ->active() // Scope para posts no eliminados
+                    ->latest()
+                    ->paginate(10);
 
     return view('user.community', compact('posts'));
+}
+
+public function userPosts($userId)
+{
+    $posts = Post::with('user')
+                ->where('user_id', $userId)
+                ->active()
+                ->latest()
+                ->paginate(10);
+
+    return view('user.posts', compact('posts'));
 }
 
 

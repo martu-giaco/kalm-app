@@ -1,8 +1,9 @@
 
 <x-layout title="Kälm | Inicio">
+<section class="px-5">
 
     {{-- Categorías --}}
-    <div class="mb-6 px-5">
+    <div class="mb-6">
         <h2 class="text-xl font-semibold text-(--kalm-dark) mb-4">Categorías</h2>
         @if($categories->isNotEmpty())
             <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -41,7 +42,7 @@
 
             <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes" value="{{ request('q') }}"
                 class="w-full pl-10 p-3 rounded-xl border border-gray-400 bg-white text-gray-700 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-(--kalm-main) focus:border-(--kalm-main)">
+                    focus:outline-none focus:ring-2 focus:ring-(--kalm-main) focus:border-(--kalm-main)">
         </form>
     </div>
 
@@ -93,4 +94,5 @@
 
     <div class="h-8"></div>
 
+</section>
 </x-layout>

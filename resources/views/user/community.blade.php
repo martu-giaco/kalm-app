@@ -1,6 +1,6 @@
 <x-layout title="Comunidad">
 
-    <div class="mx-auto">
+    <div class="mx-auto px-5">
 
         <h1 class="text-2xl font-bold text-[#306067] mb-4">Feed de la comunidad</h1>
 
