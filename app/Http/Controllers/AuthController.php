@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    // Mostrar pantalla login o registrarse
+    public function logOrReg()
+    {
+        return view('auth.logreg');
+    }
+
     // Mostrar formulario de login
     public function login()
     {

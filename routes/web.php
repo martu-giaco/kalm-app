@@ -18,6 +18,7 @@ use App\Http\Controllers\PostController;
 */
 
 // Auth (login/logout/register)
+Route::get('/login-register', [AuthController::class, 'logOrReg'])->name('auth.logreg');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 

@@ -46,7 +46,7 @@
                             <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
                                 alt="{{ auth()->user()->name }}" class="h-10 w-10 rounded-full object-cover">
                             <span
-                                class="hidden md:inline-block font-medium text-sm text-[var(--kalm-text)] truncate max-w-[120px]">
+                                class="hidden md:inline-block font-medium text-sm text-[#2A4043] truncate max-w-[120px]">
                                 {{ \Illuminate\Support\Str::limit(auth()->user()->name, 18) }}
                             </span>
                         </label>
@@ -60,7 +60,7 @@
             <div class="pt-24 min-h-screen flex flex-col">
 
                 <main
-                    class="fixed top-24 bottom-0 left-0 right-0 mx-auto w-screen flex-grow bg-white rounded-t-3xl overflow-hidden overflow-y-auto px-10">
+                    class="fixed top-24 bottom-0 left-0 right-0 mx-auto w-screen grow bg-white rounded-t-3xl overflow-hidden overflow-y-auto px-3">
 
                     @php
                         // Mensajes de feedback
@@ -119,7 +119,7 @@
 
                     <ul class="flex flex-1 items-center justify-evenly w-full">
                         <!-- Inicio -->
-                        <li class="flex flex-col items-center font-bold text-[var(--kalm-dark)]">
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('home') }}" class="flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px"
                                     fill="#306067">
@@ -131,7 +131,7 @@
                         </li>
 
                         <!-- Buscar -->
-                        <li class="flex flex-col items-center font-bold text-[var(--kalm-dark)]">
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('products.search') }}" class="flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px"
                                     fill="#306067">
@@ -143,7 +143,7 @@
                         </li>
 
                         <!-- Crear -->
-                        <li class="flex flex-col items-center font-bold text-[var(--kalm-dark)]">
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('posts.create') }}" class="flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px"
                                     fill="#306067">
@@ -155,7 +155,7 @@
                         </li>
 
                         <!-- Comunidad -->
-                        <li class="flex flex-col items-center font-bold text-[var(--kalm-dark)]">
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('community') }}" class="flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px"
                                     fill="#306067">
@@ -167,7 +167,7 @@
                         </li>
 
                         <!-- Blog -->
-                        <li class="flex flex-col items-center font-bold text-[var(--kalm-dark)]">
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('blog') }}" class="flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px"
                                     fill="#306067">
@@ -180,7 +180,7 @@
 
                         <!-- Admin -->
                         @if(auth()->check() && auth()->user()->role === 'admin')
-                            <li class="flex flex-col items-center font-bold text-[var(--kalm-dark)]">
+                            <li class="flex flex-col items-center font-bold text-[#306067]">
                                 <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center">
                                     Usuarios
                                 </a>
@@ -194,49 +194,48 @@
 
         <div class="drawer-side z-50">
             <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="menu bg-white min-h-full w-80 p-0 rounded-l-4xl flex flex-col justify-between">
+            <div class="menu bg-white min-h-full w-80 p-0 rounded-l-3xl flex flex-col justify-between">
                 @auth
-                    <div>
-                        <div class="flex flex-col border-b p-5 pt-5 border-[var(--kalm-lighter)]">
-                            <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path
-                                        d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
-                                </svg>
-                            </label>
-
-                            <div class="flex justify-between mt-4">
-                                <div>
-                                    <p class="text-md text-[var(--kalm-light)]">Hola,</p>
-                                    <h2 class="text-3xl text-[var(--kalm-dark)]">{{ auth()->user()->name }}</h2>
-                                    <p class="text-sm text-[var(--kalm-text)]">{{ auth()->user()->email }}</p>
-                                </div>
-
-                                <a href="{{ route('profile.show') }}">
-                                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
-                                        alt="{{ auth()->user()->name }}" class="h-16 w-16 rounded-full object-cover">
-                                </a>
-                            </div>
-                            <div class="py-2">
+                        <div>
+                            <div class="flex flex-col border-b p-5 pt-5 border-[#CCE2E5]">
+                            <div class="flex justify-between">
                                 <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full
                                                                 @if(auth()->user()->role === 'admin') bg-red-500 text-white
                                                                 @elseif(auth()->user()->role === 'premium') bg-green-500 text-white
                                                                 @else bg-gray-300 text-gray-800 @endif">
                                     {{ ucfirst(auth()->user()->role) }}
-                                </span>
+                            </span>
+                            <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960"
+                                    fill="#2A4043" aria-hidden="true">
+                                    <path
+                                        d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+                                </svg>
+                            </label>
                             </div>
 
-                            <div class="flex justify-between text-[var(--kalm-light)] mt-2">
+                            <div class="flex justify-between mt-4 items-center">
+                                <div>
+                                    <p class="text-md text-[#37A0AF]">Hola,</p>
+                                    <h2 class="text-4xl text-[#306067]">{{ auth()->user()->name }}</h2>
+                                </div>
+
+                                <a href="{{ route('profile.show') }}">
+                                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
+                                        alt="{{ auth()->user()->name }}" class="h-14 w-14 rounded-full object-cover">
+                                </a>
+                            </div>
+
+                            <div class="flex justify-between text-[#37A0AF] mt-2">
                                 <p>{{ '@' . (auth()->user()->username ?? \Illuminate\Support\Str::slug(auth()->user()->name, '')) }}
                                 </p>
                                 <p>{{ auth()->user()->followers_count ?? '0' }} seguidores</p>
                             </div>
                         </div>
 
-                        <ul class="p-4 gap-3">
+                            <ul class="p-3 gap-3">
                             <li>
-                                <a class="flex flex-row text-lg text-[var(--kalm-text)] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('profile.show') }}">
                                     Mi Perfil
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -248,7 +247,7 @@
                             </li>
 
                             <li>
-                                <a class="flex flex-row text-lg text-[var(--kalm-text)] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('home') }}">
                                     Tests
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -260,7 +259,7 @@
                             </li>
 
                             <li>
-                                <a class="flex flex-row text-lg text-[var(--kalm-text)] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('home') }}">
                                     Mis Resultados
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -272,7 +271,7 @@
                             </li>
 
                             <li>
-                                <a class="flex flex-row text-lg text-[var(--kalm-text)] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('favorites') }}">
                                     Favoritos
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -284,7 +283,7 @@
                             </li>
 
                             <li>
-                                <a class="flex flex-row text-lg text-[var(--kalm-text)] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('home') }}">
                                     Configuración
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -296,7 +295,7 @@
                             </li>
 
                             <li>
-                                <a class="flex flex-row text-lg text-[var(--kalm-text)] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('home') }}">
                                     Ayuda
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -306,25 +305,36 @@
                                     </svg>
                                 </a>
                             </li>
+                        </ul>
+                        </div>
+
+                        <ul class="p-3 gap-3">
+                                <li>
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
+                                    href="{{ route('home') }}">
+                                    Sobre Kälm
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067">
+                                        <path d="M480-280q17 0 28.5-11.5T520-320v-160q0-17-11.5-28.5T480-520q-17 0-28.5 11.5T440-480v160q0 17 11.5 28.5T480-280Zm0-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17 0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Z"/>
+                                    </svg>
+                                </a>
+                            </li>
 
                             <li>
-                                <form action="{{ route('auth.logout') }}" method="POST">
+                                <form action="{{ route('auth.logout') }}" method="POST" class="w-full flex justify-between">
                                     @csrf
-                                    <button type="submit" class="flex flex-row text-lg text-white w-full justify-center items-center
-                                           bg-red-600 rounded-md px-6 py-2 transition-colors duration-300">
+                                    <button type="submit" class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent">
                                         Cerrar sesión
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                            width="24px" fill="white" class="ml-2">
+                                            width="24px" fill="#306067" class="ml-2">
                                             <path
                                                 d="M200-480q0 106 69 185t174 93q16 2 26.5 14t10.5 28q0 17-14.5 28t-32.5 9q-135-17-224-118.5T120-480q0-136 88.5-237.5T432-837q19-2 33.5 8.5T480-800q0 16-10.5 28T443-758q-105 14-174 93t-69 185Zm487 40H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-12-12-12-28.5t12-28.5q12 12 28 12t28 12l144 144q12 12 12 28t-12 28L668-308q-12 12-28 11.5T612-309q-12-12-12-28t12-28l75-75Z" />
                                         </svg>
                                     </button>
                                 </form>
                             </li>
-                        </ul>
+                            </ul>
+                        </div>
 
-
-                    </div>
                 @else
                     <div class="p-5 pt-10 border-b">
                         <h2 class="text-2xl">Bienvenido</h2>
