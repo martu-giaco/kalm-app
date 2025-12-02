@@ -6,21 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('routines', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->id('routine_id');
+
+            // FK al usuario dueño de la rutina
+            $table->foreignId('user_id')
+                    ->constrained()
+                    ->onDelete('cascade'); // si el user se borra, se borran sus rutinas
+
+            $table->string('name');
+
+            // Solo permite 'dia' o 'noche'
+            $table->enum('type', ['dia', 'noche']);
+
+            // Productos en JSON (lista, ids, etc.)
+            $table->json('products')->nullable();
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('routines');

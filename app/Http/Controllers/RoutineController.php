@@ -4,36 +4,112 @@ namespace App\Http\Controllers;
 
 use App\Models\Routine;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class RoutineController extends Controller
 {
-    // Mostrar formulario de creación
+    /**
+     * Ver todas las rutinas (público).
+     */
+    public function index()
+    {
+        $routines = Routine::with('user')
+                            ->latest()
+                            ->paginate(10);
+
+        return view('routines.index', compact('routines'));
+    }
+
+    /**
+     * Formulario para crear una rutina (solo usuario autenticado).
+     */
     public function create()
     {
-        return view('routine.create');
+        return view('routines.create');
     }
 
-    // Guardar rutina
+    /**
+     * Guardar una rutina para el usuario autenticado.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|max:20',
-            'type' => 'nullable|string|max:50',
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'type'     => 'required|string|max:50',
+            'products' => 'nullable|array',
         ]);
 
-        $routine = new Post();
-        $routine->user_id = auth()->id();
-        $routine->content = $request->content;
-        $routine->is_deleted = false;
+        Routine::create([
+            'user_id'  => auth()->id(),
+            'name'     => $validated['name'],
+            'type'     => $validated['type'],
+            'products' => json_encode($validated['products'] ?? []),
+        ]);
 
-        if ($request->hasFile('image')) {
-            $routine->image = $request->file('image')->store('routines', 'public');
-        }
-
-        $routine->save();
-
-        return redirect()->route('routines.index')->with('success', 'Rutina creada correctamente!');
+        return redirect()->route('routines.index')
+                        ->with('success', 'Rutina creada correctamente.');
     }
 
+    /**
+     * Ver una rutina individual (público).
+     */
+    public function show(Routine $routine)
+    {
+        return view('routines.show', compact('routine'));
+    }
+
+    /**
+     * Formulario para editar (solo el dueño puede entrar).
+     */
+    public function edit(Routine $routine)
+    {
+        $this->authorizeOwner($routine);
+
+        return view('routines.edit', compact('routine'));
+    }
+
+    /**
+     * Actualizar (solo el dueño).
+     */
+    public function update(Request $request, Routine $routine)
+    {
+        $this->authorizeOwner($routine);
+
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'type'     => 'required|string|max:50',
+            'products' => 'nullable|array',
+        ]);
+
+        $routine->update([
+            'name'     => $validated['name'],
+            'type'     => $validated['type'],
+            'products' => json_encode($validated['products'] ?? []),
+        ]);
+
+        return redirect()->route('routines.show', $routine)
+                        ->with('success', 'Rutina actualizada correctamente.');
+    }
+
+    /**
+     * Eliminar (solo el dueño).
+     */
+    public function destroy(Routine $routine)
+    {
+        $this->authorizeOwner($routine);
+
+        $routine->delete();
+
+        return redirect()->route('routines.index')
+                         ->with('success', 'Rutina eliminada correctamente.');
+    }
+
+    /**
+     * Verificación: ¿la rutina pertenece al usuario autenticado?
+     */
+    private function authorizeOwner(Routine $routine)
+    {
+        if ($routine->user_id !== auth()->id()) {
+            abort(403, 'No tenés permiso para realizar esta acción.');
+        }
+    }
 }

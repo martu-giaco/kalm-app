@@ -99,11 +99,9 @@ Route::post('/premium/process', [SubscriptionController::class, 'process'])->nam
 Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->group(function () {
 
     // Ver y listar todos los usuarios
-    // Antes: Route::get('/view-users', [AuthController::class, 'admin.users.index']) <- ¡Error de sintaxis!
     Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
 
     // Ver el detalle de un usuario específico
-    // Antes: Route::get('/view-users/{user}', [AuthController::class, 'admin.users.view']) <- ¡Error de sintaxis!
     Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view')->whereNumber('user');
 
     // Aquí irían otras rutas de administración (e.g., /admin/products, /admin/stats)
@@ -137,3 +135,9 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/community', [CommunityController::class, 'community'])->name('community');
 Route::get('/community', [PostController::class, 'community'])->name('community');
+
+Route::get('/{user_id}}/routine', [RoutineController::class, 'routine'])->name('routines.index');
+Route::get('/{user_id}}/routine', [RoutineController::class, 'routine'])->name('routines.view');
+Route::get('/{user_id}}/routine/create', [RoutineController::class, 'routine'])->name('routines.create');
+Route::get('/{user_id}}/routine/{routine_id}', [RoutineController::class, 'routine'])->name('routines.edit');
+Route::get('/{user_id}}/routine', [RoutineController::class, 'routine'])->name('routines.destroy');
