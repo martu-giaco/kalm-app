@@ -1,9 +1,9 @@
 {{-- resources/views/user/profile.blade.php --}}
 
 <x-layout :title="'Mi perfil'">
-    <div class="max-w-6xl mx-auto px-5 pt-10 rounded-t-3xl bg-white">
+    <div class="max-w-6xl mx-auto px-5 pt-5 rounded-t-3xl bg-white">
             {{-- Header: avatar + datos --}}
-            <section class=" px-5 flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-8 mb-5">
+            <section class=" flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-8 mb-5">
                 <div class="w-full flex justify-between items-center">
                     <h1 class="text-3xl font-semibold text-[#306067] leading-tight">{{ $user->name ?? 'Invitado' }}</h1>
                     <span class="flex text-[#CCE2E5]">
@@ -51,7 +51,7 @@
 
 
                 {{-- Acciones (mobile stacked debajo en md aparece a la derecha) --}}
-                <div class="w-full flex justify-between mt-2 md:mt-0 md:shrink-0">
+                <div class="w-full flex justify-between  md:mt-0 md:shrink-0">
                     <div class="flex w-full gap-2">
                         <a href="{{ route('profile.edit') }}" class="text-sm text-center py-1 px-4 w-60 rounded-lg bg-[#37A0AF] text-white">Editar perfil</a>
                         <a href="{{ route('profile.edit') }}" class="text-sm text-center py-1 px-4 w-60 rounded-lg bg-[#37A0AF] text-white">Mis resultados</a>
