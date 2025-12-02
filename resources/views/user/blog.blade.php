@@ -1,3 +1,5 @@
 <x-layout>
-    <!-- Life is available only in the present moment. - Thich Nhat Hanh -->
+    <section class="mx-auto px-5 pt-10 rounded-t-3xl bg-white min-h-screen">
+
+    </section>
 </x-layout>

@@ -1,27 +1,22 @@
 {{-- filepath: resources/views/products/search.blade.php --}}
 
 <x-layout title="Kälm | Resultados de Búsqueda">
+    <section>
+    {{-- Barra de búsqueda --}}
+    <div class="mb-[-3vw] relative">
+        <form action="{{ route('products.search') }}" method="GET" class="px-5">
+            {{-- Lupa dentro del input --}}
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 pl-5">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>
+            </span>
 
+            <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes" value="{{ request('q') }}"
+                class="w-full pl-10 p-3 rounded-lg shadow-xl bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#CCE2E5]
+                    focus:outline-none focus:ring-2 focus:ring-[#37A0AF] focus:border-[#37A0AF]">
+        </form>
+    </div>
     {{-- Resultados de búsqueda --}}
-    <div class="pb-6 px-5">
-
-        {{-- Barra de búsqueda --}}
-        <div class="mb-6 relative">
-            <form action="{{ route('products.search') }}" method="GET">
-                {{-- Lupa dentro del input --}}
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z" />
-                    </svg>
-                </span>
-
-                <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes"
-                    value="{{ request('q') }}" class="w-full pl-10 p-3 rounded-xl border border-gray-400 bg-white text-gray-700 shadow-sm
-                      focus:outline-none focus:ring-2 focus:ring-[var(--kalm-main)] focus:border-[var(--kalm-main)]">
-            </form>
-        </div>
+    <div class="pb-6 pt-7 px-5 rounded-t-3xl bg-white min-h-screen">
 
         {{-- Título de resultados --}}
         <div class="flex justify-between">
@@ -82,5 +77,5 @@
         @endif
 
     </div>
-
+    </section>
 </x-layout>

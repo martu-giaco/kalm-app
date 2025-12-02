@@ -1,6 +1,6 @@
 <x-layout title="Crear Post">
 
-    <div class="flex flex-col justify-between mx-auto px-5 bg-white">
+    <section class="flex flex-col justify-between mx-auto px-5 pt-10 rounded-t-3xl bg-white">
 
         <div>
             <h1 class="text-2xl font-bold text-[#306067] mb-2">Crear un nuevo Post</h1>
@@ -32,6 +32,6 @@
             </div>
         </form>
 
-    </div>
+    </section>
 
 </x-layout>

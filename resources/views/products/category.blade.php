@@ -1,8 +1,8 @@
 <!-- filepath: resources/views/products/category.blade.php -->
 
 <x-layout :title="$category->name">
-
-    <h1 class="text-3xl font-bold text-[#306067] mb-6">
+    <section class="px-5 pt-10 rounded-t-3xl bg-white">
+        <h1 class="text-3xl font-bold text-[#306067] mb-6">
         {{ $category->name }}
     </h1>
 
@@ -34,4 +34,5 @@
             @endforeach
         </div>
     @endif
+    </section>
 </x-layout>

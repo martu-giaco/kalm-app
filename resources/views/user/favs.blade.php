@@ -1,4 +1,4 @@
-<x-layout class="px-5" title="Mis Favoritos">
+<x-layout class="px-5 pt-10 rounded-t-3xl bg-white" title="Mis Favoritos">
 
     {{-- Mensaje si no hay favoritos --}}
     @if($products->isEmpty())

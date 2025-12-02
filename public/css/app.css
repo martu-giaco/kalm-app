@@ -107,7 +107,7 @@
 /* Móviles (≤640px) */
 @media (max-width: 640px) {
     .header-bg {
-        background-image: url('/images/bg-desktop.jpg'); /* Imagen para móvil */
+        background-image: url('/images/fondo.png'); /* Imagen para móvil */
     }
 }
 

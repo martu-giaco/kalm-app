@@ -1,7 +1,7 @@
 {{-- resources/views/user/profile.blade.php --}}
 
 <x-layout :title="'Mi perfil'">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-6xl mx-auto px-5 pt-10 rounded-t-3xl bg-white">
             {{-- Header: avatar + datos --}}
             <section class=" px-5 flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-8 mb-5">
                 <div class="w-full flex justify-between items-center">

@@ -1,6 +1,6 @@
 <x-layout title="Comunidad">
 
-    <div class="mx-auto px-5">
+    <section class="mx-auto px-5 pt-10 rounded-t-3xl bg-white min-h-screen">
 
         <h1 class="text-2xl font-bold text-[#306067] mb-4">Feed de la comunidad</h1>
 
@@ -15,6 +15,6 @@
             {{ $posts->links() }}
         </div>
 
-    </div>
+    </section>
 
 </x-layout>
