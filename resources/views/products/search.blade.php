@@ -24,7 +24,7 @@
         </div>
 
         {{-- Título de resultados --}}
-        <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-4">
+        <h2 class="text-lg font-semibold text-[#306067] mb-4">
             Resultados para: "{{ $query ?? request('q') }}"
         </h2>
 
@@ -45,7 +45,7 @@
 
                         {{-- Info del producto --}}
                         <div class="ml-4 flex-1">
-                            <h3 class="text-sm font-medium text-[var(--kalm-dark)]">{{ $product->name }}</h3>
+                            <h3 class="text-sm font-medium text-[#306067]">{{ $product->name }}</h3>
                             <p class="text-xs text-[var(--kalm-text)] mt-1">
                                 <strong>Marca:</strong> {{ $product->brand->name ?? '-' }}
                             </p>

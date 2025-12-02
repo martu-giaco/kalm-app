@@ -1,13 +1,20 @@
 {{-- resources/views/user/profile.blade.php --}}
 
 <x-layout :title="'Mi perfil'">
-    <div class="max-w-6xl mx-auto px-4">
+    <div class="max-w-6xl mx-auto">
             {{-- Header: avatar + datos --}}
-            <section class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 mb-6">
+            <section class=" px-5 flex flex-col md:flex-row items-center md:items-start gap-3 md:gap-8 mb-5">
+                <div class="w-full flex justify-between items-center">
+                    <h1 class="text-3xl font-semibold text-[#306067] leading-tight">{{ $user->name ?? 'Invitado' }}</h1>
+                    <span class="flex text-[#CCE2E5]">
+                        ?
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFDE21"><path d="M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z"/></svg>
+                    </span>
+                </div>
                 {{-- Avatar (circular, responsivo, recorte seguro) --}}
-                <div class="flex-shrink-0">
+                <div class="flex items-center w-full justify-start">
                     <div
-                        class="h-20 w-20 md:h-28 md:w-28 rounded-full overflow-hidden flex items-center justify-center bg-[var(--kälm-lighter)] border-2 border-[var(--kalm-dark)]">
+                        class="h-full w-full md:h-28 md:w-28 rounded-full me-6 overflow-hidden justify-center">
                         @if(isset($user) && $user->avatar)
                             <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name ?? 'Avatar usuario' }}"
                                 class="w-full h-full object-cover" loading="lazy" decoding="async" />
@@ -16,103 +23,49 @@
                                 class="w-full h-full object-contain" loading="lazy" decoding="async" />
                         @endif
                     </div>
-                </div>
-
-                {{-- Nombre y meta --}}
-                <div class="flex-1 min-w-0">
-                    <h1 class="text-2xl sm:text-3xl font-semibold text-[var(--kalm-dark)] leading-tight">
-                        {{ $user->name ?? 'Sin nombre' }}
-                    </h1>
-
-                    <div
-                        class="mt-1 flex flex-col sm:flex-row sm:items-center sm:gap-4 text-sm text-[var(--kalm-text)]">
-                        <span class="truncate">{{ $user->email ?? 'Sin email' }}</span>
-                        <span class="hidden sm:inline text-[var(--kalm-light)]">&middot;</span>
-                        <span class="text-[var(--kalm-light)]">
-                            Miembro desde: {{ optional($user->created_at)->format('d M Y') }}
-                        </span>
-
-                    </div>
-
-                    {{-- Stats pequeños --}}
-                    <div class="mt-4 flex items-center gap-4 text-sm text-[var(--kalm-text)]">
-                        <div class="flex items-center gap-2">
-                            <strong class="text-[var(--kalm-dark)]">{{ $user->followers_count ?? 0 }}</strong>
-                            <span class="text-xs">seguidores</span>
-                        </div>
-
-                        {{-- placeholder para otras estadísticas --}}
-                        <div class="flex items-center gap-2">
-                            <strong class="text-[var(--kalm-dark)]">{{ $user->posts_count ?? 0 }}</strong>
-                            <span class="text-xs">publicaciones</span>
+                    <div>
+                        {{--stats--}}
+                        <div>
+                            <div class="flex items-center gap-7">
+                                <div class="flex flex-col items-center">
+                                    <strong class="text-[#306067] text-2xl">{{ $user->posts_count ?? 0 }}</strong>
+                                    <p class="text-xs">publicaciones</p>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <strong class="text-[#306067] text-2xl">{{ $user->following_count ?? 0 }}</strong>
+                                    <p class="text-xs">Seguidos</p>
+                                </div>
+                                <div class="flex flex-col items-center">
+                                    <strong class="text-[#306067] text-2xl">{{ $user->followers_count ?? 0 }}</strong>
+                                    <p class="text-xs">Seguidores</p>
+                                </div>
+                            </div>
+                        {{--user info--}}
+                        <div>
+                            <h2 class="text-2xl text-[#306067]">{{ $user->name ?? 'Invitado' }}</h2>
+                            <p>{{ $user->bio ?? 'bio' }}</p>
                         </div>
                     </div>
                 </div>
+                </div>
+
 
                 {{-- Acciones (mobile stacked debajo en md aparece a la derecha) --}}
-                <div class="mt-4 md:mt-0 md:flex-shrink-0">
-                    <div class="flex gap-3">
-                        <a href="{{ route('profile.edit') }}" class="btn btn-primary">Editar perfil</a>
-
-                        <form action="{{ route('auth.logout') }}" method="POST" class="inline">
-                            @csrf
-                            <button type="submit" class="btn btn-ghost">Cerrar sesión</button>
-                        </form>
+                <div class="w-full flex justify-between mt-2 md:mt-0 md:shrink-0">
+                    <div class="flex w-full gap-2">
+                        <a href="{{ route('profile.edit') }}" class="text-sm text-center py-1 px-4 w-60 rounded-lg bg-[#37A0AF] text-white">Editar perfil</a>
+                        <a href="{{ route('profile.edit') }}" class="text-sm text-center py-1 px-4 w-60 rounded-lg bg-[#37A0AF] text-white">Mis resultados</a>
                     </div>
                 </div>
             </section>
 
-            {{-- Contenido principal: bio, datos y tarjetas --}}
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {{-- Columna principal --}}
-                <div class="md:col-span-2 space-y-4">
-                    {{-- Card: Acerca de / bio --}}
-                    <div class="p-4 rounded-lg shadow-sm bg-[var(--kalm-lighter)]">
-                        <h2 class="text-lg font-semibold text-[var(--kalm-dark)]">Acerca de</h2>
-                        <p class="text-sm mt-2 text-[var(--kalm-text)]">
-                            {{ $user->bio ?? 'No hay información adicional.' }}
-                        </p>
-                        {{-- Ejemplo de campos adicionales (si existen) --}}
-                        <div class="mt-3 text-sm text-[var(--kalm-text)]">
-                            @if(!empty($user->location))
-                                <p><strong class="text-[var(--kalm-dark)]">Ubicación:</strong> {{ $user->location }}</p>
-                            @endif
-                            @if(!empty($user->website))
-                                <p>
-                                    <strong class="text-[var(--kalm-dark)]">Sitio:</strong>
-                                    <a href="{{ $user->website }}" target="_blank" rel="noopener noreferrer"
-                                        class="link link-primary">
-                                        {{ $user->website }}
-                                    </a>
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-
-
+            <section>
+                {{-- tabs con posts, reviews y rutinas --}}
+                <div role="tablist" class="tabs tabs-box">
+                    <a role="tab" class="tab">Tab 1</a>
+                    <a role="tab" class="tab tab-active">Tab 2</a>
+                    <a role="tab" class="tab">Tab 3</a>
                 </div>
-
-                {{-- Columna lateral: datos rápidos / contactos --}}
-                <aside class="space-y-4">
-                    <div class="p-4 rounded-lg shadow-sm bg-white border">
-                        <h3 class="text-md font-semibold text-[var(--kalm-dark)] mb-2">Información</h3>
-                        <ul class="text-sm text-[var(--kalm-text)] space-y-1">
-                            <li><strong class="text-[var(--kalm-dark)]">Email:</strong> {{ $user->email ?? '—' }}</li>
-                            <li><strong class="text-[var(--kalm-dark)]">Usuario:</strong> {{ $user->username ??
-                                \Illuminate\Support\Str::slug($user->name ?? 'usuario', '') }}</li>
-                            <li><strong class="text-[var(--kalm-dark)]">Miembro desde:</strong>
-                                {{ optional($user->created_at)->format('d M, Y') ?? '—' }}</li>
-                        </ul>
-                    </div>
-
-                    <div class="p-4 rounded-lg shadow-sm bg-white border">
-                        <h3 class="text-md font-semibold text-[var(--kalm-dark)] mb-2">Opciones</h3>
-                        <div class="flex flex-col gap-2">
-                            <a href="{{ route('profile.edit') }}" class="btn btn-outline btn-sm">Editar perfil</a>
-                            <a href="{{ route('home') }}" class="btn btn-ghost btn-sm">Volver al inicio</a>
-                        </div>
-                    </div>
-                </aside>
             </section>
         </div>
 </x-layout>

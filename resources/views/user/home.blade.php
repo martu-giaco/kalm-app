@@ -2,7 +2,7 @@
 <x-layout title="Kälm | Inicio">
 
     {{-- Categorías --}}
-    <div class="mb-6">
+    <div class="mb-6 px-5">
         <h2 class="text-xl font-semibold text-(--kalm-dark) mb-4">Categorías</h2>
         @if($categories->isNotEmpty())
             <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">

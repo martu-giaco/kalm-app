@@ -1,4 +1,4 @@
-<x-layout title="Mis Favoritos">
+<x-layout class="px-5" title="Mis Favoritos">
 
     {{-- Mensaje si no hay favoritos --}}
     @if($products->isEmpty())
@@ -13,7 +13,7 @@
         @foreach($productsByCategory as $categoryName => $categoryProducts)
             <div class="mb-8">
                 {{-- Título de categoría --}}
-                <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-4">{{ $categoryName }}</h2>
+                <h2 class="text-lg font-semibold text-[#306067] mb-4">{{ $categoryName }}</h2>
 
                 {{-- Agrupar por etiqueta si existe --}}
                 @php

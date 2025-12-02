@@ -5,7 +5,7 @@
 <div >
 
     {{-- Nombre de la categoría --}}
-    <h1 class="text-2xl font-bold text-[var(--kalm-dark)] mb-6">
+    <h1 class="text-2xl font-bold text-[#306067] mb-6">
         {{ $category->name }}
     </h1>
 
@@ -23,7 +23,7 @@
             {{-- Info del producto --}}
             <div class="ml-4 flex-1">
                 {{-- Nombre del producto --}}
-                <h3 class="text-sm font-medium text-[var(--kalm-dark)]">{{ $product->name }}</h3>
+                <h3 class="text-sm font-medium text-[#306067]">{{ $product->name }}</h3>
 
                 {{-- Marca --}}
                 <p class="text-xs text-[var(--kalm-text)] mt-1">{{ $product->brand->name }}</p>

@@ -2,7 +2,7 @@
 
     <div class="mx-auto">
 
-        <h1 class="text-2xl font-bold text-[var(--kalm-dark)] mb-4">Feed de la comunidad</h1>
+        <h1 class="text-2xl font-bold text-[#306067] mb-4">Feed de la comunidad</h1>
 
         @forelse($posts as $post)
             <x-community_post :post="$post" />

@@ -36,7 +36,7 @@
 
 
     {{-- Nombre --}}
-    <p class="text-sm font-medium text-[var(--kalm-dark)] mb-1 truncate">{{ $product->name }}</p>
+    <p class="text-sm font-medium text-[#306067] mb-1 truncate">{{ $product->name }}</p>
 
     {{-- Marca --}}
     <p class="text-xs text-[var(--kalm-main)] mb-1 truncate">{{ $product->brand->name ?? $product->brand }}</p>

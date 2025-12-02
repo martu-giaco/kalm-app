@@ -1,6 +1,6 @@
 {{-- resources/views/user/edit.blade.php --}}
 <x-layout :title="'Editar perfil'">
-    <main class="w-full py-6 bg-white rounded-t-3xl min-h-[87%]">
+    <main class="w-full px-5 py-6 bg-white rounded-t-3xl min-h-[87%]">
         <div class="max-w-3xl mx-auto px-4">
             <h1 class="text-2xl font-semibold mb-6">Editar perfil</h1>
 

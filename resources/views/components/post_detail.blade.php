@@ -9,7 +9,7 @@
 
             <div class="flex-1">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-semibold text-[var(--kalm-dark)]">{{ $post->user->name }}</h3>
+                    <h3 class="font-semibold text-[#306067]">{{ $post->user->name }}</h3>
                     <span class="text-xs text-gray-400">{{ $post->created_at->diffForHumans() }}</span>
                 </div>
 
@@ -64,7 +64,7 @@
                         alt="{{ $comment->user->name }}" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <p class="font-semibold text-[var(--kalm-dark)]">{{ $comment->user->name }}</p>
+                    <p class="font-semibold text-[#306067]">{{ $comment->user->name }}</p>
                     <p class="text-gray-700">{{ $comment->content }}</p>
                     <span class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</span>
                 </div>

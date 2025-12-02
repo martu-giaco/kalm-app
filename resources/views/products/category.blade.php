@@ -2,7 +2,7 @@
 
 <x-layout :title="$category->name">
 
-    <h1 class="text-3xl font-bold text-[var(--kalm-dark)] mb-6">
+    <h1 class="text-3xl font-bold text-[#306067] mb-6">
         {{ $category->name }}
     </h1>
 
@@ -21,7 +21,7 @@
 
                     {{-- Info del producto --}}
                     <div class="ml-4 flex-1">
-                        <h3 class="text-sm font-medium text-[var(--kalm-dark)]">{{ $product->name }}</h3>
+                        <h3 class="text-sm font-medium text-[#306067]">{{ $product->name }}</h3>
                         <p class="text-xs text-[var(--kalm-text)] mt-1">{{ $product->brand->name }}</p>
                         @if(isset($product->resolved_tag_text))
                             <span
