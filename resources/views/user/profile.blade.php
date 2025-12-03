@@ -64,21 +64,20 @@
                 {{-- tabs con posts, reviews y rutinas --}}
                 <div class="tabs tabs-border">
     <input type="radio" name="my_tabs_2" id="tab-1" class="tab" aria-label="Posteos" checked />
-                <div class="tab-content border-base-300 bg-base-100 p-10">
-                    posteoooos
+                <div class="tab-content border-base-300 bg-base-100 p-5">
+                    Posteos del usuario
                 </div>
 
                 <input type="radio" name="my_tabs_2" class="tab" aria-label="Reviews" />
-                <div class="tab-content border-base-300 bg-base-100 p-10">Tab content 2</div>
+                <div class="tab-content border-base-300 bg-base-100 p-5">Proximamente</div>
 
                 <input type="radio" name="rutinas" class="tab" aria-label="Rutinas" />
-                <div class="tab-content border-base-300 bg-base-100 p-10">
+                <div class="tab-content border-base-300 bg-base-100 p-5">
                         <div >
-
+                            {{-- no funcó esto :((, es para el iconito al lado del nombre según el time de la rutina --}}
                 @forelse ($routines as $rutina)
-
                         {{-- Info de la rutina --}}
-                        <div class="ml-4 flex-1 bg-green-50">
+                        <div class="flex-1 bg-white px-3 py-5 rounded-lg shadow-md">
                             {{-- Nombre de la rutina --}}
                             <h2 class="text-lg font-medium text-[#306067]">{{ $rutina->name }}</h2>
                             {{-- simbolito time de routina --}}

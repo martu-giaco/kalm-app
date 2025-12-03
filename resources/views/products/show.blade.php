@@ -71,21 +71,17 @@
                             </div>
                         @endif
 
-                        {{-- Precio (opcional) --}}
-                        @if(isset($product->price))
-                            <div class="mt-5 text-lg md:text-xl font-semibold text-[#134d4d]">
-                                ${{ number_format($product->price, 2, ',', '.') }}
-                            </div>
-                        @endif
                     </div>
 
                     {{-- Botón principal --}}
                     <div class="mt-6">
-                        <form action="{{ route('routines.add', ['product' => $product->id]) ?? url('#') }}" method="POST" class="flex items-center gap-3">
-                            @csrf
-                            <button type="submit" class="w-full bg-[#164d4f] text-white px-4 py-3 rounded-lg text-center font-medium hover:opacity-95">
-                                Agregar a rutina
-                            </button>
+                        <form action="{{ route('routine.addProduct', ['product' => $product->id]) ?? url('#') }}" method="POST" class="flex items-center gap-3">
+                                                <!-- Botón que abre modal -->
+                                <label for="modal-routines"
+                                    class="btn btn-primary"
+                                    onclick="document.getElementById('selectedProductId').value={{ $product->id }}">
+                                    Agregar a rutina
+                                </label>
 
                             {{-- Opcional: botón pequeño para favorito --}}
                             <button type="button" class="ml-2 inline-flex items-center justify-center p-2 rounded-lg border border-gray-200 hover:bg-gray-50" title="Favorito">
@@ -109,4 +105,25 @@
             </div>
         </article>
     </div>
+
+    <!-- input tipo checkbox que controla el modal -->
+<input type="checkbox" id="modal-routines" class="modal-toggle" />
+
+<div class="modal">
+  <div class="modal-box relative">
+    <label for="modal-routines" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <h3 class="text-lg font-bold mb-4">Selecciona la rutina</h3>
+            @forelse ($routines ?? [] as $rutina)
+            <form action="{{ route('routine.addProduct', $rutina) }}" method="POST">
+                @csrf
+                <input type="hidden" name="product_id" value="{{ $selectedProduct->id ?? '' }}">
+                <button type="submit" class="w-full flex-1 mb-2 items-start text-start bg-white px-3 py-5 rounded-lg shadow-md">
+                    {{ $rutina->name }}
+                </button>
+            </form>
+        @empty
+            <p>¡Este usuario no tiene rutinas!</p>
+        @endforelse
+  </div>
+</div>
 </x-layout>

@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
     Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit');
     Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy');
-    Route::post('/routine/add/{product}', [RoutineController::class, 'add'])->name('routines.add');
+    Route::post('/routine/add-product', [RoutineController::class, 'addProduct'])->middleware('auth')->name('routine.addProduct');
 
     /*
     |--------------------------------------------------------------------------
@@ -124,8 +124,7 @@ Route::middleware('auth')->group(function () {
 
     // Guardar respuestas del test
     Route::post('/tests/submit', [TestController::class, 'submit'])->name('tests.submit');
-    Route::get('/tests/result/{routine}', [TestController::class, 'result'])
-     ->name('tests.result');
+    Route::get('/tests/result/{routine}', [TestController::class, 'result'])->name('tests.result');
 
 
 

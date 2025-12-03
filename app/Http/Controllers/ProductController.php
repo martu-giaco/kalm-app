@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\ProductCategory;
+use App\Models\Routine;
+use App\Http\Controllers\RoutineController;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -37,7 +39,13 @@ class ProductController extends Controller
         // Si tu vista espera otros datos (relaciones), cargalas aquí, p.ej:
         // $product->load(['brand', 'category', 'images']);
 
-        return view('products.show', compact('product'));
+        $user = auth()->user();
+
+        $routines = Routine::where('user_id', $user->id)
+                            ->with(['times'])
+                            ->get();
+
+        return view('products.show', compact('product', 'routines'));
     }
 
     /**

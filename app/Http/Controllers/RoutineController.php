@@ -72,6 +72,34 @@ class RoutineController extends Controller
         return view('routines.edit', compact('routine'));
     }
 
+    //agregar producto a rutina
+    public function addProduct(Request $request, Routine $routine)
+    {
+        // Asegurarse de que la rutina pertenezca al usuario autenticado
+        if ($routine->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para modificar esta rutina');
+        }
+
+        // Validar el ID del producto
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+        ]);
+
+        // Obtener productos actuales
+        $products = $routine->products ?? [];
+
+        // Evitar duplicados
+        if (!in_array($request->product_id, $products)) {
+            $products[] = $request->product_id;
+        }
+
+        // Guardar el JSON actualizado
+        $routine->products = $products;
+        $routine->save();
+
+        return back()->with('success', 'Producto agregado correctamente');
+    }
+
     /**
      * Actualizar
      */
