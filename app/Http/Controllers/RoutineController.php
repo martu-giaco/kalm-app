@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class RoutineController extends Controller
 {
     /**
-     * Ver todas las rutinas (público).
+     * Ver todas las rutinas
      */
     public function index()
     {
@@ -23,7 +23,7 @@ class RoutineController extends Controller
     }
 
     /**
-     * Formulario para crear una rutina (solo usuario autenticado).
+     * Formulario para crear una rutina
      */
     public function create()
     {
@@ -54,7 +54,7 @@ class RoutineController extends Controller
     }
 
     /**
-     * Ver una rutina individual (público).
+     * Ver una rutina individual
      */
     public function view(Routine $routine)
     {
@@ -62,7 +62,7 @@ class RoutineController extends Controller
     }
 
     /**
-     * Formulario para editar (solo el dueño puede entrar).
+     * editar rutina
      */
     public function edit(Routine $routine)
     {
@@ -72,7 +72,7 @@ class RoutineController extends Controller
     }
 
     /**
-     * Actualizar (solo el dueño).
+     * Actualizar
      */
     public function update(Request $request, Routine $routine)
     {
@@ -93,7 +93,7 @@ class RoutineController extends Controller
     }
 
     /**
-     * Eliminar (solo el dueño).
+     * Eliminar
      */
     public function destroy(Routine $routine)
     {
@@ -106,7 +106,7 @@ class RoutineController extends Controller
     }
 
     /**
-     * Verificación: ¿la rutina pertenece al usuario autenticado?
+     * Verificación
      */
     private function authorizeOwner(Routine $routine)
     {
