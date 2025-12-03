@@ -77,9 +77,9 @@
                             {{-- no funcó esto :((, es para el iconito al lado del nombre según el time de la rutina --}}
                 @forelse ($routines as $rutina)
                         {{-- Info de la rutina --}}
-                        <div class="flex-1 bg-white px-3 py-5 rounded-lg shadow-md">
+                        <button class="w-full text-start items-start mb-2 flex-1 bg-white px-3 py-5 rounded-lg shadow-md">
                             {{-- Nombre de la rutina --}}
-                            <h2 class="text-lg font-medium text-[#306067]">{{ $rutina->name }}</h2>
+                            <h2 class="text-xl font-medium text-[#306067]">{{ $rutina->name }}</h2>
                             {{-- simbolito time de routina --}}
                             @if($rutina->time)
                                 <span class="text-[#2A4043]">
@@ -94,7 +94,7 @@
                                     @endif
                                 </span>
                             @endif
-                        </div>
+                        </button>
                     </div>
                 @empty
                     <p class="text-[#CCE2E5]">¡Este usuario no tiene rutinas!</p>
