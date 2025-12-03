@@ -6,9 +6,40 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    /**
+     * Mostrar detalle de un producto.
+     * Acepta como identificador un slug o un id numérico.
+     */
+    public function show($identifier)
+    {
+        // Construyo la query base
+        $query = Product::query();
+
+        // Si la columna 'slug' existe, intento buscar por slug o id.
+        if (Schema::hasColumn('products', 'slug')) {
+            $product = $query->where('slug', $identifier)
+                ->orWhere('id', $identifier)
+                ->first();
+        } else {
+            // Si no hay slug, buscamos por id directamente
+            $product = $query->where('id', $identifier)->first();
+        }
+
+        if (!$product) {
+            abort(404);
+        }
+
+        // Si tu vista espera otros datos (relaciones), cargalas aquí, p.ej:
+        // $product->load(['brand', 'category', 'images']);
+
+        return view('products.show', compact('product'));
+    }
+
     /**
      * Mostrar el formulario de creación de producto
      */
@@ -72,25 +103,27 @@ class ProductController extends Controller
      */
     public function byCategory($slug)
     {
-        $category = ProductCategory::where('slug', $slug)->firstOrFail();
+        // Intento por slug si la columna existe
+        $category = null;
+        if (Schema::hasColumn('product_categories', 'slug')) {
+            $category = ProductCategory::where('slug', $slug)->first();
+        }
 
-        $products = Product::where('category_id', $category->id)
-            ->with(['brand', 'type'])
-            ->get();
+        // Fallback: convertir slug a nombre y buscar por name
+        if (!$category) {
+            // "hidratantes" -> "Hidratantes" (o "Hidratantes" según tu naming)
+            $name = Str::of($slug)->replace('-', ' ')->title()->toString();
+            $category = ProductCategory::where('name', $name)->first();
+        }
 
-        return view('products.category', compact('category', 'products'));
-    }
+        if (!$category) {
+            abort(404);
+        }
 
-    // ProductController.php
-    public function favorites()
-    {
-        $user = auth()->user();
-        $favoritosIds = $user->favoritos ? json_decode($user->favoritos, true) : [];
+        // Asumiendo relación products() en el modelo
+        $products = $category->products()->paginate(20);
 
-        // Traemos los productos que están en favoritos
-        $products = Product::whereIn('id', $favoritosIds)->get();
-
-        return view('user.favs', compact('products'));
+        return view('products.index', compact('category', 'products'));
     }
 
 

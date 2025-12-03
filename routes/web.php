@@ -12,13 +12,18 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoutineController;
-
+use App\Http\Controllers\Auth\TermsController;
+use App\Http\Middleware\AdminMiddleware;
 
 /*
-| Rutas de Autenticación y Perfiles
+|--------------------------------------------------------------------------
+| Rutas públicas (solo lo estrictamente necesario)
+|--------------------------------------------------------------------------
+| Mantener públicas solo: login, registro y el flujo de términos (registro).
+| TODO: si necesitas exponer alguna otra ruta públicamente, muévela a este bloque.
 */
 
-// Auth (login/logout/register)
+// Auth (login/logout/register) - públicas
 Route::get('/login-register', [AuthController::class, 'logOrReg'])->name('auth.logreg');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
@@ -26,120 +31,96 @@ Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authe
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');
 
-Route::post('/cerrar-sesion', [AuthController::class, 'logout'])
-    ->middleware('auth') // Solo usuarios logueados pueden cerrar sesión
-    ->name('auth.logout');
-
-
-
-use App\Http\Middleware\AdminMiddleware;
-
-Route::prefix('admin')->middleware([AdminMiddleware::class])->group(function () {
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
-
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view')->whereNumber('user');
-});
-
-
-
-// Perfil (protegido)
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    // Usamos PATCH/PUT para actualizaciones de recursos si es posible
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-});
-
-
-
-// Home - Usa 'index' para el controlador
-Route::get('/', [HomeController::class, 'index'])->name('home');
-
-// Búsqueda
-Route::get('/search', [SearchController::class, 'search'])->name('search');
-
-// Comunidad
-Route::get('/community', [CommunityController::class, 'community'])->name('community');
-
-// Blog
-Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
-
-// Productos
-
-
-Route::get('/products', [ProductController::class, 'index'])
-    ->name('products.index');
-Route::get('/productos/buscar', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
-
-
-Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])
-    ->name('products.type');
-Route::post('/productos/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
-
-
-Route::get('/products/category/{slug}', [ProductController::class, 'byCategory'])
-    ->name('products.byCategory');
-Route::middleware('auth')->group(function () {
-    Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
-    Route::post('/favorito/toggle/{product}', [ProductController::class, 'toggleFavorito'])
-        ->name('products.toggle-favorito');
-});
-
-// RUTA DE SUSCRIPCIÓN
-Route::get('/premium', [SubscriptionController::class, 'show'])->name('subscription');
-Route::post('/premium/process', [SubscriptionController::class, 'process'])->name('subscription.process')->middleware('auth');
-
+// Términos (necesarios para completar el registro) - públicas porque dependen del flujo de registro
+Route::get('/terms', [TermsController::class, 'show'])->name('auth.terms.show');
+Route::post('/terms/accept', [TermsController::class, 'accept'])->name('auth.terms.accept');
 
 /*
-| Rutas de Administración (Protegidas)
+|--------------------------------------------------------------------------
+| Rutas protegidas por Auth
+|--------------------------------------------------------------------------
+| TODO: todas las rutas de la aplicación van dentro de este group para requerir login.
 */
-Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix('admin')->group(function () {
-
-    // Ver y listar todos los usuarios
-    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-
-    // Ver el detalle de un usuario específico
-    Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view')->whereNumber('user');
-
-    // Aquí irían otras rutas de administración (e.g., /admin/products, /admin/stats)
-
-    // CRUD blogs
-    Route::get('/admin/blog', [BlogController::class, 'index'])->name('blog.index');
-    Route::get('/admin/blog', [BlogController::class, 'view'])->name('blog.view');
-    Route::get('/admin/blog/create', [BlogController::class, 'create'])->name('blog.create');
-    Route::get('/admin/blog/{blog_id}', [BlogController::class, 'edit'])->name('blog.edit');
-    Route::get('/admin/blog', [BlogController::class, 'blog'])->name('blog.destroy');
-    Route::post('/admin/blog', [PostController::class, 'store'])->name('blog.store');
-});
-
 Route::middleware('auth')->group(function () {
-    // Ver detalle de un post
-// Detalle de un post
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
+    // Logout (solo para usuarios logueados)
+    Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->name('auth.logout');
+
+    // Perfil
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Home (AHORA protegido)
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+
+    // Búsqueda
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+    // Comunidad
+    Route::get('/community', [CommunityController::class, 'community'])->name('community');
+
+    // Blog
+    Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
+
+    // Productos
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/productos/buscar', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
+
+    Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
+    Route::post('/productos/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
+
+    Route::get('/products/{product}', [ProductController::class, 'show'])
+        ->name('products.show');
+    Route::get('/products/category/{slug}', [ProductController::class, 'byCategory'])
+        ->name('products.byCategory');
+
+    Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
+    Route::post('/favorito/toggle/{product}', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
+
+    // Suscripción
+    Route::get('/premium', [SubscriptionController::class, 'show'])->name('subscription');
+    Route::post('/premium/process', [SubscriptionController::class, 'process'])->name('subscription.process');
+
+    // Admin (anidado: requiere auth + AdminMiddleware)
+    Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view')->whereNumber('user');
+
+        // CRUD blogs (ejemplos administrativos)
+        Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+        Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
+        Route::post('/blog', [PostController::class, 'store'])->name('blog.store');
+        Route::get('/blog/{blog_id}', [BlogController::class, 'edit'])->name('blog.edit');
+        Route::delete('/blog/{blog_id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+    });
+
+    // Posts (protegidos)
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-    Route::post('/posts/{post}/report', [PostController::class, 'report'])
-        ->name('posts.report')
-        ->whereNumber('post');
+    Route::post('/posts/{post}/report', [PostController::class, 'report'])->name('posts.report')->whereNumber('post');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     // Likes y guardados
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
     Route::post('/posts/{post}/save', [PostController::class, 'save'])->name('posts.save');
+
+    // Routines
+    Route::get('/routine', [RoutineController::class, 'index'])->name('routines.index');
+    Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create');
+    Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store');
+    Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
+    Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit');
+    Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy');
+
+
+    Route::post('/routine/add/{product}', [RoutineController::class, 'add'])
+        ->name('routines.add')
+        ->middleware('auth');
+
 });
-
-// Detalle del post (no requiere auth para ver)
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-Route::get('/community', [CommunityController::class, 'community'])->name('community');
-Route::get('/community', [PostController::class, 'community'])->name('community');
-
-Route::get('/routine', [RoutineController::class, 'index'])->name('routines.index');
-Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create')->middleware('auth');
-Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
-Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit')->middleware('auth');
-Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy')->middleware('auth');
-Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store')->middleware('auth');

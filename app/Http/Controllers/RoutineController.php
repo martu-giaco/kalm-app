@@ -7,6 +7,7 @@ use App\Models\RoutineType;
 use App\Models\RoutineTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 
 class RoutineController extends Controller
 {
@@ -114,4 +115,13 @@ class RoutineController extends Controller
             abort(403, 'No tenés permiso para realizar esta acción.');
         }
     }
+
+    public function add(Product $product)
+{
+    // Lógica ejemplo
+    auth()->user()->routine()->attach($product->id);
+
+    return back()->with('success', 'Producto agregado a tu rutina');
+}
+
 }

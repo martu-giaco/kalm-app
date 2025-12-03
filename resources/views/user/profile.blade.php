@@ -23,7 +23,7 @@
                                 class="w-full h-full object-contain" loading="lazy" decoding="async" />
                         @endif
                     </div>
-                    <div>
+                    <div></div>
                         {{--stats--}}
                         <div>
                             <div class="flex items-center gap-7">

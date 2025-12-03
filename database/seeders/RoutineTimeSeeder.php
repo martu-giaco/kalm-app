@@ -2,20 +2,24 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\RoutineTime; // ajustá el namespace si hace falta
 
 class RoutineTimeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('routine_times')->insert([
-            ['time_id'=>1, 'name'=> 'Día', 'created_at' => now(), 'updated_at' => now()],
-            ['time_id'=>2, 'name'=> 'Noche', 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        $items = [
+            ['name' => 'Día',  'time_id' => 1],
+            ['name' => 'Noche','time_id' => 2],
+            // añade más si corresponde
+        ];
+
+        foreach ($items as $item) {
+            RoutineTime::updateOrCreate(
+                ['name' => $item['name']],       // criterio único
+                ['time_id' => $item['time_id']]  // valores a setear/actualizar
+            );
+        }
     }
 }
