@@ -219,12 +219,12 @@
 
                                     <a href="{{ route('profile.show') }}">
                                         <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
-                                            alt="{{ auth()->user()->username }}" class="h-14 w-14 rounded-full object-cover">
+                                            alt="{{ auth()->user()->name }}" class="h-14 w-14 rounded-full object-cover">
                                     </a>
                                 </div>
 
                                 <div class="flex justify-between text-[#37A0AF] mt-2">
-                                    <p>{{ '@' . (auth()->user()->username) }}
+                                    <p>{{ '@' . (auth()->user()->name) }}
                                     </p>
                                     <p>{{ auth()->user()->followers_count ?? '0' }} seguidores</p>
                                 </div>

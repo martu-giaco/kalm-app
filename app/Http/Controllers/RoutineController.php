@@ -85,6 +85,8 @@ class RoutineController extends Controller
             'product_id' => 'required|integer|exists:products,id',
         ]);
 
+        console.log(product_id);
+
         // Obtener productos actuales
         $products = $routine->products ?? [];
 
