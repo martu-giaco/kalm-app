@@ -125,7 +125,7 @@ class AuthController extends Controller
         // Redirigir a la vista de términos para que el usuario acepte
         return redirect()
             ->route('auth.terms.show')
-            ->with('feedback.message', 'Por favor, revisá y aceptá los Términos y Condiciones para continuar con el registro.');
+            ->with('feedback.message', 'Por favor, revisar y aceptar los Términos y Condiciones para continuar con el registro.');
     }
 
     /**

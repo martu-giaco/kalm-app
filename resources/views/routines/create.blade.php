@@ -6,7 +6,7 @@
         @if ($errors->any())
             <div class="alert alert-danger">
                 La informacion ingresada contiene errores.
-                Por favor, revisá los campos y prbá de nuevo
+                Por favor, revisar los campos y probar de nuevo
             </div>
         @endif
 

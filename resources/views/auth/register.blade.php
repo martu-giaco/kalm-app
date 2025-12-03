@@ -22,7 +22,7 @@
 
     <div class="max-w-2xl mx-auto p-6 flex flex-col justify-between min-h-screen">
 
-        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-14">
+        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-20">
 
         <div>
                     <h1 class="text-2xl font-bold text-[#2A4043]">Crear una cuenta</h1>

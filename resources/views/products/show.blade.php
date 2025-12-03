@@ -1,7 +1,6 @@
 {{-- resources/views/products/show.blade.php --}}
 <x-layout :title="$product->name ?? 'Producto'">
     <div class="max-w-3xl mx-auto px-4 py-8">
-        <a href="{{ url()->previous() }}" class="text-sm text-gray-600 mb-4 inline-block">&larr; Volver</a>
 
         <article class="bg-white rounded-2xl p-6 shadow-lg">
             <div class="flex flex-col md:flex-row gap-6">
