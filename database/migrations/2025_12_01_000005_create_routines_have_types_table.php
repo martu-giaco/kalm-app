@@ -19,7 +19,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->unsignedSmallInteger('type_fk');
-            $table->foreign('type_fk')->references('type_id')->on('types');
+            $table->foreign('type_fk')->references('type_id')->on('routine_types');
 
             $table->timestamps();
         });
