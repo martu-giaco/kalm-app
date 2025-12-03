@@ -10,10 +10,8 @@ class ProductTypeSeeder extends Seeder
     public function run()
     {
         $types = [
-            ['name' => 'Cuidado Facial'],
-            ['name' => 'Cuidado Capilar'],
-            ['name' => 'Cuidado Corporal'],
-            ['name' => 'Maquillaje'],
+            ['name' => 'Skincare'],
+            ['name' => 'Haircare'],
         ];
 
         foreach ($types as $type) {
