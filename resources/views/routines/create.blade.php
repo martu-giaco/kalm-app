@@ -44,17 +44,17 @@
                     @endforeach
                 </select>
 
-{{--                 <select id="type_id[]" class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    @foreach ($types as $type)
+                <select id="time_id[]" class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    @foreach ($times as $time)
                     <option
-                        name="type_id[]"
-                        value="{{ $type->type_id }}"
-                        @checked(in_array($type->type_id, old('type_id', [])))
+                        name="time_id[]"
+                        value="{{ $time->time_id }}"
+                        @checked(in_array($time->time_id, old('time_id', [])))
                     >
-                    {{ $type->name }}
+                    {{ $time->name }}
                     @endforeach
                 </select>
-            </fieldset> --}}
+            </fieldset>
 
             <fieldset class="mb-8">
                 <legend class="mb-2 text-[#2A4043]">Frecuencia</legend>

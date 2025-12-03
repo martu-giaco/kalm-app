@@ -11,6 +11,7 @@ class Routine extends Model
         'routine_id',
         'name',
         'type',
+        'time',
         'products',
     ];
 
@@ -31,6 +32,16 @@ class Routine extends Model
         'routines_have_types',
         'routine_fk',
         'type_fk'
+    );
+}
+
+    public function times()
+{
+    return $this->belongsToMany(
+        RoutineTime::class,
+        'routines_have_times',
+        'routine_fk',
+        'time_fk'
     );
 }
 }

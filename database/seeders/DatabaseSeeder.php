@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         BrandSeeder::class,
         ProductSeeder::class,
         RoutineTypeSeeder::class,
+        RoutineTimeSeeder::class,
     ]);
 }
 

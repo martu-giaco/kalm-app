@@ -138,8 +138,8 @@ Route::get('/community', [CommunityController::class, 'community'])->name('commu
 Route::get('/community', [PostController::class, 'community'])->name('community');
 
 Route::get('/routine', [RoutineController::class, 'index'])->name('routines.index');
-Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create');
+Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create')->middleware('auth');
 Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
-Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit');
-Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy');
-Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store');
+Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit')->middleware('auth');
+Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy')->middleware('auth');
+Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store')->middleware('auth');

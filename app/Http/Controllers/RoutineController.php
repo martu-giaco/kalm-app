@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Routine;
 use App\Models\RoutineType;
+use App\Models\RoutineTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,7 @@ class RoutineController extends Controller
      */
     public function index()
     {
-        $routines = Routine::with(['user', 'types'])
+        $routines = Routine::with(['user', 'types', 'times'])
                             ->latest()
                             ->paginate(10);
 
@@ -28,6 +29,7 @@ class RoutineController extends Controller
     {
             return view('routines.create',[
             'types' => RoutineType::orderBy('name')->get(),
+            'times' => RoutineTime::orderBy('name')->get(),
         ]);
     }
 
