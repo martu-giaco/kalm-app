@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\RoutineController;
+use App\Models\Routine;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,8 +25,12 @@ class ProfileController extends Controller
     public function show()
     {
         $user = auth()->user();
-        return view('user.profile', compact('user'));
 
+        $routines = Routine::where('user_id', $user->id)
+                            ->with(['times'])
+                            ->get();
+
+        return view('user.profile', compact('user', 'routines'));
     }
 
     /**
@@ -46,7 +52,7 @@ class ProfileController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['nullable', 'string', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'username' => ['nullable', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'avatar' => ['nullable', 'image', 'max:2048'],
         ]);
@@ -65,4 +71,5 @@ class ProfileController extends Controller
             ->with('feedback.message', 'Perfil actualizado correctamente')
             ->with('feedback.type', 'success');
     }
+
 }

@@ -56,7 +56,6 @@ class TermsController extends Controller
         // Loguear al usuario automáticamente
         auth()->login($user);
 
-        return redirect()->route('home')
-            ->with('feedback.message', 'Registro completado correctamente. ¡Bienvenid@!');
+        return redirect()->route('home');
     }
 }

@@ -39,7 +39,6 @@ class Routine extends Model
 {
     return $this->belongsToMany(
         RoutineTime::class,
-        'routines_have_times',
         'routine_fk',
         'time_fk'
     );

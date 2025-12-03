@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('key')->unique();
             $table->string('title');
-            $table->text('description')->nullable();
+            $table->string('description')->nullable();
             $table->json('questions')->nullable();
             $table->timestamps();
         });

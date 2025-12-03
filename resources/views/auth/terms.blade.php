@@ -2,7 +2,7 @@
 <x-layout title="Términos y Condiciones - Kälm">
     <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow">
 
-        <h1 class="text-2xl font-semibold mb-4">Términos y Condiciones — Kälm</h1>
+        <h1 class="text-[#306067] text-2xl font-semibold mb-4">Términos y Condiciones — Kälm</h1>
 
         {{-- CONTENIDO DE TÉRMINOS: solo este bloque es scrollable --}}
         <div class="mb-6">
@@ -131,9 +131,9 @@
             <div class="flex flex-col gap-3">
                 {{-- Hacemos que el label se muestre con la misma apariencia que el botón --}}
                 <label for="termsCheck" class="inline-flex items-center gap-3">
-                    <input id="termsCheck" name="accept_terms" type="checkbox" value="1" class="form-checkbox h-4 w-4">
+                    <input id="termsCheck" name="accept_terms" type="checkbox" value="1" class="accent-[#37A0AF] form-checkbox h-4 w-4">
                     {{-- Este span usa la misma clase visual que el botón para que "se vea igual que el botón" --}}
-                    <span class="btn-primary inline-block px-4 py-2 text-sm font-medium select-none">
+                    <span class="btn-primary inline-block px-4 py-2 text-sm font-bold select-none text-[#2A4043]">
                         Acepto los Términos y Condiciones y la Política de Privacidad
                     </span>
                 </label>
@@ -142,16 +142,14 @@
                     <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                 @enderror
 
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('auth.register') }}" class="btn-secondary">Volver</a>
-
+                <div class="w-full flex items-center">
                     <button
                         id="acceptBtn"
                         type="submit"
-                        class="btn-primary opacity-50 cursor-not-allowed"
+                        class="w-full inline-flex text-white bg-[#2A4043] px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 btn-primary opacity-50 cursor-not-allowed"
                         disabled
                     >
-                        Aceptar y completar registro
+                        Crear cuenta
                     </button>
                 </div>
             </div>
@@ -164,22 +162,44 @@
             const checkbox = document.getElementById('termsCheck');
             const button = document.getElementById('acceptBtn');
 
-            // Inicializamos: si el checkbox ya estaba marcado (ej. volver atrás), lo respetamos
-            if (checkbox.checked) {
+            function setEnabledState() {
                 button.disabled = false;
-                button.classList.remove('opacity-50', 'cursor-not-allowed');
+                button.classList.remove(
+                    'bg-[#CCE2E5]',
+                    'text-[#2A4043]',
+                    'cursor-not-allowed',
+                    'opacity-50'
+                );
+                button.classList.add(
+                    'bg-[#2A4043]',
+                    'text-white',
+                    'cursor-pointer',
+                    'opacity-100'
+                );
             }
 
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    button.disabled = false;
-                    button.classList.remove('opacity-50', 'cursor-not-allowed');
-                } else {
-                    button.disabled = true;
-                    button.classList.add('opacity-50', 'cursor-not-allowed');
-                }
-            });
+            function setDisabledState() {
+                button.disabled = true;
+                button.classList.remove(
+                    'bg-[#2A4043]',
+                    'text-white',
+                    'cursor-pointer',
+                    'opacity-100'
+                );
+                button.classList.add(
+                    'bg-[#CCE2E5]',
+                    'text-[#2A4043]',
+                    'cursor-not-allowed',
+                    'opacity-50'
+                );
+            }
 
+            // Estado inicial
+            checkbox.checked ? setEnabledState() : setDisabledState();
+
+            checkbox.addEventListener('change', function () {
+                this.checked ? setEnabledState() : setDisabledState();
+            });
             // Prevención adicional: impedir enviar sin checkbox (por si JS falla)
             document.getElementById('termsForm').addEventListener('submit', function (e) {
                 if (! checkbox.checked) {

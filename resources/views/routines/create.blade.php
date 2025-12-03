@@ -56,16 +56,16 @@
                 </select>
             </fieldset>
 
-            <fieldset class="mb-8">
+            {{-- <fieldset class="mb-8">
                 <legend class="mb-2 text-[#2A4043]">Frecuencia</legend>
 
                 <select id="frecuencia" class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option
                         name="frecuencia"
-                        value="proximamente"
+                        placeholder="proximamente"
                     >
                 </select>
-            </fieldset>
+            </fieldset> --}}
 
             <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">Crear rutina</button>
 

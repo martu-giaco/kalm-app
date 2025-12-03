@@ -31,12 +31,23 @@
             @csrf
 
             <div>
-                <label for="name" class="block mb-1 text-sm">Nombre y apellido</label>
+                <label for="name" class="block mb-1 text-sm">Nombre</label>
                 <input id="name" placeholder="Nombre" name="name" value="{{ old('name') }}" type="text"
                         class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
                         required>
 
                 @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="username" class="block mb-1 text-sm">Nombre de usuario</label>
+                <input id="username" placeholder='@usuario' name="username" value="{{ old('username') }}" type="text"
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
+                        required>
+
+                @error('username')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
