@@ -113,17 +113,17 @@
   <div class="modal-box relative">
     <label for="modal-routines" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
     <h3 class="text-lg font-bold mb-4">Selecciona la rutina</h3>
-            @forelse ($routines ?? [] as $rutina)
-            <form action="{{ route('routine.addProduct', $rutina) }}" method="POST">
-                @csrf
-                <input type="hidden" name="product_id" value="{{ $selectedProduct->id ?? '' }}">
-                <button type="submit" class="w-full flex-1 mb-2 items-start text-start bg-white px-3 py-5 rounded-lg shadow-md">
-                    {{ $rutina->name }}
-                </button>
-            </form>
-        @empty
-            <p>¡Este usuario no tiene rutinas!</p>
-        @endforelse
+    @forelse ($routines ?? [] as $rutina)
+    <form action="{{ route('routine.addProduct', $rutina) }}" method="POST">
+        @csrf
+        <input type="hidden" name="product_id" value="{{ $selectedProduct->id ?? '' }}">
+        <button type="submit" class="w-full flex-1 mb-2 items-start text-start bg-white px-3 py-5 rounded-lg shadow-md">
+            {{ $rutina->name }}
+        </button>
+    </form>
+@empty
+    <p>¡Este usuario no tiene rutinas!</p>
+@endforelse
   </div>
 </div>
 </x-layout>
