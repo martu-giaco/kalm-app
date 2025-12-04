@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             ProductCategorySeeder::class,
             TestSeeder::class,
             ProductSeeder::class,
+            RoutineSeeder::class,
             RoutineTypeSeeder::class,
             RoutineTimeSeeder::class,
         ]);

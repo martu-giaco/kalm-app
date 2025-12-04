@@ -11,16 +11,14 @@ class RoutineTypeSeeder extends Seeder
     public function run()
     {
         $items = [
-            ['name' => 'Haircare', 'type_id' => 1],
-            ['name' => 'Skincare', 'type_id' => 2],
-            // agregá más si corresponde
+            ['type_id' => 1, 'name' => 'Haircare'],
+            ['type_id' => 2, 'name' => 'Skincare'],
         ];
 
         foreach ($items as $item) {
-            // Usa firstOrCreate para evitar duplicados por nombre (o por type_id+name)
-            RoutineType::firstOrCreate(
-                ['name' => $item['name']], // criterio de búsqueda
-                ['type_id' => $item['type_id']] // valores a setear si no existe
+            RoutineType::updateOrCreate(
+                ['type_id' => $item['type_id']], // fuerza ID específico
+                ['name' => $item['name']]
             );
         }
     }

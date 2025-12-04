@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use App\Models\Routine;
 use App\Models\Product;
@@ -12,6 +13,18 @@ class RoutineSeeder extends Seeder
 {
     public function run()
     {
+        DB::table('routines')->insert([
+            ['routine_id'=>10, 'name'=> 'normal', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>2, 'name'=> 'seca', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>3, 'name'=> 'grasa', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>4, 'name'=> 'mixta', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>5, 'name'=> 'sensible', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>6, 'name'=> 'normal', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>7, 'name'=> 'seco', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>8, 'name'=> 'graso', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+            ['routine_id'=>9, 'name'=> 'mixto', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
+        ]);
+
         // Obtener tipos y tiempos
         $skincareType = RoutineType::firstOrCreate(['name' => 'Skincare']);
         $haircareType = RoutineType::firstOrCreate(['name' => 'Haircare']);
