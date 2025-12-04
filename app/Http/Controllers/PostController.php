@@ -35,7 +35,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route('home')->with('success', 'Post creado correctamente!');
+        return redirect()->route('community')->with('success', 'Post creado correctamente!');
     }
 
     // Feed de comunidad

@@ -1,6 +1,6 @@
 <x-layout title="Kälm | Comunidad">
 
-    <section class="mx-auto px-5 rounded-t-3xl bg-white min-h-screen">
+    <section class="mx-auto p-5 rounded-t-3xl bg-white min-h-screen">
 
         <h1 class="text-2xl font-bold text-[#306067] mb-4">Comunidad Kälm</h1>
 

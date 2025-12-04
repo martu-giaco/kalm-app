@@ -9,10 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
-    // Para que el accesor image_url se agregue automáticamente al convertir a array o JSON
+    // 🔹 Para que el accesor image_url se agregue automáticamente
     protected $appends = ['image_url'];
 
-    // Columnas que se pueden llenar masivamente
+    // 🔹 Columnas llenables
     protected $fillable = [
         'name',
         'brand_id',
@@ -27,35 +27,27 @@ class Product extends Model
         'dondeComprar',
     ];
 
-public function routines()
-{
-    return $this->belongsToMany(
-        Routine::class,   // Modelo relacionado
-        'routine_product', // Nombre exacto de la tabla pivote
-        'product_id',      // FK del producto en la tabla pivote
-        'routine_id'       // FK de la rutina en la tabla pivote
-    );
-}
+    // 🔹 Relación con rutinas (tabla pivote)
+    public function routines(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(
+            Routine::class,
+            'routine_product',
+            'product_id',  // FK en pivote hacia producto
+            'routine_id'   // FK en pivote hacia rutina
+        );
+    }
 
-
-
-    /**
-     * Accessor para obtener la URL completa de la imagen.
-     * Usa la columna 'image' directamente.
-     */
+    // 🔹 Accesor legacy para URL de imagen
     public function getImageUrlAttribute()
     {
-        // Si no hay imagen, usar default
         if (!$this->image) {
             return asset('images/products/default.png');
         }
-
-        // Si ya viene con subcarpeta 'images/products/', no concatenamos
         return asset($this->image);
     }
 
-    // Relaciones
-
+    // 🔹 Relaciones existentes
     public function brand()
     {
         return $this->belongsTo(Brand::class);

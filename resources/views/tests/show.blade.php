@@ -1,6 +1,6 @@
 <x-layout :title="'Test de ' . ucfirst($test->key)">
-    <div class="max-w-3xl mx-auto px-4 py-8">
-        <article class="bg-white rounded-2xl p-6 shadow-lg">
+    <div class="max-w-3xl mx-auto px-4 ">
+        <article class="bg-white rounded-2xl px-6 py-2 shadow-lg">
             <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">{{ $test->title }}</h1>
             <p class="text-gray-600 mb-6">{{ $test->description }}</p>
 

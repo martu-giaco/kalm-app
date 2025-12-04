@@ -8,6 +8,7 @@ use App\Models\Routine;
 use App\Models\RoutineType;
 use App\Models\UserTestResult;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 use Illuminate\Support\Facades\Log;
 
 class TestController extends Controller
@@ -97,14 +98,31 @@ class TestController extends Controller
      * $routineId es opcional — si no viene, la vista mostrará resultado sin rutina.
      */
     public function result($routineId)
-    {
-        $routine = Routine::findOrFail($routineId);
-        $testKey = session('test_key');
-        $resultKey = session('result_key');
-        $answers = session('test_answers');
+{
+    // Obtener rutina
+    $routine = Routine::where('routine_id', $routineId)->firstOrFail();
 
-        return view('tests.result', compact('routine', 'testKey', 'resultKey', 'answers'));
-    }
+    // Obtener resultado del test
+    $resultKey = session('result_key'); // o según tu lógica
+    $resultLabel = $resultKey ?? 'normal';
+
+    // Descripciones de cada tipo
+    $descriptions = [
+        'normal' => 'Piel/cabello equilibrado.',
+        'seco' => 'Tiendes a la sequedad.',
+        'graso' => 'Tiendes a la producción de sebo elevada.',
+        'mixto' => 'Zona T grasa y mejillas secas.',
+        'sensible' => 'Tendencia a rojeces e irritaciones.',
+    ];
+
+    $resultDesc = $descriptions[$resultLabel] ?? 'Descripción no disponible para este resultado.';
+
+    // Productos recomendados: buscar donde la descripción contenga la palabra del resultado
+    $recommendedProducts = Product::where('description', 'like', "%{$resultLabel}%")->get();
+
+    return view('tests.result', compact('routine', 'resultLabel', 'resultDesc', 'recommendedProducts'));
+}
+
 
 
     /**

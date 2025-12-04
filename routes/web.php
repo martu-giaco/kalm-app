@@ -134,10 +134,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{routine_id}', [RoutineController::class, 'show'])->name('show');
         Route::get('/{routine_id}/edit', [RoutineController::class, 'edit'])->name('edit');
         Route::patch('/{routine_id}', [RoutineController::class, 'update'])->name('update'); // <-- PATCH
-        Route::get('/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('destroy');
+        Route::delete('/{routine}/delete', [RoutineController::class, 'destroy'])->name('destroy');
 
         // Agregar producto a rutina desde la vista del producto
         Route::post('/{routine}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
+
+        // Eliminar producto de la rutina
+        Route::delete('/{routine}/product/{product}', [RoutineController::class, 'removeProduct'])
+            ->name('product.remove');
+
     });
 
 });

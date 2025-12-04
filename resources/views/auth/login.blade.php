@@ -78,7 +78,7 @@
             </div>
 
             <input type="submit" value="Ingresar"
-                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
+                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed #306067]">
 
             <a class="block text-center font-bold text-sm text-[#2A4043] mt-2" href="#">Olvidé la
                 contraseña</a>

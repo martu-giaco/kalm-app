@@ -6,132 +6,60 @@
 
             {{-- Tipo y tiempo de rutina --}}
             <p class="text-sm text-slate-400 mt-1">
-                Tipo: {{ $routine->routineType?->name ?? 'No definido' }} ·
+                Tipo: {{ $routine->types->pluck('name')->join(', ') ?: 'No definido' }} ·
                 Tiempo: {{ $routine->routineTime?->name ?? 'No definido' }}
             </p>
 
-            @php
-                $productsData = $routine->products;
-                if (is_array($productsData)) $productsData = collect($productsData);
-
-                $stepsCount = $productsData instanceof \Illuminate\Support\Collection ? $productsData->count() : 0;
-                $productsCount = 0;
-                if ($productsData instanceof \Illuminate\Support\Collection) {
-                    foreach ($productsData as $step) {
-                        if ($step instanceof \Illuminate\Database\Eloquent\Model && $step->products) {
-                            $productsCount += $step->products->count();
-                        } elseif (is_array($step)) {
-                            $productsCount += count($step);
-                        } else {
-                            $productsCount += 1;
-                        }
-                    }
-                }
-            @endphp
-
+            {{-- Conteo de productos reales --}}
             <p class="text-sm text-slate-400 mt-1">
-                {{ $stepsCount ?: ($productsCount ? 'Ver productos' : 'Sin pasos') }} · {{ $productsCount }} productos
+                {{ $routine->assignedProducts->count() }} {{ Str::plural('producto', $routine->assignedProducts->count()) }}
             </p>
         </header>
 
         <main class="space-y-6">
-            @if($productsData && $productsData->count())
-                @foreach($productsData as $index => $step)
-                    @php
-                        if ($step instanceof \Illuminate\Database\Eloquent\Model) {
-                            $stepProducts = $step->products ?? collect();
-                            $stepName = $step->name ?? "Paso " . ($index + 1);
-                            $stepDescription = $step->description ?? null;
-                        } elseif (is_array($step)) {
-                            $stepProducts = collect($step);
-                            $stepName = "Paso " . ($index + 1);
-                            $stepDescription = null;
-                        } else {
-                            $stepProducts = collect([$step]);
-                            $stepName = "Paso " . ($index + 1);
-                            $stepDescription = null;
-                        }
-                    @endphp
+            @forelse($routine->assignedProducts as $product)
+                @php
+                    $imgSrc = $product->image_url;
+                    $brand = $product->brand?->name ?? null;
+                    $skin = $product->skin_type ?? $product->skin ?? null;
+                @endphp
 
-                    <section class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
-                        <div class="px-4 py-3">
-                            <h2 class="text-lg font-semibold text-[var(--kalm-dark)]">{{ $stepName }}</h2>
-                            @if($stepDescription)
-                                <p class="text-xs text-slate-500 mt-1">{{ $stepDescription }}</p>
+                <section class="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
+                    <div class="px-4 py-3 flex items-center gap-4">
+                        <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0">
+                            <img src="{{ $imgSrc }}" alt="{{ $product->name }}" class="h-16 w-16 object-contain rounded-md">
+                        </a>
+
+                        <div class="flex-1 min-w-0">
+                            <a href="{{ route('products.show', $product->id) }}" class="block">
+                                <p class="text-sm font-semibold text-[var(--kalm-dark)] truncate">{{ \Illuminate\Support\Str::limit($product->name, 70) }}</p>
+                            </a>
+                            @if($brand)
+                                <p class="text-xs text-slate-400 mt-0.5 truncate">{{ $brand }}</p>
                             @endif
                         </div>
-                        <div class="border-t border-slate-100"></div>
 
-                        <div class="px-4 py-3 space-y-3">
-                            @forelse($stepProducts as $product)
-                                @php
-                                    if (is_numeric($product)) {
-                                        $product = \App\Models\Product::find($product);
-                                        if(!$product) continue;
-                                    }
+                        <div class="flex flex-col items-end space-y-2 mr-2">
+                            <span class="text-xs {{ $skin ? 'bg-[#E6FFFB] text-[#0f6b66] border border-[#CDECE9]' : 'bg-slate-100 text-slate-600' }} px-3 py-1 rounded-full whitespace-nowrap">
+                                {{ $skin ?? 'Todo tipo' }}
+                            </span>
 
-                                    $img = $product->image_url ?? $product->img_src ?? $product->image ?? null;
-                                    $imgSrc = $img ? (\Illuminate\Support\Str::startsWith($img, ['http://','https://']) ? $img : asset($img)) : asset('img/placeholder.png');
-                                    $brand = $product->brand?->name ?? null;
-                                    $skin = $product->skin_type ?? $product->skin ?? null;
-
-                                    $useRelationRoute = \Illuminate\Support\Facades\Route::has('routines.products.destroy');
-                                    $relationRouteName = 'routines.products.destroy';
-                                    $fallbackRouteName = 'routines.product.remove';
-                                @endphp
-
-                                <div class="flex items-center gap-4 bg-white rounded-lg p-2 border border-slate-100 shadow-sm">
-                                    <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0">
-                                        <img src="{{ $imgSrc }}" alt="{{ $product->name }}" class="h-16 w-16 object-contain rounded-md">
-                                    </a>
-
-                                    <div class="flex-1 min-w-0">
-                                        <a href="{{ route('products.show', $product->id) }}" class="block">
-                                            <p class="text-sm font-semibold text-[var(--kalm-dark)] truncate">{{ \Illuminate\Support\Str::limit($product->name, 70) }}</p>
-                                        </a>
-                                        @if($brand)
-                                            <p class="text-xs text-slate-400 mt-0.5 truncate">{{ $brand }}</p>
-                                        @endif
-                                    </div>
-
-                                    <div class="flex flex-col items-end space-y-2 mr-2">
-                                        <span class="text-xs {{ $skin ? 'bg-[#E6FFFB] text-[#0f6b66] border border-[#CDECE9]' : 'bg-slate-100 text-slate-600' }} px-3 py-1 rounded-full whitespace-nowrap">
-                                            {{ $skin ?? 'Todo tipo' }}
-                                        </span>
-
-                                        @if($useRelationRoute)
-                                            <form action="{{ route($relationRouteName, [$routine, $product]) }}" method="POST" onsubmit="return confirm('¿Eliminar este producto de la rutina?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md shadow-sm">
-                                                    Quitar
-                                                </button>
-                                            </form>
-                                        @elseif(\Illuminate\Support\Facades\Route::has($fallbackRouteName))
-                                            <form action="{{ route($fallbackRouteName, $routine) }}" method="POST" onsubmit="return confirm('¿Eliminar este producto de la rutina?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button type="submit" class="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md shadow-sm">
-                                                    Quitar
-                                                </button>
-                                            </form>
-                                        @else
-                                            <button class="text-sm bg-gray-300 text-gray-700 px-3 py-1 rounded-md shadow-sm cursor-not-allowed" disabled title="Define la ruta routines.products.destroy o routines.product.remove">Quitar</button>
-                                        @endif
-                                    </div>
-                                </div>
-                            @empty
-                                <div class="text-sm text-slate-400 italic">No hay productos en este paso.</div>
-                            @endforelse
+                            {{-- Botón quitar producto --}}
+                            <form action="{{ route('routines.product.remove', [$routine, $product]) }}" method="POST" onsubmit="return confirm('¿Eliminar este producto de la rutina?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-sm bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md shadow-sm">
+                                    Quitar
+                                </button>
+                            </form>
                         </div>
-                    </section>
-                @endforeach
-            @else
+                    </div>
+                </section>
+            @empty
                 <div class="py-10 text-center text-slate-400">
                     <p class="text-lg">No hay productos en esta rutina.</p>
                 </div>
-            @endif
+            @endforelse
         </main>
 
         {{-- BOTONES FLOTANTES --}}

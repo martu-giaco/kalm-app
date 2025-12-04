@@ -96,36 +96,43 @@ class RoutineController extends Controller
      * Actualizar rutina
      */
     public function update(Request $request, $routine_id)
-    {
-        $routine = Routine::findOrFail($routine_id);
-        $this->authorizeOwner($routine);
+{
+    // Validación de los campos
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'routine_type_id' => 'required|integer|exists:routine_types,type_id',
+        'routine_time_id' => 'required|integer|exists:routine_times,time_id',
+    ]);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'routine_type_id' => 'required|exists:routine_types,type_id',
-            'routine_time_id' => 'required|exists:routine_times,time_id',
-        ]);
+    // Buscar la rutina por su ID
+    $routine = Routine::findOrFail($routine_id);
 
-        $routine->update($validated);
+    // Actualizar con los datos validados
+    $routine->update($validated);
 
-        return redirect()->route('routines.show', $routine->routine_id)
-                         ->with('success', 'Rutina actualizada correctamente.');
-    }
+    // Redirigir a la vista show con mensaje de éxito
+    return redirect()->route('routines.show', $routine->routine_id)
+                     ->with('success', 'Rutina actualizada correctamente.');
+}
+
+public function removeProduct(Routine $routine, Product $product)
+{
+    // elimina solo la relación, no el producto
+    $routine->products()->detach($product->id);
+
+    return redirect()->back()->with('success', 'Producto eliminado de la rutina');
+}
+
 
     /**
      * Eliminar rutina
      */
-    public function destroy($routine_id)
+    public function destroy(Routine $routine)
     {
-        $routine = Routine::findOrFail($routine_id);
-        $this->authorizeOwner($routine);
-
         $routine->delete();
-
-        return redirect()->route('routines.index')
-            ->with('success', 'Rutina eliminada correctamente.');
+        return redirect()->route('routines.index')->with('success', 'Rutina eliminada correctamente.');
     }
+
 
     /**
      * Agregar un producto a una rutina

@@ -10,9 +10,9 @@
 
             <textarea name="content" rows="4"
                 placeholder="¿Qué está pasando?"
-                class="text-[#CCE2E5] w-full p-3 border-2 border-[#37A0AF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--kalm-main)]"
+                class="text-[#306067] w-full p-3 border-2 border-[#37A0AF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--kalm-main)]"
                 maxlength="280">{{ old('content') }}</textarea>
-                <p class="text-sm text-end text-[#CCE2E5]">{{ old('content') ? strlen(old('content')) : 0 }}/280</p>
+                <p class="text-sm text-end text-[#306067]">{{ old('content') ? strlen(old('content')) : 0 }}/280</p>
 
             @error('content')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>

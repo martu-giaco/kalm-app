@@ -59,7 +59,7 @@
             <div class="pt-24 flex flex-col">
 
                 <main
-                    class="pt-5 fixed top-24 bottom-0 left-0 right-0 mx-auto w-screen grow rounded-t-3xl overflow-hidden overflow-y-auto">
+                    class="pt-5 fixed top-24 bottom-0 left-0 right-0 mx-auto px-3 w-screen grow rounded-t-3xl overflow-hidden overflow-y-auto">
 
                     @php
                         // Mensajes de feedback

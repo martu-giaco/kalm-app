@@ -4,9 +4,6 @@
 
         <header class="mb-6">
             <h1 class="text-3xl font-semibold text-[var(--kalm-dark)]">Editar rutina</h1>
-            <p class="text-sm text-slate-400 mt-1">
-                Modifica los detalles de la rutina.
-            </p>
         </header>
 
         <main class="bg-white rounded-xl border border-slate-100 shadow-sm p-6 space-y-6">
@@ -55,7 +52,7 @@
                 </div>
 
                 <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                        class="px-4 py-2 text-white rounded-xl bg-[#306067]">
                     Actualizar Rutina
                 </button>
             </form>
