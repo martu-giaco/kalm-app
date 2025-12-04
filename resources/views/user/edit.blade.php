@@ -14,7 +14,9 @@
                 </div>
             @endif
 
-            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    @method('PATCH')>
                 @csrf
 
                 <div>
@@ -42,7 +44,7 @@
                 </div>
 
                 <div class="flex gap-3">
-                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <button type="submit" class="btn text-white bg-[#306067]">Guardar cambios</button>
                     <a href="{{ route('profile.show') }}" class="btn btn-ghost">Cancelar</a>
                 </div>
             </form>

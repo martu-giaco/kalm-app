@@ -115,21 +115,17 @@ class ProductController extends Controller
     /**
      * Mostrar productos filtrados por categoría
      */// ProductController.php
-public function byCategory($slug)
+    public function byCategory($slug)
 {
-    // Obtener la categoría por slug
     $category = ProductCategory::where('slug', $slug)->firstOrFail();
 
-    // Verificar productos
     $products = Product::where('category_id', $category->id)
-                        ->with(['brand', 'type'])
-                        ->get();
+                       ->with(['brand','type'])
+                       ->get();
 
-    // Si quieres depurar:
-    // dd($category, $products);
-
-    return view('products.byCategory', compact('category', 'products'));
+    return view('products.byCategory', compact('category','products'));
 }
+
 
 
 

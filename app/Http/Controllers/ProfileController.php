@@ -27,8 +27,9 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         $routines = Routine::where('user_id', $user->id)
-                            ->with(['times'])
-                            ->get();
+                    ->with(['routineTime'])
+                    ->get();
+
 
         return view('user.profile', compact('user', 'routines'));
     }

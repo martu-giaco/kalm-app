@@ -13,8 +13,9 @@ class ProductCategory extends Model
 
     protected $fillable = [
         'name',
-        'slug',   // ahora el slug se puede llenar
+        'slug',
         'type_id',
+        'icon_svg',
     ];
 
     /**

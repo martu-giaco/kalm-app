@@ -3,27 +3,16 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use App\Models\Product;
-use App\Models\Brand; // Importamos Brand
-use App\Models\ProductType; // Usando ProductType, como solicitaste
-use App\Models\ProductCategory; // Usando ProductCategory, como solicitaste
+use App\Models\Brand;
+use App\Models\ProductType;
+use App\Models\ProductCategory;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run(): void
     {
-        // ---------------------------------------------------------------------
-        // 1. GARANTIZAR LA EXISTENCIA DE LAS MARCAS (Prevención de Error 1452)
-        // ---------------------------------------------------------------------
-        // Para evitar el error de clave foránea (1452), nos aseguramos de que
-        // todas las marcas necesarias existan antes de insertar productos.
-        // Se definen las marcas a partir de los IDs usados en el array de productos.
-
         $brandNamesMap = [
             1 => 'CeraVe',
             2 => 'La Roche-Posay',
@@ -45,17 +34,12 @@ class ProductSeeder extends Seeder
             19 => 'Cetaphil',
         ];
 
-        // Almacenar las instancias de marca para mapear el ID de la data al ID real de la DB.
         $actualBrands = [];
         foreach ($brandNamesMap as $keyId => $name) {
             $brand = Brand::firstOrCreate(['name' => $name]);
             $actualBrands[$keyId] = $brand->id;
         }
 
-
-        // ---------------------------------------------------------------------
-        // 2. DATA DE PRODUCTOS (Estructura proporcionada por el usuario)
-        // ---------------------------------------------------------------------
         $typesCategories = [
             'Skincare' => [
                 'Limpiadores' => [
@@ -93,7 +77,7 @@ class ProductSeeder extends Seeder
                         'dondeComprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
-                        'name' => 'Icono Cosmetica Gel de Limpieza Facial Purificante', // Producto Nacional (Argentina)
+                        'name' => 'Icono Cosmetica Gel de Limpieza Facial Purificante',
                         'brand_id' => 8,
                         'image' => 'icono.jpg',
                         'description' => 'Gel de limpieza purificante para pieles mixtas a grasas. Formulación con activos botánicos.',
@@ -108,7 +92,8 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'La Roche-Posay Toleriane Double Matt Repair Moisturizer',
                         'brand_id' => 2,
-                        'image' => 'matt.jpg',                        'description' => 'Hidratante para piel sensible con ceramidas y niacinamida. Restaura la barrera protectora.',
+                        'image' => 'matt.jpg',
+                        'description' => 'Hidratante para piel sensible con ceramidas y niacinamida. Restaura la barrera protectora.',
                         'ingredients' => 'Aqua, Glycerin, Ceramides, Niacinamide',
                         'activos' => 'Ceramidas, Niacinamida',
                         'formato' => '75ml',
@@ -138,7 +123,7 @@ class ProductSeeder extends Seeder
                         'dondeComprar' => 'Tiendas de cosmética especializada, Deciem',
                     ],
                     [
-                        'name' => 'Dermaglós Facial Crema Nutritiva de Noche', // Producto Nacional (Argentina)
+                        'name' => 'Dermaglós Facial Crema Nutritiva de Noche',
                         'brand_id' => 10,
                         'image' => 'dermaglos.webp',
                         'description' => 'Crema nutritiva para la noche con Vitamina A. Mejora la elasticidad y regeneración celular.',
@@ -197,7 +182,7 @@ class ProductSeeder extends Seeder
                         'dondeComprar' => 'Tiendas de cosmética especializada',
                     ],
                     [
-                        'name' => 'Glow Factor Vitamina C 15%', // Producto Nacional (Argentina)
+                        'name' => 'Glow Factor Vitamina C 15%',
                         'brand_id' => 14,
                         'image' => 'glowfact.webp',
                         'description' => 'Sérum de Vitamina C pura (ácido L-ascórbico) para acción antioxidante e iluminadora.',
@@ -213,7 +198,7 @@ class ProductSeeder extends Seeder
                         'name' => 'Paula\'s Choice 2% BHA Liquid Exfoliant',
                         'brand_id' => 15,
                         'image' => 'paulas.webp',
-                       'description' => 'Exfoliante químico con ácido salicílico. Desobstruye poros y reduce puntos negros.',
+                        'description' => 'Exfoliante químico con ácido salicílico. Desobstruye poros y reduce puntos negros.',
                         'ingredients' => 'Salicylic Acid (BHA), Green Tea Extract',
                         'activos' => 'Ácido Salicílico 2%',
                         'formato' => '118ml',
@@ -247,10 +232,10 @@ class ProductSeeder extends Seeder
                         'dondeComprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
-                        'name' => 'Capilatis Ortiga Shampoo para Cabellos Grasos', // Producto Nacional (Argentina)
+                        'name' => 'Capilatis Ortiga Shampoo para Cabellos Grasos',
                         'brand_id' => 16,
                         'image' => 'capilatis1.jpg',
-                      'description' => 'Shampoo con extracto de Ortiga que regula el exceso de sebo en cabellos grasos.',
+                        'description' => 'Shampoo con extracto de Ortiga que regula el exceso de sebo en cabellos grasos.',
                         'ingredients' => 'Extracto de Ortiga, Tensoactivos suaves',
                         'activos' => 'Extracto de Ortiga',
                         'formato' => '420ml',
@@ -271,10 +256,10 @@ class ProductSeeder extends Seeder
                         'dondeComprar' => 'Mercado Libre, Salones',
                     ],
                     [
-                        'name' => 'Elvive Oleo Extraordinario Nutrición Intensa', // Producto popular globalmente y con buena presencia nacional (L'Oréal)
+                        'name' => 'Elvive Oleo Extraordinario Nutrición Intensa',
                         'brand_id' => 6,
                         'image' => 'oleoextra.jpg',
-                     'description' => 'Acondicionador enriquecido con 6 óleos de flores preciosas para nutrición intensa.',
+                        'description' => 'Acondicionador enriquecido con 6 óleos de flores preciosas para nutrición intensa.',
                         'ingredients' => 'Óleos de flores, Glicerina',
                         'activos' => 'Óleos nutritivos',
                         'formato' => '400ml',
@@ -287,7 +272,7 @@ class ProductSeeder extends Seeder
                         'name' => 'Olaplex No. 3 Hair Perfector',
                         'brand_id' => 17,
                         'image' => 'olaplex-n3.webp',
-                     'description' => 'Tratamiento pre-shampoo para fortalecer el cabello. Repara los enlaces de disulfuro dañados.',
+                        'description' => 'Tratamiento pre-shampoo para fortalecer el cabello. Repara los enlaces de disulfuro dañados.',
                         'ingredients' => 'Bis-Aminopropyl Diglycol Dimaleate, Agua',
                         'activos' => 'Molécula Bis-Aminopropyl Diglycol Dimaleate',
                         'formato' => '100ml',
@@ -298,8 +283,9 @@ class ProductSeeder extends Seeder
             ],
             'Bodycare' => [
                 'Hidratantes Corporales' => [
+
                     [
-                        'name' => 'Nivea Milk Nutritiva Piel Seca', // Producto Nacional/Global muy popular
+                        'name' => 'Nivea Milk Nutritiva Piel Seca',
                         'brand_id' => 18,
                         'image' => 'nivea-body-para-piel-extra-seca.jpg',
                         'description' => 'Leche corporal de uso diario para piel seca a muy seca. 48h de hidratación.',
@@ -313,7 +299,7 @@ class ProductSeeder extends Seeder
                         'name' => 'Cetaphil Loción Hidratante Corporal',
                         'brand_id' => 19,
                         'image' => 'cetaphil-locion-hidratante.webp',
-                     'description' => 'Loción ligera y no grasa para el cuerpo, ideal para piel sensible o irritada.',
+                        'description' => 'Loción ligera y no grasa para el cuerpo, ideal para piel sensible o irritada.',
                         'ingredients' => 'Glicerina, Aceite de Macadamia',
                         'activos' => 'Pantenol, Niacinamida',
                         'formato' => '473ml',
@@ -324,33 +310,25 @@ class ProductSeeder extends Seeder
             ],
         ];
 
-        // ---------------------------------------------------------------------
-        // 3. CREACIÓN DINÁMICA DE TIPOS, CATEGORÍAS Y PRODUCTOS
-        // ---------------------------------------------------------------------
-
         foreach ($typesCategories as $typeName => $categories) {
-            // 3.1 Crear o encontrar el Tipo de Producto
             $type = ProductType::firstOrCreate(['name' => $typeName]);
 
             foreach ($categories as $categoryName => $products) {
-                // 3.2 Crear o encontrar la Categoría de Producto
-                $category = ProductCategory::firstOrCreate([
-                    'name' => $categoryName,
-                    'type_id' => $type->id // Usamos el ID de Type recién creado
-                ]);
+                $category = ProductCategory::firstOrCreate(
+                    ['name' => $categoryName, 'type_id' => $type->id],
+                    ['slug' => Str::slug($categoryName)]
+                );
 
                 foreach ($products as $productData) {
-                    // 3.3 Reemplazar el brand_id codificado por el ID real de la DB
                     $originalBrandId = $productData['brand_id'];
                     $productData['brand_id'] = $actualBrands[$originalBrandId];
 
-                    // 3.4 Insertar o Actualizar el Producto
                     Product::updateOrCreate(
-                        ['name' => $productData['name']], // Criterio para buscar si ya existe
+                        ['name' => $productData['name']],
                         array_merge($productData, [
                             'type_id' => $type->id,
                             'category_id' => $category->id,
-                            'image' => 'images/products/' . $productData['image'], // Generamos la ruta completa
+                            'image' => 'images/products/' . $productData['image'],
                         ])
                     );
                 }

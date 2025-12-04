@@ -84,8 +84,8 @@
                                 Agregar a rutina
                             </label>
                         @else
-                            <button disabled class="btn btn-secondary cursor-not-allowed">
-                                No tienes rutinas
+                            <button disabled class="btn btn- text-black cursor-not-allowed">
+                                No tiene rutinas
                             </button>
                         @endif
                     </div>

@@ -27,7 +27,7 @@ class AdminMiddleware
         // Verifica si el rol es admin
         if (Auth::user()->role !== 'admin') {
             return redirect()->route('home')
-                ->with('feedback.message', 'No tienes permiso para acceder a esta página.');
+                ->with('feedback.message', 'No tiene permiso para acceder a esta página.');
         }
 
         return $next($request);

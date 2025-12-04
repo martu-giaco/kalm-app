@@ -14,7 +14,7 @@
                 </div>
             </a>
         @empty
-            <p class="text-[#CCE2E5]">¡No tienes rutinas todavía!</p>
+            <p class="text-[#CCE2E5]">¡No tiene rutinas todavía!</p>
         @endforelse
 
         <a href="{{ route('routines.create') }}" class="fixed right-5 bottom-20 bg-[#2A4043] h-16 w-16 rounded-full flex items-center justify-center shadow-xl">

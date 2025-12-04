@@ -2,7 +2,7 @@
 
     {{-- Mensaje si no hay favoritos --}}
     @if($products->isEmpty())
-        <p class="text-center text-[var(--kalm-text)] mt-8">No tienes productos favoritos todavía.</p>
+        <p class="text-center text-[var(--kalm-text)] mt-8">No tiene productos favoritos todavía.</p>
     @else
 
         {{-- Agrupar productos por categoría --}}
