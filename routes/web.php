@@ -21,7 +21,7 @@ use App\Http\Controllers\TestController;
 |--------------------------------------------------------------------------
 */
 
-// Auth (login/logout/register)
+// Auth
 Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
@@ -33,9 +33,29 @@ Route::post('/register', [AuthController::class, 'store'])->name('auth.register.
 Route::get('/terms', [TermsController::class, 'show'])->name('auth.terms.show');
 Route::post('/terms/accept', [TermsController::class, 'accept'])->name('auth.terms.accept');
 
+// Tests públicos
+Route::prefix('tests')->name('tests.')->group(function () {
+    Route::get('/', [TestController::class, 'index'])->name('index');
+    Route::get('/{type}', [TestController::class, 'show'])
+        ->where('type', '[A-Za-z0-9\-_]+')
+        ->name('show');
+    Route::post('/submit', [TestController::class, 'submit'])->name('submit');
+
+    Route::get('/result/{routine}', [TestController::class, 'result'])
+        ->whereNumber('routine')
+        ->name('result');
+    Route::post('/result/{routine}/save', [TestController::class, 'saveResult'])
+        ->whereNumber('routine')
+        ->middleware('auth')
+        ->name('saveResult');
+    Route::get('/result/{routine}/create-routine', [TestController::class, 'createRoutineRedirect'])
+        ->whereNumber('routine')
+        ->name('createRoutine');
+});
+
 /*
 |--------------------------------------------------------------------------
-| Rutas protegidas por Auth
+| Rutas protegidas por auth
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
@@ -47,9 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-
     Route::get('/profile/results', [ProfileController::class, 'results'])->name('profile.results');
-
 
     // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -68,10 +86,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/productos/buscar', [ProductController::class, 'search'])->name('products.search');
     Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
     Route::get('/categorias/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');
-
-
-
-
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     // Favoritos
@@ -89,7 +103,7 @@ Route::middleware('auth')->group(function () {
             return view('admin.dashboard');
         })->name('admin.dashboard');
 
-        // CRUD blogs
+        // CRUD Blogs
         Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
         Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
         Route::post('/blog', [PostController::class, 'store'])->name('blog.store');
@@ -101,42 +115,29 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-    Route::post('/posts/{post}/report', [PostController::class, 'report'])->name('posts.report')->whereNumber('post');
+    Route::post('/posts/{post}/report', [PostController::class, 'report'])->whereNumber('post')->name('posts.report');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     // Likes y guardados
     Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
     Route::post('/posts/{post}/save', [PostController::class, 'save'])->name('posts.save');
 
-    // Routines
-    Route::get('/routine', [RoutineController::class, 'index'])->name('routines.index');
-    Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create');
-    Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store');
-    Route::get('/routines/{routine}', [RoutineController::class, 'show'])->name('routines.show');
-    Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
-    Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit');
-    Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy');
-    // Agregar producto a rutina desde la vista del producto
-    Route::post('/routine/{routine}/add-product', [RoutineController::class, 'addProduct'])->name('routine.addProduct');
-
-
-
     /*
     |--------------------------------------------------------------------------
-    | Tests
+    | RUTINES
     |--------------------------------------------------------------------------
     */
+    Route::prefix('routine')->name('routines.')->group(function () {
+        Route::get('/', [RoutineController::class, 'index'])->name('index');
+        Route::get('/create', [RoutineController::class, 'create'])->name('create');
+        Route::post('/', [RoutineController::class, 'store'])->name('store');
+        Route::get('/{routine_id}', [RoutineController::class, 'show'])->name('show');
+        Route::get('/{routine_id}/edit', [RoutineController::class, 'edit'])->name('edit');
+        Route::patch('/{routine_id}', [RoutineController::class, 'update'])->name('update'); // <-- PATCH
+        Route::get('/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('destroy');
 
-    // Página para elegir test
-    Route::get('/tests', [TestController::class, 'index'])->name('tests.index');
-
-    // Mostrar test según tipo (piel, cabello, etc.)
-    Route::get('/tests/{type}', [TestController::class, 'show'])->name('tests.show');
-
-    // Guardar respuestas del test
-    Route::post('/tests/submit', [TestController::class, 'submit'])->name('tests.submit');
-    Route::get('/tests/result/{routine}', [TestController::class, 'result'])->name('tests.result');
-
-
+        // Agregar producto a rutina desde la vista del producto
+        Route::post('/{routine}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
+    });
 
 });

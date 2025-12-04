@@ -1,9 +1,11 @@
-<x-layout title="Post Detalle">
+<x-layout title="Detalle del Post">
+
+    {{-- Detalles del post --}}
 
     <div class="bg-white p-4 rounded-xl border border-gray-300 shadow mb-4">
         <div class="flex items-start space-x-3">
             <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-300">
-                <img src="{{ $post->user->profile_photo_url ?? asset('images/default-avatar.png') }}"
+                <img src="{{ $post->user->profile_photo_url ?? asset('images/default.jpg') }}"
                     alt="{{ $post->user->name }}" class="w-full h-full object-cover">
             </div>
 
@@ -60,7 +62,7 @@
         @forelse($post->comments as $comment)
             <div class="flex items-start space-x-3 mb-3">
                 <div class="w-8 h-8 rounded-full overflow-hidden bg-gray-300">
-                    <img src="{{ $comment->user->profile_photo_url ?? asset('images/default-avatar.png') }}"
+                    <img src="{{ $comment->user->profile_photo_url ?? asset('images/default.jpg') }}"
                         alt="{{ $comment->user->name }}" class="w-full h-full object-cover">
                 </div>
                 <div>

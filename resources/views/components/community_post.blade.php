@@ -3,7 +3,7 @@
         <!-- Contenido del post -->
         <div class="flex items-start space-x-3">
             <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-300">
-                <img src="{{ $post->user->profile_photo_url ?? asset('images/default-avatar.png') }}"
+                <img src="{{ $post->user->profile_photo_url ?? asset('images/default.jpg') }}"
                         alt="{{ $post->user->name }}" class="w-full h-full object-cover">
             </div>
 

@@ -34,10 +34,10 @@
 
                 @auth
                     <!-- Usuario autenticado -->
-                    <div class="flex items-center gap-3 h-full">
+                    <div class="flex items-center gap-5 h-full">
                         <!-- Notificaciones -->
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('images/notificaciones.svg') }}" alt="notificaciones" class="h-8 w-auto">
+                            <img src="{{ asset('images/notificaciones.png') }}" alt="notificaciones" class="h-8 w-auto">
                         </a>
 
                         <!-- Avatar y nombre -->
@@ -257,8 +257,8 @@
 
                                 <li>
                                     <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
-                                        href="{{ route('home') }}">
-                                        Mis Resultados
+                                        href="{{ route('routines.index') }}">
+                                        Mis Rutinas
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                             width="24px" fill="#306067" class="p-0">
                                             <path

@@ -3,23 +3,19 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\RoutineTime; // ajustá el namespace si hace falta
+use App\Models\RoutineTime;
 
 class RoutineTimeSeeder extends Seeder
 {
     public function run()
     {
         $items = [
-            ['name' => 'Día',  'time_id' => 1],
-            ['name' => 'Noche','time_id' => 2],
-            // añade más si corresponde
+            ['name' => 'Día'],
+            ['name' => 'Noche'],
         ];
 
         foreach ($items as $item) {
-            RoutineTime::updateOrCreate(
-                ['name' => $item['name']],       // criterio único
-                ['time_id' => $item['time_id']]  // valores a setear/actualizar
-            );
+            RoutineTime::updateOrCreate(['name' => $item['name']], $item);
         }
     }
 }

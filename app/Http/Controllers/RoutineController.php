@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Routine;
+use Illuminate\Http\Request;
 use App\Models\RoutineType;
 use App\Models\RoutineTime;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\Routine;
 
 class RoutineController extends Controller
 {
+    /**
+     * Aplicar middleware auth
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Mostrar todas las rutinas del usuario autenticado
      */
     public function index()
     {
-        $routines = auth()->user()->routines()->with(['types', 'times'])->latest()->paginate(10);
+        $userId = auth()->id();
+
+        $routines = Routine::where('user_id', $userId)
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
         return view('routines.index', compact('routines'));
     }
 
@@ -37,105 +50,108 @@ class RoutineController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'time_id' => 'nullable|exists:routine_times,time_id',
             'products' => 'nullable|array',
         ]);
 
-        auth()->user()->routines()->create([
-            'name' => $validated['name'],
-            'products' => json_encode($validated['products'] ?? []),
-        ]);
+        $routine = new Routine();
+        $routine->name = $validated['name'];
+        $routine->user_id = auth()->id();
+        $routine->time_id = $validated['time_id'] ?? null;
+        $routine->products = json_encode($validated['products'] ?? []);
+        $routine->save();
 
-        return redirect()->route('routines.index')->with('success', 'Rutina creada correctamente.');
+        return redirect()->route('routines.index')
+            ->with('success', 'Rutina creada correctamente.');
     }
 
     /**
      * Ver rutina individual
      */
-    public function show(Routine $routine)
+    public function show($routine_id)
     {
+        $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
+
+        $routine->load(['types', 'routineTime']); // carga relaciones necesarias
+
         return view('routines.show', compact('routine'));
     }
 
     /**
      * Mostrar formulario para editar rutina
      */
-    public function edit(Routine $routine)
+    public function edit($routine_id)
     {
+        $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
 
-        return view('routines.edit', [
-            'routine' => $routine,
-            'types' => RoutineType::orderBy('name')->get(),
-            'times' => RoutineTime::orderBy('name')->get(),
-        ]);
+        $routine_types = RoutineType::orderBy('name')->get();
+        $routine_times = RoutineTime::orderBy('name')->get();
+
+        return view('routines.edit', compact('routine', 'routine_types', 'routine_times'));
     }
 
     /**
      * Actualizar rutina
      */
-    public function update(Request $request, Routine $routine)
+    public function update(Request $request, $routine_id)
     {
+        $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'products' => 'nullable|array',
+            'description' => 'required|string',
+            'routine_type_id' => 'required|exists:routine_types,type_id',
+            'routine_time_id' => 'required|exists:routine_times,time_id',
         ]);
 
-        $routine->update([
-            'name' => $validated['name'],
-            'products' => json_encode($validated['products'] ?? []),
-        ]);
+        $routine->update($validated);
 
-        return redirect()->route('routines.show', $routine)->with('success', 'Rutina actualizada correctamente.');
+        return redirect()->route('routines.show', $routine->routine_id)
+                         ->with('success', 'Rutina actualizada correctamente.');
     }
 
     /**
      * Eliminar rutina
      */
-    public function destroy(Routine $routine)
+    public function destroy($routine_id)
     {
+        $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
+
         $routine->delete();
 
-        return redirect()->route('routines.index')->with('success', 'Rutina eliminada correctamente.');
+        return redirect()->route('routines.index')
+            ->with('success', 'Rutina eliminada correctamente.');
     }
 
     /**
-     * Agregar un producto a una rutina desde formulario
+     * Agregar un producto a una rutina
      */
-    // en RoutineController.php
-    public function addProduct(Request $request, $routineId)
+    public function addProduct(Request $request, $routine)
     {
-        // Obtener la rutina
-        $routine = \App\Models\Routine::findOrFail($routineId);
+        $rutina = Routine::findOrFail($routine);
 
-        // Decodificar los productos existentes (JSON)
-        $products = json_decode($routine->products ?? '[]', true);
+        $productId = $request->input('product_id');
 
-        // Agregar el nuevo producto si no está repetido
-        $newProductId = $request->input('product_id');
-        if (!in_array($newProductId, $products)) {
-            $products[] = $newProductId;
+        // Evita duplicados
+        if (!$rutina->products()->where('product_id', $productId)->exists()) {
+            $rutina->products()->attach($productId);
         }
 
-        // Guardar la rutina con los productos actualizados
-        $routine->products = json_encode($products);
-        $routine->save();
-
-        // Redirigir a la rutina actualizada
-        return redirect()->route('routines.show', $routine->routine_id)
-            ->with('success', 'Producto agregado a la rutina correctamente.');
+        return redirect()->back()->with('success', 'Producto agregado a la rutina.');
     }
-
 
     /**
      * Mostrar producto con opción de agregar a rutinas del usuario
      */
-    public function productShow(Product $product)
+    public function productShow($productId)
     {
-        $routines = auth()->user()->routines; // todas las rutinas del usuario
+        $product = Product::findOrFail($productId);
+        $routines = Routine::where('user_id', auth()->id())->get();
+
         return view('products.show', compact('product', 'routines'));
     }
 
@@ -144,7 +160,7 @@ class RoutineController extends Controller
      */
     private function authorizeOwner(Routine $routine)
     {
-        if ($routine->user_id !== auth()->id()) {
+        if ($routine->user_id != auth()->id()) {
             abort(403, 'No tenés permiso para realizar esta acción.');
         }
     }

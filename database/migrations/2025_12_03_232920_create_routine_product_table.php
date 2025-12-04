@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('routine_product', function (Blueprint $table) {
-            $table->id(); // id de la tabla pivot
-            $table->unsignedBigInteger('routine_id'); // FK hacia routines(routine_id)
-            $table->foreign('routine_id')
-                  ->references('routine_id') // aquí apuntamos a routine_id
-                  ->on('routines')
-                  ->onDelete('cascade');
+            $table->id();
+            $table->unsignedBigInteger('routine_id');
+            $table->unsignedBigInteger('product_id');
 
-            $table->foreignId('product_id')->constrained()->onDelete('cascade'); // FK hacia products(id)
+            $table->foreign('routine_id')->references('routine_id')->on('routines')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 
-            $table->timestamps();
+            $table->unique(['routine_id', 'product_id']);
         });
+
     }
 
     public function down(): void

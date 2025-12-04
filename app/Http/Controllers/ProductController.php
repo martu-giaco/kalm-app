@@ -160,6 +160,8 @@ public function byCategory($slug)
         return back();
     }
 
+
+
     /**
      * Buscar productos
      */

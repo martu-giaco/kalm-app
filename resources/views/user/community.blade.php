@@ -1,8 +1,8 @@
-<x-layout title="Comunidad">
+<x-layout title="Kälm | Comunidad">
 
-    <section class="mx-auto px-5 pt-10 rounded-t-3xl bg-white min-h-screen">
+    <section class="mx-auto px-5 rounded-t-3xl bg-white min-h-screen">
 
-        <h1 class="text-2xl font-bold text-[#306067] mb-4">Feed de la comunidad</h1>
+        <h1 class="text-2xl font-bold text-[#306067] mb-4">Comunidad Kälm</h1>
 
         @forelse($posts as $post)
             <x-community_post :post="$post" />

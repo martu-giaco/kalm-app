@@ -8,10 +8,11 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('routines', function (Blueprint $table) {
-            $table->id('routine_id'); // tu primary key
+            $table->id('routine_id');
             $table->string('name');
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->json('products')->nullable(); // aquí guardamos los productos
             $table->timestamps();
+
         });
     }
 

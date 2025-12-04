@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 use App\Models\Routine;
-use App\Models\Product;
 use App\Models\RoutineType;
 use App\Models\RoutineTime;
 
@@ -13,117 +11,37 @@ class RoutineSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('routines')->insert([
-            ['routine_id'=>10, 'name'=> 'normal', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>2, 'name'=> 'seca', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>3, 'name'=> 'grasa', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>4, 'name'=> 'mixta', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>5, 'name'=> 'sensible', 'routine_type_id'=> '1', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>6, 'name'=> 'normal', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>7, 'name'=> 'seco', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>8, 'name'=> 'graso', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-            ['routine_id'=>9, 'name'=> 'mixto', 'routine_type_id'=> '2', 'products'=> json_encode([2, 7, 1, 10]), 'created_at' => now(), 'updated_at' => now()],
-        ]);
+        // Tipos de piel/cabello
+        $types = RoutineType::whereIn('name', ['normal','seco','graso','mixto','sensible'])->get()->keyBy('name');
 
-        // Obtener tipos y tiempos
-        $skincareType = RoutineType::firstOrCreate(['name' => 'Skincare']);
-        $haircareType = RoutineType::firstOrCreate(['name' => 'Haircare']);
+        // Tiempos de rutina
+        $times = RoutineTime::whereIn('name', ['Día','Noche'])->get()->keyBy('name');
 
-        $dayTime = RoutineTime::firstOrCreate(['name' => 'Día']);
-        $nightTime = RoutineTime::firstOrCreate(['name' => 'Noche']);
-
-        // Productos (suponiendo que ya están en DB)
-        $products = Product::all()->keyBy('name');
-
-        // Rutinas Skincare
-        $skincareRoutines = [
-            'normal' => [
-                'time' => $dayTime->name,
-                'products' => [
-                    $products['Crema Hidratante']->id ?? null,
-                    $products['Protector Solar Diario']->id ?? null,
-                ],
-            ],
-            'seca' => [
-                'time' => $nightTime->name,
-                'products' => [
-                    $products['Crema Hidratante']->id ?? null,
-                    $products['Serum Ácido Hialurónico']->id ?? null,
-                ],
-            ],
-            'grasa' => [
-                'time' => $dayTime->name,
-                'products' => [
-                    $products['Crema Hidratante']->id ?? null,
-                ],
-            ],
-            'mixta' => [
-                'time' => $dayTime->name,
-                'products' => [
-                    $products['Crema Hidratante']->id ?? null,
-                ],
-            ],
-            'sensible' => [
-                'time' => $nightTime->name,
-                'products' => [
-                    $products['Crema Hidratante']->id ?? null,
-                ],
-            ],
+        // Rutinas ejemplo
+        $examples = [
+            ['name' => 'Rutina Normal',   'type' => 'normal',   'time' => 'Día',   'products' => [1,2,3]],
+            ['name' => 'Rutina Seco',     'type' => 'seco',     'time' => 'Noche', 'products' => [4,5,6]],
+            ['name' => 'Rutina Graso',    'type' => 'graso',    'time' => 'Día',   'products' => [7,8,9]],
+            ['name' => 'Rutina Mixto',    'type' => 'mixto',    'time' => 'Día',   'products' => [10,11,12]],
+            ['name' => 'Rutina Sensible', 'type' => 'sensible', 'time' => 'Noche', 'products' => [13,14,15]],
         ];
 
-        foreach ($skincareRoutines as $name => $data) {
-            Routine::updateOrCreate([
-    'name' => 'normal',
-    'type' => 'Skincare',
-    'time' => 'Día',
-    'products' => '[]',
-]);
+        foreach ($examples as $ex) {
+            if (!isset($types[$ex['type']])) continue;
 
-        }
-
-        // Rutinas Haircare
-        $haircareRoutines = [
-            'normal' => [
-                'time' => $dayTime->name,
-                'products' => [
-                    $products['Shampoo Suave']->id ?? null,
-                    $products['Acondicionador Ligero']->id ?? null,
-                    $products['Mascarilla Nutritiva']->id ?? null,
+            $routine = Routine::updateOrCreate(
+                [
+                    'name' => $ex['name'],
+                    'routine_type_id' => $types[$ex['type']]->type_id,
+                    'time_id' => $times[$ex['time']]->time_id ?? null,
                 ],
-            ],
-            'seco' => [
-                'time' => $nightTime->name,
-                'products' => [
-                    $products['Shampoo Suave']->id ?? null,
-                    $products['Acondicionador Ligero']->id ?? null,
-                    $products['Mascarilla Nutritiva']->id ?? null,
-                ],
-            ],
-            'graso' => [
-                'time' => $dayTime->name,
-                'products' => [
-                    $products['Shampoo Suave']->id ?? null,
-                    $products['Acondicionador Ligero']->id ?? null,
-                ],
-            ],
-            'mixto' => [
-                'time' => $dayTime->name,
-                'products' => [
-                    $products['Shampoo Suave']->id ?? null,
-                    $products['Acondicionador Ligero']->id ?? null,
-                    $products['Mascarilla Nutritiva']->id ?? null,
-                ],
-            ],
-        ];
-
-        foreach ($haircareRoutines as $name => $data) {
-            Routine::updateOrCreate([
-                'name' => 'normal',
-                'type' => 'Skincare',
-                'time' => 'Día',
-                'products' => '[]',
-            ]);
-
+                [
+                    'products' => $ex['products'], // se convierte automáticamente a JSON gracias al mutator
+                    'user_id' => 1, // opcional, si quieres rutinas globales para usuario admin
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]
+            );
         }
     }
 }

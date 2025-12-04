@@ -27,6 +27,18 @@ class Product extends Model
         'dondeComprar',
     ];
 
+public function routines()
+{
+    return $this->belongsToMany(
+        Routine::class,   // Modelo relacionado
+        'routine_product', // Nombre exacto de la tabla pivote
+        'product_id',      // FK del producto en la tabla pivote
+        'routine_id'       // FK de la rutina en la tabla pivote
+    );
+}
+
+
+
     /**
      * Accessor para obtener la URL completa de la imagen.
      * Usa la columna 'image' directamente.

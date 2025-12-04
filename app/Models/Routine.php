@@ -3,81 +3,97 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Routine extends Model
 {
-    // Indicar la clave primaria real
-    protected $primaryKey = 'routine_id';
+    protected $table = 'routines';
 
-    // Si la PK es autoincremental
     public $incrementing = true;
 
-    // Tipo de la PK
-    protected $keyType = 'int';
+    protected $primaryKey = 'routine_id'; //
 
-    // Si la tabla no tiene timestamps
-    public $timestamps = true;
 
-    // Columnas asignables masivamente
+    // 🔹 Permitir asignación masiva
     protected $fillable = [
-        'user_id',
         'name',
-        'type',
-        'time',
-        'products', // si lo almacenas como JSON
+        'user_id',
+        'time_id',   // FK a routine_times
+        'products',  // JSON de productos
     ];
 
-    // Cast para JSON <-> array
+    // 🔹 Cast de productos a array automáticamente
     protected $casts = [
         'products' => 'array',
+        'steps' => 'array',
     ];
 
     /**
-     * Relación con el usuario dueño de la rutina
+     * Usuario dueño de la rutina (uno a muchos inverso)
      */
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
+    public function user() {
+        return $this->belongsTo(User::class, 'user_id'); // si usas user_id
     }
 
     /**
-     * Relación con tipos de rutina (muchos a muchos)
+     * Relación con RoutineTime (uno a uno inverso)
      */
-    public function types()
+    public function routineTime(): BelongsTo
+    {
+        return $this->belongsTo(RoutineTime::class, 'time_id', 'time_id');
+    }
+
+    /**
+     * Relación con RoutineType (muchos a muchos)
+     */
+    public function types(): BelongsToMany
     {
         return $this->belongsToMany(
-            RoutineType::class,        // Modelo relacionado
-            'routines_have_types',     // Tabla pivote
-            'routine_fk',              // FK en la tabla pivote hacia Routine
-            'type_fk'                  // FK en la tabla pivote hacia RoutineType
+            RoutineType::class,
+            'routines_have_types',
+            'routine_fk', // FK en la tabla pivote a routines
+            'type_fk'     // FK en la tabla pivote a routine_types
         );
     }
 
     /**
-     * Relación con tiempos de rutina
-     * Si una rutina tiene un solo tiempo asociado
+     * Accesor para obtener productos como array
      */
+    public function getProductsAttribute($value): array
+    {
+        // Si ya es array, devolverlo directamente
+        if (is_array($value)) {
+            return $value;
+        }
+
+        // Si es null o string, decodificar JSON
+        $decoded = json_decode($value ?? '[]', true);
+
+        // Asegurarse que siempre devuelva array
+        return is_array($decoded) ? $decoded : [];
+    }
+
     public function times()
     {
-        return $this->belongsTo(
-            RoutineTime::class, // Modelo relacionado
-            'time',             // FK en esta tabla (routines.time)
-            'time_fk'           // PK en la tabla RoutineTime
-        );
+        return $this->belongsTo(RoutineTime::class, 'time_id'); // 'time_id' es la clave foránea
     }
-
 
 
     /**
-     * Relación con productos (muchos a muchos)
+     * Mutador para guardar productos como JSON
      */
-    public function products()
+    public function setProductsAttribute($value)
     {
-        return $this->belongsToMany(
-            Product::class,     // Modelo relacionado
-            'routine_product',  // Tabla pivote
-            'routine_id',       // FK en pivote hacia Routine
-            'product_id'        // FK en pivote hacia Product
-        );
+        // Guardar como JSON solo si es array, sino []
+        $this->attributes['products'] = is_array($value) ? json_encode($value) : json_encode([]);
     }
+
+    public function products()
+{
+    return $this->belongsToMany(Product::class, 'routine_product', 'routine_id', 'product_id');
+}
+
+
+
 }
