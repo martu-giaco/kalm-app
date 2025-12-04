@@ -35,67 +35,61 @@ class TestController extends Controller
     /**
      * Procesar respuestas del test
      */
-    public function submit(Request $request)
-    {
-        $request->validate([
-            'type' => 'required|string',
-        ]);
+public function submit(Request $request)
+{
+    $request->validate([
+        'type' => 'required|string',
+    ]);
 
-        $type = $request->input('type');
-        $test = Test::where('key', $type)->firstOrFail();
+    $type = $request->input('type');
+    $test = Test::where('key', $type)->firstOrFail();
 
-        $questions = is_string($test->questions) ? json_decode($test->questions, true) : $test->questions;
+    // Asegurar que las preguntas sean un array
+    $questions = is_string($test->questions)
+        ? json_decode($test->questions, true)
+        : $test->questions;
 
-        // Contar respuestas y sumar puntajes
-        $scores = [];
-        foreach ($questions as $index => $q) {
-            $key = $request->input('q' . ($index + 1));
-            if ($key) {
-                $scores[$key] = ($scores[$key] ?? 0) + 1;
-            } else {
-                return redirect()->back()->with('error', 'Debes responder todas las preguntas.');
-            }
+    // Contar puntajes
+    $scores = [];
+    foreach ($questions as $index => $q) {
+        $key = $request->input('q' . ($index + 1));
+        if (!$key) {
+            return redirect()->back()->with('error', 'Debes responder todas las preguntas.');
         }
 
-        // Obtener la respuesta con mayor puntaje
-        arsort($scores);
-        $resultKey = key($scores);
-
-        // Buscar la rutina correspondiente
-        $routineType = RoutineType::where('name', ucfirst($type))->first();
-        $routine = Routine::where('routine_type_id', $routineType->id ?? null)
-            ->where('name', $resultKey)
-            ->with(['types', 'times'])
-            ->first();
-
-        if (!$routine) {
-            return redirect()->back()->with('error', 'Rutina no disponible para este resultado.');
-        }
-
-        // Redirigir al resultado
-        return redirect()->route('tests.result', ['type' => $type, 'result' => $resultKey]);
+        $scores[$key] = ($scores[$key] ?? 0) + 1;
     }
+
+    // Ordenar para obtener el más votado
+    arsort($scores);
+    $topKey = array_key_first($scores);  // ej "mixto"
+
+    // Buscar el type_id correspondiente al nombre (normal, seco, graso, mixto, sensible)
+    $routineType = RoutineType::where('name', $topKey)->first();
+
+    if (!$routineType) {
+        return redirect()->back()->with('error', 'No se encontró el tipo de rutina para: ' . $topKey);
+    }
+
+    // Buscar la rutina vinculada a ese tipo
+    $routine = Routine::where('routine_type_id', $routineType->type_id)->first();
+
+    if (!$routine) {
+        return redirect()->back()->with('error', 'No se encontró una rutina asociada a este tipo.');
+    }
+
+    // Redirigir a la pantalla de resultados
+    return redirect()->route('tests.result', $routine->routine_id);
+}
 
     /**
      * Mostrar resultado del test
      */
-    public function result($type, $result)
+    public function result($routineId)
     {
-        $routineType = RoutineType::where('name', ucfirst($type))->first();
+        $routine = Routine::findOrFail($routineId);
 
-        if (!$routineType) {
-            return redirect()->route('tests.index')->with('error', 'Tipo de test no válido.');
-        }
-
-        $routine = Routine::where('routine_type_id', $routineType->id)
-            ->where('name', $result)
-            ->with(['types', 'times'])
-            ->first();
-
-        if (!$routine) {
-            return redirect()->route('tests.index')->with('error', 'Rutina no disponible para este resultado.');
-        }
-
-        return view('tests.result', compact('routine', 'result'));
+        return view('tests.result', compact('routine'));
     }
+
 }

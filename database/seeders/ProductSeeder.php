@@ -62,7 +62,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'CeraVe Hydrating Cleanser',
                         'brand_id' => 1,
-                        'image' => 'cerave_hydrating_cleanser.jpg',
+                        'image' => 'CeraVeHydratingCleanser.webp',
                         'description' => 'Limpiador hidratante que respeta la barrera cutánea. Ideal para piel normal a seca.',
                         'ingredients' => 'Aqua, Glycerin, Ceramides, Hyaluronic Acid',
                         'activos' => 'Ceramidas, Ácido Hialurónico',
@@ -73,7 +73,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'La Roche-Posay Effaclar Gel',
                         'brand_id' => 2,
-                        'image' => 'la_roche_effaclar_gel.jpg',
+                        'image' => 'imagen3_la_roche_posay_effaclar_gel_moussant_purificante_x_400ml_imagen3.jpg',
                         'description' => 'Gel limpiador para piel grasa y con tendencia acnéica. Limpia suavemente sin resecar.',
                         'ingredients' => 'Aqua, Zinc PCA, Glycerin, Coco-Betaine',
                         'activos' => 'Zinc PCA',
@@ -84,7 +84,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Neutrogena Hydro Boost Water Gel Cleanser',
                         'brand_id' => 3,
-                        'image' => 'neutrogena_hydro_boost.jpg',
+                        'image' => 'neutrogena-hydro-boost-cleanser-water-gel-200ml_2.webp',
                         'description' => 'Limpiador en gel ligero que hidrata y refresca, no comedogénico.',
                         'ingredients' => 'Water, Glycerin, Dimethicone, Hyaluronic Acid',
                         'activos' => 'Ácido Hialurónico',
@@ -95,7 +95,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Icono Cosmetica Gel de Limpieza Facial Purificante', // Producto Nacional (Argentina)
                         'brand_id' => 8,
-                        'image' => 'icono_limpiador_purificante.jpg',
+                        'image' => 'icono.jpg',
                         'description' => 'Gel de limpieza purificante para pieles mixtas a grasas. Formulación con activos botánicos.',
                         'ingredients' => 'Extracto de Hamamelis, Tensioactivos suaves',
                         'activos' => 'Hamamelis, Zinc',
@@ -106,10 +106,9 @@ class ProductSeeder extends Seeder
                 ],
                 'Hidratantes' => [
                     [
-                        'name' => 'La Roche-Posay Toleriane Double Repair Moisturizer',
+                        'name' => 'La Roche-Posay Toleriane Double Matt Repair Moisturizer',
                         'brand_id' => 2,
-                        'image' => 'la_roche_toleriane.jpg',
-                        'description' => 'Hidratante para piel sensible con ceramidas y niacinamida. Restaura la barrera protectora.',
+                        'image' => 'matt.jpg',                        'description' => 'Hidratante para piel sensible con ceramidas y niacinamida. Restaura la barrera protectora.',
                         'ingredients' => 'Aqua, Glycerin, Ceramides, Niacinamide',
                         'activos' => 'Ceramidas, Niacinamida',
                         'formato' => '75ml',
@@ -119,7 +118,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'CeraVe Crema Hidratante',
                         'brand_id' => 1,
-                        'image' => 'cerave_moisturizing_cream.jpg',
+                        'image' => 'ceravee.jpeg',
                         'description' => 'Crema densa para cuerpo y rostro. Hidratación 24 horas con 3 ceramidas esenciales.',
                         'ingredients' => 'Aqua, Glycerin, Ceramides, Petrolatum',
                         'activos' => 'Ceramidas, Ácido Hialurónico',
@@ -130,7 +129,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'The Ordinary Natural Moisturizing Factors + HA',
                         'brand_id' => 9,
-                        'image' => 'the_ordinary_nmf_ha.jpg',
+                        'image' => 'the-ordinary-natural-moisturizing-factors-ha-100ml.avif',
                         'description' => 'Fórmula no grasa que ofrece hidratación superficial con Factores Hidratantes Naturales.',
                         'ingredients' => 'Amino Acids, Dermal Lipids, Hyaluronic Acid, Glycerin',
                         'activos' => 'Factores de Humectación Natural, Ácido Hialurónico',
@@ -141,7 +140,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Dermaglós Facial Crema Nutritiva de Noche', // Producto Nacional (Argentina)
                         'brand_id' => 10,
-                        'image' => 'dermaglos_nutritiva_noche.jpg',
+                        'image' => 'dermaglos.webp',
                         'description' => 'Crema nutritiva para la noche con Vitamina A. Mejora la elasticidad y regeneración celular.',
                         'ingredients' => 'Vitamina A, Alantoína, Glicerina',
                         'activos' => 'Vitamina A',
@@ -154,7 +153,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Eucerin Sun Fluid Photoaging Control FPS 50',
                         'brand_id' => 11,
-                        'image' => 'eucerin_sun_fluid.jpg',
+                        'image' => 'eucerin.webp',
                         'description' => 'Protector solar facial de amplio espectro, con ácido hialurónico para reducir arrugas.',
                         'ingredients' => 'Filtros UVA/UVB, Licochalcona A, Ácido Glicirretínico',
                         'activos' => 'FPS 50+, Ácido Hialurónico',
@@ -165,7 +164,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Isdin Fusion Water Magic FPS 50',
                         'brand_id' => 12,
-                        'image' => 'isdin_fusion_water.jpg',
+                        'image' => 'isdin.jpg',
                         'description' => 'Protector facial ultraligero a base de agua, de absorción inmediata, ideal para uso diario.',
                         'ingredients' => 'Aqua, Filtros solares, Ácido Hialurónico',
                         'activos' => 'FPS 50, Tecnología Safe-Eye',
@@ -178,7 +177,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Vichy Mineral 89 Booster',
                         'brand_id' => 13,
-                        'image' => 'vichy_mineral_89.jpg',
+                        'image' => 'vichy.webp',
                         'description' => 'Concentrado fortificante e hidratante con 89% de Agua Volcánica de Vichy y Ácido Hialurónico.',
                         'ingredients' => 'Aqua Volcánica de Vichy, Ácido Hialurónico',
                         'activos' => 'Ácido Hialurónico, Minerales',
@@ -189,7 +188,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'The Ordinary Niacinamide 10% + Zinc 1%',
                         'brand_id' => 9,
-                        'image' => 'the_ordinary_niacinamide.jpg',
+                        'image' => 'ordinary.webp',
                         'description' => 'Sérum de alta concentración de Niacinamida para reducir manchas, poros e imperfecciones.',
                         'ingredients' => 'Niacinamide, Zinc PCA',
                         'activos' => 'Niacinamida 10%, Zinc 1%',
@@ -200,7 +199,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Glow Factor Vitamina C 15%', // Producto Nacional (Argentina)
                         'brand_id' => 14,
-                        'image' => 'glow_factor_vitc.jpg',
+                        'image' => 'glowfact.webp',
                         'description' => 'Sérum de Vitamina C pura (ácido L-ascórbico) para acción antioxidante e iluminadora.',
                         'ingredients' => 'Ácido L-Ascórbico 15%, Ácido Ferúlico',
                         'activos' => 'Vitamina C, Ácido Ferúlico',
@@ -213,8 +212,8 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Paula\'s Choice 2% BHA Liquid Exfoliant',
                         'brand_id' => 15,
-                        'image' => 'paulas_choice_bha.jpg',
-                        'description' => 'Exfoliante químico con ácido salicílico. Desobstruye poros y reduce puntos negros.',
+                        'image' => 'paulas.webp',
+                       'description' => 'Exfoliante químico con ácido salicílico. Desobstruye poros y reduce puntos negros.',
                         'ingredients' => 'Salicylic Acid (BHA), Green Tea Extract',
                         'activos' => 'Ácido Salicílico 2%',
                         'formato' => '118ml',
@@ -228,7 +227,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Kérastase Resistance Bain Force Architecte',
                         'brand_id' => 5,
-                        'image' => 'kerastase_resistance.jpg',
+                        'image' => 'bain-force-architecte-resistance-250ml-01-kerastase.webp',
                         'description' => 'Shampoo reparador para cabellos dañados, quebradizos o con puntas abiertas.',
                         'ingredients' => 'Aqua, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Proteínas',
                         'activos' => 'Ceramidas, Proteínas',
@@ -239,7 +238,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'L’Oréal Serie Expert Absolut Repair',
                         'brand_id' => 6,
-                        'image' => 'loreal_absolut_repair.jpg',
+                        'image' => 'loreal.webp',
                         'description' => 'Shampoo nutritivo y reparador para cabello muy dañado. Enriquecido con Quinoa Dorada.',
                         'ingredients' => 'Aqua, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Lipidos',
                         'activos' => 'Quinoa Dorada, Proteínas',
@@ -250,8 +249,8 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Capilatis Ortiga Shampoo para Cabellos Grasos', // Producto Nacional (Argentina)
                         'brand_id' => 16,
-                        'image' => 'capilatis_ortiga.jpg',
-                        'description' => 'Shampoo con extracto de Ortiga que regula el exceso de sebo en cabellos grasos.',
+                        'image' => 'capilatis1.jpg',
+                      'description' => 'Shampoo con extracto de Ortiga que regula el exceso de sebo en cabellos grasos.',
                         'ingredients' => 'Extracto de Ortiga, Tensoactivos suaves',
                         'activos' => 'Extracto de Ortiga',
                         'formato' => '420ml',
@@ -263,7 +262,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Redken Extreme Conditioner',
                         'brand_id' => 7,
-                        'image' => 'redken_extreme_conditioner.jpg',
+                        'image' => 'redken-extreme-conditioner-2021.webp',
                         'description' => 'Acondicionador fortalecedor para cabello débil y quebradizo. Reconstruye la fibra capilar.',
                         'ingredients' => 'Aqua, Cetearyl Alcohol, Behentrimonium Chloride, Proteínas',
                         'activos' => 'Proteínas, Ceramidas',
@@ -274,8 +273,8 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Elvive Oleo Extraordinario Nutrición Intensa', // Producto popular globalmente y con buena presencia nacional (L'Oréal)
                         'brand_id' => 6,
-                        'image' => 'elvive_oleo.jpg',
-                        'description' => 'Acondicionador enriquecido con 6 óleos de flores preciosas para nutrición intensa.',
+                        'image' => 'oleoextra.jpg',
+                     'description' => 'Acondicionador enriquecido con 6 óleos de flores preciosas para nutrición intensa.',
                         'ingredients' => 'Óleos de flores, Glicerina',
                         'activos' => 'Óleos nutritivos',
                         'formato' => '400ml',
@@ -287,8 +286,8 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Olaplex No. 3 Hair Perfector',
                         'brand_id' => 17,
-                        'image' => 'olaplex_no3.jpg',
-                        'description' => 'Tratamiento pre-shampoo para fortalecer el cabello. Repara los enlaces de disulfuro dañados.',
+                        'image' => 'olaplex-n3.webp',
+                     'description' => 'Tratamiento pre-shampoo para fortalecer el cabello. Repara los enlaces de disulfuro dañados.',
                         'ingredients' => 'Bis-Aminopropyl Diglycol Dimaleate, Agua',
                         'activos' => 'Molécula Bis-Aminopropyl Diglycol Dimaleate',
                         'formato' => '100ml',
@@ -302,7 +301,7 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Nivea Milk Nutritiva Piel Seca', // Producto Nacional/Global muy popular
                         'brand_id' => 18,
-                        'image' => 'nivea_milk_nutritiva.jpg',
+                        'image' => 'nivea-body-para-piel-extra-seca.jpg',
                         'description' => 'Leche corporal de uso diario para piel seca a muy seca. 48h de hidratación.',
                         'ingredients' => 'Aceite de almendras, Glicerina',
                         'activos' => 'Aceite de Almendras',
@@ -313,8 +312,8 @@ class ProductSeeder extends Seeder
                     [
                         'name' => 'Cetaphil Loción Hidratante Corporal',
                         'brand_id' => 19,
-                        'image' => 'cetaphil_lotion.jpg',
-                        'description' => 'Loción ligera y no grasa para el cuerpo, ideal para piel sensible o irritada.',
+                        'image' => 'cetaphil-locion-hidratante.webp',
+                     'description' => 'Loción ligera y no grasa para el cuerpo, ideal para piel sensible o irritada.',
                         'ingredients' => 'Glicerina, Aceite de Macadamia',
                         'activos' => 'Pantenol, Niacinamida',
                         'formato' => '473ml',
