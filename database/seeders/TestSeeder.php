@@ -7,9 +7,18 @@ use App\Models\Test;
 
 class TestSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
     public function run(): void
     {
+        // Definición de todos los tests a insertar/actualizar
         $tests = [
+            // ----------------------------------------------------
+            // TEST DE TIPO DE PIEL
+            // ----------------------------------------------------
             [
                 'key' => 'piel',
                 'title' => '¿Qué tipo de piel tengo?',
@@ -117,6 +126,9 @@ class TestSeeder extends Seeder
                     ],
                 ]),
             ],
+            // ----------------------------------------------------
+            // TEST DE TIPO DE CABELLO
+            // ----------------------------------------------------
             [
                 'key' => 'cabello',
                 'title' => '¿Qué tipo de cabello tengo?',
@@ -191,7 +203,7 @@ class TestSeeder extends Seeder
                             ['text' => 'Equilibrado, sin irritación ni grasa excesiva', 'scoreKey' => 'normal'],
                             ['text' => 'Seco o con descamación', 'scoreKey' => 'seco'],
                             ['text' => 'Grasoso, con sensación de suciedad rápida', 'scoreKey' => 'graso'],
-                            ['text' => 'Grasoso en la raíz, seco en otras zonas', 'scoreKey' => 'mixto'],
+                            ['text' => 'Grasoso en la raíz, seco en otras zonas', 'scoreKey' => 'mixta'],
                         ],
                     ],
                     [
@@ -213,12 +225,16 @@ class TestSeeder extends Seeder
                         ],
                     ],
                 ]),
-            ]
-            ,
+            ],
         ];
 
+        // Usar updateOrCreate para prevenir errores de violación de unicidad
+        // Si el registro con la 'key' ya existe, lo actualiza. Si no, lo crea.
         foreach ($tests as $test) {
-            Test::create($test);
+            Test::updateOrCreate(
+                ['key' => $test['key']], // Criterio de búsqueda (el campo UNIQUE)
+                $test // Datos a crear o actualizar
+            );
         }
     }
 }

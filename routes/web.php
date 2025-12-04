@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::get('/profile/results', [ProfileController::class, 'results'])->name('profile.results');
+
+
     // Home
     Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -64,13 +67,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/productos/buscar', [ProductController::class, 'search'])->name('products.search');
     Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
-    Route::get('/products/category/{slug}', [ProductController::class, 'byCategory'])->name('products.byCategory');
+    Route::get('/categorias/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');
+
+
+
+
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     // Favoritos
     Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
     Route::post('/favorito/toggle/{product}', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
-    Route::post('/productos/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
+    Route::post('/products/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
 
     // Suscripción
     Route::get('/premium', [SubscriptionController::class, 'show'])->name('subscription');
@@ -105,10 +112,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/routine', [RoutineController::class, 'index'])->name('routines.index');
     Route::get('/routine/create', [RoutineController::class, 'create'])->name('routines.create');
     Route::post('/routine', [RoutineController::class, 'store'])->name('routines.store');
+    Route::get('/routines/{routine}', [RoutineController::class, 'show'])->name('routines.show');
     Route::get('/routine/{routine_id}', [RoutineController::class, 'view'])->name('routines.view');
     Route::get('/routine/{routine_id}/edit', [RoutineController::class, 'edit'])->name('routines.edit');
     Route::get('/routine/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('routines.destroy');
-    Route::post('/routine/add-product', [RoutineController::class, 'addProduct'])->middleware('auth')->name('routine.addProduct');
+    // Agregar producto a rutina desde la vista del producto
+    Route::post('/routine/{routine}/add-product', [RoutineController::class, 'addProduct'])->name('routine.addProduct');
+
+
 
     /*
     |--------------------------------------------------------------------------

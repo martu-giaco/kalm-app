@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $query->where('role', 'admin');
     }
+    public function routines()
+    {
+        return $this->hasMany(Routine::class);
+    }
+
 }

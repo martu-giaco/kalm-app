@@ -72,4 +72,15 @@ class ProfileController extends Controller
             ->with('feedback.type', 'success');
     }
 
+    public function results()
+{
+    $user = auth()->user();
+
+    // Aquí puedes cargar datos para los resultados, por ejemplo:
+    $results = $user->results ?? [];
+
+    return view('user.results', compact('results', 'user'));
+}
+
+
 }

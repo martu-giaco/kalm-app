@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\ProductCategory;
-use App\Models\Routine;
-use App\Http\Controllers\RoutineController;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -15,37 +13,45 @@ class ProductController extends Controller
 {
     /**
      * Mostrar detalle de un producto.
-     * Acepta como identificador un slug o un id numérico.
+     * Acepta como identificador un id numérico.
      */
-    public function show($identifier)
+    public function show($id)
     {
-        // Construyo la query base
-        $query = Product::query();
+        $product = Product::findOrFail($id);
 
-        // Si la columna 'slug' existe, intento buscar por slug o id.
-        if (Schema::hasColumn('products', 'slug')) {
-            $product = $query->where('slug', $identifier)
-                ->orWhere('id', $identifier)
-                ->first();
-        } else {
-            // Si no hay slug, buscamos por id directamente
-            $product = $query->where('id', $identifier)->first();
-        }
+        // Categorías
+        $categories = ProductCategory::all();
 
-        if (!$product) {
-            abort(404);
-        }
+        // Rutinas del usuario autenticado
+        $routines = auth()->user()->routines()->get(); // Trae todas las rutinas del usuario
 
-        // Si tu vista espera otros datos (relaciones), cargalas aquí, p.ej:
-        // $product->load(['brand', 'category', 'images']);
+        // Banners
+        $banners = [
+            ['img_src' => 'banners/banner1.jpg', 'alt' => 'Banner 1'],
+            ['img_src' => 'banners/banner2.jpg', 'alt' => 'Banner 2'],
+        ];
 
-        $user = auth()->user();
+        // Secciones de productos relacionadas
+        $product_sections = [
+            [
+                'title' => 'Productos similares',
+                'products' => Product::where('category_id', $product->category_id)
+                    ->where('id', '!=', $product->id)
+                    ->get(),
+            ],
+        ];
 
-        $routines = Routine::where('user_id', $user->id)
-                            ->with(['times'])
-                            ->get();
+        // Productos top rating
+        $topRatedProducts = Product::orderBy('rating', 'desc')->take(5)->get();
 
-        return view('products.show', compact('product', 'routines'));
+        return view('products.show', compact(
+            'product',
+            'categories',
+            'routines',
+            'banners',
+            'product_sections',
+            'topRatedProducts'
+        ));
     }
 
     /**
@@ -93,7 +99,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Mostrar productos filtrados por tipo (ej: skincare / haircare)
+     * Mostrar productos filtrados por tipo
      */
     public function byType($typeSlug)
     {
@@ -108,31 +114,24 @@ class ProductController extends Controller
 
     /**
      * Mostrar productos filtrados por categoría
-     */
-    public function byCategory($slug)
-    {
-        // Intento por slug si la columna existe
-        $category = null;
-        if (Schema::hasColumn('product_categories', 'slug')) {
-            $category = ProductCategory::where('slug', $slug)->first();
-        }
+     */// ProductController.php
+public function byCategory($slug)
+{
+    // Obtener la categoría por slug
+    $category = ProductCategory::where('slug', $slug)->firstOrFail();
 
-        // Fallback: convertir slug a nombre y buscar por name
-        if (!$category) {
-            // "hidratantes" -> "Hidratantes" (o "Hidratantes" según tu naming)
-            $name = Str::of($slug)->replace('-', ' ')->title()->toString();
-            $category = ProductCategory::where('name', $name)->first();
-        }
+    // Verificar productos
+    $products = Product::where('category_id', $category->id)
+                        ->with(['brand', 'type'])
+                        ->get();
 
-        if (!$category) {
-            abort(404);
-        }
+    // Si quieres depurar:
+    // dd($category, $products);
 
-        // Asumiendo relación products() en el modelo
-        $products = $category->products()->paginate(20);
+    return view('products.byCategory', compact('category', 'products'));
+}
 
-        return view('products.index', compact('category', 'products'));
-    }
+
 
 
     /**
@@ -154,22 +153,20 @@ class ProductController extends Controller
         $user->favoritos = json_encode(array_values($favoritos));
         $user->save();
 
-        if (request()->ajax()) {  // Detecta fetch/AJAX
+        if (request()->ajax()) {
             return response()->json(['favorito' => $isFavorito]);
         }
 
-        return back();  // Para petición normal
+        return back();
     }
 
-
-    // app/Http/Controllers/ProductController.php
-
+    /**
+     * Buscar productos
+     */
     public function search(Request $request)
     {
-        // Obtener la consulta del input
         $query = $request->input('q');
 
-        // Buscar productos filtrando por nombre, marca o tipo
         $products = Product::with(['brand', 'type', 'category'])
             ->when($query, function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
@@ -179,15 +176,9 @@ class ProductController extends Controller
             })
             ->paginate(12);
 
-
-        // Pasar los datos a la vista
         return view('products.search', [
             'products' => $products,
             'query' => $query
         ]);
     }
-
-
-
-
 }

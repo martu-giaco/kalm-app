@@ -11,7 +11,7 @@
             </span>
 
             <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes" value="{{ request('q') }}"
-                class="w-full pl-10 p-3 rounded-lg shadow-xl bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#CCE2E5]
+                class="w-full pl-10 p-3 rounded-xl shadow-xl bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#CCE2E5]
                     focus:outline-none focus:ring-2 focus:ring-[#37A0AF] focus:border-[#37A0AF]">
         </form>
     </div>
