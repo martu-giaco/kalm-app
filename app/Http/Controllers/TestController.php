@@ -31,6 +31,7 @@ class TestController extends Controller
         return view('tests.show', compact('test'));
     }
 
+    //redirigir a pantalla de resultados
     /**
      * Procesar respuestas del test
      */

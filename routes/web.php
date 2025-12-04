@@ -22,7 +22,7 @@ use App\Http\Controllers\TestController;
 */
 
 // Auth (login/logout/register)
-Route::get('/login-register', [AuthController::class, 'logOrReg'])->name('auth.logreg');
+Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 
@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
 
 
     // Home
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     // Búsqueda
     Route::get('/search', [SearchController::class, 'search'])->name('search');
