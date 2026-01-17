@@ -1,6 +1,25 @@
-{{-- resources/views/auth/terms.blade.php --}}
-<x-layout title="Términos y Condiciones - Kälm">
-    <div class="mx-auto p-6 bg-white rounded-lg shadow">
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Términos y Condiciones | Kälm</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}" />
+    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+
+<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<div class="mx-auto pt-10 p-6 bg-white rounded-lg shadow">
 
         <h1 class="text-[#306067] text-2xl font-semibold mb-4">Términos y Condiciones</h1>
 
@@ -146,7 +165,7 @@
                     <button
                         id="acceptBtn"
                         type="submit"
-                        class="w-full inline-flex text-white bg-[#2A4043] px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 btn-primary opacity-50 cursor-not-allowed"
+                        class="btn w-full inline-flex text-white bg-[#2A4043] hover:bg-[#2A4043] border-none disabled:bg-[#CCE2E5] disabled:text-gray-600 px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 btn-primary opacity-50 cursor-not-allowed"
                         disabled
                     >
                         Crear cuenta
@@ -209,4 +228,5 @@
             });
         })();
     </script>
-</x-layout>
+</body>
+</html>
