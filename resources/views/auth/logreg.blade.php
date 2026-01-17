@@ -25,11 +25,11 @@
         <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-20 mb-10">
         <div>
             <a href="{{ route('auth.login') }}"
-                class="btn w-full px-5 mb-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
+                class="btn w-full px-5 mb-5 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
                 Iniciar sesión
             </a>
             <a href="{{ route('auth.register') }}"
-                class="w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                class="btn w-full inline-flex border-2 border-[#306067] text-[#2A4043] hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
                 Crear cuenta
             </a>
         </div>

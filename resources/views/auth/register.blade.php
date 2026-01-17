@@ -22,7 +22,7 @@
 
     <div class="max-w-2xl mx-auto p-6 flex flex-col justify-between min-h-screen">
 
-        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-20">
+        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-10">
 
         <div>
                     <h1 class="text-2xl font-bold text-[#2A4043]">Crear una cuenta</h1>
@@ -89,7 +89,7 @@
             <p class="decorated text-[#2A4043] text-sm mt-6 mb-3">¿Ya tenés una cuenta?</p>
 
             <a href="{{ route('auth.login') }}"
-                class="w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
                 Iniciar Sesión
             </a>
         </div>
