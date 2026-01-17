@@ -32,7 +32,7 @@
 
             <div>
                 <label for="name" class="block mb-1 text-sm">Nombre</label>
-                <input id="name" placeholder="Nombre" name="name" value="{{ old('name') }}" type="text"
+                <input id="name" placeholder="Nombre" name="name" aria-label="Nombre" value="{{ old('name') }}" type="text"
                         class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
                         required>
 
@@ -43,7 +43,7 @@
 
             <div>
                 <label for="username" class="block mb-1 text-sm">Nombre de usuario</label>
-                <input id="username" placeholder='@usuario' name="username" value="{{ old('username') }}" type="text"
+                <input id="username" placeholder='@usuario' name="username" aria-label="nombre de usuario" value="{{ old('username') }}" type="text"
                         class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
                         required>
 
@@ -54,7 +54,7 @@
 
             <div>
                 <label for="email" class="block mb-1 text-sm">Email</label>
-                <input id="email" placeholder="Email" name="email" value="{{ old('email') }}" type="email"
+                <input id="email" placeholder="Email" aria-label="email" name="email" value="{{ old('email') }}" type="email"
                         class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
                         required>
 
@@ -65,7 +65,7 @@
 
             <div>
                 <label for="password" class="block mb-1 text-sm">Contraseña</label>
-                <input id="password" placeholder="Contraseña" name="password" type="password"
+                <input id="password" placeholder="Contraseña" aria-label="Contraseña" name="password" type="password"
                         class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
                         required>
 
@@ -81,7 +81,7 @@
                         required>
             </div>
 
-            <input type="submit" value="Registrarme" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer bg-[#306067]">
+            <input type="submit" value="Registrarme" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] bg-[#306067]">
         </form>
         </div>
 
