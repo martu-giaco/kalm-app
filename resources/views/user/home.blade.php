@@ -1,7 +1,33 @@
 <x-layout title="Kälm | Inicio">
 
     <section class="px-5">
-        {{-- Categorías --}}
+        {{-- Barra de búsqueda --}}
+        <div class="mb-[-3vw] relative">
+            <form action="{{ route('products.search') }}" method="GET">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#2A4043">
+                        <path
+                            d="M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                    </svg>
+                </span>
+
+                <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes"
+                    value="{{ request('q') }}" class="w-full pl-10 p-3 rounded-xl shadow-2xl bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#306067]
+                        focus:outline-none focus:ring-2 focus:ring-[#37A0AF] focus:border-[#37A0AF]">
+            </form>
+        </div>
+    </section>
+
+    <section class="px-5 pt-10 rounded-t-3xl bg-white">
+        {{-- Banners --}}
+        <div class="mb-8 h-40 w-full relative overflow-hidden rounded-xl">
+            @foreach ($banners as $banner)
+                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}" class="w-full h-full object-cover">
+            @endforeach
+        </div>
+
+                {{-- Categorías --}}
         <div class="mb-6">
             <h2 class="text-xl font-semibold text-[var(--kalm-dark)] mb-4">Categorías</h2>
 
@@ -41,32 +67,6 @@
             @else
                 <p class="text-sm text-[var(--kalm-text)]">No hay categorías disponibles.</p>
             @endif
-        </div>
-
-        {{-- Barra de búsqueda --}}
-        <div class="mb-[-3vw] relative">
-            <form action="{{ route('products.search') }}" method="GET">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="#2A4043">
-                        <path
-                            d="M380-320q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
-                    </svg>
-                </span>
-
-                <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes"
-                    value="{{ request('q') }}" class="w-full pl-10 p-3 rounded-xl shadow-2xl bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#306067]
-                        focus:outline-none focus:ring-2 focus:ring-[#37A0AF] focus:border-[#37A0AF]">
-            </form>
-        </div>
-    </section>
-
-    <section class="px-5 pt-10 rounded-t-3xl bg-white">
-        {{-- Banners --}}
-        <div class="mb-8 h-40 w-full relative overflow-hidden rounded-xl">
-            @foreach ($banners as $banner)
-                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}" class="w-full h-full object-cover">
-            @endforeach
         </div>
 
         @foreach ($product_sections as $section)
