@@ -1,39 +1,48 @@
 <x-layout :title="'Test de ' . ucfirst($test->key)">
-    <div class="max-w-3xl mx-auto px-4 ">
-        <article class="bg-white rounded-2xl px-6 py-2 shadow-lg">
+    <div class="max-w-3xl px-4 mx-auto ">
+        <article class="px-6 bg-white shadow-lg py-7 rounded-2xl">
             <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">{{ $test->title }}</h1>
-            <p class="text-gray-600 mb-6">{{ $test->description }}</p>
 
             <form id="testForm" action="{{ route('tests.submit') }}" method="POST" novalidate>
                 @csrf
                 <input type="hidden" name="type" value="{{ $test->key }}">
 
                 <div id="questions">
-                    @foreach($test->questions as $index => $question)
-                        <div class="question mb-6" data-index="{{ $index }}" @if($index != 0) style="display:none" @endif>
-                            <p class="block text-gray-700 font-medium mb-4">{{ $index + 1 }}. {{ $question['text'] }}</p>
+                    @foreach ($test->questions as $index => $question)
+                        <div class="mb-6 question" data-index="{{ $index }}"
+                            @if ($index != 0) style="display:none" @endif>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                @foreach($question['options'] as $option)
-                                    <label class="option-card cursor-pointer border border-gray-300 rounded-lg p-4 flex items-center justify-center transition-colors duration-200">
-                                        <input type="radio" name="q{{ $index + 1 }}" value="{{ $option['scoreKey'] }}" class="sr-only">
-                                        {{ $option['text'] }}
+                            <p class="block mb-4 font-medium text-gray-700">
+                                {{ $index + 1 }}. {{ $question['text'] }}
+                            </p>
+
+                            <div class="space-y-3">
+                                @foreach ($question['options'] as $option)
+                                    <label class="flex items-center gap-5 cursor-pointer">
+                                        <input type="radio" name="q{{ $index + 1 }}"
+                                            value="{{ $option['scoreKey'] }}"
+                                            class="h-4 w-4 text-[#164d4f] focus:ring-[#164d4f]">
+                                        <span class="text-gray-700">{{ $option['text'] }}</span>
                                     </label>
                                 @endforeach
                             </div>
+
                         </div>
                     @endforeach
                 </div>
 
+
                 {{-- Barra de progreso --}}
-                <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+                <div class="w-full h-3 mb-6 bg-gray-200 rounded-full">
                     <div id="progressBar" class="bg-[#164d4f] h-3 rounded-full w-0"></div>
                 </div>
 
                 {{-- Botones --}}
                 <div class="flex justify-between">
-                    <button type="button" id="prevBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg" disabled>Anterior</button>
-                    <button type="button" id="nextBtn" class="bg-[#164d4f] text-white px-4 py-2 rounded-lg">Siguiente</button>
+                    <button type="button" id="prevBtn" class="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg"
+                        disabled>Anterior</button>
+                    <button type="button" id="nextBtn"
+                        class="bg-[#164d4f] text-white px-4 py-2 rounded-lg">Siguiente</button>
                 </div>
 
                 {{-- Hidden submit --}}
@@ -43,7 +52,7 @@
     </div>
 
     <script>
-        (function () {
+        (function() {
             const questions = Array.from(document.querySelectorAll('.question'));
             const progressBar = document.getElementById('progressBar');
             const prevBtn = document.getElementById('prevBtn');
