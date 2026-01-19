@@ -27,24 +27,24 @@
         {{-- Contenedor principal del contenido, ahora sin min-h-screen --}}
         <div class="flex flex-col header-bg drawer-content">
             <header
-                class="flex items-center justify-between w-full max-w-[95%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
+                class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
 
                 <!-- Logo -->
-                <p class="text-4xl logo-text leading-none mx-3">Kälm</p>
+                <p class="mx-3 text-4xl leading-none logo-text">Kälm</p>
 
                 @auth
                     <!-- Usuario autenticado -->
-                    <div class="flex items-center gap-5 h-full">
+                    <div class="flex items-center h-full gap-5">
                         <!-- Notificaciones -->
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('images/notificaciones.png') }}" alt="notificaciones" class="h-8 w-auto">
+                            <img src="{{ asset('images/notificaciones.png') }}" alt="notificaciones" class="w-auto h-8">
                         </a>
 
                         <!-- Avatar y nombre -->
-                        <label for="my-drawer-1" class="flex items-center gap-2 cursor-pointer h-full"
+                        <label for="my-drawer-1" class="flex items-center h-full gap-2 cursor-pointer"
                             aria-label="open sidebar">
                             <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
-                                alt="{{ auth()->user()->name }}" class="h-10 w-10 rounded-full object-cover">
+                                alt="{{ auth()->user()->name }}" class="object-cover w-10 h-10 rounded-full">
                             <span class="hidden md:inline-block font-medium text-sm text-[#2A4043] truncate max-w-[120px]">
                                 {{ \Illuminate\Support\Str::limit(auth()->user()->name, 18) }}
                             </span>
@@ -56,10 +56,10 @@
 
 
             {{-- Contenedor para el padding fijo del header (para que el contenido no quede debajo) --}}
-            <div class="pt-24 flex flex-col">
+            <div class="flex flex-col pt-24">
 
                 <main
-                    class="pt-5 fixed top-24 bottom-0 left-0 right-0 mx-auto px-3 w-screen grow rounded-t-3xl overflow-hidden overflow-y-auto">
+                    class="fixed bottom-0 left-0 right-0 w-screen px-3 pt-5 mx-auto overflow-hidden overflow-y-auto top-24 grow rounded-t-3xl">
 
                     @php
                         // Mensajes de feedback
@@ -86,8 +86,8 @@
                     {{-- Mostrar errores de validación --}}
                     @if ($errors->any())
                         <div class="mx-4 my-4">
-                            <div class="rounded-xl p-4 bg-red-50 text-red-800 shadow-lg">
-                                <ul class="list-disc pl-5">
+                            <div class="p-4 text-red-800 shadow-lg rounded-xl bg-red-50">
+                                <ul class="pl-5 list-disc">
                                     @foreach ($errors->all() as $err)
                                         <li>{{ $err }}</li>
                                     @endforeach
@@ -114,7 +114,7 @@
                     glass-effect
                     transition-all duration-500 ease-in-out">
 
-                    <ul class="flex flex-1 items-center justify-evenly w-full">
+                    <ul class="flex items-center flex-1 w-full justify-evenly">
                         <!-- Inicio -->
                         <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('home') }}" class="flex flex-col items-center">
@@ -189,9 +189,9 @@
             @endauth
         </div>
 
-        <div class="drawer-side z-50">
+        <div class="z-50 drawer-side">
             <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="menu bg-white min-h-full w-80 p-0 rounded-l-3xl flex flex-col justify-between">
+            <div class="flex flex-col justify-between min-h-full p-0 bg-white menu w-80 rounded-l-3xl">
                 @auth
                         <div>
                             <div class="flex flex-col border-b p-5 pt-5 border-[#CCE2E5]">
@@ -211,7 +211,7 @@
                                     </label>
                                 </div>
 
-                                <div class="flex justify-between mt-4 items-center">
+                                <div class="flex items-center justify-between mt-4">
                                     <div>
                                         <p class="text-md text-[#37A0AF]">Hola,</p>
                                         <h2 class="text-4xl text-[#306067]">{{ auth()->user()->name }}</h2>
@@ -219,7 +219,7 @@
 
                                     <a href="{{ route('profile.show') }}">
                                         <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
-                                            alt="{{ auth()->user()->name }}" class="h-14 w-14 rounded-full object-cover">
+                                            alt="{{ auth()->user()->name }}" class="object-cover rounded-full h-14 w-14">
                                     </a>
                                 </div>
 
@@ -230,7 +230,7 @@
                                 </div>
                             </div>
 
-                            <ul class="p-3 gap-3">
+                            <ul class="gap-3 p-3">
                                 <li>
                                     <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                         href="{{ route('profile.show') }}">
@@ -305,7 +305,7 @@
                             </ul>
                         </div>
 
-                        <ul class="p-3 gap-3">
+                        <ul class="gap-3 p-3 mb-3">
                             <li>
                                 <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('home') }}">
@@ -319,13 +319,13 @@
                             </li>
 
                             <li>
-                                <form action="{{ route('auth.logout') }}" method="POST" class="w-full flex justify-between">
+                                <form action="{{ route('auth.logout') }}" method="POST" class="flex justify-between w-full">
                                     @csrf
                                     <button type="submit"
-                                        class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent">
+                                        class="flex flex-row text-lg text-[#741919] w-full justify-between items-center hover:bg-transparent">
                                         Cerrar sesión
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                            width="24px" fill="#306067" class="ml-2">
+                                            width="24px" fill="#741919" class="ml-2">
                                             <path
                                                 d="M200-480q0 106 69 185t174 93q16 2 26.5 14t10.5 28q0 17-14.5 28t-32.5 9q-135-17-224-118.5T120-480q0-136 88.5-237.5T432-837q19-2 33.5 8.5T480-800q0 16-10.5 28T443-758q-105 14-174 93t-69 185Zm487 40H400q-17 0-28.5-11.5T360-480q0-17 11.5-28.5T400-520h287l-75-75q-12-12-12-28.5t12-28.5q12 12 28 12t28 12l144 144q12 12 12 28t-12 28L668-308q-12 12-28 11.5T612-309q-12-12-12-28t12-28l75-75Z" />
                                         </svg>
@@ -339,7 +339,7 @@
                 <div class="p-5 pt-10 border-b">
                     <h2 class="text-2xl">Bienvenido</h2>
                     <p class="text-sm">Inicia sesión o creá una cuenta</p>
-                    <div class="mt-4 flex gap-3">
+                    <div class="flex gap-3 mt-4">
                         <a href="{{ route('auth.login') }}" class="btn btn-ghost">Ingresar</a>
                         <a href="{{ route('auth.register') }}" class="btn">Registrarse</a>
                     </div>

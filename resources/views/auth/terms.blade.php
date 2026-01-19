@@ -1,12 +1,12 @@
 {{-- resources/views/auth/terms.blade.php --}}
 <x-layout title="Términos y Condiciones - Kälm">
-    <div class="mx-auto p-6 bg-white rounded-lg shadow">
+    <div class="p-6 mx-auto bg-white rounded-lg shadow">
 
         <h1 class="text-[#306067] text-2xl font-semibold mb-4">Términos y Condiciones</h1>
 
         {{-- CONTENIDO DE TÉRMINOS: solo este bloque es scrollable --}}
         <div class="mb-6">
-            <div class="rounded h-72 overflow-auto prose text-md leading-relaxed">
+            <div class="overflow-auto leading-relaxed prose rounded h-72 text-md">
                 <h2 class="text-[#306067]">1. Introducción</h2>
                 <p class="text-sm">
                     Bienvenido a Kälm. Estos Términos y Condiciones regulan el acceso y uso de la aplicación Kälm
@@ -139,17 +139,17 @@
                 </label>
 
                 @error('accept_terms')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                 @enderror
 
-                <div class="w-full flex items-center">
+                <div class="flex items-center w-full">
                     <button
                         id="acceptBtn"
                         type="submit"
                         class="w-full inline-flex text-white bg-[#2A4043] px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 btn-primary opacity-50 cursor-not-allowed"
                         disabled
                     >
-                        Crear cuenta
+                        Crear Cuenta
                     </button>
                 </div>
             </div>

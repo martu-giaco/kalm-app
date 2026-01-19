@@ -19,10 +19,10 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
-    <div class="max-w-2xl mx-auto p-6 flex flex-col justify-between min-h-screen">
-        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-20 mb-5">
+    <div class="flex flex-col justify-between max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto">
+        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-5">
         <div>
             <h1 class="text-2xl font-bold text-[#2A4043]">Iniciar Sesión</h1>
 
@@ -49,8 +49,8 @@
 
         @if ($errors->any())
             <div class="mx-4 my-4">
-                <div class="rounded-xl p-4 bg-red-50 text-red-800 shadow-lg">
-                    <ul class="list-disc pl-5">
+                <div class="p-4 text-red-800 shadow-lg rounded-xl bg-red-50">
+                    <ul class="pl-5 list-disc">
                         @foreach ($errors->all() as $err)
                             <li>{{ $err }}</li>
                         @endforeach
@@ -90,7 +90,7 @@
 
             <a href="{{ route('auth.register') }}"
                 class="w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
-                Crear cuenta
+                Crear Cuenta
             </a>
         </div>
 

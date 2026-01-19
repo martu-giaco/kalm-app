@@ -12,7 +12,7 @@
             @endphp
 
             @if($categories->isNotEmpty())
-                <div class="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
+                <div class="flex pb-2 space-x-4 overflow-x-auto scrollbar-hide">
 
 
                     @foreach ($categories as $category)
@@ -23,7 +23,7 @@
                             @endphp
 
                             <a href="{{ route('products.byCategory', ['category' => $category->slug]) }}"
-                                class="shrink-0 w-20 flex flex-col items-center">
+                                class="flex flex-col items-center w-20 shrink-0">
                                 <div
                                     class="h-16 w-16 rounded-full flex items-center justify-center p-3
                                                 {{-- Clase condicional para resaltar la categoría activa --}}
@@ -46,7 +46,7 @@
         {{-- Barra de búsqueda --}}
         <div class="mb-[-3vw] relative">
             <form action="{{ route('products.search') }}" method="GET">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2">
+                <span class="absolute -translate-y-1/2 left-3 top-1/2">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="#2A4043">
                         <path
@@ -55,17 +55,17 @@
                 </span>
 
                 <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes"
-                    value="{{ request('q') }}" class="w-full pl-10 p-3 rounded-xl shadow-2xl bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#306067]
+                    value="{{ request('q') }}" class="w-full pl-10 p-3 rounded-xl shadow-md bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#306067]
                         focus:outline-none focus:ring-2 focus:ring-[#37A0AF] focus:border-[#37A0AF]">
             </form>
         </div>
     </section>
 
-    <section class="px-5 pt-10 rounded-t-3xl bg-white">
+    <section class="px-5 pt-10 bg-white rounded-t-3xl">
         {{-- Banners --}}
-        <div class="mb-8 h-40 w-full relative overflow-hidden rounded-xl">
+        <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl">
             @foreach ($banners as $banner)
-                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}" class="w-full h-full object-cover">
+                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}" class="object-cover w-full h-full">
             @endforeach
         </div>
 
@@ -76,19 +76,19 @@
 
             <div class="mb-8">
                 <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-4">{{ $section['title'] }}</h2>
-                <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
+                <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
-                        <a href="{{ route('products.show', $product->id) }}" class="w-40 md:w-44 flex-shrink-0 group">
-                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                        <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
+                            <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
                                 <div class="w-full h-40 overflow-hidden">
                                     <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                        class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                                        class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
                                 </div>
 
                                 {{-- Info simplificada --}}
-                                <div class="p-3 flex flex-col gap-1">
+                                <div class="flex flex-col gap-1 p-3">
                                     <h3 class="text-sm font-semibold text-[var(--kalm-dark)] mb-1 truncate">
                                         {{ $product->name }}
                                     </h3>

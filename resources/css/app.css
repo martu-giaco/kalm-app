@@ -94,7 +94,7 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 400px;
+    height: 100vh;
 }
 
 /* Tablets (≤1024px) */
@@ -128,6 +128,7 @@ h5,
 h6 {
     font-family: 'Tropiline Normal';
 }
+
 
 main p {
     color: #2A4043;
