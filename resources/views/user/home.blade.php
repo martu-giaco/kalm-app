@@ -1,6 +1,8 @@
 <x-layout title="Kälm | Inicio">
 
     <section class="px-5">
+
+
         {{-- Categorías --}}
         <div class="mb-6">
             <h2 class="text-xl font-semibold text-[var(--kalm-dark)] mb-4">Categorías</h2>
@@ -11,15 +13,15 @@
                 $currentSlug = request()->route('slug');
             @endphp
 
-            @if($categories->isNotEmpty())
+            @if ($categories->isNotEmpty())
                 <div class="flex pb-2 space-x-4 overflow-x-auto scrollbar-hide">
 
 
                     @foreach ($categories as $category)
-                        @if(!empty($category->slug))
+                        @if (!empty($category->slug))
                             {{-- Lógica de navegación existente, ahora con resaltado --}}
                             @php
-                                $isActive = ($category->slug === $currentSlug);
+                                $isActive = $category->slug === $currentSlug;
                             @endphp
 
                             <a href="{{ route('products.byCategory', ['category' => $category->slug]) }}"
@@ -27,7 +29,7 @@
                                 <div
                                     class="h-16 w-16 rounded-full flex items-center justify-center p-3
                                                 {{-- Clase condicional para resaltar la categoría activa --}}
-                                                @if($isActive) bg-[var(--kalm-dark)] text-white @else bg-[var(--kalm-light)] text-[var(--kalm-dark)] @endif">
+                                                @if ($isActive) bg-[var(--kalm-dark)] text-white @else bg-[var(--kalm-light)] text-[var(--kalm-dark)] @endif">
                                     {!! $category->icon_svg !!}
                                 </div>
 
@@ -55,7 +57,8 @@
                 </span>
 
                 <input type="text" name="q" placeholder="Buscar productos, marcas o ingredientes"
-                    value="{{ request('q') }}" class="w-full pl-10 p-3 rounded-xl shadow-md bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#306067]
+                    value="{{ request('q') }}"
+                    class="w-full pl-10 p-3 rounded-xl shadow-md bg-white border border-[#CCE2E5] text-[#306067] placeholder-[#306067]
                         focus:outline-none focus:ring-2 focus:ring-[#37A0AF] focus:border-[#37A0AF]">
             </form>
         </div>
@@ -65,7 +68,8 @@
         {{-- Banners --}}
         <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl">
             @foreach ($banners as $banner)
-                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}" class="object-cover w-full h-full">
+                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}"
+                    class="object-cover w-full h-full">
             @endforeach
         </div>
 
@@ -79,7 +83,8 @@
                 <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
                         <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
-                            <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
+                            <div
+                                class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
                                 <div class="w-full h-40 overflow-hidden">
@@ -93,14 +98,17 @@
                                         {{ $product->name }}
                                     </h3>
 
-                                    @if(!empty($product->brand?->name))
-                                        <p class="text-[10px] text-gray-500 truncate">Marca: {{ $product->brand->name }}</p>
+                                    @if (!empty($product->brand?->name))
+                                        <p class="text-[10px] text-gray-500 truncate">Marca:
+                                            {{ $product->brand->name }}</p>
                                     @endif
-                                    @if(!empty($product->type?->name))
-                                        <p class="text-[10px] text-gray-500 truncate">Tipo: {{ $product->type->name }}</p>
+                                    @if (!empty($product->type?->name))
+                                        <p class="text-[10px] text-gray-500 truncate">Tipo: {{ $product->type->name }}
+                                        </p>
                                     @endif
-                                    @if(!empty($product->category?->name))
-                                        <p class="text-[10px] text-gray-500 truncate">Categoría: {{ $product->category->name }}</p>
+                                    @if (!empty($product->category?->name))
+                                        <p class="text-[10px] text-gray-500 truncate">Categoría:
+                                            {{ $product->category->name }}</p>
                                     @endif
                                 </div>
 

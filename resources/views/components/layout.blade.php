@@ -20,12 +20,12 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="bg-light">
     <div class="drawer drawer-end">
         <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
 
         {{-- Contenedor principal del contenido, ahora sin min-h-screen --}}
-        <div class="flex flex-col header-bg drawer-content">
+        <div class="grid h-screen grid-cols-1 grid-rows-3 header-bg drawer-content">
             <header
                 class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
 

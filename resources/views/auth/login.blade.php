@@ -65,20 +65,20 @@
 
             <div>
                 <label for="email" class="block mb-1 text-sm">Email</label>
-                <input id="email" name="email" type="email" placeholder="Email"
+                <input id="email" name="email" aria-label="Email" type="email" placeholder="Email"
                     class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
                     required>
             </div>
 
             <div>
                 <label for="password" class="block mb-1 text-sm">Contraseña</label>
-                <input id="password" name="password" type="password" placeholder="Contraseña"
+                <input id="password" name="password" aria-label="Contraseña" type="password" placeholder="Contraseña"
                     class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
                     required>
             </div>
 
             <input type="submit" value="Ingresar"
-                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
+                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
 
             <a class="block text-center font-bold text-sm text-[#2A4043] mt-2" href="#">Olvidé la
                 contraseña</a>
@@ -89,8 +89,8 @@
             <p class="decorated text-[#2A4043] text-sm mt-6 mb-3">No tengo cuenta</p>
 
             <a href="{{ route('auth.register') }}"
-                class="w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
-                Crear Cuenta
+                class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                Crear cuenta
             </a>
         </div>
 
