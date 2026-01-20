@@ -73,7 +73,7 @@
             @endphp
 
             <div class="mb-8">
-                <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-4">{{ $section['title'] }}</h2>
+                <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-2">{{ $section['title'] }}</h2>
                 <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
                         <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
@@ -87,7 +87,7 @@
                                 </div>
 
                                 {{-- Info simplificada --}}
-                                <div class="flex flex-col gap-1 p-3">
+                                <div class="flex flex-col p-3">
                                     <h3 class="text-sm font-semibold text-[#2A4043] truncate">
                                         {{ $product->name }}
                                     </h3>
@@ -97,7 +97,7 @@
                                             {{ $product->brand->name }}</h3>
                                     @endif
                                     @if (!empty($product->type?->name))
-                                        <button class="text-[10px] w-20 inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                        <button class="text-[10px] mt-2 w-20 inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
                                             ✨{{ $product->type->name }}
                                         </button>
                                     @endif
