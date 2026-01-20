@@ -31,13 +31,13 @@
                                 </h3>
 
                                 @if(!empty($product->brand?->name))
-                                    <p class="text-[10px] text-gray-500 truncate">Marca: {{ $product->brand->name }}</p>
+                                    <p class="text-[10px] text-gray-500 truncate">{{ $product->brand->name }}</p>
                                 @endif
                                 @if(!empty($product->type?->name))
-                                    <p class="text-[10px] text-gray-500 truncate">Tipo: {{ $product->type->name }}</p>
+                                    <p class="text-[10px] text-gray-500 truncate">{{ $product->type->name }}</p>
                                 @endif
                                 @if(!empty($product->category?->name))
-                                    <p class="text-[10px] text-gray-500 truncate">Categoría: {{ $product->category->name }}</p>
+                                    <p class="text-[10px] text-gray-500 truncate">{{ $product->category->name }}</p>
                                 @endif
                             </div>
 

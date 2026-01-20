@@ -1,5 +1,4 @@
 <x-layout :title="'Tests disponibles'">
-    <div class="max-w-6xl mx-auto px-5 rounded-t-3xl bg-white">
         <h1 class="text-2xl font-semibold text-[#306067]">Tests</h1>
         <p class="text-[#2A4043]">Completá todos los tests para obtener tu rutina personalizada.</p>
 
@@ -16,5 +15,4 @@
                 </a>
             @endforeach
         </div>
-    </div>
 </x-layout>

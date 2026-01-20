@@ -20,6 +20,16 @@
     --kälm-red: #430000;
 }
 
+@layer utilities {
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    }
+
 .drawer-content {
     overflow: hidden;
 }
@@ -118,11 +128,11 @@ h1 {
     font-family: 'Tropiline Bold';
 }
 
-h2 {
+h2,h3 {
     font-family: 'Tropiline SemiBold';
 }
 
-h3,
+
 h4,
 h5,
 h6 {
