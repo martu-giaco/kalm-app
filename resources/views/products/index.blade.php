@@ -1,13 +1,13 @@
 {{-- resources/views/products/index.blade.php --}}
 <x-layout :title="$category->name ?? 'Productos'">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <header class="mb-6 flex items-center justify-between">
+    <div class="max-w-6xl px-4 py-8 mx-auto">
+        <header class="flex items-center justify-between mb-6">
             <div>
                 <h1 class="text-2xl font-semibold">
                     {{ $category->name ?? 'Productos' }}
                 </h1>
                 @if(isset($category->description) && $category->description)
-                    <p class="text-sm text-gray-600 mt-1">{{ $category->description }}</p>
+                    <p class="mt-1 text-sm text-gray-600">{{ $category->description }}</p>
                 @endif
             </div>
 
@@ -19,23 +19,23 @@
         </header>
 
         @if($products->count())
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach($products as $product)
-                    <article class="bg-white rounded-lg shadow p-4">
+                    <article class="p-4 bg-white rounded-lg shadow">
                         <a href="{{ route('products.show', $product->id ?? $product->slug) ?? '#' }}">
-                            <div class="w-full h-44 mb-3 overflow-hidden rounded">
+                            <div class="w-full mb-3 overflow-hidden rounded h-44">
                                 @if(!empty($product->image))
-                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="object-cover w-full h-full">
                                 @else
-                                    <img src="{{ asset('images/product-placeholder.png') }}" alt="placeholder" class="w-full h-full object-cover">
+                                    <img src="{{ asset('images/product-placeholder.png') }}" alt="placeholder" class="object-cover w-full h-full">
                                 @endif
                             </div>
 
-                            <h2 class="text-lg font-medium mb-1">{{ $product->name }}</h2>
+                            <h2 class="mb-1 text-lg font-medium">{{ $product->name }}</h2>
                         </a>
 
                         @if(isset($product->short_description))
-                            <p class="text-sm text-gray-600 mb-3">{{ \Illuminate\Support\Str::limit($product->short_description, 100) }}</p>
+                            <p class="mb-3 text-sm text-gray-600">{{ \Illuminate\Support\Str::limit($product->short_description, 100) }}</p>
                         @endif
 
                         <div class="flex items-center justify-between mt-3">
@@ -43,7 +43,7 @@
                                 <div class="text-lg font-semibold">${{ number_format($product->price, 2, ',', '.') }}</div>
                             @endif
 
-                            <a href="{{ route('products.show', $product->id ?? $product->slug) ?? '#' }}" class="text-sm btn-primary px-3 py-1 rounded">Ver</a>
+                            <a href="{{ route('products.show', $product->id ?? $product->slug) ?? '#' }}" class="px-3 py-1 text-sm rounded btn-primary">Ver</a>
                         </div>
                     </article>
                 @endforeach
@@ -53,7 +53,7 @@
                 {{ $products->links() }}
             </div>
         @else
-            <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded">
+            <div class="p-4 text-yellow-800 border border-yellow-200 rounded bg-yellow-50">
                 No se encontraron productos en esta categoría.
             </div>
         @endif

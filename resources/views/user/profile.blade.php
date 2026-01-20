@@ -1,11 +1,11 @@
 {{-- resources/views/user/profile.blade.php --}}
 
 <x-layout :title="'Mi perfil'">
-    <section class="max-w-6xl mx-auto px-5 pt-5 rounded-t-3xl bg-white">
+    <section class="px-5 pt-5 mx-auto bg-white rounded-t-3xl">
         {{-- Header: avatar + datos --}}
-        <div class="flex flex-col md:flex-row items-center md:items-center gap-3 md:gap-8 mb-5">
-            <div class="flex-1">
-                <div class="flex justify-end items-center">
+        <div class="flex flex-col items-center gap-3 mb-5 md:flex-row md:items-center md:gap-8">
+            <div class="w-full max-w-3xl">
+                <div class="flex items-center justify-end">
                     <span class="flex text-[#CCE2E5]">
                         ?
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -17,14 +17,14 @@
                 </div>
 
                 {{-- Avatar --}}
-                <div class="flex items-center mt-4 gap-4">
-                    <div class="h-28 w-28 rounded-full overflow-hidden">
+                <div class="flex items-center gap-4 mt-4">
+                    <div class="overflow-hidden rounded-full h-28 w-28">
                         @if(isset($user) && $user->avatar)
                             <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name ?? 'Avatar usuario' }}"
-                                class="w-full h-full object-cover" loading="lazy" decoding="async" />
+                                class="object-cover w-full h-full" loading="lazy" decoding="async" />
                         @else
                             <img src="{{ asset('images/pfp.svg') }}" alt="Avatar por defecto"
-                                class="w-full h-full object-contain" loading="lazy" decoding="async" />
+                                class="object-contain w-full h-full" loading="lazy" decoding="async" />
                         @endif
                     </div>
 
@@ -53,7 +53,7 @@
             </div>
 
             {{-- Acciones --}}
-            <div class="flex flex-row gap-4 md:mt-0 md:shrink-0 w-full ml-10">
+            <div class="flex flex-row w-full gap-4 ml-10 md:mt-0 md:shrink-0">
                 <a href="{{ route('profile.edit') }}"
                     class="text-sm text-center py-1 px-4 rounded-lg bg-[#37A0AF] text-white">Editar perfil</a>
                 <a href="{{ route('profile.results') }}"
@@ -62,13 +62,13 @@
         </div>
 
         {{-- Tabs: publicaciones, reviews, rutinas --}}
-        <section class="bg-white mt-5">
+        <section class="mt-5 bg-white">
             <div class="tabs tabs-border">
                 <input type="radio" name="tabs" id="tab-posts" class="tab" aria-label="Posteos" checked />
-                <div class="tab-content border-base-300 bg-base-100 p-5">
+                <div class="p-5 tab-content border-base-300 bg-base-100">
                     {{-- Aquí se pueden iterar los posts --}}
                     @forelse($posts ?? [] as $post)
-                        <div class="mb-4 p-4 rounded-lg shadow bg-white">
+                        <div class="p-4 mb-4 bg-white rounded-lg shadow">
                             <h3 class="font-semibold text-[#306067]">{{ $post->title }}</h3>
                             <p class="text-gray-600">{{ Str::limit($post->content, 100) }}</p>
                         </div>
@@ -78,16 +78,16 @@
                 </div>
 
                 <input type="radio" name="tabs" id="tab-reviews" class="tab" aria-label="Reviews" />
-                <div class="tab-content border-base-300 bg-base-100 p-5">
+                <div class="p-5 tab-content border-base-300 bg-base-100">
                     Proximamente
                 </div>
 
                 <input type="radio" name="tabs" id="tab-routines" class="tab" aria-label="Rutinas" />
-                <div class="tab-content border-base-300 bg-base-100 p-5">
+                <div class="p-5 tab-content border-base-300 bg-base-100">
                     @forelse ($routines ?? [] as $rutina)
                         <a href="{{ route('routines.show', $rutina) }}" class="block w-full">
                             <div
-                                class="w-full flex flex-col mb-3 bg-white px-3 py-5 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                                class="flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg">
                                 <h2 class="text-xl font-medium text-[#306067]">{{ $rutina->name }}</h2>
                                 @if($rutina->time)
                                     <span class="text-[#2A4043]">
@@ -117,7 +117,7 @@
         </section>
 
         {{-- Botón flotante para crear nueva rutina --}}
-        <a class="flex bg-[#2A4043] h-16 w-16 rounded-full items-center justify-center shadow-xl absolute right-[4%] bottom-[10%]"
+        <a class="flex bg-[#2A4043] h-16 w-16 rounded-full items-center justify-center shadow-xl absolute right-[4%] bottom-[15%]"
             href="{{ route('routines.create') }}">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFF">
                 <path

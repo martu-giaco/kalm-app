@@ -1,9 +1,9 @@
 <x-layout title="Crear Post">
 
-    <section class="flex flex-col justify-between mx-auto px-5 pt-10 rounded-t-3xl bg-white">
+    <section class="flex flex-col justify-between px-5 pt-5 mx-auto bg-white rounded-t-3xl">
 
         <div>
-            <h1 class="text-2xl font-bold text-[#306067] mb-2">Crear un nuevo Post</h1>
+            <h1 class="text-2xl font-bold text-[#306067] mb-4">Crear un nuevo Post</h1>
 
         <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data" class="bg-white rounded-xl">
             @csrf
@@ -15,7 +15,7 @@
                 <p class="text-sm text-end text-[#306067]">{{ old('content') ? strlen(old('content')) : 0 }}/280</p>
 
             @error('content')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
             @enderror
 
             <label class="mt-7 mb-7 btn w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-3 py-2 rounded-xl font-bold transition-all duration-300 items-center justify-between gap-2" for="add-image">
@@ -25,7 +25,7 @@
             <input type="file" id="add-image" name="image" class="hidden">
         </div>
 
-            <div class="flex justify-between items-center mt-2">
+            <div class="flex items-center justify-between mt-2">
                 <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
                     Publicar
                 </button>

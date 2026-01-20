@@ -1,17 +1,17 @@
 <x-layout :title="$product->name ?? 'Producto'">
-    <div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="max-w-3xl px-4 mx-auto">
 
-        <article class="bg-white rounded-2xl p-6 shadow-lg">
-            <div class="flex flex-col md:flex-row gap-6">
+        <article class="p-6 bg-white shadow-lg rounded-2xl">
+            <div class="flex flex-col gap-6 md:flex-row">
 
                 {{-- Imagen principal --}}
                 <div class="relative md:flex-shrink-0 md:w-1/2">
-                    <div class="rounded-xl overflow-hidden bg-white shadow-inner">
+                    <div class="overflow-hidden bg-white shadow-inner rounded-xl">
                         @if(!empty($product->image))
                             <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                class="w-full h-80 object-contain bg-white">
+                                class="object-contain w-full bg-white h-80">
                         @else
-                            <div class="w-full h-80 flex items-center justify-center text-gray-400">
+                            <div class="flex items-center justify-center w-full text-gray-400 h-80">
                                 Sin imagen
                             </div>
                         @endif
@@ -19,7 +19,7 @@
 
                     {{-- Corazón favorito --}}
                     <button type="button"
-                        class="absolute top-3 right-3 bg-white rounded-full p-2 shadow hover:scale-105 transition"
+                        class="absolute p-2 transition bg-white rounded-full shadow top-3 right-3 hover:scale-105"
                         title="Marcar favorito" onclick="toggleFavorito({{ $product->id }}, this)">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-600" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor">
@@ -32,26 +32,26 @@
                     {{-- Badge "Para vos!" --}}
                     @if(isset($product->tag) || session('personalized', false))
                         <span
-                            class="absolute bottom-4 right-4 inline-block bg-teal-400 text-white text-sm px-3 py-1 rounded-full shadow">
+                            class="absolute inline-block px-3 py-1 text-sm text-white bg-teal-400 rounded-full shadow bottom-4 right-4">
                             Para vos!
                         </span>
                     @endif
                 </div>
 
                 {{-- Información lateral --}}
-                <div class="md:w-1/2 flex flex-col justify-between">
+                <div class="flex flex-col justify-between md:w-1/2">
                     <div>
                         <h1 class="text-2xl md:text-2xl font-semibold text-[#164d4f] leading-tight">
                             {{ $product->name ?? 'Producto sin nombre' }}
                         </h1>
 
                         @if(!empty($product->brand->name))
-                            <div class="text-sm text-teal-600 mt-1">{{ $product->brand->name }}</div>
+                            <div class="mt-1 text-sm text-teal-600">{{ $product->brand->name }}</div>
                         @endif
 
                         {{-- Rating --}}
                         @if(isset($product->rating))
-                            <div class="mt-3 flex items-center gap-2">
+                            <div class="flex items-center gap-2 mt-3">
                                 <div class="text-sm text-gray-600">{{ number_format($product->rating, 1) }}</div>
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24"
                                     fill="currentColor">
@@ -63,16 +63,16 @@
 
                         {{-- Tags --}}
                         @if(!empty($product->tags) && $product->tags->count())
-                            <div class="mt-4 flex flex-wrap gap-2">
+                            <div class="flex flex-wrap gap-2 mt-4">
                                 @foreach($product->tags as $tag)
                                     <span
-                                        class="text-xs bg-teal-50 text-teal-700 px-3 py-1 rounded-full shadow-sm">{{ $tag->name }}</span>
+                                        class="px-3 py-1 text-xs text-teal-700 rounded-full shadow-sm bg-teal-50">{{ $tag->name }}</span>
                                 @endforeach
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="mt-4">
                                 <span
-                                    class="text-xs bg-teal-50 text-teal-700 px-3 py-1 rounded-full shadow-sm">{{ $product->category->name }}</span>
+                                    class="px-3 py-1 text-xs text-teal-700 rounded-full shadow-sm bg-teal-50">{{ $product->category->name }}</span>
                             </div>
                         @endif
                     </div>
@@ -84,7 +84,7 @@
                                 Agregar a rutina
                             </label>
                         @else
-                            <button disabled class="btn btn- text-black cursor-not-allowed">
+                            <button disabled class="text-black cursor-not-allowed btn btn-">
                                 No tiene rutinas
                             </button>
                         @endif
@@ -93,62 +93,62 @@
             </div>
 
             {{-- Descripción --}}
-            <div class="mt-6 border-t pt-6">
+            <div class="pt-6 mt-6 border-t">
                 <h2 class="text-lg font-semibold text-[#164d4f] mb-3">Descripción</h2>
-                <p class="text-gray-700 leading-relaxed">
+                <p class="leading-relaxed text-gray-700">
                     {{ $product->description ?? 'No hay descripción disponible.' }}
                 </p>
             </div>
 
             {{-- Detalles del producto --}}
-            <div class="mt-6 border-t pt-6">
+            <div class="pt-6 mt-6 border-t">
                 <h2 class="text-lg font-semibold text-[#164d4f] mb-4">Detalles del producto</h2>
                 <div class="flex flex-wrap gap-4">
 
                     @if(!empty($product->brand_id))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Marca</p>
                             <h3 class="text-sm font-semibold">{{ $product->brand->name ?? '-' }}</h3>
                         </div>
                     @endif
 
                     @if(!empty($product->type_id))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Tipo</p>
                             <h3 class="text-sm font-semibold">{{ $product->type->name ?? '-' }}</h3>
                         </div>
                     @endif
 
                     @if(!empty($product->category_id))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Categoría</p>
                             <h3 class="text-sm font-semibold">{{ $product->category->name ?? '-' }}</h3>
                         </div>
                     @endif
 
                     @if(!empty($product->ingredients))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Ingredientes</p>
                             <h3 class="text-sm font-semibold">{{ Str::limit($product->ingredients, 50) }}</h3>
                         </div>
                     @endif
 
                     @if(!empty($product->activos))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Activos</p>
                             <h3 class="text-sm font-semibold">{{ Str::limit($product->activos, 50) }}</h3>
                         </div>
                     @endif
 
                     @if(!empty($product->formato))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Formato</p>
                             <h3 class="text-sm font-semibold">{{ $product->formato }}</h3>
                         </div>
                     @endif
 
                     @if(!empty($product->dondeComprar))
-                        <div class="w-36 bg-white shadow-md rounded-xl p-3">
+                        <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <p class="text-[10px] text-gray-500 mb-1">Dónde comprar</p>
                             <h3 class="text-sm font-semibold">{{ $product->dondeComprar }}</h3>
                         </div>
@@ -162,8 +162,8 @@
 
     <input type="checkbox" id="modal-routines" class="modal-toggle" />
 <div class="modal">
-    <div class="modal-box relative max-w-md w-full p-6">
-        <label for="modal-routines" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <div class="relative w-full max-w-md p-6 modal-box">
+        <label for="modal-routines" class="absolute btn btn-sm btn-circle right-2 top-2">✕</label>
         <h3 class="text-xl font-bold mb-4 text-[var(--kalm-dark)]">Selecciona la rutina</h3>
 
         @if(isset($routines) && $routines->count())
@@ -173,14 +173,14 @@
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit"
-                            class="w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            class="w-full px-4 py-3 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
                             {{ $routine->name }}
                         </button>
                     </form>
                 @endforeach
             </div>
         @else
-            <p class="text-sm text-slate-400 mt-2">¡Este usuario no tiene rutinas!</p>
+            <p class="mt-2 text-sm text-slate-400">¡Este usuario no tiene rutinas!</p>
         @endif
     </div>
 </div>

@@ -1,9 +1,9 @@
 {{-- views\products\byCategory.blade.php --}}
 <x-layout :title="$category->name">
-    <section class="px-5 rounded-t-3xl bg-white min-h-screen">
+    <section class="min-h-screen p-5 rounded-t-3xl">
 
         {{-- Título de la Categoría --}}
-        <h1 class="text-3xl font-bold text-[var(--kalm-dark)] mb-6 border-b pb-3 border-gray-100">
+        <h1 class="text-3xl font-bold text-[var(--kalm-dark)] mb-4 border-b pb-3 border-gray-100">
             {{ $category->name }}
         </h1>
 
@@ -13,19 +13,19 @@
             </p>
         @else
             {{-- Contenedor de productos en dos columnas --}}
-            <div class="grid grid-cols-2 md:grid-cols-2 gap-4 pb-20">
+            <div class="grid grid-cols-2 gap-4 pb-20 md:grid-cols-2">
                 @foreach($products as $product)
                     <a href="{{ route('products.show', $product->id) }}" class="group">
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                        <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
 
                             {{-- Imagen del producto --}}
                             <div class="w-full h-40 overflow-hidden">
                                 <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                     class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                                     class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
                             </div>
 
                             {{-- Información simplificada --}}
-                            <div class="p-3 flex flex-col gap-1">
+                            <div class="flex flex-col gap-1 p-3">
                                 <h3 class="text-sm font-semibold text-[var(--kalm-dark)] mb-1 truncate">
                                     {{ $product->name }}
                                 </h3>
