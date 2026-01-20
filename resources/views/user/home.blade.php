@@ -1,7 +1,6 @@
 <x-layout title="Kälm | Inicio">
 
     <section class="px-5">
-
         {{-- Barra de búsqueda --}}
         <div class="mb-[-3vw] relative">
             <form action="{{ route('products.search') }}" method="GET">
@@ -22,8 +21,15 @@
     </section>
 
     <section class="px-5 pt-10 rounded-t-3xl bg-white">
+        {{-- Banners --}}
+        <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl">
+            @foreach ($banners as $banner)
+                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}"
+                    class="object-cover w-full h-full">
+            @endforeach
+        </div>
 
-                {{-- Categorías --}}
+        {{-- Categorías --}}
         <div class="mb-6">
             <h2 class="text-xl font-semibold text-[var(--kalm-dark)] mb-4">Categorías</h2>
 
@@ -65,14 +71,6 @@
             @endif
         </div>
 
-        {{-- Banners --}}
-        <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl">
-            @foreach ($banners as $banner)
-                <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}"
-                    class="object-cover w-full h-full">
-            @endforeach
-        </div>
-
         @foreach ($product_sections as $section)
             @php
                 $products_with_tag = $section['products'];
@@ -93,22 +91,19 @@
                                 </div>
 
                                 {{-- Info simplificada --}}
-                                <div class="flex flex-col gap-1 p-3 pb-1">
+                                <div class="flex flex-col gap-1 p-3">
                                     <h3 class="text-sm font-semibold text-[#2A4043] truncate">
                                         {{ $product->name }}
                                     </h3>
 
                                     @if (!empty($product->brand?->name))
-                                        <h3 class="text-[13px] text-[#306067] truncate">
+                                        <h3 class="text-[13px] text-[#37A0AF] truncate">
                                             {{ $product->brand->name }}</h3>
                                     @endif
                                     @if (!empty($product->type?->name))
-                                        <p class="text-[10px] text-white truncate bg-green-600 px-2 py-1 rounded-xl">{{ $product->type->name }}
-                                        </p>
-                                    @endif
-                                    @if (!empty($product->category?->name))
-                                        <p class="text-[10px] text-gray-500 truncate">
-                                            {{ $product->category->name }}</p>
+                                        <button class="text-[10px] w-20 inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                            ✨{{ $product->type->name }}
+                                        </button>
                                     @endif
                                 </div>
 
