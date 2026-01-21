@@ -25,7 +25,7 @@
 
         <body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
             <div class="p-6 pt-10 mx-auto bg-white rounded-lg shadow">
-                
+
 
                 <h1 class="text-[#306067] text-2xl font-semibold mb-4">Términos y Condiciones</h1>
 
@@ -273,5 +273,5 @@
                 })();
             </script>
         </body>
-
         </html>
+    </x-layout>
