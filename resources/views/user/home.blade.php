@@ -16,7 +16,7 @@
         </div>
     </section>
 
-    <section class="px-5 pt-10 rounded-t-3xl bg-white">
+    <section class="px-5 py-10 rounded-t-3xl bg-white">
         {{-- Banners --}}
         <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl">
             @foreach ($banners as $banner)
@@ -109,8 +109,6 @@
                 </div>
             </div>
         @endforeach
-
-        <div class="h-8"></div>
     </section>
 
 </x-layout>

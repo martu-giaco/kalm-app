@@ -30,14 +30,14 @@
                 class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
 
                 <!-- Logo -->
-                <p class="mx-3 text-4xl leading-none logo-text">Kälm</p>
+                <img src="{{ asset('images/logo-kalm.svg') }}" alt="Kälm logo" class="h-8 ps-2">
 
                 @auth
                     <!-- Usuario autenticado -->
                     <div class="flex items-center h-full gap-5">
                         <!-- Notificaciones -->
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('images/notificaciones.png') }}" alt="notificaciones" class="w-auto h-8">
+                            <img src="{{ asset('images/notificaciones.png') }}" alt="notificaciones" class="w-auto h-7">
                         </a>
 
                         <!-- Avatar y nombre -->
@@ -102,7 +102,7 @@
 
                     @auth
                         {{-- Espacio inferior para usuarios autenticados --}}
-                        <div class="pb-24"></div>
+                        <div class="pb-10"></div>
                     @endauth
 
                 </main>
@@ -110,9 +110,7 @@
             </div>
 
             @auth
-                <nav class="fixed left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-3xl px-5 h-16 rounded-full flex items-center justify-between
-           glass-effect transition-all duration-500 ease-in-out"
-                    style="bottom: calc(1.75rem + env(safe-area-inset-bottom));">
+                <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-full shadow-md bg-white max-w-3xl px-5 h-20 rounded-t-3xl flex items-center justify-between transition-all duration-500 ease-in-out" style="box-shadow: 1px -1px 20px 0px rgba(40, 40, 40, 0.25);">
 
                     <ul class="flex items-center flex-1 w-full justify-evenly">
                         <!-- Inicio -->
@@ -136,30 +134,6 @@
                                         d="M378.09-314.5q-111.16 0-188.33-77.17-77.17-77.18-77.17-188.33t77.17-188.33q77.17-77.17 188.33-77.17 111.15 0 188.32 77.17 77.18 77.18 77.18 188.33 0 44.48-13.52 83.12-13.53 38.64-36.57 68.16l222.09 222.33q12.67 12.91 12.67 31.94 0 19.04-12.91 31.71-12.68 12.67-31.83 12.67t-31.82-12.67L529.85-364.59q-29.76 23.05-68.64 36.57-38.88 13.52-83.12 13.52Zm0-91q72.84 0 123.67-50.83 50.83-50.82 50.83-123.67t-50.83-123.67q-50.83-50.83-123.67-50.83-72.85 0-123.68 50.83-50.82 50.82-50.82 123.67t50.82 123.67q50.83 50.83 123.68 50.83Z" />
                                 </svg>
                                 <span class="sr-only">Buscar</span>
-                            </a>
-                        </li>
-
-                        <!-- Crear -->
-                        <li class="flex flex-col items-center font-bold text-[#306067]">
-                            <a href="{{ route('posts.create') }}" class="flex flex-col items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
-                                    width="35px" fill="#306067">
-                                    <path
-                                        d="M434.5-434.5H237.37q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H434.5v-197.13q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17t32.33 13.17q13.17 13.18 13.17 32.33v197.13h197.13q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H525.5v197.13q0 19.15-13.17 32.33-13.18 13.17-32.33 13.17t-32.33-13.17q-13.17-13.18-13.17-32.33V-434.5Z" />
-                                </svg>
-                                <span class="sr-only">Crear</span>
-                            </a>
-                        </li>
-
-                        <!-- Comunidad -->
-                        <li class="flex flex-col items-center font-bold text-[#306067]">
-                            <a href="{{ route('community') }}" class="flex flex-col items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
-                                    width="35px" fill="#306067">
-                                    <path
-                                        d="M41.67-236.17q-19.15 0-32.32-13.18-13.18-13.17-13.18-32.32V-303q0-44.91 45.2-72.87 45.2-27.96 118.63-27.96 11.09 0 21.05.38 9.97.38 19.54 1.91-14.72 21.95-21.96 46.11-7.24 24.17-7.24 50.43v68.83H41.67Zm240 0q-19.15 0-32.32-13.18-13.18-13.17-13.18-32.32V-305q0-32.72 17.62-60.05 17.62-27.34 50.34-47.82t77.82-30.72q45.09-10.24 98.04-10.24 53.97 0 98.94 10.24 44.98 10.24 77.7 30.72 32.72 20.48 49.96 47.82 17.24 27.33 17.24 60.05v23.33q0 19.15-13.18 32.32-13.17 13.18-32.32 13.18H281.67Zm506.94 0V-305q0-27.28-6.86-51.42t-20.58-45.12q9.57-1.53 19.18-1.91 9.62-.38 19.65-.38 73.72 0 118.77 27.55 45.06 27.54 45.06 73.28v21.33q0 19.15-13.18 32.32-13.17 13.18-32.32 13.18H788.61Zm-628.59-206.7q-33.98 0-58.19-24.19-24.22-24.19-24.22-58.16 0-35 24.19-58.71 24.19-23.72 58.16-23.72 35 0 58.71 23.68 23.72 23.68 23.72 58.69 0 33.98-23.68 58.19-23.68 24.22-58.69 24.22ZM480-483.59q-51.59 0-87.71-36.11-36.12-36.12-36.12-87.71 0-52.44 36.12-88.13 36.12-35.7 87.71-35.7 52.43 0 88.13 35.7 35.7 35.69 35.7 88.13 0 51.59-35.7 87.71-35.7 36.11-88.13 36.11Z" />
-                                </svg>
-                                <span class="sr-only">Comunidad</span>
                             </a>
                         </li>
 
