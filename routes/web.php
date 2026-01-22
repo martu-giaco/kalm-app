@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
@@ -80,6 +81,9 @@ Route::middleware('auth')->group(function () {
 
     // Blog
     Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
+
+    // About
+    Route::get('/about', [AboutController::class, 'about'])->name('about');
 
     // Productos
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');

@@ -309,7 +309,7 @@
                     <ul class="gap-3 p-3 mb-3">
                         <li>
                             <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
-                                href="{{ route('home') }}">
+                                href="{{ route('about') }}">
                                 Sobre Kälm
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                     width="24px" fill="#306067">
