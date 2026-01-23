@@ -64,20 +64,8 @@
         {{-- Tabs: publicaciones, reviews, rutinas --}}
         <section class="mt-5 bg-white">
             <div class="tabs tabs-border">
-                <input type="radio" name="tabs" id="tab-posts" class="tab" aria-label="Posteos" checked />
-                <div class="p-5 tab-content border-base-300 bg-base-100">
-                    {{-- Aquí se pueden iterar los posts --}}
-                    @forelse($posts ?? [] as $post)
-                        <div class="p-4 mb-4 bg-white rounded-lg shadow">
-                            <h3 class="font-semibold text-[#306067]">{{ $post->title }}</h3>
-                            <p class="text-gray-600">{{ Str::limit($post->content, 100) }}</p>
-                        </div>
-                    @empty
-                        <p>No hay publicaciones.</p>
-                    @endforelse
-                </div>
 
-                <input type="radio" name="tabs" id="tab-reviews" class="tab" aria-label="Reviews" />
+                <input type="radio" name="tabs" id="tab-reviews" class="tab" aria-label="Reviews" checked/>
                 <div class="p-5 tab-content border-base-300 bg-base-100">
                     Proximamente
                 </div>
