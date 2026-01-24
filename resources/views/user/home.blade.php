@@ -18,12 +18,88 @@
 
     <section class="px-5 py-10 rounded-t-3xl bg-white">
         {{-- Banners --}}
-        <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl">
+        <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl"  onclick="premium_modal.showModal()">
             @foreach ($banners as $banner)
                 <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}"
                     class="object-cover w-full h-full">
             @endforeach
         </div>
+
+        <!-- You can open the modal using ID.showModal() method -->
+        <dialog id="premium_modal" class="modal">
+            <div class="modal-box w-full bg-[#2A4043]">
+                <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#CCE2E5" aria-hidden="true">
+                        <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+                    </svg>
+                </button>
+                </form>
+                <section class="mt-5 h-full flex flex-col flex-wrap space-between">
+                    <div class="mb-10">
+                        <h2 class="text-2xl font-bold text-white">Perfeccioná tu rutina con</h2>
+                        <p class="text-3xl font-bolder" style="font-family: 'Tropiline LogoOnly'; color: #37A0AF; background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Kälm Premium</p>
+                        <div>
+                            <div class="w-full mt-7 collapse collapse-arrow bg-base-100 bg-[#306067]">
+                                <input type="radio" name="premium-perks" checked="checked" />
+                                <div class="collapse-title font-bold flex text-white items-center">
+                                    <img src="{{ asset('images/icons/assignment.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
+                                    <p class="text-white">Rutinas personalizables ilimitadas</p>
+                                </div>
+                                <div class="collapse-content text-sm text-[#CCE2E5]">lorem ipsum</div>
+                            </div>
+
+                            <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
+                                <input type="radio" name="premium-perks" />
+                                <div class="collapse-title font-bold flex text-white items-center">
+                                    <img src="{{ asset('images/icons/add_circle.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
+                                    <p class="text-white">Productos ilimitados en rutinas</p>
+                                </div>
+                                <div class="collapse-content text-sm text-[#CCE2E5]">lorem ipsum</div>
+                            </div>
+
+                            <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
+                                <input type="radio" name="premium-perks" />
+                                <div class="collapse-title font-bold flex text-white items-center">
+                                    <img src="{{ asset('images/icons/experiment.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
+                                    <p class="text-white">Diagnóstico a fondo de piel y cabello</p>
+                                </div>
+                                <div class="collapse-content text-sm text-[#CCE2E5]">lorem ipsum</div>
+                            </div>
+
+                            <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
+                                <input type="radio" name="premium-perks" />
+                                <div class="collapse-title font-bold flex text-white items-center">
+                                    <img src="{{ asset('images/icons/news.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
+                                    <p class="text-white">Artículos escritos por profesionales</p>
+                                </div>
+                                <div class="collapse-content text-sm text-[#CCE2E5]">Disfrutá de articulos escritos por dermatólogos expertos con tips, explicaciones simples e información actualizada.</div>
+                            </div>
+
+                            <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
+                                <input type="radio" name="premium-perks" />
+                                <div class="collapse-title font-bold flex text-white items-center">
+                                    <img src="{{ asset('images/icons/mail.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
+                                    <p class="text-white">Self-pack de bienvenida*</p>
+                                </div>
+                                <div class="collapse-content text-sm text-[#CCE2E5]">Recibí un pack de bienvenida con productos exclusivos para nuevos suscriptores.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-20">
+                        <a href=""
+                            class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-[#2A4043] font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                            Subscribirme por $7,000/mes
+                        </a>
+                        <a href=""
+                            class="w-full inline-flex border-2 border-[#CCE2E5] text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-xs">
+                            Más tarde
+                        </a>
+                    </div>
+                </section>
+            </div>
+        </dialog>
 
         {{-- Categorías --}}
         <div class="mb-6">
