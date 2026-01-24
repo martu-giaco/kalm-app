@@ -15,7 +15,7 @@ class SubscriptionController extends Controller
         // Se podría pasar información sobre los planes de suscripción, precios, etc.
         // Por ahora, solo devolvemos la vista.
 
-        return view('subscription.show');
+        return view('user.payment');
     }
 
     /**

@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\HelpController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
@@ -85,6 +86,9 @@ Route::middleware('auth')->group(function () {
     // About
     Route::get('/about', [AboutController::class, 'about'])->name('about');
 
+    // Help
+    Route::get('/help', [HelpController::class, 'help'])->name('help');
+
     // Productos
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/productos/buscar', [ProductController::class, 'search'])->name('products.search');
@@ -99,7 +103,7 @@ Route::middleware('auth')->group(function () {
 
     // Suscripción
     Route::get('/premium', [SubscriptionController::class, 'show'])->name('subscription');
-    Route::post('/premium/process', [SubscriptionController::class, 'process'])->name('subscription.process');
+    Route::post('/premium/process', [SubscriptionController::class, 'process'])->name('user.payment');
 
     // Admin
     Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
