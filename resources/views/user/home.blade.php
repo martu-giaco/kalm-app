@@ -29,7 +29,7 @@
         <dialog id="premium_modal" class="modal">
             <div class="modal-box w-full bg-[#2A4043]">
                 <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                <button class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#CCE2E5" aria-hidden="true">
                         <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                     </svg>
@@ -46,7 +46,9 @@
                                     <img src="{{ asset('images/icons/assignment.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Rutinas personalizables ilimitadas</p>
                                 </div>
-                                <div class="collapse-content text-sm text-[#CCE2E5]">lorem ipsum</div>
+                                <div class="collapse-content">
+                                    <p class="text-sm text-[#CCE2E5]">Renová tus rutinas sin perder tu historia activando y desactivando rutinas según tu actividad.</p>
+                                </div>
                             </div>
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
@@ -55,7 +57,9 @@
                                     <img src="{{ asset('images/icons/add_circle.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Productos ilimitados en rutinas</p>
                                 </div>
-                                <div class="collapse-content text-sm text-[#CCE2E5]">lorem ipsum</div>
+                                <div class="collapse-content">
+                                    <p class="text-sm text-[#CCE2E5]">Ahora podés agregar +20 productos a tus rutinas.</p>
+                                </div>
                             </div>
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
@@ -64,7 +68,9 @@
                                     <img src="{{ asset('images/icons/experiment.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Diagnóstico a fondo de piel y cabello</p>
                                 </div>
-                                <div class="collapse-content text-sm text-[#CCE2E5]">lorem ipsum</div>
+                                <div class="collapse-content">
+                                    <p class="text-sm text-[#CCE2E5]">Disfrutá de tests extra y descubrí aún más sobre tu piel y cabello.</p>
+                                </div>
                             </div>
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
@@ -73,7 +79,9 @@
                                     <img src="{{ asset('images/icons/news.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Artículos escritos por profesionales</p>
                                 </div>
-                                <div class="collapse-content text-sm text-[#CCE2E5]">Disfrutá de articulos escritos por dermatólogos expertos con tips, explicaciones simples e información actualizada.</div>
+                                <div class="collapse-content">
+                                    <p class="text-sm text-[#CCE2E5]">Accedé a cientos de articulos escritos por dermatólogos expertos con tips, explicaciones simples e información actualizada.</p>
+                                </div>
                             </div>
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
@@ -82,7 +90,9 @@
                                     <img src="{{ asset('images/icons/mail.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Self-pack de bienvenida*</p>
                                 </div>
-                                <div class="collapse-content text-sm text-[#CCE2E5]">Recibí un pack de bienvenida con productos exclusivos para nuevos suscriptores.</div>
+                                <div class="collapse-content">
+                                    <p class="text-sm text-[#CCE2E5]">Recibí un pack de bienvenida con productos exclusivos para nuevos suscriptores.(*solo aplica para usuarios residentes de Argentina)</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -92,10 +102,13 @@
                             class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-[#2A4043] font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                             Subscribirme por $7,000/mes
                         </a>
-                        <a href=""
-                            class="w-full inline-flex border-2 border-[#CCE2E5] text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-xs">
+                        <button
+                            type="button"
+                            onclick="premium_modal.close()"
+                            class=" w-full inline-flex border-2 border-[#CCE2E5] text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-xs">
                             Más tarde
-                        </a>
+                        </button>
+                        <p class="text-[#CCE2E5] text-xs text-center mt-3">Esta subscripción se puede cancelar en cualquier momento.</p>
                     </div>
                 </section>
             </div>
