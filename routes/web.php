@@ -25,7 +25,7 @@ use App\Http\Controllers\TestController;
 
 // Auth
 Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');
-Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
