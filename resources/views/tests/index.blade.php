@@ -1,11 +1,13 @@
 <x-layout :title="'Tests disponibles'">
+
+    <section class="px-5 py-10 rounded-t-3xl bg-white">
         <h1 class="text-2xl font-semibold text-[#306067]">Tests</h1>
         <p class="text-[#2A4043]">Completá todos los tests para obtener tu rutina personalizada.</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             @foreach($tests as $test)
                 <a href="{{ route('tests.show', $test->key) }}">
-                    <article class="bg-white rounded-2xl shadow-lg flex items-center justify-between hover:shadow-xl transition">
+                    <article class="bg-white rounded-2xl p-4 shadow-lg flex items-center justify-between hover:shadow-xl transition">
                         <div>
                             <h2 class="text-xl font-semibold text-[#306067]">{{ $test->title }}</h2>
                             <p class="mt-2 text-[#CCE2E5] text-sm">{{ $test->description }}</p>
@@ -15,4 +17,5 @@
                 </a>
             @endforeach
         </div>
+    </section>
 </x-layout>
