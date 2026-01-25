@@ -93,13 +93,13 @@
         </div>
 
         <div class="mt-10">
-                        <input type="submit" value="Subscribirme por $7,000/mes"
+                        <input type="submit" value="Suscribirme por $7,000/mes"
                             class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
                         <a href="{{ route('home') }}"
                             class="btn w-full inline-flex border-2 border-[#306067] text-[#306067] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 text-sm">
                             Cancelar
                         </a>
-                        <p class="text-[#306067] text-xs text-center mt-3">Esta subscripción se puede cancelar en cualquier momento.</p>
+                        <p class="text-[#306067] text-xs text-center mt-3">Esta suscripción se puede cancelar en cualquier momento.</p>
             </div>
 
         </form>

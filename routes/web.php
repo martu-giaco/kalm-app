@@ -7,6 +7,7 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
@@ -88,6 +89,9 @@ Route::middleware('auth')->group(function () {
 
     // Help
     Route::get('/help', [HelpController::class, 'help'])->name('help');
+
+    // Configuracion
+    Route::get('/configuracion', [ConfigController::class, 'config'])->name('config');
 
     // Productos
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
