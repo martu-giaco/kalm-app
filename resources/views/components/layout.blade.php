@@ -56,7 +56,6 @@
 
             </header>
 
-            <!-- You can open the modal using ID.showModal() method -->
         <dialog id="premium_modal" class="modal">
             <div class="modal-box w-full bg-[#2A4043]">
                 <form method="dialog">
@@ -400,7 +399,7 @@
                     <h2 class="text-2xl">Bienvenido</h2>
                     <p class="text-sm">Inicia sesión o creá una cuenta</p>
                     <div class="flex gap-3 mt-4">
-                        <a href="{{ route('auth.login') }}" class="btn btn-ghost">Ingresar</a>
+                        <a href="{{ route('login') }}" class="btn btn-ghost">Ingresar</a>
                         <a href="{{ route('auth.register') }}" class="btn">Registrarse</a>
                     </div>
                 </div>
