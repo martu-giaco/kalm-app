@@ -17,9 +17,9 @@
                                                     @endif
                                             @endif
                                         </div>
-                                        <a href="{{ route('routines.edit', $routine) }}">
+                                        <button onclick="event.stopPropagation(); document.getElementById('menu_rutina_{{ $routine->id }}').showModal()">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M480.12-149q-34.55 0-59.13-24.55-24.58-24.56-24.58-59.04 0-34.58 24.56-59.2 24.55-24.62 59.03-24.62 34.67 0 59.13 24.59 24.46 24.6 24.46 59.13 0 34.54-24.46 59.11Q514.67-149 480.12-149Zm0-247.41q-34.55 0-59.13-24.56-24.58-24.55-24.58-59.03 0-34.67 24.56-59.13 24.55-24.46 59.03-24.46 34.67 0 59.13 24.46t24.46 59.01q0 34.55-24.46 59.13-24.46 24.58-59.01 24.58Zm0-247.18q-34.55 0-59.13-24.64-24.58-24.64-24.58-59.25t24.56-59.06Q445.52-811 480-811q34.67 0 59.13 24.46 24.46 24.45 24.46 59.06t-24.46 59.25q-24.46 24.64-59.01 24.64Z"/></svg>
-                                        </a>
+                                        </button>
                                     </div>
 
             {{-- Tipo y tiempo de rutina --}}
@@ -109,18 +109,22 @@
                 </div>
             @endforelse
         </div>
-
-        {{-- BOTONES FLOTANTES --}}
-        <div class="fixed bottom-20 right-5 flex flex-row items-center gap-4 z-50">
-            <form action="{{ route('routines.destroy', $routine) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white h-14 w-14 rounded-full flex items-center justify-center shadow-xl transition transform hover:-translate-y-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" class="h-6 w-6">
-                        <path d="M9 3v1H4v2h16V4h-5V3H9zm1 5v10h2V8h-2zm-4 0v10h2V8H6zm8 0v10h2V8h-2z"/>
-                    </svg>
-                </button>
-            </form>
-        </div>
     </section>
+
+    <dialog id="menu_rutina_{{ $routine->id }}" class="modal">
+                                        <div class="modal-box">
+                                            <a href="{{ route('routines.edit', $routine) }}" class="mt-3 btn w-full inline-flex border-0 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">Editar rutina</a>
+                                            <form action="{{ route('routines.destroy', $routine) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold"">
+                                                    Eliminar rutina
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <form method="dialog" class="modal-backdrop">
+                                            <button>close</button>
+                                        </form>
+                            </dialog>
+
 </x-layout>

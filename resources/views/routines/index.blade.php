@@ -1,6 +1,6 @@
 <x-layout :title="'Mis Rutinas'">
-    <section class="max-w-6xl mx-auto p-5">
-        <h1 class="text-3xl font-semibold text-[#306067] mb-5">Mis Rutinas</h1>
+    <section class="px-5 pt-10 h-full rounded-t-3xl bg-white">
+        <h1 class="text-2xl font-semibold text-[#306067] mb-5">Mis Rutinas</h1>
 
         @forelse($routines as $rutina)
             <x-routine-card :rutina="$rutina" />

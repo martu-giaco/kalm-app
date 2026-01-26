@@ -82,7 +82,7 @@
         </section>
 
         {{-- Botón flotante para crear nueva rutina --}}
-        <a class="flex bg-[#2A4043] h-16 w-16 rounded-full items-center justify-center shadow-xl absolute right-[4%] bottom-[15%]"
+        <a class="flex sticky bg-[#2A4043] h-16 w-16 rounded-full items-center justify-center shadow-xl right-[4%] bottom-[15%]"
             href="{{ route('routines.create') }}">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFF">
                 <path

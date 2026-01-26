@@ -1,5 +1,5 @@
-<a href="{{ route('routines.show', $rutina) }}">
-                            <article class="flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg">
+
+                            <article  onclick="window.location='{{ route('routines.show', $rutina) }}'" class="cursor-pointer flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg">
                                 <div>
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
@@ -16,9 +16,10 @@
                                                     @endif
                                             @endif
                                         </div>
-                                        <a href="{{ route('routines.edit', $rutina) }}">
+
+                                        <button onclick="event.stopPropagation(); document.getElementById('menu_rutina_{{ $rutina->id }}').showModal()">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M480.12-149q-34.55 0-59.13-24.55-24.58-24.56-24.58-59.04 0-34.58 24.56-59.2 24.55-24.62 59.03-24.62 34.67 0 59.13 24.59 24.46 24.6 24.46 59.13 0 34.54-24.46 59.11Q514.67-149 480.12-149Zm0-247.41q-34.55 0-59.13-24.56-24.58-24.55-24.58-59.03 0-34.67 24.56-59.13 24.55-24.46 59.03-24.46 34.67 0 59.13 24.46t24.46 59.01q0 34.55-24.46 59.13-24.46 24.58-59.01 24.58Zm0-247.18q-34.55 0-59.13-24.64-24.58-24.64-24.58-59.25t24.56-59.06Q445.52-811 480-811q34.67 0 59.13 24.46 24.46 24.45 24.46 59.06t-24.46 59.25q-24.46 24.64-59.01 24.64Z"/></svg>
-                                        </a>
+                                        </button>
                                     </div>
                                     <span class="text-[#37A0AF] text-sm">{{ $rutina->types->pluck('name')->join(', ') ?: 'No definido' }} · {{ $rutina->routineTime?->name ?? 'No definido' }}</span>
                                 </div>
@@ -52,4 +53,19 @@
                                     </svg>
                                 </div>
                             </article>
-                        </a>
+
+                        <dialog id="menu_rutina_{{ $rutina->id }}" class="modal">
+                                        <div class="modal-box">
+                                            <a href="{{ route('routines.edit', $rutina) }}" class="mt-3 btn w-full inline-flex border-0 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">Editar rutina</a>
+                                            <form action="{{ route('routines.destroy', $rutina) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold"">
+                                                    Eliminar rutina
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <form method="dialog" class="modal-backdrop">
+                                            <button>close</button>
+                                        </form>
+                            </dialog>
