@@ -3,16 +3,7 @@
         <h1 class="text-3xl font-semibold text-[#306067] mb-5">Mis Rutinas</h1>
 
         @forelse($routines as $rutina)
-            <a href="{{ route('routines.show', $rutina) }}">
-                <div class="w-full flex flex-col mb-3 bg-white px-3 py-5 rounded-lg shadow-md hover:shadow-lg transition">
-                    <h2 class="text-xl font-medium text-[#306067]">{{ $rutina->name }}</h2>
-                    @if($rutina->time)
-                        <span class="text-[#2A4043]">
-                            {{ $rutina->time }}
-                        </span>
-                    @endif
-                </div>
-            </a>
+            <x-routine-card :rutina="$rutina" />
         @empty
             <p class="text-[#CCE2E5]">¡No tiene rutinas todavía!</p>
         @endforelse

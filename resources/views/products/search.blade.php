@@ -34,7 +34,6 @@
             <div class="w-full flex items-start justify-between gap-4">
                 <div class="w-full flex justify-between">
                     @php
-                        // Soporta tanto Paginator como Collection
                         $total = method_exists($products, 'total') ? $products->total() : (is_countable($products) ? count($products) : ($products->count() ?? 0));
                     @endphp
                     <p class="text-md font-bold text-[#306067] mb-1">

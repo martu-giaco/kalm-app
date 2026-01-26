@@ -77,7 +77,7 @@
                     {{-- Botón principal --}}
                     <div class="mt-6">
                         @if(isset($routines) && $routines->count())
-                            <label for="modal-routines" class="btn font-bold w-full bg-[#306067] text-white cursor-pointer">
+                            <label onclick="agregar_a_rutina.showModal()" class="btn font-bold w-full bg-[#306067] text-white cursor-pointer">
                                 Agregar a rutina
                             </label>
                         @else
@@ -147,12 +147,22 @@
         </article>
     </div>
 
-    <input type="checkbox" id="modal-routines" class="modal-toggle" />
-<div class="modal">
-    <div class="relative w-full max-w-md p-6 modal-box">
-        <label for="modal-routines" class="absolute btn btn-sm btn-circle right-2 top-2">✕</label>
-        <h3 class="text-xl font-bold mb-4 text-[var(--kalm-dark)]">Selecciona la rutina</h3>
+    <dialog id="prod_agregado" class="modal">
+            <div class="modal-box">
+                <h2 class="text-xl font-semibold text-[#306067] text-center">El producto fue agregado con éxito.</h2>
+                <button class="mt-3 btn w-full inline-flex border-0 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">Ok</button>
+            </div>
+            </dialog>
 
+    <dialog id="agregar_a_rutina" class="modal">
+    <div class="modal-box">
+        <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#CCE2E5" aria-hidden="true">
+                        <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+                    </svg>
+        </button>
+        </form>
         @if(isset($routines) && $routines->count())
             <div class="space-y-3">
                 @foreach($routines as $routine)
@@ -160,16 +170,17 @@
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit"
-                            class="w-full px-4 py-3 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:bg-gray-50">
-                            {{ $routine->name }}
+                            class="w-full" onclick="prod_agregado.showModal()">
+                            <x-routine-card :rutina="$routine" />
                         </button>
                     </form>
                 @endforeach
             </div>
         @else
-            <p class="mt-2 text-sm text-slate-400">¡Este usuario no tiene rutinas!</p>
+            <p class="mt-2 text-sm text-slate-400">Todavía no tienes rutinas.</p>
         @endif
     </div>
+    </dialog>
 </div>
 
     <script>

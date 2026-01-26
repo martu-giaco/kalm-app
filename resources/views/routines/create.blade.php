@@ -12,7 +12,7 @@
 
         <form action="{{ route('routines.store') }}" method="POST" enctype="multipart/form-data" >
             @csrf
-            <div class="mb-8">
+            <div class="mb-4">
                 <label for="name" class="form-label mb-2 text-[#2A4043]">Nombre de la rutina</label>
                 <input
                     type="text"
@@ -30,7 +30,7 @@
             </div>
 
 
-            <fieldset class="mb-8">
+            <fieldset class="mb-4">
                 <legend class="mb-2 text-[#2A4043]">Tipo de rutina</legend>
 
                 <select
