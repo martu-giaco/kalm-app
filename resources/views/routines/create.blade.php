@@ -33,39 +33,29 @@
             <fieldset class="mb-8">
                 <legend class="mb-2 text-[#2A4043]">Tipo de rutina</legend>
 
-                <select id="type_id[]" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select
+                    name="type_id[]"
+                    id="type_id"
+                    class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
+                >
                     @foreach ($types as $type)
-                    <option
-                        name="type_id[]"
-                        value="{{ $type->type_id }}"
-                        @checked(in_array($type->type_id, old('type_id', [])))
-                    >
-                    {{ $type->name }}
+                        <option
+                            value="{{ $type->type_id }}"
+                            @selected(in_array($type->type_id, old('type_id', [])))
+                        >
+                            {{ $type->name }}
+                        </option>
                     @endforeach
                 </select>
 
-                <select id="time_id[]" class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <legend class="mb-2 text-[#2A4043] mt-4">Tiempo de rutina</legend>
+                <select name="time_id" id="time_id" class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar tiempo</option>
                     @foreach ($times as $time)
-                    <option
-                        name="time_id[]"
-                        value="{{ $time->time_id }}"
-                        @checked(in_array($time->time_id, old('time_id', [])))
-                    >
-                    {{ $time->name }}
+                        <option value="{{ $time->time_id }}" @selected(old('time_id') == $time->time_id)>{{ $time->name }}</option>
                     @endforeach
                 </select>
             </fieldset>
-
-            {{-- <fieldset class="mb-8">
-                <legend class="mb-2 text-[#2A4043]">Frecuencia</legend>
-
-                <select id="frecuencia" class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option
-                        name="frecuencia"
-                        placeholder="proximamente"
-                    >
-                </select>
-            </fieldset> --}}
 
             <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Crear rutina</button>
 

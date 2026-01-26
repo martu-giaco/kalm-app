@@ -37,15 +37,24 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
+            'time_id' => 'nullable|exists:routine_times,time_id',
+            'type_id' => 'nullable|array',
+            'type_id.*' => 'nullable|exists:routine_types,type_id',
             'products' => 'nullable|array',
         ]);
 
         $routine = new Routine();
+
         $routine->name = $validated['name'];
         $routine->user_id = auth()->id();
         $routine->time_id = $validated['time_id'] ?? null;
         $routine->products = json_encode($validated['products'] ?? []);
         $routine->save();
+
+        // Asociar tipos seleccionados (pivot)
+        if (!empty($validated['type_id'])) {
+            $routine->types()->sync($validated['type_id']);
+        }
 
         return redirect()->route('routines.index')
             ->with('success', 'Rutina creada correctamente.');

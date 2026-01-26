@@ -6,8 +6,8 @@
 
             {{-- Tipo y tiempo de rutina --}}
             <p class="text-sm text-slate-400 mt-1">
-                Tipo: {{ $routine->types->pluck('name')->join(', ') ?: 'No definido' }} ·
-                Tiempo: {{ $routine->routineTime?->name ?? 'No definido' }}
+                    {{ $routine->types->pluck('name')->join(', ') ?: 'No definido' }} ·
+                    {{ $routine->routineTime?->name ?? 'No definido' }}
             </p>
 
             {{-- Conteo de productos reales --}}

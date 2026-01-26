@@ -26,8 +26,13 @@ use App\Http\Controllers\TestController;
 
 // Auth
 Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
+
+// Alias to satisfy calls to route('login') (keeps existing 'auth.login' names unchanged)
+Route::get('/login-alias', function () {
+    return redirect()->route('auth.login');
+})->name('login');
 
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');

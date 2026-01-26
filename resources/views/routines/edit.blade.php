@@ -16,9 +16,9 @@
                 <div class="mb-4">
                     <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
                     <input type="text" name="name" id="name"
-                           value="{{ old('name', $routine->name) }}"
-                           required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            value="{{ old('name', $routine->name) }}"
+                            required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                 </div>
 
                 {{-- Tipo de rutina --}}

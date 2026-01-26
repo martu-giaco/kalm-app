@@ -239,6 +239,18 @@
                             </a>
                         </li>
 
+                        <!-- perfil -->
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
+                            <a href="{{ route('profile.show') }}" class="flex flex-col items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
+                                        width="35px" fill="#306067">
+                                        <path
+                                            d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z" />
+                                    </svg>
+                                <span class="sr-only">Buscar</span>
+                            </a>
+                        </li>
+
                         <!-- Admin -->
                         @if (auth()->check() && auth()->user()->role === 'admin')
                             <li class="flex flex-col items-center font-bold text-[#306067]">
@@ -399,7 +411,7 @@
                     <h2 class="text-2xl">Bienvenido</h2>
                     <p class="text-sm">Inicia sesión o creá una cuenta</p>
                     <div class="flex gap-3 mt-4">
-                        <a href="{{ route('login') }}" class="btn btn-ghost">Ingresar</a>
+                        <a href="{{ route('auth.login') }}" class="btn btn-ghost">Ingresar</a>
                         <a href="{{ route('auth.register') }}" class="btn">Registrarse</a>
                     </div>
                 </div>
