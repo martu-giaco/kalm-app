@@ -24,12 +24,11 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadCount('routines');
 
-        $routines = Routine::where('user_id', $user->id)
-                    ->with(['routineTime'])
-                    ->get();
-
+        $routines = $user->routines()
+            ->with('routineTime')
+            ->get();
 
         return view('user.profile', compact('user', 'routines'));
     }

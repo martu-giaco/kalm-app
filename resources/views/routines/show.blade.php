@@ -104,8 +104,8 @@
                                 </div>
                             </a>
             @empty
-                <div class="py-10 text-center text-slate-400">
-                    <p class="text-lg">No hay productos en esta rutina.</p>
+                <div class="py-10 text-center">
+                    <p class="text-lg text-[#CCE2E5]">No hay productos en esta rutina.</p>
                 </div>
             @endforelse
         </div>

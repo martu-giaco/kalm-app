@@ -1,9 +1,9 @@
 {{-- resources/views/user/profile.blade.php --}}
 
 <x-layout :title="'Mi perfil'">
-    <section class="px-5 pt-5 mx-auto bg-white rounded-t-3xl">
+    <section class=" pt-5 pb-20 mx-auto bg-white rounded-t-3xl">
         {{-- Header: avatar + datos --}}
-        <div class="flex flex-col items-center gap-3 mb-5 md:flex-row md:items-center md:gap-8">
+        <div class="flex flex-col items-center gap-3 mb-5 px-5 md:flex-row md:items-center md:gap-8">
             <div class="w-full max-w-3xl">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    {{-- Stats --}}
+                    {{-- Stats HACER FUNCIONAL!!! --}}
                     <div class="w-full">
                         <div class="flex justify-center gap-7">
                             <div class="flex flex-col items-center">
@@ -58,7 +58,7 @@
                                 <p class="text-xs">Reviews</p>
                             </div>
                             <div class="flex flex-col items-center">
-                                <strong class="text-[#306067] text-2xl">{{ $user->routines_count ?? 0 }}</strong>
+                                <strong class="text-[#306067] text-2xl">{{ $user->routines_count }}</strong>
                                 <p class="text-xs">Rutinas</p>
                             </div>
                         </div>
@@ -68,33 +68,94 @@
             </div>
 
             {{-- Acciones --}}
-            <div class="flex flex-row w-full gap-4 ml-10 md:mt-0 md:shrink-0">
-                <a href="{{ route('profile.edit') }}"
-                    class="text-sm text-center py-1 px-4 rounded-lg bg-[#37A0AF] text-white">Editar perfil</a>
-                <a href="{{ route('profile.results') }}"
-                    class="text-sm text-center py-1 px-4 rounded-lg bg-[#37A0AF] text-white">Mis resultados</a>
+            <div class="w-full gap-4">
+                <div class="grid grid-cols-2 grid-rows-1 gap-2">
+                    <a href="{{ route('profile.edit') }}" class="text-sm text-center py-1 px-4 rounded-lg bg-[#37A0AF] text-white">
+                    Editar perfil
+                    </a>
+                    <a href="{{ route('profile.results') }}" class="text-sm text-center py-1 px-4 rounded-lg bg-[#37A0AF] text-white">
+                        Mis resultados
+                    </a>
+                </div>
             </div>
         </div>
 
-        {{-- Tabs: publicaciones, reviews, rutinas --}}
+        {{-- Tabs: reviews, rutinas --}}
         <section class="mt-5 bg-white">
-            <div class="tabs tabs-border">
+            <div class="w-full">
+            <div class="mb-4 border-b border-[#CCE2E5]">
+                <ul class="-mb-px flex space-x-6 overflow-auto text-center text-sm font-medium w-full" role="tablist">
+                <li role="presentation" class="flex-1">
+                    <button type="button" aria-disabled="false"
+                    class="group inline-flex items-center justify-center whitespace-nowrap align-middle text-sm leading-none disabled:cursor-not-allowed h-[38px] min-w-[38px] w-full gap-2 disabled:stroke-[#CCE2E5] disabled:text-[#CCE2E5] opacity-50 hover:opacity-100 box-content border-b-2 p-0 transition-all duration-100 ease-in-out rounded-none border-b-[#306067] stroke-[#306067] font-semibold text-[#2A4043]"
+                    id="tab-1" role="tab" aria-controls="tab-panel-1" aria-selected="true" tabindex="0">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="m682.11-375.7 152-130 27.91 2.24q19.39 2 30.33 15.68 10.93 13.67 10.93 29.82 0 9.2-3.59 18.16-3.6 8.95-12.32 15.91l-97.3 85.02 28.84 125.67q1 2.48 1.12 5.22.12 2.74.12 5.22 0 19.15-13.67 32.33-13.68 13.17-31.83 13.17-5.71 0-11.93-1.74t-11.94-5.22l-22.91-14.19-45.76-197.29Zm-99.5-308.26-40.33-94.17 9.48-22.72q5.72-13.67 17.65-20.89 11.94-7.22 24.37-7.22 12.68 0 24.49 6.72 11.82 6.72 17.53 20.63l53.81 127.37-107-9.72ZM185.15-208.41l44.24-189.72L81.67-525.85q-8.71-6.95-11.93-15.91-3.22-8.96-3.22-18.15 0-16.16 10.94-29.83 10.93-13.67 30.32-15.67l194.72-17 75.48-178.96q5.72-13.91 17.53-20.63 11.82-6.72 24.49-6.72 12.67 0 24.49 6.72 11.81 6.72 17.53 20.63l75.48 178.96 194.72 17q19.39 2 30.32 15.67 10.94 13.67 10.94 29.83 0 9.19-3.22 18.15-3.22 8.96-11.93 15.91L610.61-398.13l44.24 189.72q.76 2.28 1.24 10.43 0 19.15-13.68 32.33-13.67 13.17-31.82 13.17-3.96 0-23.87-6.95L420-259.91 253.28-159.43q-5.71 3.47-11.93 5.21-6.22 1.74-11.94 1.74-20.63 0-35.3-16.53-14.68-16.53-8.96-39.4Z"/></svg>
+                    </button>
+                </li>
+                <li role="presentation" class="flex-1">
+                    <button type="button" aria-disabled="false"
+                    class="group inline-flex items-center justify-center whitespace-nowrap align-middle text-sm leading-none disabled:cursor-not-allowed stroke-[#CCE2E5] text-black h-[38px] min-w-[38px] w-full gap-2 disabled:stroke-[#CCE2E5] disabled:text-[#CCE2E5] opacity-50 hover:opacity-100 box-content rounded-none border-b-2 border-b-transparent p-0 font-normal transition-all duration-100 ease-in-out"
+                    id="tab-2" role="tab" aria-controls="tab-panel-2" aria-selected="false" tabindex="0">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#306067" class="p-0">
+                                        <path
+                                            d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-160h200q17 0 28.5-11.5T560-320q0-17-11.5-28.5T520-360H320q-17 0-28.5 11.5T280-320q0 17 11.5 28.5T320-280Zm0-160h320q17 0 28.5-11.5T680-480q0-17-11.5-28.5T640-520H320q-17 0-28.5 11.5T280-480q0 17 11.5 28.5T320-440Zm0-160h320q17 0 28.5-11.5T680-640q0-17-11.5-28.5T640-680H320q-17 0-28.5 11.5T280-640q0 17 11.5 28.5T320-600Zm160-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790Z" />
+                                    </svg>
+                    </button>
+                </li>
 
-                <input type="radio" name="tabs" id="tab-reviews" class="tab" aria-label="Reviews" checked/>
-                <div class="p-5 tab-content border-base-300 bg-base-100">
-                    Proximamente
-                </div>
+                </ul>
+            </div>
+                <div>
+                    <div id="tab-panel-0" class="px-5 ">
+                        acá van las reviews del usuario
+                    </div>
 
-                <input type="radio" name="tabs" id="tab-routines" class="tab" aria-label="Rutinas" />
-                <div class="p-5 tab-content border-base-300 bg-base-100">
-                    @forelse ($routines ?? [] as $rutina)
-                        <x-routine-card :rutina="$rutina" />
-                    @empty
-                        <p class="text-[#CCE2E5]">¡Este usuario no tiene rutinas!</p>
-                    @endforelse
+                    <div id="tab-panel-1" class="hidden px-5 ">
+                            @forelse ($routines ?? [] as $rutina)
+                                            <x-routine-card :rutina="$rutina" />
+                                        @empty
+                                            <p class="text-[#CCE2E5]">¡Este usuario no tiene rutinas!</p>
+                                        @endforelse
+                    </div>
                 </div>
             </div>
         </section>
+
+            <!-- Required JavaScript para las tabs -->
+            <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const inactiveTabClassName = "border-b-transparent";
+                const activeTabClassName = "rounded-none border-b-[#306067] stroke-[#306067] font-semibold text-[#306067]";
+
+                const tabs = document.querySelectorAll('[role="tab"]');
+                const tabPanels = document.querySelectorAll('[id^="tab-panel-"]');
+
+                tabs.forEach((tab, index) => {
+                tab.addEventListener("click", function() {
+                    // Hide all tab panels
+                    tabPanels.forEach((panel) => {
+                    panel.classList.add("hidden");
+                    });
+
+                    // Remove active styles from all tabs
+                    tabs.forEach((t) => {
+                    t.setAttribute("aria-selected", "false");
+                    t.classList.remove(...activeTabClassName.split(/\s+/));
+                    t.classList.add(...inactiveTabClassName.split(/\s+/));
+                    });
+
+                    // Show the selected tab panel
+                    tabPanels[index].classList.remove("hidden");
+
+                    // Set the selected tab as active
+                    tab.setAttribute("aria-selected", "true");
+                    tab.classList.add(...activeTabClassName.split(/\s+/));
+                    tab.classList.remove(...inactiveTabClassName.split(/\s+/));
+                });
+                });
+            });
+            </script>
 
         {{-- Botón flotante para crear nueva rutina --}}
         <div class="fab fixed bottom-24 right-6 z-50">

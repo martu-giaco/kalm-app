@@ -42,7 +42,7 @@
                 </span>
             </div>
         @empty
-            <p class="text-sm text-[var(--kälm-text)]">Aún no hay productos para esta sección.</p>
+            <p class="text-sm text-[#2A4043]">Aún no hay productos para esta sección.</p>
         @endforelse
 
     </div>
