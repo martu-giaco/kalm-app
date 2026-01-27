@@ -80,9 +80,6 @@ Route::middleware('auth')->group(function () {
     // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Búsqueda
-    Route::get('/search', [SearchController::class, 'search'])->name('search');
-
     // Comunidad
     Route::get('/community', [CommunityController::class, 'community'])->name('community');
 
@@ -113,6 +110,8 @@ Route::middleware('auth')->group(function () {
     // Suscripción
     Route::get('/premium', [SubscriptionController::class, 'show'])->name('subscription');
     Route::post('/premium/process', [SubscriptionController::class, 'process'])->name('user.payment');
+    Route::get('/premium/success', [SubscriptionController::class, 'process'])->name('user.paysuccess');
+    Route::get('/premium/error', [SubscriptionController::class, 'process'])->name('user.payerror');
 
     // Admin
     Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
@@ -155,6 +154,8 @@ Route::middleware('auth')->group(function () {
 
         // Agregar producto a rutina desde la vista del producto
         Route::post('/{routine}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
+        //Eliminar rutina desde el modal de 'agregar producto a rutina'
+        Route::delete('/{routine}/add-product', [RoutineController::class, 'destroy'])->name('destroy');
 
         // Eliminar producto de la rutina
         Route::delete('/{routine}/product/{product}', [RoutineController::class, 'removeProduct'])

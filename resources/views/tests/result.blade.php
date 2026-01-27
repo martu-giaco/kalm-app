@@ -27,7 +27,7 @@
 
                                 {{-- Info simplificada --}}
                                 <div class="p-3 flex flex-col gap-1">
-                                    <h3 class="text-sm font-semibold text-[var(--kalm-dark)] mb-1 truncate">
+                                    <h3 class="text-sm font-semibold text-[#2A4043] mb-1 truncate">
                                         {{ $product->name }}
                                     </h3>
 

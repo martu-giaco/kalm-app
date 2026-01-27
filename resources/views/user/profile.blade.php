@@ -17,7 +17,7 @@
                 </div>
 
                 {{-- Avatar --}}
-                <div class="flex items-center gap-4 mt-4">
+                <div class="flex items-center w-full gap-4 mt-4">
                     <div class="overflow-hidden rounded-full h-28 w-28">
                         @if(isset($user) && $user->avatar)
                             <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name ?? 'Avatar usuario' }}"
@@ -29,18 +29,14 @@
                     </div>
 
                     {{-- Stats --}}
-                    <div class="flex gap-7">
+                    <div class="flex justify-center gap-7">
                         <div class="flex flex-col items-center">
-                            <strong class="text-[#306067] text-2xl">{{ $user->posts_count ?? 0 }}</strong>
-                            <p class="text-xs">Publicaciones</p>
+                            <strong class="text-[#306067] text-2xl">{{ $user->reviews_count ?? 0 }}</strong>
+                            <p class="text-xs">Reviews</p>
                         </div>
                         <div class="flex flex-col items-center">
-                            <strong class="text-[#306067] text-2xl">{{ $user->following_count ?? 0 }}</strong>
-                            <p class="text-xs">Seguidos</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <strong class="text-[#306067] text-2xl">{{ $user->followers_count ?? 0 }}</strong>
-                            <p class="text-xs">Seguidores</p>
+                            <strong class="text-[#306067] text-2xl">{{ $user->routines_count ?? 0 }}</strong>
+                            <p class="text-xs">Rutinas</p>
                         </div>
                     </div>
                 </div>
@@ -82,12 +78,12 @@
         </section>
 
         {{-- Botón flotante para crear nueva rutina --}}
-        <a class="flex sticky bg-[#2A4043] h-16 w-16 rounded-full items-center justify-center shadow-xl right-[4%] bottom-[15%]"
-            href="{{ route('routines.create') }}">
+        <div class="fab fixed bottom-24 right-6 z-50">
+            <a href="{{ route('routines.create') }}" class=" bg-[#2A4043] h-16 w-16 rounded-full flex items-center justify-center shadow-xl">
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFF">
-                <path
-                    d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z" />
+                <path d="M440-440H240q-17 0-28.5-11.5T200-480q0-17 11.5-28.5T240-520h200v-200q0-17 11.5-28.5T480-760q17 0 28.5 11.5T520-720v200h200q17 0 28.5 11.5T760-480q0 17-11.5 28.5T720-440H520v200q0 17-11.5 28.5T480-200q-17 0-28.5-11.5T440-240v-200Z"/>
             </svg>
-        </a>
+            </a>
+        </div>
     </section>
 </x-layout>

@@ -19,7 +19,14 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-center bg-cover" >
+<body class="min-h-screen text-center flex flex-col justify-end mx-auto bg-[#2A4043] p-6">
+
+    <img class="mx-auto" src="{{ asset('images/icons/cancel.svg') }}" alt="error icon">
+    <h1 class="text-white text-3xl font-semibold">Parece que hubo un error</h1>
+    <p class="text-[#CCE2E5] mt-2 mb-20 pb-20">No se pudo procesar el pago,
+inténtelo de nuevo más tarde</p>
+
+    <a href="{{ route('home') }}" class="mt-20 btn hover:bg-transparent hover:border-[#CCE2E5] hover:text-[#CCE2E5] w-full inline-flex border-2 border-[#CCE2E5] text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">Volver al inicio</a>
 
 </body>
 </html>

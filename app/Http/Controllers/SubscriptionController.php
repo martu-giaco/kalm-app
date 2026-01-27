@@ -35,6 +35,7 @@ class SubscriptionController extends Controller
         // $user->save();
 
         // return redirect()->route('home')->with('status', '¡Felicidades! Ahora eres Premium.');
+        return view('user.paysuccess');
 
         return back(); // Placeholder
     }

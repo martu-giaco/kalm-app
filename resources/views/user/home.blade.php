@@ -27,7 +27,7 @@
 
         {{-- Categorías --}}
         <div class="mb-6">
-            <h2 class="text-xl font-semibold text-[var(--kalm-dark)] mb-4">Categorías</h2>
+            <h2 class="text-xl font-semibold text-[#2A4043] mb-4">Categorías</h2>
 
             @php
                 // Obtener el slug de la categoría actual de la URL para resaltar la activa.
@@ -51,7 +51,7 @@
                                 <div
                                     class="h-16 w-16 rounded-full flex items-center justify-center p-3
                                                 {{-- Clase condicional para resaltar la categoría activa --}}
-                                                @if ($isActive) bg-[var(--kalm-dark)] text-white @else bg-[var(--kalm-light)] text-[var(--kalm-dark)] @endif">
+                                                @if ($isActive) bg-[#2A4043] text-white @else bg-[var(--kalm-light)] text-[#2A4043] @endif">
                                     {!! $category->icon_svg !!}
                                 </div>
 
@@ -72,8 +72,8 @@
                 $products_with_tag = $section['products'];
             @endphp
 
-            <div class="mb-8">
-                <h2 class="text-lg font-semibold text-[var(--kalm-dark)] mb-2">{{ $section['title'] }}</h2>
+            <div class="mb-10">
+                <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
                 <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
                         <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">

@@ -56,7 +56,7 @@
 
             </header>
 
-        <dialog id="premium_modal" class="modal">
+        <dialog id="premium_modal" class="modal modal-bottom">
             <div class="modal-box w-full bg-[#2A4043]">
                 <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">

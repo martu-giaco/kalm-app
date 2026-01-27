@@ -56,7 +56,7 @@
                         <p class="text-sm text-[var(--kalm-text)] mb-4">No se encontraron productos que coincidan con tu
                             búsqueda.</p>
                         <a href="{{ route('products.index') }}"
-                            class="inline-block bg-[var(--kalm-dark)] text-[#306067] px-4 py-2 rounded-lg">Ver todos los
+                            class="inline-block bg-[#2A4043] text-[#306067] px-4 py-2 rounded-lg">Ver todos los
                             productos</a>
                     </div>
                 @else
@@ -98,7 +98,7 @@
                                             </div>
 
                                             @if(isset($product->price))
-                                                <div class="text-sm font-semibold text-[var(--kalm-dark)] whitespace-nowrap">
+                                                <div class="text-sm font-semibold text-[#2A4043] whitespace-nowrap">
                                                     ${{ number_format($product->price, 2, ',', '.') }}
                                                 </div>
                                             @endif

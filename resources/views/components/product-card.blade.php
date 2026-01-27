@@ -33,7 +33,7 @@
                                             </div>
 
                                             @if(isset($product->price))
-                                                <div class="text-sm font-semibold text-[var(--kalm-dark)] whitespace-nowrap">
+                                                <div class="text-sm font-semibold text-[#2A4043] whitespace-nowrap">
                                                     ${{ number_format($product->price, 2, ',', '.') }}
                                                 </div>
                                             @endif

@@ -3,7 +3,7 @@
     <section class="min-h-screen p-5 rounded-t-3xl">
 
         {{-- Título de la Categoría --}}
-        <h1 class="text-3xl font-bold text-[var(--kalm-dark)] mb-4 border-b pb-3 border-gray-100">
+        <h1 class="text-3xl font-bold text-[#2A4043] mb-4 border-b pb-3 border-gray-100">
             {{ $category->name }}
         </h1>
 
@@ -26,7 +26,7 @@
 
                             {{-- Información simplificada --}}
                             <div class="flex flex-col gap-1 p-3">
-                                <h3 class="text-sm font-semibold text-[var(--kalm-dark)] mb-1 truncate">
+                                <h3 class="text-sm font-semibold text-[#2A4043] mb-1 truncate">
                                     {{ $product->name }}
                                 </h3>
 
