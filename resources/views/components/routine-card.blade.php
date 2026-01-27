@@ -1,5 +1,5 @@
 
-                            <article  onclick="window.location='{{ route('routines.show', $rutina) }}'" class="cursor-pointer flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg">
+                        <article  onclick="window.location='{{ route('routines.show', $rutina) }}'" class="cursor-pointer flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg">
                                 <div>
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">

@@ -59,7 +59,7 @@
         @endif
         {{-- FIN BLOQUE DE FEEDBACK --}}
 
-        <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-4">
+        <form action="" method="POST" class="space-y-4">
             @csrf
 
             <div>
@@ -90,6 +90,8 @@
                     class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#306067]"
                     required title="Ingrese 3 o 4 dígitos.">
             </div>
+
+            <p class="text-red-600">falta la info para enviar el self-pack y redireccionar al usuario</p>
         </div>
 
         <div class="mt-10">
