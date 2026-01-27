@@ -9,6 +9,7 @@ use App\Http\Controllers\HelpController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TerminosController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ProductController;
@@ -91,6 +92,9 @@ Route::middleware('auth')->group(function () {
 
     // Help
     Route::get('/help', [HelpController::class, 'help'])->name('help');
+
+    // About
+    Route::get('/terminos', [TerminosController::class, 'terminos'])->name('terminos');
 
     // Configuracion
     Route::get('/configuracion', [ConfigController::class, 'config'])->name('config');
