@@ -143,9 +143,15 @@
 
     <input type="checkbox" id="modal-routines" class="modal-toggle" />
     <div id="modal-routines" class="modal">
-        <div class="modal-box w-full max-w-2xl p-6">
-            <label for="modal-routines" class="absolute btn btn-sm btn-circle right-2 top-2">✕</label>
-            <h3 class="text-xl font-bold mb-4 text-[#306067]">Selecciona la rutina</h3>
+        <div class="modal-box w-90 max-w-2xl p-6">
+            <div class="flex justify-between items-center">
+                <label for="modal-routines" class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#306067" aria-hidden="true">
+                        <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+                    </svg>
+                </label>
+                <h3 class="text-xl font-bold mb-4 text-[#306067]">Selecciona la rutina</h3>
+            </div>
 
             <div class="space-y-3">
                 @foreach($routines as $routine)

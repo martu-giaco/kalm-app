@@ -1,7 +1,7 @@
 {{-- resources/views/user/profile.blade.php --}}
 
 <x-layout :title="'Mi perfil'">
-    <section class=" pt-5 pb-20 mx-auto bg-white rounded-t-3xl">
+    <section class="min-h-full pt-5 pb-20 mx-auto bg-white rounded-t-3xl">
         {{-- Header: avatar + datos --}}
         <div class="flex flex-col items-center gap-3 mb-5 px-5 md:flex-row md:items-center md:gap-8">
             <div class="w-full max-w-3xl">
