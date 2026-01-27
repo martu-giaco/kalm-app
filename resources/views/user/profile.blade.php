@@ -5,9 +5,25 @@
         {{-- Header: avatar + datos --}}
         <div class="flex flex-col items-center gap-3 mb-5 md:flex-row md:items-center md:gap-8">
             <div class="w-full max-w-3xl">
-                <div class="flex items-center justify-end">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <h2 class="text-3xl me-2 text-[#306067]">{{ $user->name ?? 'Invitado' }}</h2>
+                        @if(auth()->user()->role === 'free')
+                            <div onclick="premium_modal.showModal()" class="py-1 px-3 rounded-xl bg-[#CCE2E5] text-[#306067] cursor-pointer">
+                                <p class="text-sm">Free</p>
+                            </div>
+                        @elseif(auth()->user()->role === 'premium')
+                            <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                                <p class="text-sm">Premium</p>
+                            </div>
+                        @elseif(auth()->user()->role === 'admin')
+                            <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                                <p class="text-sm">Administrador</p>
+                            </div>
+                        @endif
+                    </div>
                     <span class="flex text-[#CCE2E5]">
-                        ?
+                        {{ $user->review_promedio ?? 0 }}
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                             fill="#FFDE21">
                             <path
@@ -18,34 +34,37 @@
 
                 {{-- Avatar --}}
                 <div class="flex items-center w-full gap-4 mt-4">
-                    <div class="overflow-hidden rounded-full h-28 w-28">
-                        @if(isset($user) && $user->avatar)
-                            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name ?? 'Avatar usuario' }}"
-                                class="object-cover w-full h-full" loading="lazy" decoding="async" />
-                        @else
-                            <img src="{{ asset('images/pfp.svg') }}" alt="Avatar por defecto"
-                                class="object-contain w-full h-full" loading="lazy" decoding="async" />
-                        @endif
+                    <div class="avatar">
+                        <div class=" rounded-full h-28 w-28">
+                            @if(isset($user) && $user->avatar)
+                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name ?? 'Avatar usuario' }}"
+                                    class="object-cover w-full h-full" loading="lazy" decoding="async" />
+                            @else
+                                <img src="{{ asset('images/pfp.svg') }}" alt="Avatar por defecto"
+                                    class="object-contain w-full h-full" loading="lazy" decoding="async" />
+                            @endif
+                        </div>
                     </div>
 
                     {{-- Stats --}}
-                    <div class="flex justify-center gap-7">
-                        <div class="flex flex-col items-center">
-                            <strong class="text-[#306067] text-2xl">{{ $user->reviews_count ?? 0 }}</strong>
-                            <p class="text-xs">Reviews</p>
-                        </div>
-                        <div class="flex flex-col items-center">
-                            <strong class="text-[#306067] text-2xl">{{ $user->routines_count ?? 0 }}</strong>
-                            <p class="text-xs">Rutinas</p>
+                    <div class="w-full">
+                        <div class="flex justify-center gap-7">
+                            <div class="flex flex-col items-center">
+                                <strong class="text-[#306067] text-2xl">{{ $user->faves_count ?? 0 }}</strong>
+                                <p class="text-xs">Favoritos</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <strong class="text-[#306067] text-2xl">{{ $user->reviews_count ?? 0 }}</strong>
+                                <p class="text-xs">Reviews</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <strong class="text-[#306067] text-2xl">{{ $user->routines_count ?? 0 }}</strong>
+                                <p class="text-xs">Rutinas</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {{-- Bio --}}
-                <div class="mt-4">
-                    <h2 class="text-2xl text-[#306067]">{{ $user->name ?? 'Invitado' }}</h2>
-                    <p>{{ $user->bio ?? 'Bio no disponible.' }}</p>
-                </div>
             </div>
 
             {{-- Acciones --}}

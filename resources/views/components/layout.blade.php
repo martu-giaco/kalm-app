@@ -26,8 +26,7 @@
 
         {{-- Contenedor principal del contenido --}}
         <div class="grid h-screen grid-cols-1 grid-rows-3 header-bg drawer-content">
-            <header
-                class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
+            <header class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
 
                 <!-- Logo -->
                 <a href="{{ route('home') }}">
@@ -272,13 +271,19 @@
                     <div>
                         <div class="flex flex-col border-b p-5 pt-5 border-[#CCE2E5]">
                             <div class="flex justify-between">
-                                <span  @if(auth()->user()->role === 'free') onclick="premium_modal.showModal()" @endif
-                                    class="inline-block px-3 py-1 text-sm font-semibold rounded-full
-                                                                        @if (auth()->user()->role === 'admin') bg-red-500 text-white
-                                                                        @elseif(auth()->user()->role === 'premium') bg-green-500 text-white
-                                                                        @else bg-gray-300 text-gray-800 @endif">
-                                    {{ ucfirst(auth()->user()->role) }}
-                                </span>
+                                @if(auth()->user()->role === 'free')
+                                    <div onclick="premium_modal.showModal()" class="py-1 px-3 rounded-xl bg-[#CCE2E5] text-[#306067] cursor-pointer">
+                                        <p class="text-sm">Free</p>
+                                    </div>
+                                @elseif(auth()->user()->role === 'premium')
+                                    <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                                        <p class="text-sm">Premium</p>
+                                    </div>
+                                @elseif(auth()->user()->role === 'admin')
+                                    <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                                        <p class="text-sm">Administrador</p>
+                                    </div>
+                                @endif
                                 <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960"
                                         fill="#2A4043" aria-hidden="true">
