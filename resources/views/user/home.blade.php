@@ -52,7 +52,7 @@
                                     class="h-16 w-16 rounded-full flex items-center justify-center p-3
                                                 {{-- Clase condicional para resaltar la categoría activa --}}
                                                 @if ($isActive) bg-[#2A4043] text-white @else bg-[var(--kalm-light)] text-[#2A4043] @endif">
-                                    {!! $category->icon_svg !!}
+                                    <img src="{!! $category->icon_svg !!}" alt="{{ $category->name }}">
                                 </div>
 
                                 <span class="text-xs font-medium text-[var(--kalm-text)] mt-2 text-center leading-tight">
@@ -77,8 +77,7 @@
                 <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
                         <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
-                            <div
-                                class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
+                            <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
                                 <div class="w-full h-40 overflow-hidden">

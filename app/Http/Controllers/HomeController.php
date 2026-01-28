@@ -20,10 +20,12 @@ class HomeController extends Controller
 
         // --- 0. Íconos de categorías y tipos ---
         $category_icons = [
-            'Limpiadores' => '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>',
-            'Hidratantes' => '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>',
-            'Shampoo' => '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M6 2h12v2H6V2zm0 4h12v16H6V6z"/></svg>',
-            'Acondicionador' => '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm4 4h8v8H8V8z"/></svg>',
+            'Limpiadores' => asset('images/icons/bubbles.svg'),
+            'Hidratantes Corporales' => asset('images/icons/hidrate.svg'),
+            'Sueros/Sérums' => asset('images/icons/serum.svg'),
+            'Tratamientos' => asset('images/icons/tratamientos.svg'),
+            'Exfoliantes' => asset('images/icons/exfoliate.svg'),
+            'Shampoo' => asset('images/icons/shampoo.svg'),
         ];
 
         $type_icons = [
