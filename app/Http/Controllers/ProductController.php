@@ -163,20 +163,38 @@ class ProductController extends Controller
      */
     public function search(Request $request)
     {
-        $query = $request->input('q');
+        $queryText = $request->input('q');
 
-        $products = Product::with(['brand', 'type', 'category'])
-            ->when($query, function ($q) use ($query) {
-                $q->where('name', 'like', "%{$query}%")
-                    ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$query}%"))
-                    ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$query}%"))
-                    ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$query}%"));
-            })
-            ->paginate(12);
+        $types = ProductType::all();
+        $categories = ProductCategory::all();
+
+        $qb = Product::with(['brand', 'type', 'category']);
+
+        if ($queryText) {
+            $qb->where('name', 'like', "%{$queryText}%")
+               ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
+               ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
+               ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"));
+        }
+
+        // filtros explícitos por GET
+        if ($request->filled('type_id')) {
+            $qb->where('type_id', $request->input('type_id'));
+        }
+        if ($request->filled('category_id')) {
+            $qb->where('category_id', $request->input('category_id'));
+        }
+        if ($request->filled('brand_id')) {
+            $qb->where('brand_id', $request->input('brand_id'));
+        }
+
+        $products = $qb->orderBy('rating', 'desc')->paginate(12)->appends($request->except('page'));
 
         return view('products.search', [
             'products' => $products,
-            'query' => $query
+            'query' => $queryText,
+            'types' => $types,
+            'categories' => $categories,
         ]);
     }
 }
