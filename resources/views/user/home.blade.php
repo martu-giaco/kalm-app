@@ -52,7 +52,7 @@
                                     class="h-16 w-16 rounded-full flex items-center justify-center p-3
                                                 {{-- Clase condicional para resaltar la categoría activa --}}
                                                 @if ($isActive) bg-[#2A4043] text-white @else bg-[var(--kalm-light)] text-[#2A4043] @endif">
-                                    <img src="{!! $category->icon_svg !!}" alt="{{ $category->name }}">
+                                    <img class="h-24 w-24" src="{!! $category->icon_svg !!}" alt="{{ $category->name }}">
                                 </div>
 
                                 <span class="text-xs font-medium text-[var(--kalm-text)] mt-2 text-center leading-tight">
