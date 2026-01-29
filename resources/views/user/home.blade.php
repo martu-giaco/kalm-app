@@ -55,7 +55,7 @@
                                     <img class="w-full" src="{!! $category->icon_svg !!}" alt="{{ $category->name }}">
                                 </div>
 
-                                <span class="text-xs font-medium text-[var(--kalm-text)] mt-2 text-center leading-tight">
+                                <span class="text-xs font-medium text-[#2A4043] mt-2 text-center leading-tight">
                                     {{ $category->name }}
                                 </span>
                             </a>
@@ -63,7 +63,7 @@
                     @endforeach
                 </div>
             @else
-                <p class="text-sm text-[var(--kalm-text)]">No hay categorías disponibles.</p>
+                <p class="text-sm text-[#2A4043]">No hay categorías disponibles.</p>
             @endif
         </div>
 

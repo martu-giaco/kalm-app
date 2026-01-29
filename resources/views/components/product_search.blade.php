@@ -26,11 +26,11 @@
                 <h3 class="text-sm font-medium text-[#306067]">{{ $product->name }}</h3>
 
                 {{-- Marca --}}
-                <p class="text-xs text-[var(--kalm-text)] mt-1">{{ $product->brand->name }}</p>
+                <p class="text-xs text-[#2A4043] mt-1">{{ $product->brand->name }}</p>
 
                 {{-- Tipo de producto --}}
                 @if($product->product_type)
-                    <p class="text-xs text-[var(--kalm-text)] mt-0.5">{{ $product->product_type->name }}</p>
+                    <p class="text-xs text-[#2A4043] mt-0.5">{{ $product->product_type->name }}</p>
                 @endif
 
                 {{-- Tag personalizado --}}
@@ -42,7 +42,7 @@
             </div>
         </div>
     @empty
-        <p class="text-[var(--kalm-text)]">No se encontraron productos en esta categoría.</p>
+        <p class="text-[#2A4043]">No se encontraron productos en esta categoría.</p>
     @endforelse
 
 </div>

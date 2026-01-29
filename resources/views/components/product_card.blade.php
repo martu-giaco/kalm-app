@@ -43,12 +43,12 @@
 
     {{-- Tipo --}}
     @if(isset($product->type->name))
-        <p class="text-xs text-[var(--kalm-text)] mb-1 truncate">{{ $product->type->name }}</p>
+        <p class="text-xs text-[#2A4043] mb-1 truncate">{{ $product->type->name }}</p>
     @endif
 
     {{-- Categoría --}}
     @if(isset($product->category->name))
-        <p class="text-xs text-[var(--kalm-text)] mb-1 truncate">{{ $product->category->name }}</p>
+        <p class="text-xs text-[#2A4043] mb-1 truncate">{{ $product->category->name }}</p>
     @endif
 
     {{-- Dónde comprar --}}

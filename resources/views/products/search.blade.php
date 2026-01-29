@@ -130,9 +130,9 @@
                 {{-- Empty state --}}
                 @if($products->isEmpty())
                     <div class="text-center py-14">
-                        <p class="text-sm text-[var(--kalm-text)] mb-4">No se encontraron productos que coincidan con su
+                        <p class="text-sm text-[#2A4043] mb-4">No se encontraron productos que coincidan con su
                             búsqueda.</p>
-                        <a href="{{ route('products.index') }}"
+                        <a href="{{ route('products.search') }}"
                             class="inline-block text-[#37A0AF]">Ver todos los
                             productos</a>
                     </div>
@@ -175,7 +175,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="text-xs text-[var(--kalm-text)] gap-2">
+                                        <div class="text-xs text-[#2A4043] gap-2">
                                             <h3 class="text-[13px] text-[#37A0AF] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>

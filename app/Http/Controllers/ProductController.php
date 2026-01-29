@@ -126,10 +126,6 @@ class ProductController extends Controller
     return view('products.byCategory', compact('category','products'));
 }
 
-
-
-
-
     /**
      * Toggle favoritos del usuario
      */

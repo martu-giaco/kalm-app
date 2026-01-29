@@ -8,7 +8,7 @@
         </h1>
 
         @if($products->isEmpty())
-            <p class="text-[var(--kalm-text)] text-lg py-10 text-center">
+            <p class="text-[#2A4043] text-lg py-10 text-center">
                 No hemos encontrado productos en esta categoría.
             </p>
         @else

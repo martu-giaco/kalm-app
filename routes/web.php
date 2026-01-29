@@ -100,7 +100,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/configuracion', [ConfigController::class, 'config'])->name('config');
 
     // Productos
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/productos/buscar', [ProductController::class, 'search'])->name('products.search');
     Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
     Route::get('/categorias/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');

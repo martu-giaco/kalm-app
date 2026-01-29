@@ -39,7 +39,7 @@
                                             @endif
                                         </div>
 
-                                        <div class="text-xs text-[var(--kalm-text)] gap-2">
+                                        <div class="text-xs text-[#2A4043] gap-2">
                                             <h3 class="text-[13px] text-[#37A0AF] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>

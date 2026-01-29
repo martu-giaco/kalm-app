@@ -78,7 +78,7 @@
                                             @endif
                                         </div>
 
-                                        <div class="text-xs text-[var(--kalm-text)] gap-2">
+                                        <div class="text-xs text-[#2A4043] gap-2">
                                             <h3 class="text-[13px] text-[#37A0AF] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>
@@ -106,6 +106,8 @@
             @empty
                 <div class="py-10 text-center">
                     <p class="text-lg text-[#CCE2E5]">No hay productos en esta rutina.</p>
+                    <a href="{{ route('products.search') }}"
+                            class="inline-block text-[#37A0AF] text-sm mt-2">Ver todos los productos</a>
                 </div>
             @endforelse
         </div>
