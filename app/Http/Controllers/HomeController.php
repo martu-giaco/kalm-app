@@ -20,12 +20,15 @@ class HomeController extends Controller
 
         // --- 0. Íconos de categorías y tipos ---
         $category_icons = [
-            'Limpiadores' => asset('images/icons/bubbles.svg'),
-            'Hidratantes Corporales' => asset('images/icons/hidrate.svg'),
-            'Sueros/Sérums' => asset('images/icons/serum.svg'),
+            'Limpiadores' => asset('images/icons/limpiadores.svg'),
+            'Hidratantes Corporales' => asset('images/icons/hidratantes-corporales.svg'),
+            'Sueros/Sérums' => asset('images/icons/serums.svg'),
             'Tratamientos' => asset('images/icons/tratamientos.svg'),
-            'Exfoliantes' => asset('images/icons/exfoliate.svg'),
+            'Exfoliantes' => asset('images/icons/exfoliacion.svg'),
             'Shampoo' => asset('images/icons/shampoo.svg'),
+            'Acondicionador' => asset('images/icons/acondicionador.svg'),
+            'Hidratantes' => asset('images/icons/hidratante.svg'),
+            'Protectores Solares' => asset('images/icons/protector-uv.svg'),
         ];
 
         $type_icons = [

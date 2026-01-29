@@ -130,10 +130,10 @@
                 {{-- Empty state --}}
                 @if($products->isEmpty())
                     <div class="text-center py-14">
-                        <p class="text-sm text-[var(--kalm-text)] mb-4">No se encontraron productos que coincidan con tu
+                        <p class="text-sm text-[var(--kalm-text)] mb-4">No se encontraron productos que coincidan con su
                             búsqueda.</p>
                         <a href="{{ route('products.index') }}"
-                            class="inline-block bg-[#2A4043] text-[#306067] px-4 py-2 rounded-lg">Ver todos los
+                            class="inline-block text-[#37A0AF]">Ver todos los
                             productos</a>
                     </div>
                 @else
