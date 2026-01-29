@@ -49,7 +49,7 @@
                 <!-- Modal de filtros -->
     <dialog id="filters_modal" class="modal modal-bottom">
         <div class="modal-box p-0">
-            <div class="mb-4 p-4 border-b-2 border-b-[#CCE2E5]">
+            <div class="p-4 border-b-[1px] border-b-[#CCE2E5]">
                 <form method="dialog">
                         <button class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 -960 960 960" fill="#306067" aria-hidden="true">
@@ -65,8 +65,8 @@
                 <input type="hidden" name="q" value="{{ request('q') }}">
 
                 <div class="mb-6">
-                    <h3 class="mb-3 text-[#2A4043] font-semibold">Tipo</h3>
-                    <div class="grid grid-cols-2 gap-3">
+                    <h3 class="text-lg mb-5 w-full p-4 border-b-[1px] border-b-[#CCE2E5] text-[#2A4043] font-semibold">Tipo</h3>
+                    <div class="grid grid-cols-2 gap-3 mx-4">
                         @foreach($types as $t)
                             <label class="cursor-pointer">
                                 <input
@@ -77,11 +77,11 @@
                                     {{ request('type_id') == $t->id ? 'checked' : '' }}
                                 >
 
-                                <div class="py-3 text-center rounded-xl border border-[#CCE2E5]
+                                <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
                                             text-[#2A4043] transition
-                                            peer-checked:bg-[#2A4043]
+                                            peer-checked:bg-[#37A0AF]
                                             peer-checked:text-white
-                                            peer-checked:border-[#2A4043]">
+                                            peer-checked:border-[#37A0AF]">
                                     {{ $t->name }}
                                 </div>
                             </label>
@@ -91,8 +91,8 @@
 
 
                 <div class="mb-6">
-                    <h3 class="mb-3 text-[#2A4043] font-semibold">Categoría</h3>
-                    <div class="grid grid-cols-2 gap-3">
+                    <h3 class="text-lg mb-5 w-full mt-6 p-4 border-y-[1px] border-y-[#CCE2E5] text-[#2A4043] font-semibold">Categoría</h3>
+                    <div class="grid grid-cols-2 gap-3 mx-4">
                         @foreach($categories as $c)
                             <label class="cursor-pointer">
                                 <input
@@ -102,11 +102,11 @@
                                     class="peer hidden"
                                     {{ request('category_id') == $c->id ? 'checked' : '' }}
                                 >
-                                <div class="py-3 text-center rounded-xl border border-[#CCE2E5]
+                                <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
                                             text-[#2A4043] transition
-                                            peer-checked:bg-[#2A4043]
+                                            peer-checked:bg-[#37A0AF]
                                             peer-checked:text-white
-                                            peer-checked:border-[#2A4043]">
+                                            peer-checked:border-[#37A0AF]">
                                     {{ $c->name }}
                                 </div>
                             </label>
@@ -114,7 +114,7 @@
                     </div>
                 </div>
 
-                <div class="w-full mt-6 p-4 border-t-2 border-t-[#CCE2E5]">
+                <div class="mt-6 p-4 border-t-[1px] border-t-[#CCE2E5]">
                     <button type="submit" class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-[#fff] font-semibold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
                         Filtrar
                     </button>
