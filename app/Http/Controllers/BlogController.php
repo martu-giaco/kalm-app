@@ -15,7 +15,7 @@ class BlogController extends Controller
     public function blog()
     {
         // Vista principal
-        return view('blogs.index', compact('blogs'));
+        return view('blogs.index');
     }
 
     //Crear Blog
@@ -29,7 +29,6 @@ class BlogController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'time_id' => 'nullable|exists:blog_times,time_id',
             'products' => 'nullable|array',
         ]);
 
