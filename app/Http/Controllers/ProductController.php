@@ -23,7 +23,14 @@ class ProductController extends Controller
         $categories = ProductCategory::all();
 
         // Rutinas del usuario autenticado
-        $routines = auth()->user()->routines()->get(); // Trae todas las rutinas del usuario
+        $routines = auth()->user()->routines()->get();
+
+        // Verificar si el producto es favorito
+        $user = auth()->user();
+        $idsFavoritos = $user->favoritos ?? [];
+        // Convertir a enteros para comparación correcta
+        $idsFavoritos = array_map('intval', $idsFavoritos);
+        $isFavorito = in_array((int) $product->id, $idsFavoritos);
 
         // Banners
         $banners = [
@@ -50,7 +57,8 @@ class ProductController extends Controller
             'routines',
             'banners',
             'product_sections',
-            'topRatedProducts'
+            'topRatedProducts',
+            'isFavorito'
         ));
     }
 
@@ -127,29 +135,49 @@ class ProductController extends Controller
 }
 
     /**
+     * Mostrar los productos favoritos del usuario autenticado
+     */
+    public function favorites()
+    {
+        $user = auth()->user();
+        $idsFavoritos = $user->favoritos ?? [];
+
+        // Siempre retornar una colección, incluso si está vacía
+        if (!empty($idsFavoritos)) {
+            $favorites = Product::whereIn('id', $idsFavoritos)->get();
+        } else {
+            $favorites = collect(); // Colección vacía
+        }
+
+        return view('products.favorites', compact('favorites'));
+    }
+
+    /**
      * Toggle favoritos del usuario
      */
     public function toggleFavorito(Product $product)
     {
         $user = auth()->user();
-        $favoritos = $user->favoritos ? json_decode($user->favoritos, true) : [];
+        $favoritos = $user->favoritos ?? [];
 
-        if (in_array($product->id, $favoritos)) {
-            $favoritos = array_diff($favoritos, [$product->id]);
+        // Convertir todos los IDs a enteros para comparación correcta
+        $favoritos = array_map('intval', $favoritos);
+        $productId = (int) $product->id;
+
+        if (in_array($productId, $favoritos)) {
+            // Quitar de favoritos
+            $favoritos = array_diff($favoritos, [$productId]);
             $isFavorito = false;
         } else {
-            $favoritos[] = $product->id;
+            // Agregar a favoritos
+            $favoritos[] = $productId;
             $isFavorito = true;
         }
 
-        $user->favoritos = json_encode(array_values($favoritos));
+        // Guardar con valores únicos y reenumerados
+        // El cast JSON se encargará de convertirlo automáticamente
+        $user->favoritos = array_values(array_unique($favoritos));
         $user->save();
-
-        if (request()->ajax()) {
-            return response()->json(['favorito' => $isFavorito]);
-        }
-
-        return back();
     }
 
 
@@ -193,4 +221,5 @@ class ProductController extends Controller
             'categories' => $categories,
         ]);
     }
+
 }

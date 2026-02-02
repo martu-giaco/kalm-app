@@ -8,12 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Deshabilitar FK temporalmente para evitar conflictos
+        Schema::disableForeignKeyConstraints();
+
         // Eliminar tablas si existen
         Schema::dropIfExists('routine_product');
         Schema::dropIfExists('routines_have_types');
         Schema::dropIfExists('routines');
         Schema::dropIfExists('routine_types');
         Schema::dropIfExists('routine_times');
+
+        // Re-habilitar FK
+        Schema::enableForeignKeyConstraints();
 
         // Tabla de tiempos de rutina
         Schema::create('routine_times', function (Blueprint $table) {

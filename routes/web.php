@@ -106,7 +106,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     // Favoritos
-    Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
+    Route::get('/mis-favoritos', [ProductController::class, 'favorites']) ->name('favorites')->middleware('auth');
     Route::post('/favorito/toggle/{product}', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
     Route::post('/products/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
 

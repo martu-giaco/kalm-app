@@ -23,6 +23,7 @@ class User extends Authenticatable
         'theme',
         'accepted_terms',
         'terms_accepted_at',
+        'favoritos',
     ];
 
     protected $hidden = [
@@ -34,6 +35,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'accepted_terms' => 'boolean',
         'terms_accepted_at' => 'datetime',
+        'favoritos' => 'json',
     ];
 
     // Si usás Laravel 10+ y querés hashing automático, podés mantenerlo;
