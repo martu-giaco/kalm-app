@@ -21,7 +21,7 @@
                     <button type="button"
                         class="absolute p-2 transition bg-white rounded-full top-3 right-3 hover:scale-105"
                         id="favoriteBtn"
-                        title="Marcar favorito" onclick="toggleFavorito({{ $product->id }}, this)">
+                        title="Marcar favorito" onclick="event.preventDefault(); event.stopPropagation(); toggleFavorito({{ $product->id }}, this); return false;">
                         <label class="swap" id="swapLabel" style="--is-checked: {{ $isFavorito ? 1 : 0 }};">
                             <!-- this hidden checkbox controls the state -->
                             <input type="checkbox" {{ $isFavorito ? 'checked' : '' }} />
@@ -242,8 +242,22 @@
     </div>
 
     <script>
+        let isProcessing = false; // Prevenir múltiples requests simultáneos
+
         function toggleFavorito(productId, btn) {
+            // Prevenir múltiples clicks mientras se procesa
+            if (isProcessing) {
+                console.log('Solicitud en progreso, esperando respuesta...');
+                return false;
+            }
+
+            isProcessing = true;
             const checkbox = btn.querySelector('input[type="checkbox"]');
+            const initialState = checkbox.checked;
+
+            // Cambiar visualmente de inmediato (optimistic update)
+            checkbox.checked = !checkbox.checked;
+            console.log('Checkbox toggled to:', checkbox.checked);
 
             fetch(`/products/${productId}/favorito`, {
                 method: 'POST',
@@ -252,19 +266,30 @@
                     'Accept': 'application/json'
                 }
             })
-                .then(res => res.json())
-                .then(data => {
-                    // Cambiar el estado del checkbox del swap
-                    if (data.favorito) {
-                        checkbox.checked = true;
-                    } else {
-                        checkbox.checked = false;
+                .then(res => {
+                    console.log('Status:', res.status);
+                    if (!res.ok) {
+                        throw new Error(`Error del servidor: ${res.status}`);
                     }
+                    return res.json();
+                })
+                .then(data => {
+                    console.log('Respuesta servidor:', data);
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    // Confirmar el estado con la respuesta del servidor
+                    checkbox.checked = data.favorito;
+                    console.log('Estado confirmado:', data.favorito);
                 })
                 .catch(err => {
-                    console.error('Error al marcar favorito', err);
-                    // Revertir el checkbox en caso de error
-                    checkbox.checked = !checkbox.checked;
+                    console.error('Error:', err);
+                    checkbox.checked = initialState;
+                    alert('Error al actualizar favoritos: ' + err.message);
+                })
+                .finally(() => {
+                    isProcessing = false;
+                    console.log('Solicitud completada, se pueden hacer nuevos clicks');
                 });
         }
     </script>

@@ -92,16 +92,38 @@
                     'Accept': 'application/json'
                 }
             })
-                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`Error del servidor: ${res.status}`);
+                    }
+                    return res.json();
+                })
                 .then(data => {
-                    if (!data.favorito) {
-                        // Recargar la página para mostrar cambios
-                        location.reload();
+                    // Verificar que se desfavoritizó correctamente
+                    if (data.favorito === false) {
+                        // Encontrar el contenedor del producto y removerlo
+                        const button = event.target.closest('button');
+                        const productCard = button.closest('a').closest('div').parentElement;
+
+                        // Animar la desaparición
+                        productCard.style.opacity = '0';
+                        productCard.style.transform = 'scale(0.95)';
+                        productCard.style.transition = 'all 0.3s ease-out';
+
+                        setTimeout(() => {
+                            productCard.remove();
+
+                            // Verificar si no hay más productos
+                            const remainingProducts = document.querySelectorAll('a[href*="/products/"]').length;
+                            if (remainingProducts === 0) {
+                                location.reload();
+                            }
+                        }, 300);
                     }
                 })
                 .catch(err => {
-                    console.error('Error al quitar de favoritos', err);
-                    alert('Error al quitar de favoritos');
+                    console.error('Error al quitar de favoritos:', err);
+                    alert('Error al quitar de favoritos. Intenta de nuevo.');
                 });
         }
     </script>

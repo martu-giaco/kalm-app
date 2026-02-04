@@ -142,11 +142,20 @@ class ProductController extends Controller
         $user = auth()->user();
         $idsFavoritos = $user->favoritos ?? [];
 
+        // Asegurar que todos los IDs sean enteros
+        $idsFavoritos = array_map('intval', $idsFavoritos);
+
         // Siempre retornar una colección, incluso si está vacía
         if (!empty($idsFavoritos)) {
+            // Obtener los productos, manteniendo el orden de los favoritos
             $favorites = Product::whereIn('id', $idsFavoritos)->get();
+
+            // Filtrar para asegurar que todos los productos existan
+            $favorites = $favorites->filter(function ($product) use ($idsFavoritos) {
+                return in_array((int) $product->id, $idsFavoritos);
+            });
         } else {
-            $favorites = collect(); // Colección vacía
+            $favorites = collect();
         }
 
         return view('products.favorites', compact('favorites'));
@@ -157,27 +166,56 @@ class ProductController extends Controller
      */
     public function toggleFavorito(Product $product)
     {
-        $user = auth()->user();
-        $favoritos = $user->favoritos ?? [];
+        try {
+            $user = auth()->user();
 
-        // Convertir todos los IDs a enteros para comparación correcta
-        $favoritos = array_map('intval', $favoritos);
-        $productId = (int) $product->id;
+            // Obtener favoritos actuales
+            $favoritos = $user->favoritos;
+            if (!is_array($favoritos)) {
+                $favoritos = [];
+            }
 
-        if (in_array($productId, $favoritos)) {
-            // Quitar de favoritos
-            $favoritos = array_diff($favoritos, [$productId]);
-            $isFavorito = false;
-        } else {
-            // Agregar a favoritos
-            $favoritos[] = $productId;
-            $isFavorito = true;
+            // Convertir todos a enteros
+            $favoritos = array_map('intval', $favoritos);
+            $productId = (int) $product->id;
+
+            // Log antes
+            \Log::info('Favoritos antes', ['favoritos' => $favoritos, 'buscando' => $productId]);
+
+            // Determinar si agregar o remover
+            if (in_array($productId, $favoritos)) {
+                // Remover
+                $favoritos = array_values(array_diff($favoritos, [$productId]));
+                $isFavorito = false;
+            } else {
+                // Agregar
+                $favoritos[] = $productId;
+                $isFavorito = true;
+            }
+
+            // Limpiar duplicados
+            $favoritos = array_values(array_unique($favoritos));
+
+            // Log después
+            \Log::info('Favoritos después', ['favoritos' => $favoritos, 'isFavorito' => $isFavorito]);
+
+            // Guardar directamente usando update
+            $user->update(['favoritos' => $favoritos]);
+
+            // Refrescar el usuario
+            $user = $user->fresh();
+
+            \Log::info('Favoritos guardados en BD', ['favoritos' => $user->favoritos]);
+
+            // Retornar JSON
+            return response()->json(['favorito' => $isFavorito], 200);
+        } catch (\Exception $e) {
+            \Log::error('Error al actualizar favoritos', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json(['error' => 'Error al actualizar favoritos', 'message' => $e->getMessage()], 500);
         }
-
-        // Guardar con valores únicos y reenumerados
-        // El cast JSON se encargará de convertirlo automáticamente
-        $user->favoritos = array_values(array_unique($favoritos));
-        $user->save();
     }
 
 
