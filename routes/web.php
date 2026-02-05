@@ -77,6 +77,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/results', [ProfileController::class, 'results'])->name('profile.results');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])
+    ->name('profile.password.update');
 
     // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -84,8 +86,25 @@ Route::middleware('auth')->group(function () {
     // Comunidad
     Route::get('/community', [CommunityController::class, 'community'])->name('community');
 
-    // Blog
-    Route::get('/blog', [BlogController::class, 'blog'])->name('blog');
+    // Blogs
+Route::middleware('auth')->group(function () {
+
+    Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blog.show');
+
+    // Admin solo
+    Route::middleware('admin')->prefix('admin')->group(function () {
+        Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
+        Route::post('/blog', [BlogController::class, 'store'])->name('blog.store');
+        Route::get('/blog/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
+        Route::patch('/blog/{id}', [BlogController::class, 'update'])->name('blog.update');
+        Route::delete('/blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+    });
+
+    // Likes temporales
+    Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])->name('blog.like');
+});
+
 
     // About
     Route::get('/about', [AboutController::class, 'about'])->name('about');
@@ -117,18 +136,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/premium/error', [SubscriptionController::class, 'process'])->name('user.payerror');
 
     // Admin
-    Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
-        Route::get('/', function () {
-            return view('admin.dashboard');
-        })->name('admin.dashboard');
 
-        // CRUD Blogs
-        Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-        Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
-        Route::post('/blog', [PostController::class, 'store'])->name('blog.store');
-        Route::get('/blog/{blog_id}', [BlogController::class, 'edit'])->name('blog.edit');
-        Route::delete('/blog/{blog_id}', [BlogController::class, 'destroy'])->name('blog.destroy');
-    });
 
     // Posts
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');

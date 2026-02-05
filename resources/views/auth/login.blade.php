@@ -90,7 +90,7 @@
 
             <a href="{{ route('auth.register') }}"
                 class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
-                Crear cuenta
+                Crear Cuenta
             </a>
         </div>
 

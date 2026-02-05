@@ -1,7 +1,7 @@
 <x-layout :title="$product->name ?? 'Producto'">
     <div class="max-w-3xl mx-auto">
 
-        <article class="pb-6 pt-7 px-5 rounded-t-3xl bg-white">
+        <article class="px-5 pb-20 bg-white pt-7 rounded-t-3xl">
             <div class="flex flex-col gap-6 md:flex-row">
 
                 {{-- Imagen principal --}}
@@ -48,7 +48,7 @@
                             {{ $product->name ?? 'Producto sin nombre' }}
                         </h1>
 
-                        <div class="flex justify-between items-center">
+                        <div class="flex items-center justify-between">
                         @if(!empty($product->brand->name))
                             <h2 class="mt-1 text-lg text-[#37A0AF] truncate">{{ $product->brand->name }}</h2>
                         @endif
@@ -112,28 +112,28 @@
 
                     @if(!empty($product->ingredients))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="text-sm text-gray-500 mb-1">Ingredientes</h3>
+                            <h3 class="mb-1 text-sm text-gray-500">Ingredientes</h3>
                             <p class="text-sm font-bold">{{ Str::limit($product->ingredients, 50) }}</p>
                         </div>
                     @endif
 
                     @if(!empty($product->activos))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="text-sm text-gray-500 mb-1">Activos</h3>
+                            <h3 class="mb-1 text-sm text-gray-500">Activos</h3>
                             <p class="text-sm font-bold">{{ Str::limit($product->activos, 50) }}</p>
                         </div>
                     @endif
 
                     @if(!empty($product->formato))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="text-sm text-gray-500 mb-1">Formato</h3>
+                            <h3 class="mb-1 text-sm text-gray-500">Formato</h3>
                             <p class="text-sm font-bold">{{ $product->formato }}</p>
                         </div>
                     @endif
 
                     @if(!empty($product->dondeComprar))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="text-sm text-gray-500 mb-1">Dónde comprar</h3>
+                            <h3 class="mb-1 text-sm text-gray-500">Dónde comprar</h3>
                             <p class="text-sm font-bold">{{ $product->dondeComprar }}</p>
                         </div>
                     @endif
@@ -151,9 +151,9 @@
 
     <input type="checkbox" id="modal-routines" class="modal-toggle" />
     <div id="modal-routines" class="modal">
-        <div class="modal-box w-90 max-w-2xl p-6">
-            <div class="flex justify-between items-center">
-                <label for="modal-routines" class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">
+        <div class="max-w-2xl p-6 modal-box w-90">
+            <div class="flex items-center justify-between">
+                <label for="modal-routines" class="absolute btn btn-sm btn-circle btn-ghost focus-visible:outline-0 right-4 top-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#306067" aria-hidden="true">
                         <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                     </svg>
@@ -163,10 +163,10 @@
 
             <div class="space-y-3">
                 @if(isset($routines) && $routines->count())
-            <div class="space-y-3">
+            <div class="space-y-2 rounded-lg">
                 {{-- Botón flotante para crear nueva rutina --}}
 
-                    <a href="{{ route('routines.create') }}" class="p-3 bg-[#306067] flex rounded-lg items-center justify-between shadow-xl">
+                    <a href="{{ route('routines.create') }}" class="rounded-lg p-3 bg-[#306067] flex items-center justify-between shadow-xl">
                     <p class="text-white">Crear Rutina</p>
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M434.5-434.5H237.37q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H434.5v-197.13q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17t32.33 13.17q13.17 13.18 13.17 32.33v197.13h197.13q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H525.5v197.13q0 19.15-13.17 32.33-13.18 13.17-32.33 13.17t-32.33-13.17q-13.17-13.18-13.17-32.33V-434.5Z"/></svg>
                     </a>
@@ -174,7 +174,7 @@
                     <form action="{{ route('routines.addProduct', $routine) }}" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="cursor-pointer flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md hover:shadow-lg">
+                        <button type="submit" class="flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg">
                             <div>
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
@@ -206,7 +206,7 @@
                                             <img
                                                 src="{{ $product->image_url }}"
                                                 alt="{{ $product->name }}"
-                                                class="h-16 w-16 object-contain rounded-md"
+                                                class="object-contain w-16 h-16 rounded-md"
                                             >
                                         @empty
                                             <p class="text-md text-[#CCE2E5]">
@@ -231,7 +231,7 @@
             <p class="mt-2 text-sm text-slate-400">¡Todavía no tiene rutinas!</p>
             {{-- Botón flotante para crear nueva rutina --}}
             <div>
-                <a href="{{ route('routines.create') }}" class="p-5 bg-[#2A4043] flex items-center justify-center shadow-xl">
+                <a href="{{ route('routines.create') }}" class="p-3 bg-[#2A4043] flex items-center justify-center rounded-lg shadow-xl">
                 Crear Rutina
                 </a>
             </div>

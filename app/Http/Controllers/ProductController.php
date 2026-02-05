@@ -87,11 +87,13 @@ class ProductController extends Controller
             'activos' => 'nullable|string',
             'paso' => 'nullable|string',
             'formato' => 'nullable|string',
-            'type_id' => 'required|exists:product_types,id',
-            'category_id' => 'required|exists:product_categories,id',
+            'type_id' => 'required|integer|exists:product_types,id',
+
+            'category_id' => 'required|integer|exists:product_categories,id',
             'rating' => 'nullable|integer|min:0|max:5',
             'dondeComprar' => 'nullable|string',
         ]);
+
 
         $data = $request->all();
 
@@ -122,17 +124,17 @@ class ProductController extends Controller
 
     /**
      * Mostrar productos filtrados por categoría
-     */// ProductController.php
+     */ // ProductController.php
     public function byCategory($slug)
-{
-    $category = ProductCategory::where('slug', $slug)->firstOrFail();
+    {
+        $category = ProductCategory::where('slug', $slug)->firstOrFail();
 
-    $products = Product::where('category_id', $category->id)
-                       ->with(['brand','type'])
-                       ->get();
+        $products = Product::where('category_id', $category->id)
+            ->with(['brand', 'type'])
+            ->get();
 
-    return view('products.byCategory', compact('category','products'));
-}
+        return view('products.byCategory', compact('category', 'products'));
+    }
 
     /**
      * Mostrar los productos favoritos del usuario autenticado
@@ -234,9 +236,9 @@ class ProductController extends Controller
 
         if ($queryText) {
             $qb->where('name', 'like', "%{$queryText}%")
-               ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
-               ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
-               ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"));
+                ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
+                ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
+                ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"));
         }
 
         // filtros explícitos por GET
@@ -259,5 +261,4 @@ class ProductController extends Controller
             'categories' => $categories,
         ]);
     }
-
 }

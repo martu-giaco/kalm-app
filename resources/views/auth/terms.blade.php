@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="max-h-screen flex items-end bg-cover bg-center scrollbar-hide" style="background-image: url('{{ asset('images/fondo.png') }}');">
-    <div class="mx-auto mt-20 pt-9 p-6 bg-white rounded-3xl shadow">
+<body class="flex items-end max-h-screen bg-center bg-cover scrollbar-hide" style="background-image: url('{{ asset('images/fondo.png') }}');">
+    <div class="p-6 mx-auto mt-20 bg-white shadow pt-9 rounded-3xl">
             <h1 class="text-[#306067] text-2xl font-semibold mb-4">Términos y Condiciones</h1>
             {{-- CONTENIDO DE TÉRMINOS: solo este bloque es scrollable --}}
             <div class="mb-6">
@@ -155,17 +155,17 @@
                     </label>
 
                     @error('accept_terms')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
 
-                    <div class="w-full flex items-center">
+                    <div class="flex items-center w-full">
                         <button
                             id="acceptBtn"
                             type="submit"
                             class=" hover:bg-[#306067] bg-[#306067] btn w-full inline-flex text-white border-none disabled:bg-[#CCE2E5] disabled:text-gray-600 px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 cursor-not-allowed"
                             disabled
                         >
-                            Crear cuenta
+                            Crear Cuenta
                         </button>
                     </div>
                 </div>

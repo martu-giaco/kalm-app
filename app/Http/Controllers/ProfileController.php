@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\RoutineController;
 use App\Models\Routine;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -15,7 +16,6 @@ class ProfileController extends Controller
      */
     public function __construct()
     {
-        // <-- la llamada middleware() funciona porque extendemos Controller
         $this->middleware('auth');
     }
 
@@ -42,9 +42,8 @@ class ProfileController extends Controller
         return view('user.edit', compact('user'));
     }
 
-
     /**
-     * Actualizar perfil.
+     * Actualizar perfil (nombre, username, email, avatar).
      */
     public function update(Request $request)
     {
@@ -54,10 +53,12 @@ class ProfileController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['nullable', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'avatar' => ['nullable', 'image', 'max:2048'],
+            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
         ]);
 
+        // Subida de avatar
         if ($request->hasFile('avatar')) {
+            // Borrar avatar anterior si existe
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
@@ -72,15 +73,44 @@ class ProfileController extends Controller
             ->with('feedback.type', 'success');
     }
 
+    /**
+     * Actualizar contraseña del usuario.
+     */
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+        $user = auth()->user();
+
+        // Verificar contraseña actual
+        if (! Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => 'La contraseña actual no es correcta.',
+            ]);
+        }
+
+        // Guardar nueva contraseña
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('feedback.message', 'Contraseña actualizada correctamente.')
+                     ->with('feedback.type', 'success');
+    }
+
+    /**
+     * Resultados del usuario.
+     */
     public function results()
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    // Aquí puedes cargar datos para los resultados, por ejemplo:
-    $results = $user->results ?? [];
+        // Aquí puedes cargar datos para los resultados
+        $results = $user->results ?? [];
 
-    return view('user.results', compact('results', 'user'));
-}
-
-
+        return view('user.results', compact('results', 'user'));
+    }
 }

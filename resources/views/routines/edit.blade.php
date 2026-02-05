@@ -1,7 +1,7 @@
 {{-- resources/views/routines/edit.blade.php --}}
 <x-layout :title="'Editar: ' . $routine->name">
-    <section class="px-5 pt-10 h-full rounded-t-3xl bg-white">
-            <h1 class="text-2xl font-semibold mb-6 text-[#306067]">Editar rutina</h1>
+    <section class="h-full px-5 pt-10 bg-white rounded-t-3xl">
+        <h1 class="text-2xl font-semibold mb-6 text-[#306067]">Editar rutina</h1>
 
         <main>
             <form action="{{ route('routines.update', $routine->routine_id) }}" method="POST">
@@ -11,34 +11,39 @@
                 {{-- Nombre --}}
                 <div class="mb-4">
                     <label for="name" class="block mb-1 text-sm">Nombre</label>
-                    <input type="text" name="name" id="name"
-                            value="{{ old('name', $routine->name) }}"
-                            required
-                            class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <input type="text" name="name" id="name" value="{{ old('name', $routine->name) }}" required
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                 </div>
 
-                {{-- Tipo de rutina --}}
+
                 <div class="mb-4">
-                    <label for="routine_type_id" class="block mb-1 text-sm">Tipo de rutina</label>
-                    <select name="routine_type_id" id="routine_type_id" required
-                            class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                        <option value="">Seleccionar tipo</option>
-                        @foreach($routine_types as $type)
-                            <option value="{{ $type->type_id }}"
-                                {{ old('routine_type_id', $routine->routine_type_id) == $type->type_id ? 'selected' : '' }}>
-                                {{ $type->name }}
-                            </option>
-                        @endforeach
+                    <label for="routine_category" class="block mb-1 text-sm">
+                        Skincare / Haircare
+                    </label>
+
+                    <select name="routine_category" id="routine_category" required
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+
+                        <option value="">Seleccionar categoría</option>
+                        <option value="skincare"
+                            {{ old('routine_category', $routine->routine_category ?? '') == 'skincare' ? 'selected' : '' }}>
+                            Skincare
+                        </option>
+                        <option value="haircare"
+                            {{ old('routine_category', $routine->routine_category ?? '') == 'haircare' ? 'selected' : '' }}>
+                            Haircare
+                        </option>
                     </select>
                 </div>
+
 
                 {{-- Tiempo de rutina --}}
                 <div class="mb-4">
                     <label for="routine_time_id" class="block mb-1 text-sm">Tiempo de rutina</label>
                     <select name="routine_time_id" id="routine_time_id" required
-                            class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                         <option value="">Seleccionar tiempo</option>
-                        @foreach($routine_times as $time)
+                        @foreach ($routine_times as $time)
                             <option value="{{ $time->time_id }}"
                                 {{ old('routine_time_id', $routine->routine_time_id) == $time->time_id ? 'selected' : '' }}>
                                 {{ $time->name }}
@@ -48,7 +53,7 @@
                 </div>
 
                 <button type="submit"
-                        class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
+                    class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
                     Actualizar Rutina
                 </button>
             </form>

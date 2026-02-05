@@ -1,32 +1,32 @@
 <x-layout title="Resultado del Test">
-    <div class="max-w-3xl mx-auto px-4 py-8">
-        <article class="bg-white rounded-2xl p-6 shadow-lg">
+    <div class="max-w-3xl px-4 py-8 mx-auto">
+        <article class="p-6 bg-white shadow-lg rounded-2xl">
 
             <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">Resultado del Test</h1>
-            <p class="text-gray-700 mb-4">Según tus respuestas, tu tipo es:</p>
+            <p class="mb-4 text-gray-700">Según tus respuestas, tu tipo es:</p>
 
             <div class="p-4 bg-[#164d4f] text-white rounded-xl mb-6">
                 <h2 class="text-xl font-semibold">{{ ucfirst($resultLabel) }}</h2>
-                <p class="text-sm mt-1 opacity-90 text-white">{{ $resultDesc }}</p>
+                <p class="mt-1 text-sm text-white opacity-90">{{ $resultDesc }}</p>
             </div>
 
             {{-- Productos recomendados --}}
             <h2 class="text-xl font-semibold text-[#164d4f] mb-3">Productos recomendados</h2>
 
             @if($recommendedProducts->count())
-                <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
+                <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach($recommendedProducts as $product)
-                        <a href="{{ route('products.show', $product->id) }}" class="w-40 md:w-44 flex-shrink-0 group">
-                            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                        <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
+                            <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
                                 <div class="w-full h-40 overflow-hidden">
                                     <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                        class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                                        class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
                                 </div>
 
                                 {{-- Info simplificada --}}
-                                <div class="p-3 flex flex-col gap-1">
+                                <div class="flex flex-col gap-1 p-3">
                                     <h3 class="text-sm font-semibold text-[#2A4043] mb-1 truncate">
                                         {{ $product->name }}
                                     </h3>
@@ -54,7 +54,7 @@
             <div class="flex flex-wrap gap-3 mt-6">
                 @php $testKey = session('test_key'); @endphp
                 <a href="{{ $testKey ? route('tests.show', $testKey) : route('tests.index') }}"
-                   class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg">
+                   class="px-4 py-2 text-gray-800 bg-gray-200 rounded-lg">
                    {{ $testKey ? 'Rehacer test' : 'Volver a tests' }}
                 </a>
 
@@ -73,8 +73,8 @@
                 @endauth
 
                 <a href="{{ route('tests.createRoutine', $routine->routine_id ?? session('intended_routine', 0)) }}"
-                   class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg">
-                   Crear rutina
+                   class="px-4 py-2 text-gray-800 bg-gray-300 rounded-lg">
+                   Crear Rutina
                 </a>
             </div>
 

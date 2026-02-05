@@ -18,10 +18,19 @@ return new class extends Migration {
     }
 
     public function down()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['username', 'avatar', 'bio']);
-        });
-    }
+{
+    Schema::table('users', function (Blueprint $table) {
+        if (Schema::hasColumn('users', 'username')) {
+            $table->dropColumn('username');
+        }
+        if (Schema::hasColumn('users', 'avatar')) {
+            $table->dropColumn('avatar');
+        }
+        if (Schema::hasColumn('users', 'bio')) {
+            $table->dropColumn('bio');
+        }
+    });
+}
+
 
 };

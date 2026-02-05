@@ -18,11 +18,15 @@ return new class extends Migration {
     }
 
     public function down(): void
-    {
-        Schema::table('users', function (Blueprint $table) {
-            // Para revertir: elimina las columnas
+{
+    Schema::table('users', function (Blueprint $table) {
+        if (Schema::hasColumn('users', 'theme')) {
             $table->dropColumn('theme');
+        }
+        if (Schema::hasColumn('users', 'role')) {
             $table->dropColumn('role');
-        });
-    }
+        }
+    });
+}
+
 };

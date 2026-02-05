@@ -37,23 +37,33 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
-            'time_id' => 'nullable|exists:routine_times,time_id',
             'type_id' => 'nullable|array',
             'type_id.*' => 'nullable|exists:routine_types,type_id',
             'products' => 'nullable|array',
+            'products.*' => 'nullable|exists:products,product_id',
         ]);
 
+        // Crear la rutina
         $routine = new Routine();
-
         $routine->name = $validated['name'];
         $routine->user_id = auth()->id();
         $routine->time_id = $validated['time_id'] ?? null;
-        $routine->products = json_encode($validated['products'] ?? []);
         $routine->save();
 
-        // Asociar tipos seleccionados (pivot)
+        // Filtrar valores vacíos y asociar tipos seleccionados (pivot)
         if (!empty($validated['type_id'])) {
-            $routine->types()->sync($validated['type_id']);
+            $typeIds = array_filter($validated['type_id'], fn($id) => !empty($id));
+            if (!empty($typeIds)) {
+                $routine->types()->sync($typeIds);
+            }
+        }
+
+        // Filtrar valores vacíos y asociar productos seleccionados (pivot)
+        if (!empty($validated['products'])) {
+            $productIds = array_filter($validated['products'], fn($id) => !empty($id));
+            if (!empty($productIds)) {
+                $routine->products()->sync($productIds);
+            }
         }
 
         return redirect()->route('routines.index')
@@ -64,7 +74,7 @@ class RoutineController extends Controller
     {
         $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
-        $routine->load(['types', 'routineTime']);
+        $routine->load(['types', 'routineTime', 'products']);
         return view('routines.show', compact('routine'));
     }
 
@@ -84,15 +94,27 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
+            'type_id' => 'nullable|array',
+            'type_id.*' => 'nullable|exists:routine_types,type_id',
             'products' => 'nullable|array',
+            'products.*' => 'nullable|exists:products,product_id',
         ]);
 
         $routine = Routine::findOrFail($routine_id);
+
+        // Actualizar rutina
         $routine->update([
             'name' => $validated['name'],
             'time_id' => $validated['time_id'] ?? null,
-            'products' => $validated['products'] ?? [],
         ]);
+
+        // Actualizar tipos
+        $typeIds = !empty($validated['type_id']) ? array_filter($validated['type_id'], fn($id) => !empty($id)) : [];
+        $routine->types()->sync($typeIds);
+
+        // Actualizar productos
+        $productIds = !empty($validated['products']) ? array_filter($validated['products'], fn($id) => !empty($id)) : [];
+        $routine->products()->sync($productIds);
 
         return redirect()->route('routines.show', $routine->routine_id)
                          ->with('success', 'Rutina actualizada correctamente.');
@@ -100,6 +122,7 @@ class RoutineController extends Controller
 
     public function destroy(Routine $routine)
     {
+        $this->authorizeOwner($routine);
         $routine->delete();
         return redirect()->route('routines.index')->with('success', 'Rutina eliminada correctamente.');
     }
@@ -107,9 +130,10 @@ class RoutineController extends Controller
     public function addProduct(Request $request, $routine)
     {
         $rutina = Routine::findOrFail($routine);
-        $productId = $request->input('product_id');
+        $this->authorizeOwner($rutina);
 
-        if (!$rutina->products()->where('product_id', $productId)->exists()) {
+        $productId = $request->input('product_id');
+        if ($productId && !$rutina->products()->where('product_id', $productId)->exists()) {
             $rutina->products()->attach($productId);
         }
 
@@ -118,6 +142,7 @@ class RoutineController extends Controller
 
     public function removeProduct(Routine $routine, Product $product)
     {
+        $this->authorizeOwner($routine);
         $routine->products()->detach($product->id);
         return redirect()->back()->with('success', 'Producto eliminado de la rutina');
     }

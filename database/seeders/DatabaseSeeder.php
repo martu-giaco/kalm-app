@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             RoutineTypeSeeder::class,
             RoutineSeeder::class,
             RoutineTimeSeeder::class,
+            BlogSeeder::class,
         ]);
     }
 

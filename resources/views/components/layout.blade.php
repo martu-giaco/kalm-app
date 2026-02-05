@@ -58,20 +58,20 @@
         <dialog id="premium_modal" class="modal modal-bottom">
             <div class="modal-box w-full bg-[#2A4043]">
                 <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute focus-visible:outline-0 right-4 top-4">
+                <button class="absolute btn btn-sm btn-circle btn-ghost focus-visible:outline-0 right-4 top-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#CCE2E5" aria-hidden="true">
                         <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                     </svg>
                 </button>
                 </form>
-                <section class="mt-5 h-full flex flex-col flex-wrap space-between">
-                    <div class="mb-10">
+                <section class="flex flex-col flex-wrap h-full mt-5 space-between">
+                    <div class="mb-5">
                         <h2 class="text-2xl font-bold text-white">Perfeccioná tu rutina con</h2>
                         <p class="text-3xl font-bolder" style="font-family: 'Tropiline LogoOnly'; color: #37A0AF; background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Kälm Premium</p>
                         <div>
-                            <div class="w-full mt-7 collapse collapse-arrow bg-base-100 bg-[#306067]">
+                            <div class="w-full mt-3 collapse collapse-arrow bg-base-100 bg-[#306067]">
                                 <input type="radio" name="premium-perks" checked="checked" />
-                                <div class="collapse-title font-bold flex text-white items-center">
+                                <div class="flex items-center font-bold text-white collapse-title">
                                     <img src="{{ asset('images/icons/assignment.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Rutinas personalizables ilimitadas</p>
                                 </div>
@@ -82,7 +82,7 @@
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
                                 <input type="radio" name="premium-perks" />
-                                <div class="collapse-title font-bold flex text-white items-center">
+                                <div class="flex items-center font-bold text-white collapse-title">
                                     <img src="{{ asset('images/icons/add_circle.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Productos ilimitados en rutinas</p>
                                 </div>
@@ -93,7 +93,7 @@
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
                                 <input type="radio" name="premium-perks" />
-                                <div class="collapse-title font-bold flex text-white items-center">
+                                <div class="flex items-center font-bold text-white collapse-title">
                                     <img src="{{ asset('images/icons/experiment.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Diagnóstico a fondo de piel y cabello</p>
                                 </div>
@@ -104,7 +104,7 @@
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
                                 <input type="radio" name="premium-perks" />
-                                <div class="collapse-title font-bold flex text-white items-center">
+                                <div class="flex items-center font-bold text-white collapse-title">
                                     <img src="{{ asset('images/icons/news.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Artículos escritos por profesionales</p>
                                 </div>
@@ -115,7 +115,7 @@
 
                             <div class="w-full mt-2 collapse collapse-arrow bg-base-100 bg-[#306067]">
                                 <input type="radio" name="premium-perks" />
-                                <div class="collapse-title font-bold flex text-white items-center">
+                                <div class="flex items-center font-bold text-white collapse-title">
                                     <img src="{{ asset('images/icons/mail.svg') }}" alt="rutinas" class="w-auto h-5 mr-2"/>
                                     <p class="text-white">Self-pack de bienvenida*</p>
                                 </div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-20">
+                    <div class="mt-2">
                         <a href="{{ route('subscription') }}"
                             class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-[#2A4043] font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                             Suscribirme por $7,000/mes
@@ -148,7 +148,7 @@
             <div class="flex flex-col">
 
                 <main
-                    class="fixed bottom-0 left-0 right-0 w-screen pt-5 mx-auto no-scrollbar overflow-hidden overflow-y-auto top-20 grow rounded-t-4xl">
+                    class="fixed bottom-0 left-0 right-0 w-screen pt-5 mx-auto overflow-hidden overflow-y-auto no-scrollbar top-20 grow rounded-t-4xl">
 
                     @php
                         // Mensajes de feedback
@@ -199,7 +199,7 @@
             </div>
 
             @auth
-                <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 w-full shadow-md bg-white max-w-3xl px-5 h-20 rounded-t-3xl flex items-center justify-between transition-all duration-500 ease-in-out" style="box-shadow: 1px -1px 20px 0px rgba(40, 40, 40, 0.25);">
+                <nav class="fixed bottom-0 z-50 flex items-center justify-between w-full h-20 max-w-3xl px-5 transition-all duration-500 ease-in-out -translate-x-1/2 bg-white shadow-md left-1/2 rounded-t-3xl" style="box-shadow: 1px -1px 20px 0px rgba(40, 40, 40, 0.25);">
 
                     <ul class="flex items-center flex-1 w-full justify-evenly">
                         <!-- Inicio -->
@@ -228,7 +228,7 @@
 
                         <!-- Blog -->
                         <li class="flex flex-col items-center font-bold text-[#306067]">
-                            <a href="{{ route('blog') }}" class="flex flex-col items-center">
+                            <a href="{{ route('blog.index') }}" class="flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
                                     width="35px" fill="#306067">
                                     <path
@@ -276,11 +276,11 @@
                                         <p class="text-sm">Free</p>
                                     </div>
                                 @elseif(auth()->user()->role === 'premium')
-                                    <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                                    <div  class="px-3 py-1 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                                         <p class="text-sm">Premium</p>
                                     </div>
                                 @elseif(auth()->user()->role === 'admin')
-                                    <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
+                                    <div  class="px-3 py-1 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                                         <p class="text-sm">Administrador</p>
                                     </div>
                                 @endif
@@ -423,7 +423,7 @@
 
                 <ul class="p-4">
                     <li><a href="{{ route('home') }}">Inicio</a></li>
-                    <li><a href="{{ route('blog') }}">Blog</a></li>
+                    <li><a href="{{ route('blog.index') }}">Blog</a></li>
                 </ul>
             @endauth
         </div>

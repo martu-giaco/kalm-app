@@ -18,14 +18,14 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-cover bg-center" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
-    <div class="max-w-2xl mx-auto p-6 flex flex-col justify-between min-h-screen">
+    <div class="flex flex-col justify-between max-w-2xl min-h-screen p-6 mx-auto">
 
-        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mt-10">
+        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-20 mx-auto mt-5">
 
         <div>
-                    <h1 class="text-2xl font-bold text-[#2A4043]">Crear una cuenta</h1>
+                    <h1 class="text-2xl font-bold text-[#2A4043]">Crear una Cuenta</h1>
 
         <form action="{{ route('auth.register.store') }}" method="POST" class="space-y-4" novalidate>
             @csrf
@@ -37,7 +37,7 @@
                         required>
 
                 @error('name')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -48,7 +48,7 @@
                         required>
 
                 @error('username')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -59,7 +59,7 @@
                         required>
 
                 @error('email')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -70,7 +70,7 @@
                         required>
 
                 @error('password')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
