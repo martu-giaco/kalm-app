@@ -12,7 +12,7 @@
         </div>
 
         @if($blog->blurred)
-            <p class="mt-2 text-red-500">Suscríbete para ver el contenido completo.</p>
+            <p class="mt-2 text-red-500">Suscribirse para ver el contenido completo.</p>
         @endif
     </section>
 </x-layout>

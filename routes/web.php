@@ -78,7 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/results', [ProfileController::class, 'results'])->name('profile.results');
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])
-    ->name('profile.password.update');
+        ->name('profile.password.update');
 
     // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -86,24 +86,55 @@ Route::middleware('auth')->group(function () {
     // Comunidad
     Route::get('/community', [CommunityController::class, 'community'])->name('community');
 
-    // Blogs
-Route::middleware('auth')->group(function () {
 
-    Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
-    Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blog.show');
 
-    // Admin solo
-    Route::middleware('admin')->prefix('admin')->group(function () {
-        Route::get('/blog/create', [BlogController::class, 'create'])->name('blog.create');
-        Route::post('/blog', [BlogController::class, 'store'])->name('blog.store');
-        Route::get('/blog/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
-        Route::patch('/blog/{id}', [BlogController::class, 'update'])->name('blog.update');
-        Route::delete('/blog/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+    /*
+|--------------------------------------------------------------------------
+| BLOGS
+|--------------------------------------------------------------------------
+*/
+
+    // Listado (free + premium visibles en cards)
+    Route::middleware('auth')->group(function () {
+
+        // Index
+        Route::get('/blogs', [BlogController::class, 'index'])
+            ->name('blog.index');
+
+        // Mostrar blog (protegido por middleware premium)
+        Route::get('/blogs/{id}', [BlogController::class, 'show'])
+            ->middleware('premium.blog') // 👈 BLOQUEA URL
+            ->name('blog.show');
+
+        // Likes
+        Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])
+            ->name('blog.like');
     });
 
-    // Likes temporales
-    Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])->name('blog.like');
-});
+    /*
+|--------------------------------------------------------------------------
+| ADMIN BLOGS
+|--------------------------------------------------------------------------
+*/
+
+    Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+
+        Route::get('/blogs/create', [BlogController::class, 'create'])
+            ->name('blog.create');
+
+        Route::post('/blogs', [BlogController::class, 'store'])
+            ->name('blog.store');
+
+        Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])
+            ->name('blog.edit');
+
+        Route::patch('/blogs/{id}', [BlogController::class, 'update'])
+            ->name('blog.update');
+
+        Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])
+            ->name('blog.destroy');
+    });
+
 
 
     // About
@@ -125,7 +156,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     // Favoritos
-    Route::get('/mis-favoritos', [ProductController::class, 'favorites']) ->name('favorites')->middleware('auth');
+    Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites')->middleware('auth');
     Route::post('/favorito/toggle/{product}', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
     Route::post('/products/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
 
@@ -171,7 +202,5 @@ Route::middleware('auth')->group(function () {
         // Eliminar producto de la rutina
         Route::delete('/{routine}/product/{product}', [RoutineController::class, 'removeProduct'])
             ->name('product.remove');
-
     });
-
 });

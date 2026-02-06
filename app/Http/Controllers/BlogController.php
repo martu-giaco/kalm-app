@@ -17,15 +17,24 @@ class BlogController extends Controller
     {
         $user = auth()->user();
 
+        $banners = [
+            [
+                'img_src' => 'images/plan-premium.png',
+                'alt' => 'Accedé a Premium'
+            ],
+            [
+                'img_src' => 'images/plan-premium.png',
+                'alt' => 'Desbloqueá contenido'
+            ],
+        ];
+
         $blogs = Blog::orderByDesc('created_at')->get()->map(function ($blog) use ($user) {
-            // Si el usuario es admin o tiene suscripción premium, puede ver todo
             $blog->canView = !$blog->is_premium || $user->role === 'premium' || $user->role === 'admin';
             $blog->blurred = !$blog->canView;
-            $blog->tempLikes = [];
             return $blog;
         });
 
-        return view('blogs.index', compact('blogs', 'user'));
+        return view('blogs.index', compact('blogs', 'user', 'banners'));
     }
 
 
