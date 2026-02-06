@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommunityController;
@@ -15,25 +16,25 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoutineController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\TermsController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Controllers\TestController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
-| Rutas públicas
+| RUTAS PÚBLICAS
 |--------------------------------------------------------------------------
 */
 
-// Auth
+// Autenticación
 Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 
-// Alias to satisfy calls to route('login') (keeps existing 'auth.login' names unchanged)
-Route::get('/login-alias', function () {
-    return redirect()->route('auth.login');
-})->name('login');
+// Alias para route('login')
+Route::get('/login-alias', fn() => redirect()->route('auth.login'))->name('login');
 
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/register', [AuthController::class, 'store'])->name('auth.register.store');
@@ -45,40 +46,34 @@ Route::post('/terms/accept', [TermsController::class, 'accept'])->name('auth.ter
 // Tests públicos
 Route::prefix('tests')->name('tests.')->group(function () {
     Route::get('/', [TestController::class, 'index'])->name('index');
-    Route::get('/{type}', [TestController::class, 'show'])
-        ->where('type', '[A-Za-z0-9\-_]+')
-        ->name('show');
+    Route::get('/{type}', [TestController::class, 'show'])->where('type', '[A-Za-z0-9\-_]+')->name('show');
     Route::post('/submit', [TestController::class, 'submit'])->name('submit');
 
-    Route::get('/result/{routine}', [TestController::class, 'result'])
-        ->whereNumber('routine')
-        ->name('result');
-    Route::post('/result/{routine}/save', [TestController::class, 'saveResult'])
-        ->whereNumber('routine')
-        ->middleware('auth')
-        ->name('saveResult');
-    Route::get('/result/{routine}/create-routine', [TestController::class, 'createRoutineRedirect'])
-        ->whereNumber('routine')
-        ->name('createRoutine');
+    Route::get('/result/{routine}', [TestController::class, 'result'])->whereNumber('routine')->name('result');
+    Route::post('/result/{routine}/save', [TestController::class, 'saveResult'])->whereNumber('routine')->middleware('auth')->name('saveResult');
+    Route::get('/result/{routine}/create-routine', [TestController::class, 'createRoutineRedirect'])->whereNumber('routine')->name('createRoutine');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Rutas protegidas por auth
+| RUTAS PROTEGIDAS POR AUTH
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
+
+    Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
     // Logout
     Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->name('auth.logout');
 
     // Perfil
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::get('/profile/results', [ProfileController::class, 'results'])->name('profile.results');
-    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])
-        ->name('profile.password.update');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [ProfileController::class, 'show'])->name('show');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::patch('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
+        Route::get('/results', [ProfileController::class, 'results'])->name('results');
+    });
 
     // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -86,99 +81,95 @@ Route::middleware('auth')->group(function () {
     // Comunidad
     Route::get('/community', [CommunityController::class, 'community'])->name('community');
 
+    /*
+    |--------------------------------------------------------------------------
+    | BLOGS
+    |--------------------------------------------------------------------------
+    */
 
+    // Blog index y detalle (premium)
+    Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blogs/{id}', [BlogController::class, 'show'])->middleware('premium.blog')->name('blog.show');
+    Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])->name('blog.like');
 
     /*
-|--------------------------------------------------------------------------
-| BLOGS
-|--------------------------------------------------------------------------
-*/
-
-    // Listado (free + premium visibles en cards)
-    Route::middleware('auth')->group(function () {
-
-        // Index
-        Route::get('/blogs', [BlogController::class, 'index'])
-            ->name('blog.index');
-
-        // Mostrar blog (protegido por middleware premium)
-        Route::get('/blogs/{id}', [BlogController::class, 'show'])
-            ->middleware('premium.blog') // 👈 BLOQUEA URL
-            ->name('blog.show');
-
-        // Likes
-        Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])
-            ->name('blog.like');
-    });
-
-    /*
-|--------------------------------------------------------------------------
-| ADMIN BLOGS
-|--------------------------------------------------------------------------
-*/
-
+    |--------------------------------------------------------------------------
+    | ADMIN BLOGS
+    |--------------------------------------------------------------------------
+    */
     Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-
-        Route::get('/blogs/create', [BlogController::class, 'create'])
-            ->name('blog.create');
-
-        Route::post('/blogs', [BlogController::class, 'store'])
-            ->name('blog.store');
-
-        Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])
-            ->name('blog.edit');
-
-        Route::patch('/blogs/{id}', [BlogController::class, 'update'])
-            ->name('blog.update');
-
-        Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])
-            ->name('blog.destroy');
+        Route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
+        Route::post('/blogs', [BlogController::class, 'store'])->name('blog.store');
+        Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
+        Route::patch('/blogs/{id}', [BlogController::class, 'update'])->name('blog.update');
+        Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
     });
 
-
-
-    // About
+    // About, Help, Términos y Configuración
     Route::get('/about', [AboutController::class, 'about'])->name('about');
-
-    // Help
     Route::get('/help', [HelpController::class, 'help'])->name('help');
-
-    // About
     Route::get('/terminos', [TerminosController::class, 'terminos'])->name('terminos');
-
-    // Configuracion
     Route::get('/configuracion', [ConfigController::class, 'config'])->name('config');
 
-    // Productos
-    Route::get('/productos/buscar', [ProductController::class, 'search'])->name('products.search');
-    Route::get('/products/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
-    Route::get('/categorias/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    /*
+    |--------------------------------------------------------------------------
+    | PRODUCTOS
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('productos')->group(function () {
+        Route::get('/buscar', [ProductController::class, 'search'])->name('products.search');
+        Route::get('/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
+        Route::get('/categorias/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');
+        Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
+        Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
+        Route::post('/{product}/toggle-favorito', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
+        Route::post('/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
+    });
 
-    // Favoritos
-    Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites')->middleware('auth');
-    Route::post('/favorito/toggle/{product}', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
-    Route::post('/products/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
+    /*
+    |--------------------------------------------------------------------------
+    | SUSCRIPCIÓN
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/premium', [SubscriptionController::class, 'show'])
+        ->name('subscription.show')
+        ->middleware('auth');
 
-    // Suscripción
-    Route::get('/premium', [SubscriptionController::class, 'show'])->name('subscription');
-    Route::post('/premium/process', [SubscriptionController::class, 'process'])->name('user.payment');
-    Route::get('/premium/success', [SubscriptionController::class, 'process'])->name('user.paysuccess');
-    Route::get('/premium/error', [SubscriptionController::class, 'process'])->name('user.payerror');
+    // Procesar pago con tarjeta (POST)
+    Route::post('/premium/process', [SubscriptionController::class, 'process'])
+        ->name('payment.process')
+        ->middleware('auth');
 
-    // Admin
+    // Redirección a MercadoPago
+    Route::get('/premium/mercadopago', [SubscriptionController::class, 'mercadoPago'])
+        ->name('payment.mercadopago')
+        ->middleware('auth');
 
+    // Éxito / error
+    Route::get('/premium/success', [SubscriptionController::class, 'success'])
+        ->name('user.paysuccess')
+        ->middleware('auth');
 
-    // Posts
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
-    Route::post('/posts/{post}/report', [PostController::class, 'report'])->whereNumber('post')->name('posts.report');
-    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::get('/premium/error', [SubscriptionController::class, 'error'])
+        ->name('user.payerror')
+        ->middleware('auth');
 
-    // Likes y guardados
-    Route::post('/posts/{post}/like', [PostController::class, 'like'])->name('posts.like');
-    Route::post('/posts/{post}/save', [PostController::class, 'save'])->name('posts.save');
+    /*
+    |--------------------------------------------------------------------------
+    | POSTS
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('posts')->name('posts.')->group(function () {
+        Route::get('/create', [PostController::class, 'create'])->name('create');
+        Route::get('/{post}', [PostController::class, 'show'])->name('show');
+        Route::post('/', [PostController::class, 'store'])->name('store');
+        Route::post('/{post}/report', [PostController::class, 'report'])->whereNumber('post')->name('report');
+        Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
+
+        // Likes y guardados
+        Route::post('/{post}/like', [PostController::class, 'like'])->name('like');
+        Route::post('/{post}/save', [PostController::class, 'save'])->name('save');
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -191,16 +182,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [RoutineController::class, 'store'])->name('store');
         Route::get('/{routine_id}', [RoutineController::class, 'show'])->name('show');
         Route::get('/{routine_id}/edit', [RoutineController::class, 'edit'])->name('edit');
-        Route::patch('/{routine_id}', [RoutineController::class, 'update'])->name('update'); // <-- PATCH
-        Route::delete('/{routine}/delete', [RoutineController::class, 'destroy'])->name('destroy');
+        Route::patch('/{routine_id}', [RoutineController::class, 'update'])->name('update');
+        Route::delete('/{routine_id}/delete', [RoutineController::class, 'destroy'])->name('destroy');
 
-        // Agregar producto a rutina desde la vista del producto
-        Route::post('/{routine}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
-        //Eliminar rutina desde el modal de 'agregar producto a rutina'
-        Route::delete('/{routine}/add-product', [RoutineController::class, 'destroy'])->name('destroy');
-
-        // Eliminar producto de la rutina
-        Route::delete('/{routine}/product/{product}', [RoutineController::class, 'removeProduct'])
-            ->name('product.remove');
+        Route::post('/{routine_id}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
+        Route::delete('/{routine_id}/product/{product_id}', [RoutineController::class, 'removeProduct'])->name('product.remove');
     });
 });

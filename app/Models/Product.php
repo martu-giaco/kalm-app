@@ -9,10 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
-    // 🔹 Para que el accesor image_url se agregue automáticamente
+    // Para que el geter image_url se agregue automáticamente
     protected $appends = ['image_url'];
 
-    // 🔹 Columnas llenables
+    // Columnas llenables
     protected $fillable = [
         'name',
         'brand_id',
@@ -59,8 +59,12 @@ class Product extends Model
     }
 
     public function category()
-{
-    return $this->belongsTo(ProductCategory::class);
-}
+    {
+        return $this->belongsTo(ProductCategory::class);
+    }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

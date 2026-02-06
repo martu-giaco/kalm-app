@@ -55,12 +55,12 @@ class HomeController extends Controller
         // --- 3. Banners ---
         $banners = [
             [
-                'url' => route('subscription'),
+                'url' => route('subscription.show'),
                 'img_src' => asset('images/banner-home-1.jpg'),
                 'alt' => 'Banner Kälm Premium',
             ],
             [
-                'url' => route('subscription'),
+                'url' => route('subscription.show'),
                 'img_src' => asset('images/banner_discount.png'),
                 'alt' => 'Banner Promoción',
             ],

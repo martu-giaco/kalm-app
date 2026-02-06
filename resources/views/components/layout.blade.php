@@ -127,7 +127,7 @@
                     </div>
 
                     <div class="mt-2">
-                        <a href="{{ route('subscription') }}"
+                        <a href="{{ route('subscription.show') }}"
                             class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-[#2A4043] font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                             Suscribirme por $7,000/mes
                         </a>

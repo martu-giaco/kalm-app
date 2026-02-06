@@ -1,5 +1,5 @@
 {{-- resources/views/products/by_category.blade.php --}}
-@extends('layouts.app')
+@extends('layouts')
 
 @section('content')
 <div >
@@ -10,18 +10,18 @@
     </h1>
 
     @forelse ($products as $product)
-        <div class="flex items-center border-b border-gray-200 py-3">
+        <div class="flex items-center py-3 border-b border-gray-200">
 
             {{-- Imagen del producto --}}
             <div class="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-[var(--kalm-light)]">
-                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="object-cover w-full h-full">
 
 
 
             </div>
 
             {{-- Info del producto --}}
-            <div class="ml-4 flex-1">
+            <div class="flex-1 ml-4">
                 {{-- Nombre del producto --}}
                 <h3 class="text-sm font-medium text-[#306067]">{{ $product->name }}</h3>
 
