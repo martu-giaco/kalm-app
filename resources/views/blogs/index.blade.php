@@ -1,5 +1,5 @@
 <x-layout>
-    <section class="min-h-screen px-5 py-5 bg-white rounded-t-3xl">
+    <section class="min-h-screen px-5 py-10 bg-white rounded-t-3xl">
 
         <h1 class="mb-6 text-2xl font-semibold text-[#306067]">Sección de Blogs Kälm</h1>
 
@@ -9,7 +9,7 @@
         </h2>
 
         <div class="flex gap-5 pb-5 overflow-x-auto scroll-smooth scrollbar-hide">
-            @foreach ($blogs->where('blurred', false) as $blog)
+            @foreach ($blogs->where('is_premium', false) as $blog)
                 <a href="{{ route('blog.show', $blog->id) }}"
                     class="flex-shrink-0 overflow-hidden transition-transform transform bg-white shadow-lg w-60 h-96 rounded-2xl hover:shadow-2xl hover:-translate-y-1">
 
@@ -55,9 +55,10 @@
         </div>
 
         {{-- ================= PREMIUM ================= --}}
-        <h2 class="inline-flex items-center gap-2 mb-4 mt-10 px-6 py-3 text-xl font-semibold text-white bg-gradient-to-r from-[#1e9bb1] via-[#047488] to-[#1a91c0] rounded-full shadow-lg">
-    Blog Premium
-</h2>
+        <h2
+            class="inline-flex items-center gap-2 mb-4 mt-10 px-6 py-3 text-xl font-semibold text-white bg-gradient-to-r from-[#1e9bb1] via-[#047488] to-[#1a91c0] rounded-full shadow-lg">
+            Blog Premium
+        </h2>
 
         @php
             $user = auth()->user();
@@ -65,7 +66,7 @@
         @endphp
 
         <div class="flex gap-5 pb-5 overflow-x-auto scroll-smooth scrollbar-hide">
-            @foreach ($blogs->where('blurred', true) as $blog)
+            @foreach ($blogs->where('is_premium', true) as $blog)
                 @if ($isPremiumUser)
                     <a href="{{ route('blog.show', $blog->id) }}"
                         class="relative flex flex-col flex-shrink-0 overflow-hidden transition-transform transform shadow-lg w-60 h-96 rounded-2xl hover:-translate-y-1 hover:shadow-2xl group">
@@ -93,8 +94,9 @@
                         </p>
                     </div>
 
-                    {{-- Contenido blurreado con altura fija --}}
-                    <div class="h-full mt-2 overflow-hidden text-sm text-gray-700 blur-sm">
+                    {{-- Contenido blurreado solo si no puede ver --}}
+                    <div
+                        class="h-full mt-2 overflow-hidden text-sm text-gray-700 {{ $blog->canView ? '' : 'blur-sm' }}">
                         {{ Str::limit($blog->content, 180) }}
                     </div>
 
@@ -131,7 +133,6 @@
                 </a>
             @endforeach
         </div>
-
 
     </section>
 
