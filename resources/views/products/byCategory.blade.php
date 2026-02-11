@@ -1,13 +1,12 @@
-{{-- views\products\byCategory.blade.php --}}
 <x-layout :title="$category->name">
-    <section class="min-h-screen p-5 rounded-t-3xl">
-
-        {{-- Título de la Categoría --}}
-        <h1 class="text-3xl font-bold text-[#2A4043] mb-4 border-b pb-3 border-gray-100">
+    <section class="h-full px-5 pt-10 bg-white rounded-t-3xl">
+        <h1 class="text-3xl font-bold text-[#2A4043] border-b pb-3 border-gray-100">
             {{ $category->name }}
         </h1>
 
-        @if($products->isEmpty())
+        <div>
+
+            @if($products->isEmpty())
             <p class="text-[#2A4043] text-lg py-10 text-center">
                 No hemos encontrado productos en esta categoría.
             </p>
@@ -18,34 +17,35 @@
                     <a href="{{ route('products.show', $product->id) }}" class="group">
                         <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
 
-                            {{-- Imagen del producto --}}
-                            <div class="w-full h-40 overflow-hidden">
-                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                     class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
+                                {{-- Imagen del producto --}}
+                                <div class="w-full h-40 overflow-hidden">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                                        class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
+                                </div>
+
+                                {{-- Info simplificada --}}
+                                <div class="flex flex-col p-3">
+                                    <h3 class="text-sm font-semibold text-[#2A4043] truncate">
+                                        {{ $product->name }}
+                                    </h3>
+
+                                    @if (!empty($product->brand?->name))
+                                        <h3 class="text-[13px] text-[#37A0AF] truncate">
+                                            {{ $product->brand->name }}</h3>
+                                    @endif
+                                    @if (!empty($product->type?->name))
+                                        <button class="text-[10px] mt-2 w-20 inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                            ✨{{ $product->type->name }}
+                                        </button>
+                                    @endif
+                                </div>
+
                             </div>
-
-                            {{-- Información simplificada --}}
-                            <div class="flex flex-col gap-1 p-3">
-                                <h3 class="text-sm font-semibold text-[#2A4043] mb-1 truncate">
-                                    {{ $product->name }}
-                                </h3>
-
-                                @if(!empty($product->brand?->name))
-                                    <p class="text-[10px] text-gray-500 truncate">{{ $product->brand->name }}</p>
-                                @endif
-                                @if(!empty($product->type?->name))
-                                    <p class="text-[10px] text-gray-500 truncate">{{ $product->type->name }}</p>
-                                @endif
-                                @if(!empty($product->category?->name))
-                                    <p class="text-[10px] text-gray-500 truncate">{{ $product->category->name }}</p>
-                                @endif
-                            </div>
-
-                        </div>
                     </a>
                 @endforeach
             </div>
         @endif
 
+        </div>
     </section>
 </x-layout>
