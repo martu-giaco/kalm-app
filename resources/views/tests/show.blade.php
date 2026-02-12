@@ -1,55 +1,86 @@
-<x-layout :title="'Test de ' . ucfirst($test->key)">
-    <div class="max-w-3xl px-4 mx-auto ">
-        <article class="px-6 bg-white shadow-lg py-7 rounded-2xl">
-            <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">{{ $test->title }}</h1>
+<!DOCTYPE html>
+<html lang="es">
 
-            <form id="testForm" action="{{ route('tests.submit') }}" method="POST" novalidate>
-                @csrf
-                <input type="hidden" name="type" value="{{ $test->key }}">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kälm | Test</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}" />
+    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
 
-                <div id="questions">
-                    @foreach ($test->questions as $index => $question)
-                        <div class="mb-6 question" data-index="{{ $index }}"
-                            @if ($index != 0) style="display:none" @endif>
+<body class="flex flex-col flex-wrap space-around min-h-screen bg-center bg-cover px-5" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
-                            <p class="block mb-4 font-medium text-gray-700">
-                                {{ $index + 1 }}. {{ $question['text'] }}
-                            </p>
+        <div class="flex items-center justify-between max-w-3xl py-8 mx-auto w-full">
+            <button type="button" id="prevBtn" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m326.15-434.5 186.68 186.67q13.67 13.68 13.29 32.07-.38 18.39-14.05 32.06-13.68 12.68-32.07 13.06-18.39.38-32.07-13.29l-264-264q-6.71-6.72-9.81-14.92-3.1-8.19-3.1-17.15 0-8.96 3.1-17.15 3.1-8.2 9.81-14.92L448.17-776.3q12.92-12.92 31.57-12.92t32.33 12.92q13.67 13.67 13.67 32.44 0 18.77-13.67 32.45L326.15-525.5h436.48q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H326.15Z"/></svg>
+            </button>
+            <a href="{{ route('home') }}" class="self-end cursor-pointer" aria-label="close sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#2A4043" aria-hidden="true">
+                    <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+                </svg>
+            </a>
+        </div>
 
-                            <div class="space-y-3">
-                                @foreach ($question['options'] as $option)
-                                    <label class="flex items-center gap-5 cursor-pointer">
-                                        <input type="radio" name="q{{ $index + 1 }}"
-                                            value="{{ $option['scoreKey'] }}"
-                                            class="h-4 w-4 text-[#164d4f] focus:ring-[#164d4f]">
-                                        <span class="text-gray-700">{{ $option['text'] }}</span>
-                                    </label>
-                                @endforeach
+        <div class="max-w-3xl mx-auto ">
+            <article class="py-7 rounded-2xl">
+                <h2 class="text-md font-semibold text-[#37A0AF] mb-4">{{ $test->title }}</h2>
+
+                <form id="testForm" action="{{ route('tests.submit') }}" method="POST" novalidate>
+                    @csrf
+                    <input type="hidden" name="type" value="{{ $test->key }}">
+
+                    <div id="questions">
+                        @foreach ($test->questions as $index => $question)
+                            <div class="mb-6 question" data-index="{{ $index }}"
+                                @if ($index != 0) style="display:none" @endif>
+
+                                <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">
+                                    {{ $index + 1 }}. {{ $question['text'] }}
+                                </h1>
+
+                                <div class="space-y-3">
+                                    @foreach ($question['options'] as $option)
+                                        <label class="flex items-center gap-5 cursor-pointer bg-white shadow-lg p-4 rounded-lg">
+                                            <input type="radio" name="q{{ $index + 1 }}"
+                                                value="{{ $option['scoreKey'] }}"
+                                                class="h-4 w-4 text-[#164d4f] focus:ring-[#164d4f]">
+                                            <span class="text-gray-700">{{ $option['text'] }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+
                             </div>
-
-                        </div>
-                    @endforeach
-                </div>
+                        @endforeach
+                    </div>
 
 
-                {{-- Barra de progreso --}}
-                <div class="w-full h-3 mb-6 bg-gray-200 rounded-full">
-                    <div id="progressBar" class="bg-[#164d4f] h-3 rounded-full w-0"></div>
-                </div>
+                    {{-- Hidden submit --}}
+                    <button type="submit" id="hiddenSubmit" class="hidden" aria-hidden="true">Enviar</button>
+                </form>
+            </article>
+        </div>
 
-                {{-- Botones --}}
-                <div class="flex justify-between">
-                    <button type="button" id="prevBtn" class="px-4 py-2 text-gray-700 bg-gray-300 rounded-lg"
-                        disabled>Anterior</button>
-                    <button type="button" id="nextBtn"
-                        class="bg-[#164d4f] text-white px-4 py-2 rounded-lg">Siguiente</button>
-                </div>
-
-                {{-- Hidden submit --}}
-                <button type="submit" id="hiddenSubmit" class="hidden" aria-hidden="true">Enviar</button>
-            </form>
-        </article>
-    </div>
+        <div>
+            {{-- Botones --}}
+            <button type="button" id="nextBtn" class="w-full bg-[#306067] text-white px-4 py-3 rounded-lg">
+                Siguiente pregunta
+            </button>
+            {{-- Barra de progreso --}}
+            <div class="w-full h-2 mt-4 bg-white rounded-full shadow-xl">
+                <div id="progressBar" class="bg-[#164d4f] h-2 rounded-full w-0"></div>
+            </div>
+        </div>
 
     <script>
         (function() {
@@ -65,7 +96,7 @@
                 questions.forEach((q, i) => q.style.display = i === index ? 'block' : 'none');
                 prevBtn.disabled = index === 0;
                 const isLast = index === questions.length - 1;
-                nextBtn.textContent = isLast ? 'Finalizar Test' : 'Siguiente';
+                nextBtn.textContent = isLast ? 'Finalizar Test' : 'Siguiente pregunta';
                 nextBtn.dataset.isLast = isLast ? '1' : '0';
                 progressBar.style.width = ((index + 1) / questions.length * 100) + '%';
             }
@@ -123,4 +154,5 @@
             showQuestion(current);
         })();
     </script>
-</x-layout>
+</body>
+</html>
