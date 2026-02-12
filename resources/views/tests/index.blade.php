@@ -1,6 +1,6 @@
 <x-layout :title="'Tests disponibles'">
 
-    <section class="px-5 py-10 rounded-t-3xl bg-white">
+    <section class="h-full px-5 py-10 rounded-t-3xl bg-white">
         <h1 class="text-2xl font-semibold text-[#306067]">Tests</h1>
         <p class="text-[#2A4043]">Completá todos los tests para obtener tu rutina personalizada.</p>
 
