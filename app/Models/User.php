@@ -14,7 +14,6 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'username',
         'email',
         'password',
         'avatar',
@@ -51,12 +50,6 @@ class User extends Authenticatable
 
         // fallback
         return asset('images/pfp.svg');
-    }
-
-    // Mutator (opcional) para username limpio
-    public function setUsernameAttribute($value)
-    {
-        $this->attributes['username'] = $value ? Str::slug($value) : null;
     }
 
     // Scope para admins

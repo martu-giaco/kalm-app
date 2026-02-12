@@ -41,16 +41,7 @@
                 @enderror
             </div>
 
-            <div>
-                <label for="username" class="block mb-1 text-sm">Nombre de usuario</label>
-                <input id="username" placeholder='@usuario' name="username" aria-label="nombre de usuario" value="{{ old('username') }}" type="text"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
-                        required>
 
-                @error('username')
-                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                @enderror
-            </div>
 
             <div>
                 <label for="email" class="block mb-1 text-sm">Email</label>

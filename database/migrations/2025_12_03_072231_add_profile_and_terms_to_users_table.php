@@ -19,13 +19,6 @@ return new class extends Migration
             // NOTA: Schema::hasColumn se llama fuera del closure cuando sea necesario
         });
 
-        // Comprobaciones fuera del closure (más seguras para hasColumn)
-        if (! Schema::hasColumn('users', 'username')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('username')->nullable()->unique();
-            });
-        }
-
         if (! Schema::hasColumn('users', 'avatar')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->string('avatar')->nullable();
@@ -84,9 +77,6 @@ return new class extends Migration
             }
             if (Schema::hasColumn('users', 'avatar')) {
                 $table->dropColumn('avatar');
-            }
-            if (Schema::hasColumn('users', 'username')) {
-                $table->dropColumn('username');
             }
         });
     }

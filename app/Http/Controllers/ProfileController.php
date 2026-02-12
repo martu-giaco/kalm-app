@@ -43,7 +43,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Actualizar perfil (nombre, username, email, avatar).
+     * Actualizar perfil (nombre, email, avatar).
      */
     public function update(Request $request)
     {
@@ -51,7 +51,6 @@ class ProfileController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'username' => ['nullable', 'string', 'max:25', Rule::unique('users')->ignore($user->id)],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
         ]);

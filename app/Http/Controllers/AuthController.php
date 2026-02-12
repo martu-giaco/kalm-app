@@ -107,7 +107,6 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:20|unique:users',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -116,7 +115,6 @@ class AuthController extends Controller
         session([
             'registration' => [
                 'name' => $data['name'],
-                'username' => $data['username'] ?? null,
                 'email' => $data['email'],
                 'password' => $data['password'], // temporal; se hasheará al crear el usuario
             ],

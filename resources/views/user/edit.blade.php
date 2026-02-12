@@ -56,13 +56,7 @@
                             required>
                     </div>
 
-                    <div class="mb-4">
-                        <label for="username" class="block mb-1 text-sm">Nombre de usuario</label>
-                        <input id="username" type="text" name="username"
-                            value="{{ old('username', $user->username) }}"
-                            class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
-                            required>
-                    </div>
+
 
                     <div class="mb-4">
                         <label for="email" class="block mb-1 text-sm">Email</label>

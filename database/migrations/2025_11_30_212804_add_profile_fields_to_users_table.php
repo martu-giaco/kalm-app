@@ -11,7 +11,6 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('username')->nullable()->unique()->after('email');
             $table->string('avatar')->nullable()->after('password');
             $table->text('bio')->nullable()->after('avatar');
         });
@@ -20,9 +19,6 @@ return new class extends Migration {
     public function down()
 {
     Schema::table('users', function (Blueprint $table) {
-        if (Schema::hasColumn('users', 'username')) {
-            $table->dropColumn('username');
-        }
         if (Schema::hasColumn('users', 'avatar')) {
             $table->dropColumn('avatar');
         }
