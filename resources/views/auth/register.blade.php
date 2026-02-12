@@ -25,7 +25,7 @@
         <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-20 mx-auto mt-5">
 
         <div>
-                    <h1 class="text-2xl font-bold text-[#2A4043]">Crear una Cuenta</h1>
+                    <h1 class="text-2xl font-bold text-[#2A4043]">Crear Cuenta</h1>
 
         <form action="{{ route('auth.register.store') }}" method="POST" class="space-y-4" novalidate>
             @csrf
