@@ -70,7 +70,7 @@
                 </div>
                 <div>
                     <p class="font-bold text-[#2A4043]">Seguimiento visual</p>
-                    <p class="text-sm text-gray-600">Mirá tu progreso real.</p>
+                    <p class="text-sm text-gray-600">Observar tu progreso real.</p>
                 </div>
             </div>
         </div>

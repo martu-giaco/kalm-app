@@ -183,6 +183,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [RoutineController::class, 'index'])->name('index');
         Route::get('/create', [RoutineController::class, 'create'])->name('create');
         Route::post('/', [RoutineController::class, 'store'])->name('store');
+        Route::post('/from-recommended/{id}', [RoutineController::class, 'storeFromRecommended'])
+            ->middleware('auth')
+            ->name('fromRecommended');
+
         Route::get('/{routine_id}', [RoutineController::class, 'show'])->name('show');
         Route::get('/{routine_id}/edit', [RoutineController::class, 'edit'])->name('edit');
         Route::patch('/{routine_id}', [RoutineController::class, 'update'])->name('update');

@@ -7,6 +7,9 @@ use App\Models\Routine;
 use App\Models\RoutineType;
 use App\Models\RoutineTime;
 use App\Models\Product;
+use App\Models\RecommendedRoutine;
+use Illuminate\Support\Facades\Auth;   
+
 
 class RoutineController extends Controller
 {
@@ -30,6 +33,21 @@ class RoutineController extends Controller
             'types' => RoutineType::whereIn('name', ['Haircare', 'Skincare'])->orderBy('name')->get(),
             'times' => RoutineTime::orderBy('name')->get(),
         ]);
+    }
+
+    public function storeFromRecommended($id)
+    {
+        $rec = RecommendedRoutine::findOrFail($id);
+
+        $routine = Routine::create([
+            'name' => $rec->name,
+            'user_id' => auth()->id(),
+            'time_id' => $rec->time_id,
+            'steps' => $rec->steps,
+        ]);
+
+        return redirect()->route('routines.index')
+            ->with('success', 'Rutina guardada en tu perfil ✨');
     }
 
     public function store(Request $request)
@@ -117,7 +135,7 @@ class RoutineController extends Controller
         $routine->products()->sync($productIds);
 
         return redirect()->route('routines.show', $routine->routine_id)
-                         ->with('success', 'Rutina actualizada correctamente.');
+            ->with('success', 'Rutina actualizada correctamente.');
     }
 
     public function destroy(Routine $routine)
