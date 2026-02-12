@@ -59,12 +59,12 @@
                 </a>
 
                 @auth
-                    <form action="{{ route('tests.saveResult', $routine->routine_id ?? 0) }}" method="POST" class="inline">
+                    <form action="{{ route('tests.saveResult') }}" method="POST" class="inline">
                         @csrf
                         <input type="hidden" name="test_key" value="{{ $testKey }}">
                         <input type="hidden" name="result_key" value="{{ $resultLabel }}">
                         <input type="hidden" name="answers" value='{{ json_encode(session('test_answers', [])) }}'>
-                        <button class="px-4 py-2 bg-[#164d4f] text-white rounded-lg">Guardar resultado</button>
+                        <button type="submit" class="px-4 py-2 bg-[#164d4f] text-white rounded-lg">Guardar resultado</button>
                     </form>
                 @else
                     <a href="{{ route('auth.login') }}" class="px-4 py-2 bg-[#164d4f] text-white rounded-lg">
@@ -72,10 +72,12 @@
                     </a>
                 @endauth
 
-                <a href="{{ route('tests.createRoutine', $routine->routine_id ?? session('intended_routine', 0)) }}"
-                   class="px-4 py-2 text-gray-800 bg-gray-300 rounded-lg">
-                   Crear Rutina
-                </a>
+                @auth
+                    <a href="{{ route('tests.createRoutine') }}"
+                       class="px-4 py-2 text-gray-800 bg-gray-300 rounded-lg">
+                       Crear Rutina
+                    </a>
+                @endauth
             </div>
 
         </article>

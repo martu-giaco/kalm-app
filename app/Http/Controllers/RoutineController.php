@@ -27,7 +27,7 @@ class RoutineController extends Controller
     public function create()
     {
         return view('routines.create', [
-            'types' => RoutineType::orderBy('name')->get(),
+            'types' => RoutineType::whereIn('name', ['Haircare', 'Skincare'])->orderBy('name')->get(),
             'times' => RoutineTime::orderBy('name')->get(),
         ]);
     }
@@ -83,7 +83,7 @@ class RoutineController extends Controller
         $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
 
-        $routine_types = RoutineType::orderBy('name')->get();
+        $routine_types = RoutineType::whereIn('name', ['Haircare', 'Skincare'])->orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
         return view('routines.edit', compact('routine', 'routine_types', 'routine_times'));

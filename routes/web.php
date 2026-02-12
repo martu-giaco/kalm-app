@@ -46,12 +46,15 @@ Route::post('/terms/accept', [TermsController::class, 'accept'])->name('auth.ter
 // Tests públicos
 Route::prefix('tests')->name('tests.')->group(function () {
     Route::get('/', [TestController::class, 'index'])->name('index');
-    Route::get('/{type}', [TestController::class, 'show'])->where('type', '[A-Za-z0-9\-_]+')->name('show');
     Route::post('/submit', [TestController::class, 'submit'])->name('submit');
 
-    Route::get('/result/{routine}', [TestController::class, 'result'])->whereNumber('routine')->name('result');
-    Route::post('/result/{routine}/save', [TestController::class, 'saveResult'])->whereNumber('routine')->middleware('auth')->name('saveResult');
-    Route::get('/result/{routine}/create-routine', [TestController::class, 'createRoutineRedirect'])->whereNumber('routine')->name('createRoutine');
+    // Rutas de resultados (sin parámetro de routine)
+    Route::get('/result', [TestController::class, 'result'])->name('result');
+    Route::post('/result/save', [TestController::class, 'saveResult'])->middleware('auth')->name('saveResult');
+    Route::get('/result/create-routine', [TestController::class, 'createRoutineRedirect'])->middleware('auth')->name('createRoutine');
+
+    // Mostrar test por tipo (debe estar al final para no capturar las otras rutas)
+    Route::get('/{type}', [TestController::class, 'show'])->where('type', '[A-Za-z0-9\-_]+')->name('show');
 });
 
 /*

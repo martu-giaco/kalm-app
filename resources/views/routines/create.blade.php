@@ -27,19 +27,6 @@
                 @enderror
             </div>
 
-            {{-- Skincare / Haircare --}}
-            <div class="mb-4">
-                <label for="routine_category" class="block mb-1 text-sm text-[#2A4043]">
-                    Skincare / Haircare
-                </label>
-                <select name="routine_category" id="routine_category" required
-                    class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar categoría</option>
-                    <option value="skincare" @selected(old('routine_category') == 'skincare')>Skincare</option>
-                    <option value="haircare" @selected(old('routine_category') == 'haircare')>Haircare</option>
-                </select>
-            </div>
-
             {{-- Tipo de rutina --}}
             <div class="mb-4">
                 <label for="type_id" class="block mb-1 text-sm text-[#2A4043]">

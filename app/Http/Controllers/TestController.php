@@ -23,7 +23,7 @@ class TestController extends Controller
     }
 
     /**
-     * Mostrar un test por su key (route-model-binding por key manual)
+     * Mostrar un test por su key
      */
     public function show($type)
     {
@@ -36,9 +36,7 @@ class TestController extends Controller
     }
 
     /**
-     * Procesar respuestas del test.
-     * - Si la petición quiere JSON (AJAX), respondemos JSON con detalle.
-     * - Si es form normal, redirigimos a la vista de resultado (con o sin rutina).
+     * Procesar respuestas del test y guardar en sesión
      */
     public function submit(Request $request)
     {
@@ -67,123 +65,162 @@ class TestController extends Controller
         arsort($scores);
         $topKey = array_key_first($scores);
 
-        $routineType = RoutineType::where('name', $topKey)->firstOrFail();
+        try {
+            $routineType = RoutineType::where('name', $topKey)->firstOrFail();
+        } catch (\Exception $e) {
+            Log::error('RoutineType no encontrado', ['topKey' => $topKey, 'error' => $e->getMessage()]);
+            return redirect()->back()->with('error', 'Tipo de rutina no válido: ' . $topKey);
+        }
 
-        // Crear rutina correctamente
-        $routine = Routine::create([
-            'routine_type_id' => $routineType->id,
-            'user_id' => auth()->id(), // puede ser null si no hay usuario logueado
-            'name' => ucfirst($test->key) . ' Routine',
-        ]);
-
-        // Guardar respuestas en sesión
+        // Guardar respuestas en sesión (SIN crear rutina aún)
         session([
             'test_answers' => $answers,
             'test_key' => $test->key,
             'result_key' => $topKey,
-            'routine_id' => $routine->routine_id,
+            'routine_type_id' => $routineType->type_id,
         ]);
 
-        // Redirigir al resultado
-        return redirect()->route('tests.result', $routine->routine_id)
-                 ->with('success', 'Rutina creada correctamente.');
+        Log::info('Test completado y sesión guardada', [
+            'test_key' => $test->key,
+            'result_key' => $topKey,
+            'type_id' => $routineType->type_id,
+        ]);
 
+        // Redirigir al resultado (sin routine_id - no hay rutina aún)
+        return redirect()->route('tests.result')
+                 ->with('success', 'Test completado correctamente.');
     }
 
-
-
-
     /**
-     * Mostrar la página de resultado.
-     * $routineId es opcional — si no viene, la vista mostrará resultado sin rutina.
+     * Mostrar la página de resultado del test
+     * NO requiere una rutina - solo muestra los resultados
      */
-    public function result($routineId)
-{
-    // Obtener rutina
-    $routine = Routine::where('routine_id', $routineId)->firstOrFail();
+    public function result()
+    {
+        try {
+            // Obtener resultado del test desde la sesión
+            $resultKey = session('result_key');
+            $resultLabel = $resultKey ?? 'normal';
 
-    // Obtener resultado del test
-    $resultKey = session('result_key'); // o según tu lógica
-    $resultLabel = $resultKey ?? 'normal';
+            if (!$resultKey) {
+                return redirect()->route('tests.index')->with('error', 'No hay resultados de test disponibles.');
+            }
 
-    // Descripciones de cada tipo
-    $descriptions = [
-        'normal' => 'Piel/cabello equilibrado.',
-        'seco' => 'Tiendes a la sequedad.',
-        'graso' => 'Tiendes a la producción de sebo elevada.',
-        'mixto' => 'Zona T grasa y mejillas secas.',
-        'sensible' => 'Tendencia a rojeces e irritaciones.',
-    ];
+            // Descripciones de cada tipo
+            $descriptions = [
+                'normal' => 'Mantienen un equilibrio natural de hidratación y sebo. Lucen saludables, con buena textura y brillo. Solo necesitan cuidados básicos de mantenimiento.',
+                'seco' => 'Presentan falta de hidratación y nutrición. La piel puede sentirse tirante o descamada, y el cabello luce opaco, áspero o con puntas abiertas. Necesitan fórmulas nutritivas que restauren suavidad y elasticidad.',
+                'graso' => 'Producen exceso de sebo. La piel presenta brillo y poros visibles, y el cabello puede verse pesado o apelmazado. Necesitan fórmulas ligeras y reguladoras.',
+                'mixto' => 'Combinan zonas grasas con áreas más secas. La piel suele tener brillo en la zona T y sequedad en mejillas, mientras que el cabello presenta raíces grasas y puntas secas. Requieren productos equilibrantes.',
+                'sensible' => 'Son más reactivos y pueden irritarse con facilidad. La piel puede enrojecerse y el cuero cabelludo presentar picazón. Requieren productos suaves y calmantes.',
+            ];
 
-    $resultDesc = $descriptions[$resultLabel] ?? 'Descripción no disponible para este resultado.';
+            $resultDesc = $descriptions[$resultLabel] ?? 'Descripción no disponible para este resultado.';
 
-    // Productos recomendados: buscar donde la descripción contenga la palabra del resultado
-    $recommendedProducts = Product::where('description', 'like', "%{$resultLabel}%")->get();
+            // Productos recomendados: buscar donde la descripción contenga la palabra del resultado
+            $recommendedProducts = Product::where('description', 'like', "%{$resultLabel}%")->get();
 
-    return view('tests.result', compact('routine', 'resultLabel', 'resultDesc', 'recommendedProducts'));
-}
+            // Si no hay productos específicos, mostrar algunos productos populares
+            if ($recommendedProducts->isEmpty()) {
+                $recommendedProducts = Product::limit(6)->get();
+            }
 
-
+            return view('tests.result', compact('resultLabel', 'resultDesc', 'recommendedProducts'));
+        } catch (\Exception $e) {
+            Log::error('Error en result: ' . $e->getMessage());
+            return redirect()->route('tests.index')->with('error', 'Error al cargar los resultados. Por favor, intenta de nuevo.');
+        }
+    }
 
     /**
      * Guardar resultado en el perfil del usuario (requiere login)
+     * NO crea rutina, solo guarda el resultado del test
      */
-    public function saveResult(Request $request, $routineId)
+    public function saveResult(Request $request)
     {
         $user = Auth::user();
         if (!$user) {
             return redirect()->route('auth.login');
         }
 
-        // Buscar rutina por routine_id o id
-        $routine = Routine::where('routine_id', $routineId)->first();
-        if (!$routine) {
-            $routine = Routine::findOrFail($routineId);
-        }
-
         $testKey = $request->input('test_key', session('test_key'));
         $resultKey = $request->input('result_key', session('result_key'));
         $answers = $request->input('answers', session('test_answers', []));
 
-        // Asegurarse de serializar las respuestas si vienen como array
-        if (is_array($answers)) {
-            $answersToStore = json_encode($answers);
-        } else {
-            $answersToStore = is_string($answers) ? $answers : json_encode([$answers]);
-        }
-
-        $saved = UserTestResult::create([
-            'user_id' => $user->id,
-            // usar el campo público routine_id si existe, sino el id
-            'routine_id' => $routine->routine_id ?? $routine->routine_id,
+        Log::info('SaveResult - Datos recibidos', [
             'test_key' => $testKey,
             'result_key' => $resultKey,
-            'answers' => $answersToStore,
+            'answers_type' => gettype($answers),
+            'answers' => $answers,
         ]);
 
-        if ($saved) {
-            return redirect()->route('tests.result', $routine->routine_id ?? $routine->routine_id)
-                ->with('success', 'Resultado guardado correctamente en tu perfil.');
+        if (!$resultKey) {
+            Log::warning('SaveResult - Sin resultKey', ['user_id' => $user->id]);
+            return redirect()->route('tests.index')->with('error', 'No hay resultados para guardar.');
         }
 
-        return response()->json([
-            'success' => true,
-            'topKey' => $topKey,
-            'routine_id' => $routine->routine_id,
-            'answers' => $answers
-        ]);
+        // Asegurarse de serializar las respuestas si vienen como array o JSON
+        if (is_array($answers)) {
+            $answersToStore = json_encode($answers);
+        } elseif (is_string($answers)) {
+            // Si viene como string JSON, usarlo tal cual
+            $answersToStore = $answers;
+        } else {
+            $answersToStore = json_encode([$answers]);
+        }
 
+        try {
+            $result = UserTestResult::create([
+                'user_id' => $user->id,
+                'routine_id' => null,
+                'test_key' => $testKey,
+                'result_key' => $resultKey,
+                'answers' => $answersToStore,
+            ]);
+
+            Log::info('SaveResult - Guardado exitoso', [
+                'result_id' => $result->id,
+                'user_id' => $user->id,
+                'test_key' => $testKey,
+                'result_key' => $resultKey,
+            ]);
+
+            return redirect()->route('tests.result')
+                ->with('success', 'Resultado guardado correctamente en tu perfil.');
+        } catch (\Exception $e) {
+            Log::error('SaveResult - Error al guardar', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return redirect()->route('tests.result')
+                ->with('error', 'Error al guardar el resultado: ' . $e->getMessage());
+        }
     }
 
     /**
-     * Redirigir al flujo de creación de rutina (premium) o al upgrade
+     * Crear rutina a partir del resultado del test
+     * Disponible para todos los usuarios
      */
-    public function createRoutineRedirect($routineId)
+    public function createRoutineRedirect()
     {
-        if (auth()->check() && (auth()->user()->is_premium ?? false)) {
-            return redirect()->route('premium.createRoutine', $routineId);
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('auth.login')->with('info', 'Inicia sesión para crear una rutina.');
         }
 
-        return redirect()->route('premium.upgrade')->with('intended_routine', $routineId);
+        // Crear rutina con los datos de la sesión
+        $routine = Routine::create([
+            'user_id' => $user->id,
+            'name' => ucfirst(session('test_key', 'Test')) . ' Routine',
+        ]);
+
+        // Agregar tipo a la rutina
+        if (session('routine_type_id')) {
+            $routine->types()->attach(session('routine_type_id'));
+        }
+
+        return redirect()->route('routines.edit', $routine->routine_id)
+            ->with('success', 'Rutina creada. Ahora personalízala agregando productos y pasos.');
     }
 }

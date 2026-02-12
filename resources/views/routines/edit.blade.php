@@ -39,13 +39,13 @@
 
                 {{-- Tiempo de rutina --}}
                 <div class="mb-4">
-                    <label for="routine_time_id" class="block mb-1 text-sm">Tiempo de rutina</label>
-                    <select name="routine_time_id" id="routine_time_id" required
+                    <label for="time_id" class="block mb-1 text-sm">Tiempo de rutina</label>
+                    <select name="time_id" id="time_id" required
                         class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                         <option value="">Seleccionar tiempo</option>
                         @foreach ($routine_times as $time)
                             <option value="{{ $time->time_id }}"
-                                {{ old('routine_time_id', $routine->routine_time_id) == $time->time_id ? 'selected' : '' }}>
+                                {{ old('time_id', $routine->time_id) == $time->time_id ? 'selected' : '' }}>
                                 {{ $time->name }}
                             </option>
                         @endforeach

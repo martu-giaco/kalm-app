@@ -108,8 +108,8 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        // Aquí puedes cargar datos para los resultados
-        $results = $user->results ?? [];
+        // Cargar resultados de tests del usuario
+        $results = $user->testResults()->latest()->get();
 
         return view('user.results', compact('results', 'user'));
     }
