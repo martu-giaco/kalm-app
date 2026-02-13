@@ -75,6 +75,12 @@ class ProfileController extends Controller
     /**
      * Actualizar contraseña del usuario.
      */
+    public function password()
+    {
+        $user = auth()->user();
+        return view('user.password', compact('user'));
+    }
+
     public function updatePassword(Request $request)
     {
         $request->validate([
@@ -97,7 +103,7 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('feedback.message', 'Contraseña actualizada correctamente.')
-                     ->with('feedback.type', 'success');
+                    ->with('feedback.type', 'success');
     }
 
     /**
@@ -111,5 +117,13 @@ class ProfileController extends Controller
         $results = $user->testResults()->latest()->get();
 
         return view('user.results', compact('results', 'user'));
+    }
+
+    // Eliminar usuario
+    public function destroy()
+    {
+        $user = auth()->user()->delete();
+
+        return redirect()->route('home')->with('success', 'Su cuenta fue eliminada correctamente.');
     }
 }

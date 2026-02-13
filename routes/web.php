@@ -74,8 +74,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProfileController::class, 'show'])->name('show');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('update');
+        Route::get('/password', [ProfileController::class, 'password'])->name('password');
         Route::patch('/password', [ProfileController::class, 'updatePassword'])->name('password.update');
         Route::get('/results', [ProfileController::class, 'results'])->name('results');
+        Route::delete('/delete', [ProfileController::class, 'destroy'])->name('user.destroy');
     });
 
     // Home

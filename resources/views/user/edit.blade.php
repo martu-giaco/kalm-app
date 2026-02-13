@@ -75,52 +75,6 @@
                         class="mt-1 btn w-full inline-flex border-2 border-[#306067] text-[#306067] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">Cancelar</a>
                 </div>
             </form>
-            <hr class="my-10 border-[#CCE2E5]">
-            <h2 class="text-xl font-semibold mt-5 text-[#306067]">
-                Cambiar contraseña
-            </h2>
-
-            <form action="{{ route('profile.password.update') }}" method="POST" class="space-y-4">
-                @csrf
-                @method('PATCH')
-
-                <div>
-                    <label for="current_password" class="block mb-1 text-sm">Contraseña actual</label>
-                    <input id="current_password" name="current_password" type="password"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
-                        required>
-
-                    @error('current_password')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="password" class="block mt-2 text-sm">Nueva contraseña</label>
-                    <input id="password" name="password" type="password"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
-                        required>
-
-                    @error('password')
-                        <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="password_confirmation" class="block mt-2 text-sm">Repetir contraseña</label>
-                    <input id="password_confirmation" name="password_confirmation" type="password"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
-                        required>
-                </div>
-
-                <button type="submit"
-                    class="btn w-full px-5 py-3 my-5 rounded-xl text-white font-bold transition hover:bg-[#306067] bg-[#306067]">
-                    Actualizar contraseña
-                </button>
-            </form>
-
-
-
         </div>
     </section>
 </x-layout>
