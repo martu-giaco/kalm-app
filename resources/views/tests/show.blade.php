@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="flex flex-col flex-wrap space-around min-h-screen bg-center bg-cover px-5" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<body class="flex flex-col flex-wrap justify-between min-h-screen bg-center bg-cover px-5 py-10" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
         <div class="flex items-center justify-between max-w-3xl py-8 mx-auto w-full">
             <button type="button" id="prevBtn" disabled>
@@ -33,8 +33,8 @@
         </div>
 
         <div class="max-w-3xl mx-auto ">
-            <article class="py-7 rounded-2xl">
-                <h2 class="text-md font-semibold text-[#37A0AF] mb-4">{{ $test->title }}</h2>
+            <article class="pb-7 rounded-2xl">
+                <h2 class="text-md font-semibold text-[#37A0AF]">{{ $test->title }}</h2>
 
                 <form id="testForm" action="{{ route('tests.submit') }}" method="POST" novalidate>
                     @csrf
@@ -42,17 +42,17 @@
 
                     <div id="questions">
                         @foreach ($test->questions as $index => $question)
-                            <div class="mb-6 question" data-index="{{ $index }}"
+                            <div class="mb-10 question" data-index="{{ $index }}"
                                 @if ($index != 0) style="display:none" @endif>
 
                                 <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">
-                                    {{ $index + 1 }}. {{ $question['text'] }}
+                                    {{ $question['text'] }}
                                 </h1>
 
                                 <div class="space-y-3">
                                     @foreach ($question['options'] as $option)
-                                        <label class="flex items-center gap-5 cursor-pointer bg-white shadow-lg p-4 rounded-lg">
-                                            <input type="radio" name="q{{ $index + 1 }}"
+                                        <label class="flex items-center gap-5 cursor-pointer bg-white/60 shadow-lg p-5 rounded-lg">
+                                            <input type="radio" class="hidden" name="q{{ $index + 1 }}"
                                                 value="{{ $option['scoreKey'] }}"
                                                 class="h-4 w-4 text-[#164d4f] focus:ring-[#164d4f]">
                                             <span class="text-gray-700">{{ $option['text'] }}</span>
@@ -63,7 +63,6 @@
                             </div>
                         @endforeach
                     </div>
-
 
                     {{-- Hidden submit --}}
                     <button type="submit" id="hiddenSubmit" class="hidden" aria-hidden="true">Enviar</button>
