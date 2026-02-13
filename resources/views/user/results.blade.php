@@ -1,9 +1,9 @@
 <x-layout>
-    <div class="max-w-4xl mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-[#164d4f] mb-6">Mis Resultados de Tests</h1>
+    <div class="px-5 pt-10 rounded-t-3xl min-h-full bg-white">
+        <h1 class="text-3xl font-bold text-[#164d4f] mb-6">Mis Resultados</h1>
 
         @if($results->isEmpty())
-            <div class="bg-white p-8 rounded-lg shadow text-center">
+            <div class="p-8 text-center">
                 <p class="text-gray-600 mb-4">Aún no has completado ningún test</p>
                 <a href="{{ route('tests.index') }}" class="inline-block px-6 py-2 bg-[#164d4f] text-white rounded-lg hover:bg-[#0d3537] transition">
                     Realizar un test
