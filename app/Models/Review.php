@@ -30,6 +30,6 @@ class Review extends Model
     public function scopeByUserAndProduct($query, $userId, $productId)
     {
         return $query->where('user_id', $userId)
-                     ->where('product_id', $productId);
+                    ->where('product_id', $productId);
     }
 }

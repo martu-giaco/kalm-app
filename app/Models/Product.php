@@ -53,6 +53,11 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    public function skinTypes()
+        {
+            return $this->belongsToMany(SkinType::class);
+        }
+
     public function type()
     {
         return $this->belongsTo(ProductType::class);

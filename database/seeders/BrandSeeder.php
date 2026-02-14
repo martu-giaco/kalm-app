@@ -17,6 +17,7 @@ class BrandSeeder extends Seeder
             'Kérastase',
             'L’Oréal',
             'Redken',
+            'Cetaphil',
         ];
 
         foreach ($brands as $brandName) {
