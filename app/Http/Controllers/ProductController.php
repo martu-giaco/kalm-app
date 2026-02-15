@@ -91,7 +91,7 @@ class ProductController extends Controller
 
             'category_id' => 'required|integer|exists:product_categories,id',
             'rating' => 'nullable|integer|min:0|max:5',
-            'dondeComprar' => 'nullable|string',
+            'donde_comprar' => 'nullable|string',
         ]);
 
 

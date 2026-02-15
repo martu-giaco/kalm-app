@@ -10,10 +10,10 @@ class SkinTypeSeeder extends Seeder
     public function run()
     {
         $types = [
-            ['name' => 'seca'],
-            ['name' => 'oleosa'],
-            ['name' => 'mixta'],
-            ['name' => 'sensible'],
+            ['name' => 'Seca'],
+            ['name' => 'Oleosa'],
+            ['name' => 'Mixta'],
+            ['name' => 'Sensible'],
         ];
 
         foreach ($types as $type) {

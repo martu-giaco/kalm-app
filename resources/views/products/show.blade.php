@@ -185,10 +185,10 @@
                         </div>
                     @endif
 
-                    @if (!empty($product->dondeComprar))
+                    @if (!empty($product->donde_comprar))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
                             <h3 class="mb-1 text-sm text-gray-500">Dónde comprar</h3>
-                            <p class="text-sm font-bold">{{ $product->dondeComprar }}</p>
+                            <p class="text-sm font-bold">{{ $product->donde_comprar }}</p>
                         </div>
                     @endif
 

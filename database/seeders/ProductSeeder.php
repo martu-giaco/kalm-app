@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Brand;
 use App\Models\ProductType;
+use App\Models\SkinType;
 use App\Models\ProductCategory;
 
 class ProductSeeder extends Seeder
@@ -52,7 +53,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ceramidas, Ácido Hialurónico',
                         'formato' => '355ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, MercadoLibre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, MercadoLibre',
                     ],
                     [
                         'name' => 'La Roche-Posay Effaclar Gel',
@@ -63,7 +65,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Zinc PCA',
                         'formato' => '200ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Farmacity, Mercado Libre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'Neutrogena Hydro Boost Water Gel Cleanser',
@@ -74,7 +77,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ácido Hialurónico',
                         'formato' => '200ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Mercado Libre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'Icono Cosmetica Gel de Limpieza Facial Purificante',
@@ -85,7 +89,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Hamamelis, Zinc',
                         'formato' => '150ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Tiendas de estética, Mercado Libre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Tiendas de estética, Mercado Libre',
                     ],
                 ],
                 'Hidratantes' => [
@@ -98,7 +103,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ceramidas, Niacinamida',
                         'formato' => '75ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Mercado Libre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'CeraVe Crema Hidratante',
@@ -109,7 +115,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ceramidas, Ácido Hialurónico',
                         'formato' => '454g',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Tiendas online',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Tiendas online',
                     ],
                     [
                         'name' => 'The Ordinary Natural Moisturizing Factors + HA',
@@ -120,7 +127,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Factores de Humectación Natural, Ácido Hialurónico',
                         'formato' => '100ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Tiendas de cosmética especializada, Deciem',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Tiendas de cosmética especializada, Deciem',
                     ],
                     [
                         'name' => 'Dermaglós Facial Crema Nutritiva de Noche',
@@ -131,7 +139,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Vitamina A',
                         'formato' => '50g',
                         'rating' => 4,
-                        'dondeComprar' => 'Farmacity, Perfumerías',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Perfumerías',
                     ],
                 ],
                 'Protectores Solares' => [
@@ -144,7 +153,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'FPS 50+, Ácido Hialurónico',
                         'formato' => '50ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Farmacias',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Farmacias',
                     ],
                     [
                         'name' => 'Isdin Fusion Water Magic FPS 50',
@@ -155,7 +165,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'FPS 50, Tecnología Safe-Eye',
                         'formato' => '50ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Mercado Libre, Farmacity',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Mercado Libre, Farmacity',
                     ],
                 ],
                 'Sueros/Sérums' => [
@@ -168,7 +179,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ácido Hialurónico, Minerales',
                         'formato' => '50ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Perfumerías',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Perfumerías',
                     ],
                     [
                         'name' => 'The Ordinary Niacinamide 10% + Zinc 1%',
@@ -179,7 +191,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Niacinamida 10%, Zinc 1%',
                         'formato' => '30ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Tiendas de cosmética especializada',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Tiendas de cosmética especializada',
                     ],
                     [
                         'name' => 'Glow Factor Vitamina C 15%',
@@ -190,7 +203,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Vitamina C, Ácido Ferúlico',
                         'formato' => '30ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Web oficial, Mercado Libre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Web oficial, Mercado Libre',
                     ],
                 ],
                 'Exfoliantes' => [
@@ -203,7 +217,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ácido Salicílico 2%',
                         'formato' => '118ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Web oficial, Tiendas de importación',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Web oficial, Tiendas de importación',
                     ],
                 ],
             ],
@@ -218,7 +233,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Ceramidas, Proteínas',
                         'formato' => '250ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Mercado Libre, Tiendas profesionales',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Mercado Libre, Tiendas profesionales',
                     ],
                     [
                         'name' => 'L’Oréal Serie Expert Absolut Repair',
@@ -229,7 +245,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Quinoa Dorada, Proteínas',
                         'formato' => '300ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Mercado Libre',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'Capilatis Ortiga Shampoo para Cabellos Grasos',
@@ -240,7 +257,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Extracto de Ortiga',
                         'formato' => '420ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Farmacity, Supermercados',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Supermercados',
                     ],
                 ],
                 'Acondicionador' => [
@@ -253,7 +271,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Proteínas, Ceramidas',
                         'formato' => '250ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Mercado Libre, Salones',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Mercado Libre, Salones',
                     ],
                     [
                         'name' => 'Elvive Oleo Extraordinario Nutrición Intensa',
@@ -264,7 +283,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Óleos nutritivos',
                         'formato' => '400ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Supermercados, Farmacity',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Supermercados, Farmacity',
                     ],
                 ],
                 'Tratamientos' => [
@@ -277,7 +297,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Molécula Bis-Aminopropyl Diglycol Dimaleate',
                         'formato' => '100ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Tiendas especializadas, Salones',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Tiendas especializadas, Salones',
                     ],
                 ],
             ],
@@ -293,7 +314,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Aceite de Almendras',
                         'formato' => '400ml',
                         'rating' => 4,
-                        'dondeComprar' => 'Supermercados, Farmacity',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Supermercados, Farmacity',
                     ],
                     [
                         'name' => 'Cetaphil Loción Hidratante Corporal',
@@ -304,7 +326,8 @@ class ProductSeeder extends Seeder
                         'activos' => 'Pantenol, Niacinamida',
                         'formato' => '473ml',
                         'rating' => 5,
-                        'dondeComprar' => 'Farmacity, Farmacias',
+                        'skin_types' => [1, 4], // Seca, Sensible
+                        'donde_comprar' => 'Farmacity, Farmacias',
                     ],
                 ],
             ],
@@ -322,15 +345,22 @@ class ProductSeeder extends Seeder
                 foreach ($products as $productData) {
                     $originalBrandId = $productData['brand_id'];
                     $productData['brand_id'] = $actualBrands[$originalBrandId];
+                    $skinTypes = $productData['skin_types'] ?? [];
+                    unset($productData['skin_types']);
 
-                    Product::updateOrCreate(
-                        ['name' => $productData['name']],
-                        array_merge($productData, [
-                            'type_id' => $type->id,
-                            'category_id' => $category->id,
-                            'image' => 'images/products/' . $productData['image'],
-                        ])
-                    );
+                    $product = Product::updateOrCreate(
+                            ['name' => $productData['name']],
+                            array_merge($productData, [
+                                'type_id' => $type->id,
+                                'category_id' => $category->id,
+                                'image' => 'images/products/' . $productData['image'],
+                            ])
+                        );
+
+                        // 🔹 Asociar skin types correctamente
+                        if (isset($productData['skin_types'])) {
+                            $product->skinTypes()->sync($productData['skin_types']);
+                        }
                 }
             }
         }

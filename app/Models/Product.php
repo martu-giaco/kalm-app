@@ -24,7 +24,7 @@ class Product extends Model
         'activos',
         'formato',
         'rating',
-        'dondeComprar',
+        'donde_comprar',
     ];
 
     // 🔹 Relación con rutinas (tabla pivote)
