@@ -357,10 +357,7 @@ class ProductSeeder extends Seeder
                             ])
                         );
 
-                        // 🔹 Asociar skin types correctamente
-                        if (isset($productData['skin_types'])) {
-                            $product->skinTypes()->sync($productData['skin_types']);
-                        }
+                        $product->skinTypes()->sync($skinTypes);
                 }
             }
         }
