@@ -3,19 +3,22 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\RoutineType;
+use App\Models\RoutineNeed;
 
-class RoutineTypeSeeder extends Seeder
+class RoutineNeedSeeder extends Seeder
 {
     public function run()
     {
-        $types = [
-            'Skincare',
-            'Haircare',
+        $needs = [
+            'normal',
+            'seco',
+            'graso',
+            'mixto',
+            'sensible',
         ];
 
-        foreach ($types as $name) {
-            RoutineType::updateOrCreate(
+        foreach ($needs as $name) {
+            RoutineNeed::updateOrCreate(
                 ['name' => $name], // criterio único
                 ['updated_at' => now(), 'created_at' => now()] // solo timestamps
             );

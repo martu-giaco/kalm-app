@@ -16,6 +16,8 @@ class Routine extends Model
         'name',
         'user_id',
         'time_id',
+        'type_id',
+        'need_id',
         'products',
         'steps',
     ];
@@ -35,14 +37,14 @@ class Routine extends Model
         return $this->belongsTo(RoutineTime::class, 'time_id', 'time_id');
     }
 
-    public function types(): BelongsToMany
+    public function routineType(): BelongsTo
     {
-        return $this->belongsToMany(
-            RoutineType::class,
-            'routines_have_types',
-            'routine_fk',
-            'type_fk'
-        );
+        return $this->belongsTo(RoutineType::class, 'type_id', 'type_id');
+    }
+
+    public function routineNeed(): BelongsTo
+    {
+        return $this->belongsTo(RoutineNeed::class, 'need_id', 'need_id');
     }
 
     public function products(): BelongsToMany

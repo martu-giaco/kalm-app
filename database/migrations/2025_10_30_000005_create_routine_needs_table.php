@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routine_types', function (Blueprint $table) {
-            $table->id('type_id');
+        Schema::create('routine_needs', function (Blueprint $table) {
+            $table->id('need_id');
             $table->string('name', 25);
             $table->timestamps();
         });
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('type');
+        Schema::dropIfExists('need');
     }
 };

@@ -16,23 +16,33 @@
                 </div>
 
 
+                {{-- Tipo de rutina --}}
                 <div class="mb-4">
-                    <label for="routine_category" class="block mb-1 text-sm">
-                        Skincare / Haircare
-                    </label>
-
-                    <select name="routine_category" id="routine_category" required
+                    <label for="type_id" class="block mb-1 text-sm">Tipo de rutina</label>
+                    <select name="type_id" id="type_id" required
                         class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        <option value="">Seleccionar tipo</option>
+                        @foreach ($routine_types as $type)
+                            <option value="{{ $type->type_id }}"
+                                {{ old('type_id', $routine->type_id) == $type->type_id ? 'selected' : '' }}>
+                                {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
-                        <option value="">Seleccionar categoría</option>
-                        <option value="skincare"
-                            {{ old('routine_category', $routine->routine_category ?? '') == 'skincare' ? 'selected' : '' }}>
-                            Skincare
-                        </option>
-                        <option value="haircare"
-                            {{ old('routine_category', $routine->routine_category ?? '') == 'haircare' ? 'selected' : '' }}>
-                            Haircare
-                        </option>
+                {{-- Necesidad de rutina --}}
+                <div class="mb-4">
+                    <label for="need_id" class="block mb-1 text-sm">Necesidad de rutina</label>
+                    <select name="need_id" id="need_id" required
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        <option value="">Seleccionar necesidad</option>
+                        @foreach ($routine_needs as $need)
+                            <option value="{{ $need->need_id }}"
+                                {{ old('need_id', $routine->need_id) == $need->need_id ? 'selected' : '' }}>
+                                {{ $need->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 

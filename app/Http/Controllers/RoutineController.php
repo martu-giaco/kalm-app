@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Routine;
 use App\Models\RoutineType;
 use App\Models\RoutineTime;
+use App\Models\RoutineNeed;
 use App\Models\Product;
 use App\Models\RecommendedRoutine;
-use Illuminate\Support\Facades\Auth;   
+use Illuminate\Support\Facades\Auth;
 
 
 class RoutineController extends Controller
@@ -29,10 +30,15 @@ class RoutineController extends Controller
 
     public function create()
     {
-        return view('routines.create', [
-            'types' => RoutineType::whereIn('name', ['Haircare', 'Skincare'])->orderBy('name')->get(),
-            'times' => RoutineTime::orderBy('name')->get(),
-        ]);
+        $routine_types = RoutineType::orderBy('name')->get();
+        $routine_needs = RoutineNeed::orderBy('name')->get();
+        $routine_times = RoutineTime::orderBy('name')->get();
+
+        return view('routines.create', compact(
+            'routine_types',
+            'routine_needs',
+            'routine_times'
+        ));
     }
 
     public function storeFromRecommended($id)
@@ -43,6 +49,7 @@ class RoutineController extends Controller
             'name' => $rec->name,
             'user_id' => auth()->id(),
             'time_id' => $rec->time_id,
+            'type_id' => $rec->type_id,
             'steps' => $rec->steps,
         ]);
 
@@ -55,8 +62,7 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
-            'type_id' => 'nullable|array',
-            'type_id.*' => 'nullable|exists:routine_types,type_id',
+            'type_id' => 'nullable|exists:routine_types,type_id',
             'products' => 'nullable|array',
             'products.*' => 'nullable|exists:products,product_id',
         ]);
@@ -66,15 +72,8 @@ class RoutineController extends Controller
         $routine->name = $validated['name'];
         $routine->user_id = auth()->id();
         $routine->time_id = $validated['time_id'] ?? null;
+        $routine->type_id = $validated['type_id'] ?? null;
         $routine->save();
-
-        // Filtrar valores vacíos y asociar tipos seleccionados (pivot)
-        if (!empty($validated['type_id'])) {
-            $typeIds = array_filter($validated['type_id'], fn($id) => !empty($id));
-            if (!empty($typeIds)) {
-                $routine->types()->sync($typeIds);
-            }
-        }
 
         // Filtrar valores vacíos y asociar productos seleccionados (pivot)
         if (!empty($validated['products'])) {
@@ -92,7 +91,7 @@ class RoutineController extends Controller
     {
         $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
-        $routine->load(['types', 'routineTime', 'products']);
+        $routine->load(['RoutineType', 'RoutineNeed', 'routineTime', 'products']);
         return view('routines.show', compact('routine'));
     }
 
@@ -102,9 +101,10 @@ class RoutineController extends Controller
         $this->authorizeOwner($routine);
 
         $routine_types = RoutineType::whereIn('name', ['Haircare', 'Skincare'])->orderBy('name')->get();
+        $routine_needs = RoutineNeed::orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
-        return view('routines.edit', compact('routine', 'routine_types', 'routine_times'));
+        return view('routines.edit', compact('routine', 'routine_types', 'routine_needs', 'routine_times'));
     }
 
     public function update(Request $request, $routine_id)
@@ -112,23 +112,20 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
-            'type_id' => 'nullable|array',
-            'type_id.*' => 'nullable|exists:routine_types,type_id',
+            'type_id' => 'nullable|exists:routine_types,type_id',
             'products' => 'nullable|array',
             'products.*' => 'nullable|exists:products,product_id',
         ]);
 
         $routine = Routine::findOrFail($routine_id);
+        $this->authorizeOwner($routine);
 
         // Actualizar rutina
         $routine->update([
             'name' => $validated['name'],
             'time_id' => $validated['time_id'] ?? null,
+            'type_id' => $validated['type_id'] ?? null,
         ]);
-
-        // Actualizar tipos
-        $typeIds = !empty($validated['type_id']) ? array_filter($validated['type_id'], fn($id) => !empty($id)) : [];
-        $routine->types()->sync($typeIds);
 
         // Actualizar productos
         $productIds = !empty($validated['products']) ? array_filter($validated['products'], fn($id) => !empty($id)) : [];

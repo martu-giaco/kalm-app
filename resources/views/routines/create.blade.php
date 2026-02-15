@@ -35,9 +35,25 @@
                 <select name="type_id" id="type_id"
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo</option>
-                    @foreach ($types as $type)
-                        <option value="{{ $type->id }}" @selected(old('type_id') == $type->id)>
+                    @foreach ($routine_types as $type)
+                        <option value="{{ $type->type_id }}">
                             {{ $type->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            {{-- Necesidad de rutina --}}
+            <div class="mb-4">
+                <label for="need_id" class="block mb-1 text-sm text-[#2A4043]">
+                    Necesidad del usuario
+                </label>
+                <select name="need_id" id="need_id"
+                    class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar Necesidad</option>
+                    @foreach ($routine_needs as $need)
+                        <option value="{{ $need->need_id }}">
+                            {{ $need->name }}
                         </option>
                     @endforeach
                 </select>
@@ -51,8 +67,8 @@
                 <select name="time_id" id="time_id"
                     class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tiempo</option>
-                    @foreach ($times as $time)
-                        <option value="{{ $time->id }}" @selected(old('time_id') == $time->id)>
+                    @foreach ($routine_times as $time)
+                        <option value="{{ $time->time_id }}">
                             {{ $time->name }}
                         </option>
                     @endforeach

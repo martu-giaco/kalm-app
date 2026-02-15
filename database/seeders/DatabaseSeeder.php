@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             TestSeeder::class,
             ProductSeeder::class,
             RoutineTypeSeeder::class,
+            RoutineNeedSeeder::class,
             RoutineSeeder::class,
             RoutineTimeSeeder::class,
             BlogSeeder::class,
