@@ -54,6 +54,7 @@ class ProductSeeder extends Seeder
                         'formato' => '355ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, MercadoLibre',
                     ],
                     [
@@ -66,6 +67,7 @@ class ProductSeeder extends Seeder
                         'formato' => '200ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
@@ -78,6 +80,7 @@ class ProductSeeder extends Seeder
                         'formato' => '200ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
@@ -90,6 +93,7 @@ class ProductSeeder extends Seeder
                         'formato' => '150ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Tiendas de estética, Mercado Libre',
                     ],
                 ],
@@ -104,6 +108,7 @@ class ProductSeeder extends Seeder
                         'formato' => '75ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
@@ -116,6 +121,7 @@ class ProductSeeder extends Seeder
                         'formato' => '454g',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Tiendas online',
                     ],
                     [
@@ -128,6 +134,7 @@ class ProductSeeder extends Seeder
                         'formato' => '100ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Tiendas de cosmética especializada, Deciem',
                     ],
                     [
@@ -140,6 +147,7 @@ class ProductSeeder extends Seeder
                         'formato' => '50g',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Perfumerías',
                     ],
                 ],
@@ -154,6 +162,7 @@ class ProductSeeder extends Seeder
                         'formato' => '50ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Farmacias',
                     ],
                     [
@@ -166,6 +175,7 @@ class ProductSeeder extends Seeder
                         'formato' => '50ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Mercado Libre, Farmacity',
                     ],
                 ],
@@ -180,6 +190,7 @@ class ProductSeeder extends Seeder
                         'formato' => '50ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Perfumerías',
                     ],
                     [
@@ -192,6 +203,7 @@ class ProductSeeder extends Seeder
                         'formato' => '30ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Tiendas de cosmética especializada',
                     ],
                     [
@@ -204,6 +216,7 @@ class ProductSeeder extends Seeder
                         'formato' => '30ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Web oficial, Mercado Libre',
                     ],
                 ],
@@ -218,6 +231,7 @@ class ProductSeeder extends Seeder
                         'formato' => '118ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Web oficial, Tiendas de importación',
                     ],
                 ],
@@ -234,6 +248,7 @@ class ProductSeeder extends Seeder
                         'formato' => '250ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Mercado Libre, Tiendas profesionales',
                     ],
                     [
@@ -246,6 +261,7 @@ class ProductSeeder extends Seeder
                         'formato' => '300ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
@@ -258,6 +274,7 @@ class ProductSeeder extends Seeder
                         'formato' => '420ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Supermercados',
                     ],
                 ],
@@ -272,6 +289,7 @@ class ProductSeeder extends Seeder
                         'formato' => '250ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Mercado Libre, Salones',
                     ],
                     [
@@ -284,6 +302,7 @@ class ProductSeeder extends Seeder
                         'formato' => '400ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Supermercados, Farmacity',
                     ],
                 ],
@@ -298,6 +317,7 @@ class ProductSeeder extends Seeder
                         'formato' => '100ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Tiendas especializadas, Salones',
                     ],
                 ],
@@ -315,6 +335,7 @@ class ProductSeeder extends Seeder
                         'formato' => '400ml',
                         'rating' => 4,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Supermercados, Farmacity',
                     ],
                     [
@@ -327,6 +348,7 @@ class ProductSeeder extends Seeder
                         'formato' => '473ml',
                         'rating' => 5,
                         'skin_types' => [1, 4], // Seca, Sensible
+                        'concerns' => [1, 3],
                         'donde_comprar' => 'Farmacity, Farmacias',
                     ],
                 ],
@@ -345,8 +367,8 @@ class ProductSeeder extends Seeder
                 foreach ($products as $productData) {
                     $originalBrandId = $productData['brand_id'];
                     $productData['brand_id'] = $actualBrands[$originalBrandId];
-                    $skinTypes = $productData['skin_types'] ?? [];
-                    unset($productData['skin_types']);
+                    $skinTypes = $productData['skin_types'] ?? []; unset($productData['skin_types']);
+                    $concerns = $productData['concerns'] ?? []; unset($productData['concerns']);
 
                     $product = Product::updateOrCreate(
                             ['name' => $productData['name']],
@@ -358,6 +380,7 @@ class ProductSeeder extends Seeder
                         );
 
                         $product->skinTypes()->sync($skinTypes);
+                        $product->concerns()->sync($concerns);
                 }
             }
         }
