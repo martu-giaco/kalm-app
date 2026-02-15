@@ -50,6 +50,7 @@ class RoutineController extends Controller
             'user_id' => auth()->id(),
             'time_id' => $rec->time_id,
             'type_id' => $rec->type_id,
+            'need_id' => $rec->need_id,
             'steps' => $rec->steps,
         ]);
 
@@ -63,6 +64,7 @@ class RoutineController extends Controller
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
             'type_id' => 'nullable|exists:routine_types,type_id',
+            'need_id' => 'nullable|exists:routine_needs,need_id',
             'products' => 'nullable|array',
             'products.*' => 'nullable|exists:products,product_id',
         ]);
@@ -73,6 +75,7 @@ class RoutineController extends Controller
         $routine->user_id = auth()->id();
         $routine->time_id = $validated['time_id'] ?? null;
         $routine->type_id = $validated['type_id'] ?? null;
+        $routine->need_id = $validated['need_id'] ?? null;
         $routine->save();
 
         // Filtrar valores vacíos y asociar productos seleccionados (pivot)
@@ -113,6 +116,7 @@ class RoutineController extends Controller
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
             'type_id' => 'nullable|exists:routine_types,type_id',
+            'need_id' => 'nullable|exists:routine_needs,need_id',
             'products' => 'nullable|array',
             'products.*' => 'nullable|exists:products,product_id',
         ]);
@@ -125,6 +129,7 @@ class RoutineController extends Controller
             'name' => $validated['name'],
             'time_id' => $validated['time_id'] ?? null,
             'type_id' => $validated['type_id'] ?? null,
+            'need_id' => $validated['need_id'] ?? null,
         ]);
 
         // Actualizar productos

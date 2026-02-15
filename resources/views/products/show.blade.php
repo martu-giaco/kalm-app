@@ -263,8 +263,8 @@
                                             </div>
                                         </div>
                                         <p class="text-[#37A0AF] text-sm text-start">
-                                            {{ $routine->types->pluck('name')->join(', ') ?: 'No definido' }} ·
-                                            {{ $routine->routineTime?->name ?? 'No definido' }}</p>
+                                            {{ $routine->routineType?->name ?? 'No definido' }} ·
+                                            {{ $routine->routineNeed?->name ?? 'No definido' }}</p>
                                     </div>
                                     <div class="flex items-center justify-between mt-3">
 
