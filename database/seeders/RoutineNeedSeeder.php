@@ -10,7 +10,7 @@ class RoutineNeedSeeder extends Seeder
     public function run()
     {
         $needs = [
-            'Todos',
+            'Normal',
             'Seca',
             'Oleosa',
             'Mixta',
