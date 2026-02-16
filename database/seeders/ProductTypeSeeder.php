@@ -12,6 +12,7 @@ class ProductTypeSeeder extends Seeder
         $types = [
             ['name' => 'Skincare'],
             ['name' => 'Haircare'],
+            ['name' => 'Bodycare'],
         ];
 
         foreach ($types as $type) {

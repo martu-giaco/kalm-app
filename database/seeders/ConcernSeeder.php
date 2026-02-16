@@ -22,6 +22,10 @@ class ConcernSeeder extends Seeder
         'Ojeras',
         'Eczema',
         'Puntos Negros',
+        'Sin Fragancia',
+        'Sin TACC',
+        'Puntas Abiertas',
+        'Cabello Dañado'
         ];
 
         foreach ($concerns as $concern) {
