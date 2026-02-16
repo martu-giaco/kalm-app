@@ -36,10 +36,20 @@
                     @php
                         $total = method_exists($products, 'total') ? $products->total() : (is_countable($products) ? count($products) : ($products->count() ?? 0));
                     @endphp
-                    <p class="text-md font-bold text-[#306067] mb-1">
-                        {{ $total }}
-                        resultado{{ $total > 1 ? 's' : '' }} para <span class="font-medium">"{{ $query ?? request('q') ?? '' }}"</span>
-                    </p>
+                    @php
+                        $searchTerm = $query ?? request('q');
+                    @endphp
+                    @if(!empty($searchTerm))
+                        <p class="text-md font-bold text-[#306067] mb-1">
+                            {{ $total }}
+                            resultado{{ $total > 1 ? 's' : '' }}
+                            para <span class="font-medium">"{{ $searchTerm }}"</span>
+                        </p>
+                    @else
+                        <p class="text-md font-bold text-[#306067] mb-1">
+                            Explorá todos nuestros productos
+                        </p>
+                    @endif
                     {{-- boton filtros --}}
                     <button onclick="filters_modal.showModal()" type="button">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M713.83-139.48q-64.68 0-109.49-44.81-44.82-44.82-44.82-109.49 0-64.68 44.82-109.49 44.81-44.82 109.49-44.82 64.67 0 109.49 44.82 44.81 44.81 44.81 109.49 0 64.67-44.81 109.49-44.82 44.81-109.49 44.81Zm0-88.61q27.21 0 46.45-19.24 19.24-19.24 19.24-46.45 0-27.22-19.24-46.46-19.24-19.24-46.45-19.24-27.22 0-46.46 19.24-19.24 19.24-19.24 46.46 0 27.21 19.24 46.45 19.24 19.24 46.46 19.24Zm-279.81-20.19H187.8q-19.15 0-32.32-13.18-13.18-13.17-13.18-32.32t13.18-32.33q13.17-13.17 32.32-13.17h246.22q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.32q-13.18 13.18-32.33 13.18ZM246.17-511.91q-64.67 0-109.49-44.82-44.81-44.81-44.81-109.49 0-64.67 44.81-109.49 44.82-44.81 109.49-44.81 64.68 0 109.49 44.81 44.82 44.82 44.82 109.49 0 64.68-44.82 109.49-44.81 44.82-109.49 44.82Zm0-88.61q27.22 0 46.46-19.24 19.24-19.24 19.24-46.46 0-27.21-19.24-46.45-19.24-19.24-46.46-19.24-27.21 0-46.45 19.24-19.24 19.24-19.24 46.45 0 27.22 19.24 46.46 19.24 19.24 46.45 19.24Zm526.03-20.2H525.98q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.32q13.18-13.18 32.33-13.18H772.2q19.15 0 32.32 13.18 13.18 13.17 13.18 32.32t-13.18 32.33q-13.17 13.17-32.32 13.17Zm-58.37 326.94ZM246.17-666.22Z"/></svg>
@@ -64,55 +74,104 @@
             <form action="{{ route('products.search') }}" method="GET">
                 <input type="hidden" name="q" value="{{ request('q') }}">
 
-                <div class="mb-6">
-                    <h3 class="text-lg mb-5 w-full p-4 border-b-[1px] border-b-[#CCE2E5] text-[#2A4043] font-semibold">Tipo</h3>
-                    <div class="grid grid-cols-2 gap-3 mx-4">
-                        @foreach($types as $t)
-                            <label class="cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="type_id"
-                                    value="{{ $t->id }}"
-                                    class="peer hidden"
-                                    {{ request('type_id') == $t->id ? 'checked' : '' }}
-                                >
-
-                                <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
-                                            text-[#2A4043] transition
-                                            peer-checked:bg-[#37A0AF]
-                                            peer-checked:text-white
-                                            peer-checked:border-[#37A0AF]">
-                                    {{ $t->name }}
-                                </div>
-                            </label>
-                        @endforeach
+                <section class="max-h-[60vh] overflow-y-auto">
+                    <div class="mb-6">
+                        <h3 class="text-lg mb-5 w-full p-4 border-b-[1px] border-y-[#CCE2E5] text-[#2A4043] font-semibold">Tipo de piel</h3>
+                        <div class="grid grid-cols-2 gap-3 mx-4">
+                            @foreach($skinTypes as $s)
+                                <label class="cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="skin_type_id"
+                                        value="{{ $s->id }}"
+                                        class="peer hidden"
+                                        {{ request('skin_type_id') == $s->id ? 'checked' : '' }}
+                                    >
+                                    <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
+                                                text-[#2A4043] transition
+                                                peer-checked:bg-[#37A0AF]
+                                                peer-checked:text-white
+                                                peer-checked:border-[#37A0AF]">
+                                        {{ $s->name }}
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
+                    <div class="mb-6">
+                        <h3 class="text-lg mb-5 w-full mt-6 p-4 border-y-[1px] border-b-[#CCE2E5] text-[#2A4043] font-semibold">Tipo</h3>
+                        <div class="grid grid-cols-2 gap-3 mx-4">
+                            @foreach($types as $t)
+                                <label class="cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="type_id"
+                                        value="{{ $t->id }}"
+                                        class="peer hidden"
+                                        {{ request('type_id') == $t->id ? 'checked' : '' }}
+                                    >
 
-                <div class="mb-6">
-                    <h3 class="text-lg mb-5 w-full mt-6 p-4 border-y-[1px] border-y-[#CCE2E5] text-[#2A4043] font-semibold">Categoría</h3>
-                    <div class="grid grid-cols-2 gap-3 mx-4">
-                        @foreach($categories as $c)
-                            <label class="cursor-pointer">
-                                <input
-                                    type="radio"
-                                    name="category_id"
-                                    value="{{ $c->id }}"
-                                    class="peer hidden"
-                                    {{ request('category_id') == $c->id ? 'checked' : '' }}
-                                >
-                                <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
-                                            text-[#2A4043] transition
-                                            peer-checked:bg-[#37A0AF]
-                                            peer-checked:text-white
-                                            peer-checked:border-[#37A0AF]">
-                                    {{ $c->name }}
-                                </div>
-                            </label>
-                        @endforeach
+                                    <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
+                                                text-[#2A4043] transition
+                                                peer-checked:bg-[#37A0AF]
+                                                peer-checked:text-white
+                                                peer-checked:border-[#37A0AF]">
+                                        {{ $t->name }}
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg mb-5 w-full mt-6 p-4 border-y-[1px] border-y-[#CCE2E5] text-[#2A4043] font-semibold">Preocupaciones</h3>
+                        <div class="grid grid-cols-2 gap-3 mx-4">
+                            @foreach($concerns as $concern)
+                                <label class="cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="concern_id"
+                                        value="{{ $concern->id }}"
+                                        class="peer hidden"
+                                        {{ request('concern_id') == $concern->id ? 'checked' : '' }}
+                                    >
+                                    <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
+                                                text-[#2A4043] transition
+                                                peer-checked:bg-[#37A0AF]
+                                                peer-checked:text-white
+                                                peer-checked:border-[#37A0AF]">
+                                        {{ $concern->name }}
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg mb-5 w-full mt-6 p-4 border-y-[1px] border-y-[#CCE2E5] text-[#2A4043] font-semibold">Categoría</h3>
+                        <div class="grid grid-cols-2 gap-3 mx-4">
+                            @foreach($categories as $c)
+                                <label class="cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="category_id"
+                                        value="{{ $c->id }}"
+                                        class="peer hidden"
+                                        {{ request('category_id') == $c->id ? 'checked' : '' }}
+                                    >
+                                    <div class="py-2 text-center rounded-xl border border-[#CCE2E5]
+                                                text-[#2A4043] transition
+                                                peer-checked:bg-[#37A0AF]
+                                                peer-checked:text-white
+                                                peer-checked:border-[#37A0AF]">
+                                        {{ $c->name }}
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+                </section>
 
                 <div class="mt-6 p-4 border-t-[1px] border-t-[#CCE2E5]">
                     <button type="submit" class="btn text-md w-full px-5 mb-2 py-3 border-0 rounded-xl text-[#fff] font-semibold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">

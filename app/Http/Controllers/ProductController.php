@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\ProductCategory;
+use App\Models\SkinType;
+use App\Models\Concern;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -231,8 +233,10 @@ class ProductController extends Controller
 
         $types = ProductType::all();
         $categories = ProductCategory::all();
+        $skinTypes = SkinType::all();
+        $concerns = Concern::all();
 
-        $qb = Product::with(['brand', 'type', 'category']);
+        $qb = Product::with(['brand', 'type', 'category', 'skinTypes', 'concerns']);
 
         if ($queryText) {
             $qb->where('name', 'like', "%{$queryText}%")
@@ -251,6 +255,16 @@ class ProductController extends Controller
         if ($request->filled('brand_id')) {
             $qb->where('brand_id', $request->input('brand_id'));
         }
+        if ($request->filled('skin_type_id')) {
+            $qb->whereHas('skinTypes', function ($q) use ($request) {
+                $q->where('skin_types.id', $request->input('skin_type_id'));
+            });
+        }
+        if ($request->filled('concern_id')) {
+            $qb->whereHas('concerns', function ($q) use ($request) {
+                $q->where('concerns.id', $request->input('concern_id'));
+            });
+        }
 
         $products = $qb->orderBy('rating', 'desc')->paginate(12)->appends($request->except('page'));
 
@@ -259,6 +273,8 @@ class ProductController extends Controller
             'query' => $queryText,
             'types' => $types,
             'categories' => $categories,
+            'skinTypes' => $skinTypes,
+            'concerns' => $concerns,
         ]);
     }
 }
