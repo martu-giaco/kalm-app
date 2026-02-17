@@ -29,7 +29,12 @@
             <header class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
 
                 <!-- Logo -->
-                <a href="{{ route('home') }}">
+                <a
+                @if (auth()->check() && auth()->user()->role != 'admin')
+                href="{{ route('home') }}"
+                @else
+                href="{{ route('admin.home') }}"
+                @endif>
                     <img src="{{ asset('images/logo-kalm.svg') }}" alt="Kälm logo" class="h-8 ps-2">
                 </a>
 
@@ -37,7 +42,12 @@
                     <!-- Usuario autenticado -->
                     <div class="flex items-center h-full gap-5">
                         <!-- Notificaciones -->
-                        <a href="{{ route('home') }}">
+                        <a
+                        @if (auth()->check() && auth()->user()->role != 'admin')
+                        href="{{ route('home') }}"
+                        @else
+                        href="{{ route('admin.home') }}"
+                        @endif>
                             <img src="{{ asset('images/notificaciones.png') }}" alt="notificaciones" class="w-auto h-7">
                         </a>
 
@@ -255,9 +265,37 @@
                         @elseif (auth()->check() && auth()->user()->role === 'admin')
                             <li class="flex flex-col items-center font-bold text-[#306067]">
                                 <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center">
-                                    Usuarios
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
+                                            width="35px" fill="#306067">
+                                            <path
+                                                d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z" />
+                                        </svg>
+                                    <span class="sr-only">Usuarios</span>
                                 </a>
                             </li>
+
+                            <li class="flex flex-col items-center font-bold text-[#306067]">
+                                <a href="{{ route('admin.products.index') }}" class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
+                                            width="35px" fill="#306067">
+                                            <path
+                                                d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z" />
+                                        </svg>
+                                    <span class="sr-only">Productos</span>
+                                </a>
+                            </li>
+
+                            <li class="flex flex-col items-center font-bold text-[#306067]">
+                                <a href="{{ route('admin.blog.index') }}" class="flex flex-col items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
+                                            width="35px" fill="#306067">
+                                            <path
+                                                d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z" />
+                                        </svg>
+                                    <span class="sr-only">Blogs</span>
+                                </a>
+                            </li>
+
                         @endif
                     </ul>
                 </nav>
@@ -319,7 +357,7 @@
                                     </svg>
                                 </a>
                             </li>
-
+                            @if (auth()->check() && auth()->user()->role != 'admin')
                             <li>
                                 <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('tests.index') }}">
@@ -390,10 +428,25 @@
                                     </svg>
                                 </a>
                             </li>
+
+                            @else
+                            <li>
+                                <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
+                                    href="{{ route('help') }}">
+                                    Equipo Kälm
+                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                        width="24px" fill="#306067" class="p-0">
+                                        <path d="M41.67-236.17q-19.15 0-32.32-13.18-13.18-13.17-13.18-32.32V-303q0-44.91 45.2-72.87 45.2-27.96 118.63-27.96 11.09 0 21.05.38 9.97.38 19.54 1.91-14.72 21.95-21.96 46.11-7.24 24.17-7.24 50.43v68.83H41.67Zm240 0q-19.15 0-32.32-13.18-13.18-13.17-13.18-32.32V-305q0-32.72 17.62-60.05 17.62-27.34 50.34-47.82t77.82-30.72q45.09-10.24 98.04-10.24 53.97 0 98.94 10.24 44.98 10.24 77.7 30.72 32.72 20.48 49.96 47.82 17.24 27.33 17.24 60.05v23.33q0 19.15-13.18 32.32-13.17 13.18-32.32 13.18H281.67Zm506.94 0V-305q0-27.28-6.86-51.42t-20.58-45.12q9.57-1.53 19.18-1.91 9.62-.38 19.65-.38 73.72 0 118.77 27.55 45.06 27.54 45.06 73.28v21.33q0 19.15-13.18 32.32-13.17 13.18-32.32 13.18H788.61Zm-628.59-206.7q-33.98 0-58.19-24.19-24.22-24.19-24.22-58.16 0-35 24.19-58.71 24.19-23.72 58.16-23.72 35 0 58.71 23.68 23.72 23.68 23.72 58.69 0 33.98-23.68 58.19-23.68 24.22-58.69 24.22Zm640 0q-33.98 0-58.19-24.19-24.22-24.19-24.22-58.16 0-35 24.19-58.71 24.19-23.72 58.16-23.72 35 0 58.71 23.68 23.72 23.68 23.72 58.69 0 33.98-23.68 58.19-23.68 24.22-58.69 24.22ZM480-483.59q-51.59 0-87.71-36.11-36.12-36.12-36.12-87.71 0-52.44 36.12-88.13 36.12-35.7 87.71-35.7 52.43 0 88.13 35.7 35.7 35.69 35.7 88.13 0 51.59-35.7 87.71-35.7 36.11-88.13 36.11Z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            @endif
                         </ul>
+
                     </div>
 
                     <ul class="gap-3 p-3 mb-3">
+                        @if (auth()->check() && auth()->user()->role != 'admin')
                         <li>
                             <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                 href="{{ route('about') }}">
@@ -405,7 +458,7 @@
                                 </svg>
                             </a>
                         </li>
-
+                        @endif
                         <li>
                             <form action="{{ route('auth.logout') }}" method="POST"
                                 class="flex justify-between w-full">

@@ -153,7 +153,7 @@ class AuthController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', ['users' => $users]);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -164,6 +164,6 @@ class AuthController extends Controller
     public function view($id)
     {
         $user = User::findOrFail($id);
-        return view('users.view', compact('user'));
+        return view('admin.users.view', compact('user'));
     }
 }

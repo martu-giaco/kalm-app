@@ -277,4 +277,11 @@ class ProductController extends Controller
             'concerns' => $concerns,
         ]);
     }
+
+    //ADMIN
+        public function adminIndex()
+        {
+            $products = Product::orderBy('created_at', 'desc')->paginate(25);
+            return view('admin.products.index', compact('products'));
+        }
 }

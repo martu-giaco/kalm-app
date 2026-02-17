@@ -12,7 +12,7 @@
             <div class="alert alert-danger">La información contiene errores.</div>
         @endif
 
-        <form action="{{ route('blog.edit', $blog) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.blog.edit', $blog) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-3">

@@ -21,6 +21,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\TermsController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,16 +104,34 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
-        Route::get('/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'view'])->name('admin.users.view');
-        Route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
-        Route::post('/blogs', [BlogController::class, 'store'])->name('blog.store');
-        Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');
-        Route::patch('/blogs/{id}', [BlogController::class, 'update'])->name('blog.update');
-        Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blog.destroy');
+        // Home admin
+        Route::get('/', [HomeController::class, 'adminHome'])->name('admin.home');
+
+        //Usuarios CRUD
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view');
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::patch('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+        //Products CRUD
+        Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
+
+        //Blogs CRUD
+        Route::get('/blogs', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
+        Route::get('/blogs/{blog}', [BlogController::class, 'view'])->name('admin.blog.view');
+        Route::get('/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
+        Route::post('/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
+        Route::get('/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
+        Route::patch('/blogs/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
+        Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('admin.blog.destroy');
     });
 
-    // About, Help, Términos y Configuración
+    /*
+    |--------------------------------------------------------------------------
+    | EXTRAS
+    |--------------------------------------------------------------------------
+    */
     Route::get('/about', [AboutController::class, 'about'])->name('about');
     Route::get('/help', [HelpController::class, 'help'])->name('help');
     Route::get('/terminos', [TerminosController::class, 'terminos'])->name('terminos');

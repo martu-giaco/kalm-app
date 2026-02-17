@@ -8,7 +8,7 @@
 
         <h1 class="mb-3">Confirmación para eliminar {{ $blog->title }}</h1>
 
-        <form action="{{ route('blog.destroy', $blog) }}" method="POST">
+        <form action="{{ route('admin.blog.destroy', $blog) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Sí, Eliminar {{ $blog->title }}</button>

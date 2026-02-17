@@ -45,6 +45,12 @@ class BlogController extends Controller
         return view('blogs.create');
     }
 
+    public function adminIndex()
+    {
+        $blogs = Blog::orderByDesc('created_at')->get();
+        return view('admin.blog.index', compact('blogs'));
+    }
+
     // Guardar nuevo blog (solo admin)
     public function store(Request $request)
     {
@@ -78,14 +84,19 @@ class BlogController extends Controller
         return view('blogs.show', compact('blog', 'user'));
     }
 
-
+    //ADMIN
+    // Ver detalle de un blog (route model binding posible)
+    public function view(Blog $blog)
+    {
+        return view('admin.blog.view', compact('blog'));
+    }
 
     // Editar blog (solo admin)
     public function edit($id)
     {
         $this->authorizeAdmin();
         $blog = Blog::findOrFail($id);
-        return view('blogs.edit', compact('blog'));
+        return view('admin.blog.edit', compact('blog'));
     }
 
     // Actualizar blog (solo admin)
@@ -105,7 +116,7 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         $blog->update($validated);
 
-        return redirect()->route('blog.index')->with('success', 'Blog actualizado correctamente.');
+        return redirect()->route('admin.blog.index')->with('success', 'Blog actualizado correctamente.');
     }
 
     // Eliminar blog (solo admin)
@@ -115,7 +126,7 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         $blog->delete();
 
-        return redirect()->route('blog.index')->with('success', 'Blog eliminado correctamente.');
+        return redirect()->route('admin.blog.index')->with('success', 'Blog eliminado correctamente.');
     }
 
     // Función para likes temporales (estilo YouTube)

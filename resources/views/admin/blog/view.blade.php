@@ -49,14 +49,14 @@ use Illuminate\Support\Facades\Storage;
         </div>
 
         <div class="d-flex gap-2 flex-wrap">
-            <a href="{{ route('blog.index') }}" class="btn btn-secondary">Volver a Posts</a>
+            <a href="{{ route('admin.blog.index') }}" class="btn btn-secondary">Volver a Posts</a>
 
             @auth
-                <a href="{{ route('blog.edit', ['blog' => $blog->id]) }}" class="btn btn-outline-primary">
+                <a href="{{ route('admin.blog.edit', ['blog' => $blog->id]) }}" class="btn btn-outline-primary">
                     <i class="bi bi-pencil"></i> Editar
                 </a>
 
-                <form action="{{ route('blog.destroy', ['blog' => $blog->id]) }}" method="POST" onsubmit="return confirm('¿Confirma que desea eliminar este blog?');">
+                <form action="{{ route('admin.blog.destroy', ['blog' => $blog->id]) }}" method="POST" onsubmit="return confirm('¿Confirma que desea eliminar este blog?');">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">

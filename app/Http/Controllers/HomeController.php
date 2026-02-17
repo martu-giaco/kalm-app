@@ -61,7 +61,7 @@ class HomeController extends Controller
             ],
             [
                 'url' => route('subscription.show'),
-                'img_src' => asset('images/banner_discount.png'),
+                'img_src' => asset('images/banner_discount.png'), //poner un banner para hacer los tests?
                 'alt' => 'Banner Promoción',
             ],
         ];
@@ -119,5 +119,10 @@ class HomeController extends Controller
             'product_types',
             'product_sections'
         ));
+    }
+
+    public function adminHome()
+    {
+        return view('admin.home');
     }
 }

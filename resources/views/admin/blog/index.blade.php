@@ -9,7 +9,7 @@
         <h1 class="mb-3">Blogs</h1>
 
         @auth
-        <a href="{{ route('blog.create') }}" class="btn btn-primary mb-3">Crear Post</a>
+        <a href="{{ route('admin.blog.create') }}" class="btn btn-primary mb-3">Crear Post</a>
         @endauth
 
         <table class="table table-striped">
@@ -30,10 +30,10 @@
                         <td>{{ $blog->author }}</td>
                         <td>{{ $blog->category }}</td>
                         <td>
-                            <a href="{{ route('blog.view', $blog) }}" class="btn btn-info btn-sm">Ver</a>
+                            <a href="{{ route('admin.blog.view', $blog) }}" class="btn btn-info btn-sm">Ver</a>
                             @auth
-                            <a href="{{ route('blog.edit', $blog) }}" class="btn btn-sm btn-secondary">Editar</a>
-                            <a href="{{ route('blog.destroy', $blog) }}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{{ route('admin.blog.edit', $blog) }}" class="btn btn-sm btn-secondary">Editar</a>
+                            <a href="{{ route('admin.blog.destroy', $blog) }}" class="btn btn-danger btn-sm">Eliminar</a>
                             @endauth
                         </td>
                     </tr>
