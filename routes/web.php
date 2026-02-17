@@ -99,10 +99,12 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | ADMIN BLOGS
+    | ADMIN
     |--------------------------------------------------------------------------
     */
     Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/{user}', [App\Http\Controllers\Admin\UserController::class, 'view'])->name('admin.users.view');
         Route::get('/blogs/create', [BlogController::class, 'create'])->name('blog.create');
         Route::post('/blogs', [BlogController::class, 'store'])->name('blog.store');
         Route::get('/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blog.edit');

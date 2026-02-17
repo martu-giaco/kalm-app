@@ -202,6 +202,7 @@
                 <nav class="fixed bottom-0 z-50 flex items-center justify-between w-full h-20 max-w-3xl px-5 transition-all duration-500 ease-in-out -translate-x-1/2 bg-white shadow-md left-1/2 rounded-t-3xl" style="box-shadow: 1px -1px 20px 0px rgba(40, 40, 40, 0.25);">
 
                     <ul class="flex items-center flex-1 w-full justify-evenly">
+                        @if (auth()->check() && auth()->user()->role != 'admin')
                         <!-- Inicio -->
                         <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('home') }}" class="flex flex-col items-center">
@@ -251,7 +252,7 @@
                         </li>
 
                         <!-- Admin -->
-                        @if (auth()->check() && auth()->user()->role === 'admin')
+                        @elseif (auth()->check() && auth()->user()->role === 'admin')
                             <li class="flex flex-col items-center font-bold text-[#306067]">
                                 <a href="{{ route('admin.users.index') }}" class="flex flex-col items-center">
                                     Usuarios
@@ -281,7 +282,7 @@
                                     </div>
                                 @elseif(auth()->user()->role === 'admin')
                                     <div  class="px-3 py-1 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
-                                        <p class="text-sm">Administrador</p>
+                                        <p class="text-sm">Admin</p>
                                     </div>
                                 @endif
                                 <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">

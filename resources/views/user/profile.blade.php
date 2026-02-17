@@ -18,7 +18,7 @@
                             </div>
                         @elseif(auth()->user()->role === 'admin')
                             <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
-                                <p class="text-sm">Administrador</p>
+                                <p class="text-sm">Admin</p>
                             </div>
                         @endif
                     </div>
