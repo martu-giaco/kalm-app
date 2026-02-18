@@ -104,11 +104,11 @@ class TestController extends Controller
 
             // Descripciones
             $descriptions = [
-                'normal' => 'Mantienen un equilibrio natural de hidratación y sebo...',
-                'seco' => 'Presentan falta de hidratación y nutrición...',
-                'graso' => 'Producen exceso de sebo...',
-                'mixto' => 'Combinan zonas grasas con áreas más secas...',
-                'sensible' => 'Son más reactivos y pueden irritarse...',
+                'normal' => 'Mantienen un equilibrio natural de hidratación y sebo. Lucen saludables, con buena textura y brillo. Solo necesitan cuidados básicos de mantenimiento.',
+                'seco' => 'Presentan falta de hidratación y nutrición. La piel puede sentirse tirante o descamada, y el cabello luce opaco, áspero o con puntas abiertas. Necesitan fórmulas nutritivas que restauren suavidad y elasticidad.',
+                'graso' => 'Producen exceso de sebo. La piel presenta brillo y poros visibles, y el cabello puede verse pesado o apelmazado. Necesitan fórmulas ligeras y reguladoras.',
+                'mixto' => 'Combinan zonas grasas con áreas más secas. La piel suele tener brillo en la zona T y sequedad en mejillas, mientras que el cabello presenta raíces grasas y puntas secas. Requieren productos equilibrantes.',
+                'sensible' => 'Son más reactivos y pueden irritarse con facilidad. La piel puede enrojecerse. Requieren productos suaves y calmantes.',
             ];
 
             $resultDesc = $descriptions[$resultLabel] ?? 'Descripción no disponible.';
@@ -121,6 +121,7 @@ class TestController extends Controller
             }
 
             return view('tests.result', compact(
+                'testKey',
                 'resultLabel',
                 'resultDesc',
                 'recommendedProducts',

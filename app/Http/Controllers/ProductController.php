@@ -173,10 +173,15 @@ class ProductController extends Controller
         try {
             $user = auth()->user();
 
+            // Verificar que el usuario esté autenticado
+            if (!$user) {
+                return response()->json(['error' => 'No autenticado'], 401);
+            }
+
             // Obtener favoritos actuales
-            $favoritos = $user->favoritos;
+            $favoritos = $user->favoritos ?? [];
             if (!is_array($favoritos)) {
-                $favoritos = [];
+                $favoritos = json_decode($favoritos, true) ?? [];
             }
 
             // Convertir todos a enteros

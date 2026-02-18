@@ -332,7 +332,7 @@
             checkbox.checked = !checkbox.checked;
             console.log('Checkbox toggled to:', checkbox.checked);
 
-            fetch(`/products/${productId}/favorito`, {
+            fetch(`/productos/${productId}/favorito`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',

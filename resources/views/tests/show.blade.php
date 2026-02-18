@@ -51,7 +51,7 @@
 
                                 <div class="space-y-3">
                                     @foreach ($question['options'] as $option)
-                                        <label class="flex items-center gap-5 cursor-pointer bg-white/60 shadow-lg p-5 rounded-lg">
+                                        <label class="option-card flex items-center gap-5 cursor-pointer bg-white/60 shadow-lg p-5 rounded-lg transition-all duration-300">
                                             <input type="radio" class="hidden" name="q{{ $index + 1 }}"
                                                 value="{{ $option['scoreKey'] }}"
                                                 class="h-4 w-4 text-[#164d4f] focus:ring-[#164d4f]">
@@ -110,12 +110,20 @@
                     const parent = card.parentNode;
                     parent.querySelectorAll('.option-card').forEach(c => {
                         c.classList.remove('bg-[#164d4f]', 'text-white', 'border-[#164d4f]');
+                        c.classList.add('transition-all', 'duration-300');
                         const inp = c.querySelector('input[type="radio"]');
                         if (inp) inp.checked = false;
                     });
+                    // Agregar transición al seleccionar
+                    card.classList.add('transition-all', 'duration-300', 'scale-105');
                     card.classList.add('bg-[#164d4f]', 'text-white', 'border-[#164d4f]');
                     const input = card.querySelector('input[type="radio"]');
                     if (input) input.checked = true;
+
+                    // Remover scale después de la animación
+                    setTimeout(() => {
+                        card.classList.remove('scale-105');
+                    }, 300);
                 });
             });
 

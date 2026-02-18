@@ -13,17 +13,15 @@ class TermsController extends Controller
     // Mostrar la vista terms (views/auth/terms.blade.php)
     public function show()
     {
-        // Opcional: si no hay datos de registro en sesión, redirigimos al registro
+
         if (!session()->has('registration')) {
             return redirect()->route('auth.register')
                 ->with('feedback.message', 'Completá el formulario de registro primero.');
         }
 
-        // Cargamos los términos (la vista contendrá el checkbox y el form)
         return view('auth.terms');
     }
 
-    // Procesar aceptación de términos y crear usuario
     public function accept(Request $request)
     {
         $request->validate([
@@ -40,7 +38,6 @@ class TermsController extends Controller
                 ->with('feedback.message', 'La información de registro expiró. Volvé a completar el formulario.');
         }
 
-        // Crear usuario (hasheando contraseña)
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -56,6 +53,6 @@ class TermsController extends Controller
         // Loguear al usuario automáticamente
         auth()->login($user);
 
-        return redirect()->route('home');
+        return redirect()->route('tests.intro');
     }
 }

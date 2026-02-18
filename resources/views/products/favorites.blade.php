@@ -85,7 +85,7 @@
             event.preventDefault();
             event.stopPropagation();
 
-            fetch(`/products/${productId}/favorito`, {
+            fetch(`/productos/${productId}/favorito`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

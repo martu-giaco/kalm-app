@@ -46,6 +46,9 @@ Route::post('/terms/accept', [TermsController::class, 'accept'])->name('auth.ter
 
 // Tests públicos
 Route::prefix('tests')->name('tests.')->group(function () {
+    Route::get('/intro', function () {
+        return view('tests.intro');
+    })->name('intro');
     Route::get('/', [TestController::class, 'index'])->name('index');
     Route::post('/submit', [TestController::class, 'submit'])->name('submit');
 
@@ -144,10 +147,10 @@ Route::middleware('auth')->group(function () {
     */
     Route::prefix('productos')->group(function () {
         Route::get('/buscar', [ProductController::class, 'search'])->name('products.search');
+        Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
         Route::get('/type/{tipo}', [ProductController::class, 'byType'])->name('products.type');
         Route::get('/categorias/{category}', [ProductController::class, 'byCategory'])->name('products.byCategory');
         Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
-        Route::get('/mis-favoritos', [ProductController::class, 'favorites'])->name('favorites');
         Route::post('/{product}/toggle-favorito', [ProductController::class, 'toggleFavorito'])->name('products.toggle-favorito');
         Route::post('/{product}/favorito', [ProductController::class, 'toggleFavorito'])->name('productos.toggleFavorito');
     });
