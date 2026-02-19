@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -58,12 +59,18 @@ class BlogController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|max:2048',
             'author' => 'required|string|max:255',
             'credentials' => 'nullable|string|max:255',
             'content' => 'required|string',
             'is_premium' => 'nullable|boolean',
         ]);
+
+        // Subida de imagen
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('images', 'public');
+            $validated['image'] = $path;
+        }
 
         Blog::create($validated);
 
@@ -103,17 +110,27 @@ class BlogController extends Controller
     public function update(Request $request, $id)
     {
         $this->authorizeAdmin();
+        $blog = Blog::findOrFail($id);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'image' => 'nullable|url',
+            'image' => 'nullable|image|max:2048',
             'author' => 'required|string|max:255',
             'credentials' => 'nullable|string|max:255',
             'content' => 'required|string',
             'is_premium' => 'nullable|boolean',
         ]);
 
-        $blog = Blog::findOrFail($id);
+        // Subida de imagen
+        if ($request->hasFile('image')) {
+            // Borrar imagen anterior si existe
+            if ($blog->image) {
+                Storage::disk('public')->delete($blog->image);
+            }
+            $path = $request->file('image')->store('images', 'public');
+            $validated['image'] = $path;
+        }
+
         $blog->update($validated);
 
         return redirect()->route('admin.blog.index')->with('success', 'Blog actualizado correctamente.');
