@@ -71,6 +71,14 @@ class AuthController extends Controller
             // Regenerar sesión por seguridad
             $request->session()->regenerate();
 
+            // Si el usuario es admin, redirigir al panel de admin
+            $user = Auth::user();
+            if ($user && ((isset($user->role) && $user->role === 'admin'))) {
+                return redirect()
+                    ->route('admin.home')
+                    ->with('feedback.message', 'Sesión iniciada con éxito.');
+            }
+
             // Redirigir al intended o a home
             return redirect()
                 ->intended(route('home'))
