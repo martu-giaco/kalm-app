@@ -42,7 +42,7 @@ class BlogController extends Controller
     public function create()
     {
         $this->authorizeAdmin();
-        return view('blogs.create');
+        return view('admin.blog.create');
     }
 
     public function adminIndex()

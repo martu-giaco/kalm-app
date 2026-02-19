@@ -122,8 +122,8 @@ Route::middleware('auth')->group(function () {
 
         //Blogs CRUD
         Route::get('/blogs', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
-        Route::get('/blogs/{blog}', [BlogController::class, 'view'])->name('admin.blog.view');
         Route::get('/blogs/create', [BlogController::class, 'create'])->name('admin.blog.create');
+        Route::get('/blogs/{blog}', [BlogController::class, 'view'])->name('admin.blog.view');
         Route::post('/blogs', [BlogController::class, 'store'])->name('admin.blog.store');
         Route::get('/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('admin.blog.edit');
         Route::patch('/blogs/{blog}', [BlogController::class, 'update'])->name('admin.blog.update');
