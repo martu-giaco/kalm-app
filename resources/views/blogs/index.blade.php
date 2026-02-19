@@ -11,13 +11,13 @@
         <div class="flex gap-5 pb-5 overflow-x-auto scroll-smooth scrollbar-hide">
             @foreach ($blogs->where('is_premium', false) as $blog)
                 <a href="{{ route('blog.show', $blog->id) }}"
-                    class="flex-shrink-0 overflow-hidden transition-transform transform bg-white shadow-lg w-60 h-96 rounded-2xl hover:shadow-2xl hover:-translate-y-1">
+                    class="flex-shrink-0 overflow-hidden transition-transform transform bg-white shadow-lg w-60 h-96 rounded-2xl hover:shadow-2xl">
 
                     {{-- Imagen --}}
                     @if ($blog->image)
                         <div class="w-full h-48 overflow-hidden">
-                            <img src="{{ $blog->image }}" alt="{{ $blog->title }}"
-                                class="object-contain w-full h-full transition-transform group-hover:scale-105">
+                            <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}"
+                                class="object-cover w-full h-full">
                         </div>
                     @endif
 

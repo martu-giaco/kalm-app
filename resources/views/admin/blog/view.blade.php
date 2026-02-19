@@ -29,24 +29,11 @@ use Illuminate\Support\Facades\Storage;
             </div>
         </div>
 
-        @php
-            $imagePath = $blog->image ?? null;
-            $storageExists = $imagePath ? Storage::disk('public')->exists($imagePath) : false;
-            $publicExists = $imagePath ? file_exists(public_path($imagePath)) : false;
-
-            if ($storageExists) {
-                $imageUrl = asset('storage/' . $imagePath);
-            } elseif ($publicExists) {
-                $imageUrl = asset($imagePath);
-            } else {
-                $imageUrl = null;
-            }
-        @endphp
 
         {{-- Imagen principal / placeholder --}}
         <div class="mb-4 d-flex justify-content-center">
-            @if($imageUrl)
-                <img src="{{ $imageUrl }}" alt="{{ $blog->title }}" class="img-fluid rounded" style="max-width: 100%; max-height: 480px; object-fit: cover;">
+            @if($blog->image)
+                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid rounded" style="max-width: 100%; max-height: 480px; object-fit: cover;">
             @else
                 <div class="border border-[#CCE2E5] rounded bg-light d-flex align-items-center text-center justify-content-center w-full py-4">
                     <p class="text-center text-[#CCE2E5]">Sin imagen disponible</p>
