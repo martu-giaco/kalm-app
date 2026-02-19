@@ -111,11 +111,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [HomeController::class, 'adminHome'])->name('admin.home');
 
         //Usuarios CRUD
-        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
-        Route::get('/users/{user}', [UserController::class, 'view'])->name('admin.users.view');
-        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-        Route::patch('/users/{id}', [UserController::class, 'update'])->name('admin.users.update');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        Route::get('/users', [ProfileController::class, 'index'])->name('admin.users.index');
+        Route::get('/users/{user}', [ProfileController::class, 'view'])->name('admin.users.view');
+        Route::get('/users/{id}/edit', [ProfileController::class, 'adminEdit'])->name('admin.users.edit');
+        Route::patch('/users/{id}', [ProfileController::class, 'adminUpdate'])->name('admin.users.update');
+        Route::delete('/users/{id}', [ProfileController::class, 'adminDestroy'])->name('admin.users.destroy');
 
         //Products CRUD
         Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
