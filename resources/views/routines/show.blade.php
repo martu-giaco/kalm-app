@@ -1,6 +1,6 @@
 {{-- resources/views/routines/show.blade.php --}}
 <x-layout :title="$routine->name">
-    <section class="px-5 pt-10 pb-20 rounded-t-3xl bg-white"">
+    <section class="px-5 pt-10 pb-20 bg-white rounded-t-3xl">
         <section class="mb-6">
             <div class="flex items-center justify-between">
                                         <div class="flex items-center">
@@ -37,9 +37,9 @@
                     $brand = $product->brand?->name ?? null;
                     $skin = $product->skin_type ?? $product->skin ?? null;
                 @endphp
-                    <a href="{{ route('products.show', $product) }}" class="group block">
+                    <a href="{{ route('products.show', $product) }}" class="block group">
                                 <div
-                                    class="flex items-center gap-4 border-b border-gray-200 py-2 transition-shadow bg-white">
+                                    class="flex items-center gap-4 py-2 transition-shadow bg-white border-b border-gray-200">
                                     {{-- Imagen redonda --}}
                                     <div class="flex-shrink-0 w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
                                         @php
@@ -54,7 +54,7 @@
                                             }
                                         @endphp
 
-                                        <img src="{{ $imgUrl }}" alt="{{ $product->name }}" class="w-full h-full object-cover"
+                                        <img src="{{ $imgUrl }}" alt="{{ $product->name }}" class="object-cover w-full h-full"
                                             loading="lazy">
                                     </div>
 
@@ -62,7 +62,7 @@
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between gap-3">
 
-                                            <div class="flex w-full justify-between items-end">
+                                            <div class="flex items-end justify-between w-full">
                                                 <h2 class="text-md font-semibold text-[#2A4043] truncate">{{ $product->name }}</h2>
                                                 <button type="button"
                                                     class="p-2 transition bg-white rounded-full hover:scale-105"
@@ -122,8 +122,8 @@
                                             <form action="{{ route('routines.destroy', $routine) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold"">
-                                                    <p class="text-white font-semibold">Eliminar rutina</p>
+                                                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold">
+                                                    <p class="font-semibold text-white">Eliminar rutina</p>
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#CCE2E5"><path d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z"/></svg>
                                                 </button>
                                             </form>
@@ -178,3 +178,4 @@
             });
         }
     </script>
+</x-layout>
