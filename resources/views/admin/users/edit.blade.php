@@ -14,10 +14,9 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.users.update', $user->id) }}" method="PATCH" enctype="multipart/form-data">
+            <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
-                @csrf
 
                 <div>
                     <div class="flex items-center mb-4">

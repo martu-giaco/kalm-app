@@ -4,10 +4,6 @@
     <div class="container my-5 bg-white rounded-t-3xl min-h-full pt-5">
         <h1 class="mb-4 ps-5 text-3xl font-bold text-[#306067]">Usuarios</h1>
 
-        @if(session('feedback.message'))
-            <div class="alert alert-success">{{ session('feedback.message') }}</div>
-        @endif
-
         @if($users->isEmpty())
             <p class="text-muted">No hay usuarios todavía.</p>
         @else
