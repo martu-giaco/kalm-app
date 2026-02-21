@@ -119,6 +119,15 @@ Route::middleware('auth')->group(function () {
 
         //Products CRUD
         Route::get('/products', [ProductController::class, 'adminIndex'])->name('admin.products.index');
+        Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+        Route::post('/products', [ProductController::class, 'store'])->name('admin.products.store');
+        Route::get('/products/{product}', [ProductController::class, 'view'])->name('admin.products.view');
+        Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+        Route::patch('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+
+        //Marcas CRUD
+        Route::get('/brands', [ProductController::class, 'index'])->name('admin.brands.index');
 
         //Blogs CRUD
         Route::get('/blogs', [BlogController::class, 'adminIndex'])->name('admin.blog.index');

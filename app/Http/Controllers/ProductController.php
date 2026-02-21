@@ -65,52 +65,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Mostrar el formulario de creación de producto
-     */
-    public function create()
-    {
-        $types = ProductType::all();
-        $categories = ProductCategory::all();
-
-        return view('admin.products.create', compact('types', 'categories'));
-    }
-
-    /**
-     * Almacenar un nuevo producto
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'brand_id' => 'required|exists:brands,id',
-            'image' => 'nullable|image',
-            'description' => 'nullable|string',
-            'ingredients' => 'nullable|string',
-            'activos' => 'nullable|string',
-            'paso' => 'nullable|string',
-            'formato' => 'nullable|string',
-            'type_id' => 'required|integer|exists:product_types,id',
-
-            'category_id' => 'required|integer|exists:product_categories,id',
-            'rating' => 'nullable|integer|min:0|max:5',
-            'donde_comprar' => 'nullable|string',
-        ]);
-
-
-        $data = $request->all();
-
-        // Guardar imagen si existe
-        if ($request->hasFile('image')) {
-            $data['image_url'] = $request->file('image')->store('products', 'public');
-        }
-
-        Product::create($data);
-
-        return redirect()->route('admin.dashboard')
-            ->with('feedback.message', 'Producto creado correctamente');
-    }
-
-    /**
      * Mostrar productos filtrados por tipo
      */
     public function byType($typeSlug)
@@ -289,4 +243,112 @@ class ProductController extends Controller
             $products = Product::orderBy('created_at', 'desc')->paginate(25);
             return view('admin.products.index', compact('products'));
         }
+
+        // Ver detalle de un producto (route model binding posible)
+        public function view(Product $product)
+        {
+            return view('admin.products.view', compact('product'));
+        }
+
+        //Formulario de edición.
+        public function edit($id)
+        {
+            $this->authorizeAdmin();
+            $product = Product::findOrFail($id);
+            return view('admin.products.edit', compact('product'));
+        }
+
+        /**
+         * Mostrar el formulario de creación de producto
+         */
+        public function create()
+        {
+            $types = ProductType::all();
+            $categories = ProductCategory::all();
+
+            return view('admin.products.create', compact('types', 'categories'));
+        }
+
+        /**
+         * Actualizar perfil (nombre, email, avatar).
+         */
+        public function update(Request $request, $id)
+        {
+            $this->authorizeAdmin();
+            $product = Product::findOrFail($id);
+
+            $data = $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'max:255', Rule::unique('products')->ignore($product->id)],
+                'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
+            ]);
+
+            // Subida de avatar
+            if ($request->hasFile('avatar')) {
+                // Borrar avatar anterior si existe
+                if ($product->avatar) {
+                    Storage::disk('public')->delete($product->avatar);
+                }
+                $path = $request->file('avatar')->store('avatars', 'public');
+                $data['avatar'] = $path;
+            }
+
+            $product->update($data);
+
+            return redirect()->route('admin.products.index')
+                ->with('feedback.message', 'Perfil actualizado correctamente')
+                ->with('feedback.type', 'success');
+        }
+
+        // Eliminar usuario
+        public function adminDestroy($id)
+        {
+            $this->authorizeAdmin();
+            $product = Product::findOrFail($id);
+            $product->delete();
+
+            return redirect()->route('admin.products.index')->with('success', 'El producto fue eliminado correctamente.');
+        }
+
+        private function authorizeAdmin()
+        {
+            if (auth()->user()->role !== 'admin') {
+                abort(403, 'No tenés permiso para realizar esta acción.');
+            }
+        }
+
+            /**
+             * Almacenar un nuevo producto
+             */
+            public function store(Request $request)
+            {
+                $request->validate([
+                    'name' => 'required|string|max:255',
+                    'brand_id' => 'required|exists:brands,id',
+                    'image' => 'nullable|image',
+                    'description' => 'nullable|string',
+                    'ingredients' => 'nullable|string',
+                    'activos' => 'nullable|string',
+                    'paso' => 'nullable|string',
+                    'formato' => 'nullable|string',
+                    'type_id' => 'required|integer|exists:product_types,id',
+
+                    'category_id' => 'required|integer|exists:product_categories,id',
+                    'rating' => 'nullable|integer|min:0|max:5',
+                    'donde_comprar' => 'nullable|string',
+                ]);
+
+
+                $data = $request->all();
+
+                // Guardar imagen si existe
+                if ($request->hasFile('image')) {
+                    $data['image_url'] = $request->file('image')->store('products', 'public');
+                }
+
+                Product::create($data);
+
+                return redirect()->route('admin.products.index')
+                    ->with('feedback.message', 'Producto creado correctamente');
+            }
 }

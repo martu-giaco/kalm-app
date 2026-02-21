@@ -35,7 +35,7 @@
             </li>
 
             <li>
-                <a href="{{ route('admin.home') }}" class="bg-white shadow-md rounded-xl w-full p-5 flex items-center justify-between mb-4">
+                <a href="{{ route('admin.brands.index') }}" class="bg-white shadow-md rounded-xl w-full p-5 flex items-center justify-between mb-4">
                     <div class="flex items-end gap-3">
                         <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#306067"><path d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z"/></svg>
                         <h2 class="ps-2 text-xl font-bold text-[#306067]">Marcas</h2>
