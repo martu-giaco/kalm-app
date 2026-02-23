@@ -11,25 +11,88 @@
             <div class="alert alert-danger">La información contiene errores.</div>
         @endif
 
-        <form action="{{ route('admin.product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
 
             <div class="mb-3">
-                <label for="title" class="block mb-1 text-sm">Título</label>
-                <input type="text" name="title" id="title" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('title', $product->title) }}">
+                <label for="name" class="block mb-1 text-sm">Nombre del producto</label>
+                <input type="text" name="name" id="name" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('name', $product->name) }}">
             </div>
 
             <div class="mb-3">
-                <label for="author" class="block mb-1 text-sm">Autor</label>
-                <input type="text" name="author" id="author" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('author', $product->author) }}">
+                <label for="brand" class="block mb-1 text-sm">Marca</label>
+                <select name="brand" id="brand" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar marca</option>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->id }}" {{ old('brand', $product->brand->name) ? 'selected' : '' }}>
+                            {{ $brand->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="block mb-1 text-sm">Categoría</label>
+                <select name="category" id="category" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar categoría</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ old('category', $product->category_id) == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="type" class="block mb-1 text-sm">Tipo de producto</label>
+                <select name="type" id="type" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar tipo de producto</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}" {{ old('type', $product->type_id) == $type->id ? 'selected' : '' }}>
+                            {{ $type->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="concern" class="block mb-1 text-sm">Tipo de piel</label>
+                <select name="skin_type" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar tipo de piel</option>
+                    @foreach($skinTypes as $skinType)
+                        <option value="{{ $skinType->id }}" {{ old('skin_type', $product->skin_type_id) == $skinType->id ? 'selected' : '' }}>
+                            {{ $skinType->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="concern" class="block mb-1 text-sm">Preocupaciones</label>
+                <select name="concern" id="concern" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar preocupaciones</option>
+                    @foreach($concerns as $concern)
+                        <option value="{{ $concern->id }}" {{ in_array($concern->id, old('concern', $product->concerns->pluck('id')->toArray())) ? 'selected' : '' }}>
+                            {{ $concern->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-3">
                 <p class="mb-1 text-sm">Imagen</p>
                 @if($product->image)
-                    <div class="mb-2">
-                        <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" style="max-width: 200px; max-height: 200px;">
+                    <div class="relative md:flex-shrink-0 md:w-1/2">
+                    <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
+                        @if (!empty($product->image))
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                                class="object-contain w-full bg-white h-80">
+                        @else
+                            <div class="flex items-center justify-center w-full text-gray-400 h-80">
+                                Sin imagen
+                            </div>
+                        @endif
                     </div>
                 @endif
                 <label for="image"
@@ -47,12 +110,27 @@
                 @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="content" class="block mb-1 text-sm">Contenido</label>
-                <textarea name="content" id="content" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('content', $blog->content) }}</textarea>
+            <div class="mt-3 mb-3">
+                <label for="description" class="block mb-1 text-sm">Descripción</label>
+                <textarea name="description" id="description" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('description', $product->description) }}</textarea>
             </div>
 
-            <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Editar Blog</button>
+            <div class="mt-3 mb-3">
+                <label for="ingredientes" class="block mb-1 text-sm">Ingredientes</label>
+                <textarea name="ingredientes" id="ingredientes" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('ingredientes', $product->ingredients) }}</textarea>
+            </div>
+
+            <div class="mt-3 mb-3">
+                <label for="activos" class="block mb-1 text-sm">Activos</label>
+                <textarea name="activos" id="activos" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('activos', $product->activos) }}</textarea>
+            </div>
+
+            <div class="mt-3 mb-3">
+                <label for="formato" class="block mb-1 text-sm">Formato</label>
+                <input name="formato" id="formato" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('formato', $product->formato) }}">
+            </div>
+
+            <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Editar Producto</button>
         </form>
     </div>
 </x-layout>

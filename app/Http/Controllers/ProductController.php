@@ -8,6 +8,7 @@ use App\Models\ProductType;
 use App\Models\ProductCategory;
 use App\Models\SkinType;
 use App\Models\Concern;
+use App\Models\Brand;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -255,7 +256,13 @@ class ProductController extends Controller
         {
             $this->authorizeAdmin();
             $product = Product::findOrFail($id);
-            return view('admin.products.edit', compact('product'));
+            $types = ProductType::all();
+            $categories = ProductCategory::all();
+            $skinTypes = SkinType::all();
+            $concerns = Concern::all();
+            $brands = Brand::all();
+
+            return view('admin.products.edit', compact('product', 'types', 'categories', 'skinTypes', 'concerns', 'brands'));
         }
 
         /**
@@ -265,12 +272,15 @@ class ProductController extends Controller
         {
             $types = ProductType::all();
             $categories = ProductCategory::all();
+            $skinTypes = SkinType::all();
+            $concerns = Concern::all();
+            $brands = Brand::all();
 
-            return view('admin.products.create', compact('types', 'categories'));
+            return view('admin.products.create', compact('types', 'categories', 'skinTypes', 'concerns', 'brands'));
         }
 
         /**
-         * Actualizar perfil (nombre, email, avatar).
+         * Actualizar producto.
          */
         public function update(Request $request, $id)
         {
@@ -278,29 +288,38 @@ class ProductController extends Controller
             $product = Product::findOrFail($id);
 
             $data = $request->validate([
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'email', 'max:255', Rule::unique('products')->ignore($product->id)],
-                'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
+                    'name' => 'required|string|max:255',
+                    'brand_id' => 'required|exists:brands,id',
+                    'image' => 'nullable|image',
+                    'description' => 'nullable|string',
+                    'ingredients' => 'nullable|string',
+                    'activos' => 'nullable|string',
+                    'paso' => 'nullable|string',
+                    'formato' => 'nullable|string',
+                    'type_id' => 'required|integer|exists:product_types,id',
+                    'category_id' => 'required|integer|exists:product_categories,id',
+                    'rating' => 'nullable|integer|min:0|max:5',
+                    'donde_comprar' => 'nullable|string',
             ]);
 
-            // Subida de avatar
-            if ($request->hasFile('avatar')) {
-                // Borrar avatar anterior si existe
-                if ($product->avatar) {
-                    Storage::disk('public')->delete($product->avatar);
+            // Subida de imagen
+            if ($request->hasFile('image')) {
+                // Borrar imagen anterior si existe
+                if ($product->image) {
+                    Storage::disk('public')->delete($product->image);
                 }
-                $path = $request->file('avatar')->store('avatars', 'public');
-                $data['avatar'] = $path;
+                $path = $request->file('image')->store('products', 'public');
+                $data['image'] = $path;
             }
 
             $product->update($data);
 
             return redirect()->route('admin.products.index')
-                ->with('feedback.message', 'Perfil actualizado correctamente')
+                ->with('feedback.message', 'Producto actualizado correctamente')
                 ->with('feedback.type', 'success');
         }
 
-        // Eliminar usuario
+        // Eliminar producto
         public function destroy($id)
         {
             $this->authorizeAdmin();
@@ -332,7 +351,6 @@ class ProductController extends Controller
                     'paso' => 'nullable|string',
                     'formato' => 'nullable|string',
                     'type_id' => 'required|integer|exists:product_types,id',
-
                     'category_id' => 'required|integer|exists:product_categories,id',
                     'rating' => 'nullable|integer|min:0|max:5',
                     'donde_comprar' => 'nullable|string',

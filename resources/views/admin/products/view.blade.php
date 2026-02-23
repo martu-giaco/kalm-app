@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Storage;
 
         {{-- Imagen principal --}}
                 <div class="relative md:flex-shrink-0 md:w-1/2">
-                    <div class="mb-4 overflow-hidden bg-white shadow-lg rounded-3xl">
+                    <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
                         @if (!empty($product->image))
                             <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                 class="object-contain w-full bg-white h-80">
@@ -56,6 +56,12 @@ use Illuminate\Support\Facades\Storage;
             </li>
             <li class="mb-4">
                 <strong>Tipo:</strong> {{ $product->type->name ?? 'Sin tipo' }}
+            </li>
+            <li class="mb-4">
+                <strong>Tipo de piel:</strong> {{ $product->skinTypes->pluck('name')->implode(', ') ?? 'Sin tipo de piel' }}
+            </li>
+            <li class="mb-4">
+                <strong>Preocupaciones:</strong> {{ $product->concerns->pluck('name')->implode(', ') ?? 'Sin preocupaciones' }}
             </li>
             <li class="mb-4">
                 <strong>Ingredientes:</strong> {{ $product->ingredients ?? 'Sin ingredientes' }}
