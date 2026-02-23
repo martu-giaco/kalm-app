@@ -22,6 +22,7 @@ use App\Http\Controllers\Auth\TermsController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,7 +128,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 
         //Marcas CRUD
-        Route::get('/brands', [ProductController::class, 'index'])->name('admin.brands.index');
+        Route::get('/brands', [BrandController::class, 'index'])->name('admin.brands.index');
 
         //Blogs CRUD
         Route::get('/blogs', [BlogController::class, 'adminIndex'])->name('admin.blog.index');
