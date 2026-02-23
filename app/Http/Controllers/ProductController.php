@@ -301,7 +301,7 @@ class ProductController extends Controller
         }
 
         // Eliminar usuario
-        public function adminDestroy($id)
+        public function destroy($id)
         {
             $this->authorizeAdmin();
             $product = Product::findOrFail($id);

@@ -29,29 +29,50 @@ use Illuminate\Support\Facades\Storage;
             </div>
         </div>
 
+        <h1 class="text-3xl font-bold text-[#306067]">{{ $product->name }}</h1>
 
-        {{-- Imagen principal / placeholder --}}
-        <div class="mb-4 d-flex justify-content-center">
-            @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->title }}" class="img-fluid rounded" style="max-width: 100%; max-height: 480px; object-fit: cover;">
-            @else
-                <div class="border border-[#CCE2E5] rounded bg-light d-flex align-items-center text-center justify-content-center w-full py-4">
-                    <p class="text-center text-[#CCE2E5]">Sin imagen disponible</p>
-                </div>
-            @endif
-        </div>
+        {{-- Imagen principal --}}
+                <div class="relative md:flex-shrink-0 md:w-1/2">
+                    <div class="mb-4 overflow-hidden bg-white shadow-lg rounded-3xl">
+                        @if (!empty($product->image))
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                                class="object-contain w-full bg-white h-80">
+                        @else
+                            <div class="flex items-center justify-center w-full text-gray-400 h-80">
+                                Sin imagen
+                            </div>
+                        @endif
+                    </div>
+                    @if (!empty($product->brand->name))
+                            <h2 class="mt-1 text-lg text-[#37A0AF] truncate">{{ $product->brand->name }}</h2>
+                        @endif
 
-        <h1 class="text-3xl font-bold text-[#306067]">{{ $product->title }}</h1>
-
-        <p class="mb-4 flex justify-between items-center">
-            {{ $product->author ?? 'Anónimo' }}
-            @if(!empty($product->category))
-                | <strong>Categoría:</strong> {{ $product->category }}
-            @endif
-            @if($product->created_at)
-                <small class="text-[#37A0AF]">{{ $product->created_at->format('d/m/Y') }}</small>
-            @endif
-        </p>
+        <ul class="mb-4">
+            <li class="mb-4">
+                <strong>Descripción:</strong> {{ $product->description ?? 'Sin descripción' }}
+            </li>
+            <li class="mb-4">
+                <strong>Categoría:</strong> {{ $product->category->name ?? 'Sin categoría' }}
+            </li>
+            <li class="mb-4">
+                <strong>Tipo:</strong> {{ $product->type->name ?? 'Sin tipo' }}
+            </li>
+            <li class="mb-4">
+                <strong>Ingredientes:</strong> {{ $product->ingredients ?? 'Sin ingredientes' }}
+            </li>
+            <li class="mb-4">
+                <strong>Activos:</strong> {{ $product->activos ?? 'Sin activos' }}
+            </li>
+            <li class="mb-4">
+                <strong>Rating:</strong> {{ $product->rating ?? 'Sin rating' }}
+            </li>
+            <li class="mb-4">
+                <strong>Formato:</strong> {{ $product->formato ?? 'Sin formato' }}
+            </li>
+            <li class="mb-4">
+                <strong>Donde Comprar:</strong> {{ $product->donde_comprar ?? 'Sin información de compra' }}
+            </li>
+        </ul>
 
         <div class="mb-4 fs-5" style="white-space:pre-wrap; line-height:1.6;">
             {!! nl2br(e($product->content)) !!}
