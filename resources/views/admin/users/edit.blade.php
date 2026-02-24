@@ -63,6 +63,17 @@
                             class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
                             required>
                     </div>
+
+                    <div class="mb-4">
+                        <label for="role" class="block mb-1 text-sm">Rol</label>
+                        <select id="role" name="role"
+                            class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
+                            required>
+                            <option value="free" {{ old('role', $user->role) == 'free' ? 'selected' : '' }}>Free</option>
+                            <option value="premium" {{ old('role', $user->role) == 'premium' ? 'selected' : '' }}>Premium</option>
+                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Administrador</option>
+                        </select>
+                    </div>
                 </div>
 
 
