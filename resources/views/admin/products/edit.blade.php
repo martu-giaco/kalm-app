@@ -7,10 +7,6 @@
 
         <h1 class="text-3xl font-bold text-[#306067] mb-4">Editar Producto</h1>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">La información contiene errores.</div>
-        @endif
-
         <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PATCH')
@@ -22,10 +18,10 @@
 
             <div class="mb-3">
                 <label for="brand" class="block mb-1 text-sm">Marca</label>
-                <select name="brand" id="brand" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="brand_id" id="brand" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar marca</option>
                     @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ old('brand', $product->brand->name) ? 'selected' : '' }}>
+                        <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>
                             {{ $brand->name }}
                         </option>
                     @endforeach
@@ -34,10 +30,10 @@
 
             <div class="mb-3">
                 <label for="category" class="block mb-1 text-sm">Categoría</label>
-                <select name="category" id="category" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="category_id" id="category" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar categoría</option>
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category', $product->category_id) == $category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -46,10 +42,10 @@
 
             <div class="mb-3">
                 <label for="type" class="block mb-1 text-sm">Tipo de producto</label>
-                <select name="type" id="type" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="type_id" id="type" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo de producto</option>
                     @foreach($types as $type)
-                        <option value="{{ $type->id }}" {{ old('type', $product->type_id) == $type->id ? 'selected' : '' }}>
+                        <option value="{{ $type->id }}" {{ old('type_id', $product->type_id) == $type->id ? 'selected' : '' }}>
                             {{ $type->name }}
                         </option>
                     @endforeach
@@ -57,11 +53,15 @@
             </div>
 
             <div class="mb-3">
-                <label for="concern" class="block mb-1 text-sm">Tipo de piel</label>
-                <select name="skin_type" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <label for="skin_type" class="block mb-1 text-sm">Tipo de piel</label>
+                <select name="skinTypes[]" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo de piel</option>
+                    @php
+                        $selectedSkinTypes = old('skinTypes', $product->skinTypes->pluck('id')->toArray());
+                        $selectedSkinTypes = is_array($selectedSkinTypes) ? $selectedSkinTypes : [$selectedSkinTypes];
+                    @endphp
                     @foreach($skinTypes as $skinType)
-                        <option value="{{ $skinType->id }}" {{ old('skin_type', $product->skin_type_id) == $skinType->id ? 'selected' : '' }}>
+                        <option value="{{ $skinType->id }}" {{ in_array($skinType->id, $selectedSkinTypes) ? 'selected' : '' }}>
                             {{ $skinType->name }}
                         </option>
                     @endforeach
@@ -70,10 +70,14 @@
 
             <div class="mb-3">
                 <label for="concern" class="block mb-1 text-sm">Preocupaciones</label>
-                <select name="concern" id="concern" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="concerns[]" id="concern" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar preocupaciones</option>
+                    @php
+                        $selectedConcerns = old('concerns', $product->concerns->pluck('id')->toArray());
+                        $selectedConcerns = is_array($selectedConcerns) ? $selectedConcerns : [$selectedConcerns];
+                    @endphp
                     @foreach($concerns as $concern)
-                        <option value="{{ $concern->id }}" {{ in_array($concern->id, old('concern', $product->concerns->pluck('id')->toArray())) ? 'selected' : '' }}>
+                        <option value="{{ $concern->id }}" {{ in_array($concern->id, $selectedConcerns) ? 'selected' : '' }}>
                             {{ $concern->name }}
                         </option>
                     @endforeach
@@ -86,8 +90,8 @@
                     <div class="relative md:flex-shrink-0 md:w-1/2">
                     <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
                         @if (!empty($product->image))
-                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                class="object-contain w-full bg-white h-80">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                class="object-cover w-full bg-white h-80">
                         @else
                             <div class="flex items-center justify-center w-full text-gray-400 h-80">
                                 Sin imagen
@@ -116,8 +120,8 @@
             </div>
 
             <div class="mt-3 mb-3">
-                <label for="ingredientes" class="block mb-1 text-sm">Ingredientes</label>
-                <textarea name="ingredientes" id="ingredientes" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('ingredientes', $product->ingredients) }}</textarea>
+                <label for="ingredients" class="block mb-1 text-sm">Ingredientes</label>
+                <textarea name="ingredients" id="ingredients" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('ingredients', $product->ingredients) }}</textarea>
             </div>
 
             <div class="mt-3 mb-3">

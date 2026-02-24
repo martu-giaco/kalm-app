@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\ProductType;
@@ -313,6 +314,8 @@ class ProductController extends Controller
             }
 
             $product->update($data);
+            $product->skinTypes()->sync($request->input('skin_types', []));
+            $product->concerns()->sync($request->input('concerns', []));
 
             return redirect()->route('admin.products.index')
                 ->with('feedback.message', 'Producto actualizado correctamente')
@@ -361,7 +364,7 @@ class ProductController extends Controller
 
                 // Guardar imagen si existe
                 if ($request->hasFile('image')) {
-                    $data['image_url'] = $request->file('image')->store('products', 'public');
+                    $data['image'] = $request->file('image')->store('products', 'public');
                 }
 
                 Product::create($data);

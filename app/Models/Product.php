@@ -38,14 +38,16 @@ class Product extends Model
         );
     }
 
-    // 🔹 Accesor legacy para URL de imagen
     public function getImageUrlAttribute()
-    {
-        if (!$this->image) {
-            return asset('images/products/default.png');
-        }
-        return asset($this->image);
-    }
+            {
+                if (!$this->image) return null;
+
+                if (str_starts_with($this->image, 'images/')) {
+                    return asset($this->image);
+                }
+
+                return asset('storage/' . $this->image);
+            }
 
     // 🔹 Relaciones existentes
     public function brand()

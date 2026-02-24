@@ -18,7 +18,7 @@
 
             <div class="mb-3">
                 <label for="brand" class="block mb-1 text-sm">Marca</label>
-                <select name="brand" id="brand" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="brand_id" id="brand" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar marca</option>
                     @foreach($brands as $brand)
                         <option value="{{ $brand->id }}">
@@ -30,7 +30,7 @@
 
             <div class="mb-3">
                 <label for="category" class="block mb-1 text-sm">Categoría</label>
-                <select name="category" id="category" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="category_id" id="category" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar categoría</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}">
@@ -42,7 +42,7 @@
 
             <div class="mb-3">
                 <label for="type" class="block mb-1 text-sm">Tipo de producto</label>
-                <select name="type" id="type" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <select name="type_id" id="type" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo de producto</option>
                     @foreach($types as $type)
                         <option value="{{ $type->id }}">
@@ -53,8 +53,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="concern" class="block mb-1 text-sm">Tipo de piel</label>
-                <select name="skin_type" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <label for="skin_type" class="block mb-1 text-sm">Tipo de piel</label>
+                <select name="skinType[]" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo de piel</option>
                     @foreach($skinTypes as $skinType)
                         <option value="{{ $skinType->id }}">
@@ -65,8 +65,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="concern" class="block mb-1 text-sm">Preocupaciones</label>
-                <select name="concern" id="concern" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                <label for="concerns" class="block mb-1 text-sm">Preocupaciones</label>
+                <select name="concerns[]" id="concerns" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar preocupaciones</option>
                     @foreach($concerns as $concern)
                         <option value="{{ $concern->id }}">
@@ -76,7 +76,7 @@
                 </select>
             </div>
 
-             <div class="mb-3">
+            <div class="mb-3">
                 <p class="mb-1 text-sm">Imagen</p>
                 <label for="image"
                                 class="flex justify-between mb-1 text-md p-3 bg-transparent rounded-xl border-2 border-[#2A4043] placeholder-[#CCE2E5] focus:outline-[#2A4043] text-[#2A4043]">
@@ -87,7 +87,7 @@
                                         d="M480-480ZM202.87-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-554.26q0-37.78 26.61-64.39t64.39-26.61h270.91q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H202.87v554.26h554.26v-270.91q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17t32.33 13.17q13.17 13.18 13.17 32.33v270.91q0 37.78-26.61 64.39t-64.39 26.61H202.87ZM240-280h480L570-480 450-320l-90-120-120 160Zm441.91-401.91h-40.95q-17.71 0-29.7-12.05-11.98-12.05-11.98-29.87 0-17.71 12.05-29.69t29.87-11.98h40.71v-40.96q0-17.71 12.05-29.69t29.87-11.98q17.71 0 29.69 11.98t11.98 29.69v40.96h40.96q17.71 0 29.69 11.98t11.98 29.7q0 17.71-11.98 29.81-11.98 12.1-29.69 12.1H765.5v40.95q0 17.71-11.98 29.7-11.98 11.98-29.7 11.98-17.71 0-29.81-12.05-12.1-12.05-12.1-29.87v-40.71Z" />
                                 </svg>
                             </label>
-                <input style="display: none;" type="file" id="image" name="image" class="file-input @error('image') is-invalid @enderror" accept="image/*">
+                <input style="display: none;" type="file" id="image" name="image" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] @error('image') is-invalid @enderror" accept="image/*">
                 @error('image')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror

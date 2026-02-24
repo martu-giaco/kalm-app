@@ -129,6 +129,12 @@ Route::middleware('auth')->group(function () {
 
         //Marcas CRUD
         Route::get('/brands', [BrandController::class, 'index'])->name('admin.brands.index');
+        Route::get('/brands/create', [BrandController::class, 'create'])->name('admin.brands.create');
+        Route::post('/brands', [BrandController::class, 'store'])->name('admin.brands.store');
+        Route::get('/brands/{brand}', [BrandController::class, 'view'])->name('admin.brands.view');
+        Route::get('/brands/{brand}/edit', [BrandController::class, 'adminEdit'])->name('admin.brands.edit');
+        Route::patch('/brands/{brand}', [BrandController::class, 'update'])->name('admin.brands.update');
+        Route::delete('/brands/{brand}', [BrandController::class, 'adminDestroy'])->name('admin.brands.destroy');
 
         //Blogs CRUD
         Route::get('/blogs', [BlogController::class, 'adminIndex'])->name('admin.blog.index');

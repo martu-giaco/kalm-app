@@ -35,8 +35,8 @@ use Illuminate\Support\Facades\Storage;
                 <div class="relative md:flex-shrink-0 md:w-1/2">
                     <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
                         @if (!empty($product->image))
-                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                class="object-contain w-full bg-white h-80">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                class="object-cover w-full bg-white h-80">
                         @else
                             <div class="flex items-center justify-center w-full text-gray-400 h-80">
                                 Sin imagen
