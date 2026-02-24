@@ -26,7 +26,7 @@ class RoutineSeeder extends Seeder
         }
 
         // Asegurarse de que existan las necesidades
-        $needsList = ['normal','seco','graso','mixto','sensible'];
+        $needsList = ['Normal','Seca','Oleosa','Mixta','Sensible'];
         foreach ($needsList as $needName) {
             RoutineNeed::firstOrCreate(['name' => $needName]);
         }
@@ -42,14 +42,14 @@ class RoutineSeeder extends Seeder
         $times = RoutineTime::whereIn('name', $timesList)->get()->keyBy('name');
 
         $examples = [
-            ['name' => 'Rutina Normal',   'type' => 'normal',   'time' => 'Día',   'products' => [1,2,3]],
-            ['name' => 'Rutina Seco',     'type' => 'seco',     'time' => 'Noche', 'products' => [4,5,6]],
-            ['name' => 'Rutina Graso',    'type' => 'graso',    'time' => 'Día',   'products' => [7,8,9]],
-            ['name' => 'Rutina Mixto',    'type' => 'mixto',    'time' => 'Día',   'products' => [10,11,12]],
-            ['name' => 'Rutina Sensible', 'type' => 'sensible', 'time' => 'Noche', 'products' => [13,14,15]],
-            ['name' => 'Rutina Extra 1',  'type' => 'normal',   'time' => 'Día',   'products' => [16,17]],
-            ['name' => 'Rutina Extra 2',  'type' => 'seco',     'time' => 'Noche', 'products' => [18,19]],
-            ['name' => 'Rutina Extra 3',  'type' => 'graso',    'time' => 'Día',   'products' => [20,21,22]],
+            ['name' => 'Rutina Normal',   'type' => 'Normal',   'time' => 'Día',   'products' => [1,2,3]],
+            ['name' => 'Rutina Seca',     'type' => 'Seca',     'time' => 'Noche', 'products' => [4,5,6]],
+            ['name' => 'Rutina Oleosa',    'type' => 'Oleosa',    'time' => 'Día',   'products' => [7,8,9]],
+            ['name' => 'Rutina Mixta',    'type' => 'Mixta',    'time' => 'Día',   'products' => [10,11,12]],
+            ['name' => 'Rutina Sensible', 'type' => 'Sensible', 'time' => 'Noche', 'products' => [13,14,15]],
+            ['name' => 'Rutina Extra 1',  'type' => 'Normal',   'time' => 'Día',   'products' => [16,17]],
+            ['name' => 'Rutina Extra 2',  'type' => 'Seca',     'time' => 'Noche', 'products' => [18,19]],
+            ['name' => 'Rutina Extra 3',  'type' => 'Oleosa',    'time' => 'Día',   'products' => [20,21,22]],
         ];
 
         foreach ($examples as $ex) {
