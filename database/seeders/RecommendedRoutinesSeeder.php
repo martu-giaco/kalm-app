@@ -4,12 +4,13 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\RecommendedRoutine;
 
 class RecommendedRoutinesSeeder extends Seeder
 {
     public function run()
     {
-        DB::table('routines_recommended')->truncate();
+        DB::table('routines_recommended')->insert();
 
         // Productos por tipo (IDs según tu tabla products)
         $products = [
