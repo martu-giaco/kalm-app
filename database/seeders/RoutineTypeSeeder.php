@@ -12,6 +12,7 @@ class RoutineTypeSeeder extends Seeder
         $types = [
             'Skincare',
             'Haircare',
+            'Bodycare'
         ];
 
         foreach ($types as $name) {

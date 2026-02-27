@@ -51,15 +51,33 @@
                         <div class="flex justify-center gap-7">
                             <div class="flex flex-col items-center">
                                 <strong class="text-[#306067] text-2xl">{{ $user->faves_count ?? 0 }}</strong>
-                                <p class="text-xs">Favoritos</p>
+                                <p class="text-xs">
+                                    @if($user->faves_count === 1)
+                                        Favorito
+                                    @else
+                                        Favoritos
+                                    @endif
+                                    </p>
                             </div>
                             <div class="flex flex-col items-center">
                                 <strong class="text-[#306067] text-2xl">{{ $user->reviews_count ?? 0 }}</strong>
-                                <p class="text-xs">Reviews</p>
+                                <p class="text-xs">
+                                    @if($user->reviews_count === 1)
+                                        Review
+                                    @else
+                                        Reviews
+                                    @endif
+                                </p>
                             </div>
                             <div class="flex flex-col items-center">
                                 <strong class="text-[#306067] text-2xl">{{ $user->routines_count }}</strong>
-                                <p class="text-xs">Rutinas</p>
+                                <p class="text-xs">
+                                    @if($user->routines_count === 1)
+                                        Rutina
+                                    @else
+                                        Rutinas
+                                    @endif
+                                    </p>
                             </div>
                         </div>
                     </div>
