@@ -1,4 +1,4 @@
-<x-layout title="Iniciar Tests">
+<x-layout title="Iniciar Tests" hideNavigation="true">
     <div class="px-5 py-10 rounded-t-3xl bg-white min-h-screen flex flex-col justify-between">
         <article>
             <div class="text-center mb-12 mt-8">

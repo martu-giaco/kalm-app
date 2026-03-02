@@ -18,12 +18,12 @@
 
     <section class="px-5 py-10 rounded-t-3xl bg-white">
         {{-- Banners --}}
-        <div class="relative w-full h-40 mb-8 overflow-hidden rounded-xl"  onclick="premium_modal.showModal()">
+        <a href="{{ route('subscription.show') }}" class="relative w-full h-40 mb-8 overflow-hidden rounded-xl block">
             @foreach ($banners as $banner)
                 <img src="{{ asset($banner['img_src']) }}" alt="{{ $banner['alt'] }}"
                     class="object-cover w-full h-full">
             @endforeach
-        </div>
+        </a>
 
         {{-- Categorías --}}
         <div class="mb-6">

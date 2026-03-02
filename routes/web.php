@@ -185,6 +185,11 @@ Route::middleware('auth')->group(function () {
         ->name('payment.process')
         ->middleware('auth');
 
+    // Checkout (confirmación antes de pago)
+    Route::get('/premium/checkout', [SubscriptionController::class, 'checkout'])
+        ->name('subscription.checkout')
+        ->middleware('auth');
+
     // Redirección a MercadoPago
     Route::get('/premium/mercadopago', [SubscriptionController::class, 'mercadoPago'])
         ->name('payment.mercadopago')

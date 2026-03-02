@@ -19,13 +19,21 @@ class SubscriptionController extends Controller
     }
 
     /**
+     * Muestra la pantalla de checkout/confirmación
+     */
+    public function checkout()
+    {
+        $user = Auth::user();
+        return view('user.checkout', compact('user'));
+    }
+
+    /**
      * Redirige a MercadoPago con un link seguro de checkout
      */
     public function mercadoPago()
 {
     $accessToken = env('MP_ACCESS_TOKEN');
 
-    // URL base de tu app, definida en .env
     $appUrl = rtrim(env('APP_URL', 'http://127.0.0.1:8000'), '/');
 
     $preferenceData = [
@@ -47,7 +55,7 @@ class SubscriptionController extends Controller
         "binary_mode" => true,
     ];
 
-    // Solo agregamos auto_return si la URL no es localhost
+    // Solo auto_return si la URL no es localhost
     if (!str_contains($appUrl, '127.0.0.1') && !str_contains($appUrl, 'localhost')) {
         $preferenceData['auto_return'] = 'approved';
     }
