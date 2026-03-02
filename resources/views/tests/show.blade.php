@@ -107,23 +107,24 @@
 
             document.querySelectorAll('.option-card').forEach(card => {
                 card.addEventListener('click', () => {
+
                     const parent = card.parentNode;
+
+                    // Si ya está activa, no hacer nada
+                    const input = card.querySelector('input[type="radio"]');
+                    if (input && input.checked) return;
+
+                    // Limpiar todas
                     parent.querySelectorAll('.option-card').forEach(c => {
-                        c.classList.remove('bg-[#164d4f]', 'text-white', 'border-[#164d4f]');
-                        c.classList.add('transition-all', 'duration-300');
+                        c.classList.remove('bg-[#164d4f]', 'text-white', 'border-[#164d4f]', 'scale-105');
                         const inp = c.querySelector('input[type="radio"]');
                         if (inp) inp.checked = false;
                     });
-                    // Agregar transición al seleccionar
+
+                    // Activar la clickeada
                     card.classList.add('transition-all', 'duration-300', 'scale-105');
                     card.classList.add('bg-[#164d4f]', 'text-white', 'border-[#164d4f]');
-                    const input = card.querySelector('input[type="radio"]');
                     if (input) input.checked = true;
-
-                    // Remover scale después de la animación
-                    setTimeout(() => {
-                        card.classList.remove('scale-105');
-                    }, 300);
                 });
             });
 
