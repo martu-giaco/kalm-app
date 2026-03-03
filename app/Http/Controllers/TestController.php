@@ -18,10 +18,19 @@ class TestController extends Controller
      * LISTAR TESTS
      =========================== */
     public function index()
-    {
-        $tests = Test::all();
-        return view('tests.index', compact('tests'));
-    }
+        {
+            $tests = Test::all();
+
+            $completedTests = [];
+
+            if (Auth::check()) {
+                $completedTests = UserTestResult::where('user_id', Auth::id())
+                    ->pluck('test_key')
+                    ->toArray();
+            }
+
+            return view('tests.index', compact('tests', 'completedTests'));
+        }
 
     /* ===========================
      * MOSTRAR TEST
