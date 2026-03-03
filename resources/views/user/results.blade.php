@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="px-5 pt-10 rounded-t-3xl min-h-full bg-white">
+    <div class="px-5 py-10 rounded-t-3xl min-h-full bg-white">
         <h1 class="text-3xl font-bold text-[#164d4f] mb-6">Mis Resultados</h1>
 
         @if($results->isEmpty())
@@ -10,38 +10,24 @@
                 </a>
             </div>
         @else
-            <div class="space-y-4">
-                @foreach($results as $result)
-                    <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+            <div class="space-y-6">
+                    @foreach($results as $result)
+                    <div class="bg-white p-6 rounded-xl shadow-xl transition">
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
-                                <h3 class="text-xl font-semibold text-[#164d4f]">
-                                    Test: <span class="text-[#37A0AF]">{{ ucfirst($result->test_key) }}</span>
-                                </h3>
-                                <p class="text-lg mt-2">
-                                    <strong>Resultado:</strong>
-                                    <span class="px-3 py-1 bg-[#e8f4f5] text-[#164d4f] rounded-full font-semibold">
+                                <h2 class="text-xl font-semibold text-[#164d4f]">
+                                    Tu {{ ($result->test_key) }} es
+                                </h2>
+                                <h3 class="text-3xl text-[#37A0AF] mt-2 mb-1">
                                         {{ ucfirst($result->result_key) }}
-                                    </span>
-                                </p>
-
-                                @if($result->answers)
-                                    <details class="mt-3">
-                                        <summary class="cursor-pointer text-sm text-[#37A0AF] hover:text-[#164d4f]">
-                                            Ver respuestas ({{ count(json_decode($result->answers, true)) }} preguntas)
-                                        </summary>
-                                        <div class="mt-2 pl-4 border-l-2 border-[#37A0AF] space-y-1 text-sm text-gray-700">
-                                            @foreach(json_decode($result->answers, true) ?? [] as $key => $answer)
-                                                <p><strong>{{ $key }}:</strong> {{ ucfirst($answer) }}</p>
-                                            @endforeach
-                                        </div>
-                                    </details>
-                                @endif
-                            </div>
-
-                            <p class="text-sm text-gray-500 ml-4">
-                                {{ $result->created_at->format('d/m/Y H:i') }}
+                                </h3>
+                                <p class="text-sm text-[#CCE2E5]">
+                                {{ $result->created_at->format('d/m/Y') }} · {{ $result->created_at->format('H:i') }}
                             </p>
+                            </div>
+                            <a href="{{ route('tests.result', $result->id) }}" class="text-[#37A0AF] hover:text-[#164d4f]">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="27px" viewBox="0 -960 960 960" width="27px" fill="#164d4f"><path d="M513.5-254.5Q528-269 528-290t-14.5-35.5Q499-340 478-340t-35.5 14.5Q428-311 428-290t14.5 35.5Q457-240 478-240t35.5-14.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm4-172q25 0 43.5 16t18.5 40q0 22-13.5 39T502-525q-23 20-40.5 44T444-427q0 14 10.5 23.5T479-394q15 0 25.5-10t13.5-25q4-21 18-37.5t30-31.5q23-22 39.5-48t16.5-58q0-51-41.5-83.5T484-720q-38 0-72.5 16T359-655q-7 12-4.5 25.5T368-609q14 8 29 5t25-17q11-15 27.5-23t34.5-8Z"/></svg>
+                            </a>
                         </div>
                     </div>
                 @endforeach

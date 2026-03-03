@@ -162,7 +162,7 @@ class TestController extends Controller
             'answers' => $answersToStore,
         ]);
 
-        return redirect()->route('tests.result')
+        return redirect()->route('profile.results')
             ->with('success', 'Resultado guardado correctamente.');
     }
 

@@ -21,7 +21,7 @@
 
 <body class="flex flex-col flex-wrap justify-between min-h-screen bg-center bg-cover px-5 py-10" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
-        <div class="flex items-center justify-between max-w-3xl py-8 mx-auto w-full">
+        <div class="flex items-center justify-between max-w-3xl pb-8 mx-auto w-full">
             <button type="button" id="prevBtn" disabled>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m326.15-434.5 186.68 186.67q13.67 13.68 13.29 32.07-.38 18.39-14.05 32.06-13.68 12.68-32.07 13.06-18.39.38-32.07-13.29l-264-264q-6.71-6.72-9.81-14.92-3.1-8.19-3.1-17.15 0-8.96 3.1-17.15 3.1-8.2 9.81-14.92L448.17-776.3q12.92-12.92 31.57-12.92t32.33 12.92q13.67 13.67 13.67 32.44 0 18.77-13.67 32.45L326.15-525.5h436.48q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H326.15Z"/></svg>
             </button>
@@ -116,14 +116,14 @@
 
                     // Limpiar todas
                     parent.querySelectorAll('.option-card').forEach(c => {
-                        c.classList.remove('bg-[#164d4f]', 'text-white', 'border-[#164d4f]', 'scale-105');
+                        c.classList.remove('shadow-xl', 'scale-105');
                         const inp = c.querySelector('input[type="radio"]');
                         if (inp) inp.checked = false;
                     });
 
                     // Activar la clickeada
                     card.classList.add('transition-all', 'duration-300', 'scale-105');
-                    card.classList.add('bg-[#164d4f]', 'text-white', 'border-[#164d4f]');
+                    card.classList.add('shadow-xl');
                     if (input) input.checked = true;
                 });
             });
