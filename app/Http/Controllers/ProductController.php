@@ -300,7 +300,6 @@ class ProductController extends Controller
                     'type_id' => 'required|integer|exists:product_types,id',
                     'category_id' => 'required|integer|exists:product_categories,id',
                     'rating' => 'nullable|integer|min:0|max:5',
-                    'donde_comprar' => 'nullable|string',
             ]);
 
             // Subida de imagen
@@ -356,7 +355,6 @@ class ProductController extends Controller
                     'type_id' => 'required|integer|exists:product_types,id',
                     'category_id' => 'required|integer|exists:product_categories,id',
                     'rating' => 'nullable|integer|min:0|max:5',
-                    'donde_comprar' => 'nullable|string',
                 ]);
 
 

@@ -55,7 +55,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2],
                         'concerns' => [1, 7, 8, 9],
-                        'donde_comprar' => 'Farmacity, MercadoLibre',
                     ],
                     [
                         'name' => 'La Roche-Posay Effaclar Gel',
@@ -68,7 +67,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [3, 5],
                         'concerns' => [1, 2, 8, 9],
-                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'Neutrogena Hydro Boost Water Gel Cleanser',
@@ -81,7 +79,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 5],
                         'concerns' => [1, 8],
-                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'Icono Cosmetica Gel de Limpieza Facial Purificante',
@@ -94,7 +91,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [1, 3, 4],
                         'concerns' => [1, 8],
-                        'donde_comprar' => 'Tiendas de estética, Mercado Libre',
                     ],
                 ],
                 'Hidratantes' => [
@@ -109,7 +105,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [3, 4, 5],
                         'concerns' => [1, 8, 9],
-                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'CeraVe Crema Hidratante',
@@ -122,7 +117,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [2],
                         'concerns' => [3, 9],
-                        'donde_comprar' => 'Farmacity, Tiendas online',
                     ],
                     [
                         'name' => 'The Ordinary Natural Moisturizing Factors + HA',
@@ -135,7 +129,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [7, 10],
-                        'donde_comprar' => 'Tiendas de cosmética especializada, Deciem',
                     ],
                     [
                         'name' => 'Dermaglós Facial Crema Nutritiva de Noche',
@@ -148,7 +141,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [1, 2, 5],
                         'concerns' => [3 ,10],
-                        'donde_comprar' => 'Farmacity, Perfumerías',
                     ],
                 ],
                 'Protectores Solares' => [
@@ -163,7 +155,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [2, 3],
-                        'donde_comprar' => 'Farmacity, Farmacias',
                     ],
                     [
                         'name' => 'Isdin Fusion Water Magic FPS 50',
@@ -176,7 +167,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [2, 3],
-                        'donde_comprar' => 'Mercado Libre, Farmacity',
                     ],
                 ],
                 'Sueros/Sérums' => [
@@ -191,7 +181,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [1, 3, 9, 5],
-                        'donde_comprar' => 'Farmacity, Perfumerías',
                     ],
                     [
                         'name' => 'The Ordinary Niacinamide 10% + Zinc 1%',
@@ -204,7 +193,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [3, 4],
                         'concerns' => [1, 5, 8, 5],
-                        'donde_comprar' => 'Tiendas de cosmética especializada',
                     ],
                     [
                         'name' => 'Glow Factor Vitamina C 15%',
@@ -217,7 +205,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [3, 6, 2, 5],
-                        'donde_comprar' => 'Web oficial, Mercado Libre',
                     ],
                 ],
                 'Exfoliantes' => [
@@ -232,7 +219,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [3, 4],
                         'concerns' => [1, 8],
-                        'donde_comprar' => 'Web oficial, Tiendas de importación',
                     ],
                 ],
             ],
@@ -249,7 +235,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 4],
                         'concerns' => [11, 12],
-                        'donde_comprar' => 'Mercado Libre, Tiendas profesionales',
                     ],
                     [
                         'name' => 'L’Oréal Serie Expert Absolut Repair',
@@ -262,7 +247,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 4],
                         'concerns' => [12],
-                        'donde_comprar' => 'Farmacity, Mercado Libre',
                     ],
                     [
                         'name' => 'Capilatis Ortiga Shampoo para Cabellos Grasos',
@@ -275,7 +259,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [3],
                         'concerns' => [],
-                        'donde_comprar' => 'Farmacity, Supermercados',
                     ],
                 ],
                 'Acondicionador' => [
@@ -290,7 +273,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [12],
-                        'donde_comprar' => 'Mercado Libre, Salones',
                     ],
                     [
                         'name' => 'Elvive Oleo Extraordinario Nutrición Intensa',
@@ -303,7 +285,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [1, 2, 3, 4, 5],
                         'concerns' => [12],
-                        'donde_comprar' => 'Supermercados, Farmacity',
                     ],
                 ],
                 'Tratamientos' => [
@@ -318,7 +299,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [1, 4],
                         'concerns' => [12],
-                        'donde_comprar' => 'Tiendas especializadas, Salones',
                     ],
                 ],
             ],
@@ -336,7 +316,6 @@ class ProductSeeder extends Seeder
                         'rating' => 4,
                         'skin_types' => [2, 5],
                         'concerns' => [3, 7, 9],
-                        'donde_comprar' => 'Supermercados, Farmacity',
                     ],
                     [
                         'name' => 'Cetaphil Loción Hidratante Corporal',
@@ -349,7 +328,6 @@ class ProductSeeder extends Seeder
                         'rating' => 5,
                         'skin_types' => [2, 5],
                         'concerns' => [3, 7, 9],
-                        'donde_comprar' => 'Farmacity, Farmacias',
                     ],
                 ],
             ],

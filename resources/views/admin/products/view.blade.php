@@ -75,9 +75,6 @@ use Illuminate\Support\Facades\Storage;
             <li class="mb-4">
                 <strong>Formato:</strong> {{ $product->formato ?? 'Sin formato' }}
             </li>
-            <li class="mb-4">
-                <strong>Donde Comprar:</strong> {{ $product->donde_comprar ?? 'Sin información de compra' }}
-            </li>
         </ul>
 
         <div class="mb-4 fs-5" style="white-space:pre-wrap; line-height:1.6;">

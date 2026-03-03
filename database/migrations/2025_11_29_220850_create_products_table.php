@@ -25,7 +25,6 @@ return new class extends Migration
             $table->text('activos')->nullable();
             $table->string('formato')->nullable();
             $table->integer('rating')->nullable();
-            $table->string('donde_comprar')->nullable();
 
             $table->timestamps();
 
