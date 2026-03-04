@@ -102,18 +102,21 @@ class ProductController extends Controller
         $user = auth()->user();
         $idsFavoritos = $user->favoritos ?? [];
 
-        // Asegurar que todos los IDs sean enteros
         $idsFavoritos = array_map('intval', $idsFavoritos);
 
-        // Siempre retornar una colección, incluso si está vacía
         if (!empty($idsFavoritos)) {
-            // Obtener los productos, manteniendo el orden de los favoritos
+
             $favorites = Product::whereIn('id', $idsFavoritos)->get();
 
-            // Filtrar para asegurar que todos los productos existan
             $favorites = $favorites->filter(function ($product) use ($idsFavoritos) {
                 return in_array((int) $product->id, $idsFavoritos);
             });
+
+            // 🔥 ESTA ES LA LÍNEA QUE FALTA
+            foreach ($favorites as $product) {
+                $product->isFavorito = true;
+            }
+
         } else {
             $favorites = collect();
         }
