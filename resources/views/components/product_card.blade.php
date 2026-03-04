@@ -51,14 +51,6 @@
         <p class="text-xs text-[#2A4043] mb-1 truncate">{{ $product->category->name }}</p>
     @endif
 
-    {{-- Dónde comprar --}}
-    @if(isset($product->purchase_link))
-        <a href="{{ $product->purchase_link }}" target="_blank"
-            class="text-xs text-[var(--kalm-main)] underline mb-1 block truncate">
-            Dónde comprar
-        </a>
-    @endif
-
     {{-- Etiqueta --}}
     @if ($product->resolved_tag_text)
         <span class="text-[0.65rem] px-2 py-0.5 rounded-full bg-[var(--kalm-main-light)] text-white">
