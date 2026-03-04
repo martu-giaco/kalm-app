@@ -105,6 +105,14 @@ class TestController extends Controller
                     ->with('error', 'No hay resultados disponibles.');
             }
 
+            // BUSCAR EL TEST
+                $test = Test::where('key', $testKey)->first();
+
+                    if (!$test) {
+                        return redirect()->route('tests.index')
+                            ->with('error', 'Test no encontrado.');
+                    }
+
             // Rutina recomendada
             $recommendedRoutine = RecommendedRoutine::with('routineTime')
                 ->where('test_key', $testKey)
@@ -113,14 +121,23 @@ class TestController extends Controller
 
             // Descripciones
             $descriptions = [
-                'normal' => 'Mantienen un equilibrio natural de hidratación y sebo. Lucen saludables, con buena textura y brillo. Solo necesitan cuidados básicos de mantenimiento.',
-                'seco' => 'Presentan falta de hidratación y nutrición. La piel puede sentirse tirante o descamada, y el cabello luce opaco, áspero o con puntas abiertas. Necesitan fórmulas nutritivas que restauren suavidad y elasticidad.',
-                'graso' => 'Producen exceso de sebo. La piel presenta brillo y poros visibles, y el cabello puede verse pesado o apelmazado. Necesitan fórmulas ligeras y reguladoras.',
-                'mixto' => 'Combinan zonas grasas con áreas más secas. La piel suele tener brillo en la zona T y sequedad en mejillas, mientras que el cabello presenta raíces grasas y puntas secas. Requieren productos equilibrantes.',
-                'sensible' => 'Son más reactivos y pueden irritarse con facilidad. La piel puede enrojecerse. Requieren productos suaves y calmantes.',
+                'skin' => [
+                    'normal' => 'Tener la piel normal significa que tu piel tiene un equilibrio adecuado de humedad y producción de sebo, lo que le permite lucir saludable, suave y con poros poco visibles. Este tipo de piel no es ni demasiado seca ni demasiado grasa, y generalmente no presenta problemas significativos como acné o sensibilidad. Para cuidar la piel normal, es importante mantener una rutina de cuidado básica que incluya limpieza suave, hidratación ligera y protección solar diaria.',
+                    'seco' => 'Tener la piel seca significa que tu piel produce menos aceites naturales de lo necesario, por lo que suele sentirsetirante, áspera o incómoda. Este tipo de piel pierde humedad con facilidad, lo que pude generar descamación y sensibilidad. Las bajas temperaturas, el viento y el uso de productos agresivos pueden empeorar la sequedad. Para cuidar la piel seca, es importante usar limpiadores suaves, hidratantes ricos en emolientes y evitar el uso excesivo de exfoliantes o productos con alcohol.',
+                    'graso' => 'Tener la piel grasa significa que tu piel produce un exceso de sebo, lo que puede hacer que luzca brillante y propensa a desarrollar acné. Este tipo de piel suele tener poros dilatados y es más común en adolescentes y adultos jóvenes, aunque puede afectar a personas de todas las edades. Para cuidar la piel grasa, es importante usar limpiadores específicos para controlar el exceso de grasa, evitar productos comedogénicos y mantener una rutina de cuidado que incluya hidratación ligera.',
+                    'mixto' => 'Tener la piel mixta significa que tu piel presenta características tanto de piel seca como de piel grasa. Generalmente, la zona T (frente, nariz y mentón) tiende a ser más grasa, mientras que las mejillas pueden ser secas o normales. Este tipo de piel puede ser un desafío para cuidar, ya que requiere productos específicos para cada área. Para cuidar la piel mixta, es importante usar limpiadores suaves, hidratantes equilibrados y productos que ayuden a controlar el exceso de grasa en la zona T sin resecar las áreas secas.',
+                    'sensible' => 'Tener la piel sensible significa que tu piel es propensa a reaccionar de manera exagerada a factores externos como el clima, productos de cuidado o incluso el estrés. Este tipo de piel puede presentar enrojecimiento, picazón, ardor o descamación con facilidad. Para cuidar la piel sensible, es importante usar productos hipoalergénicos, evitar ingredientes irritantes como fragancias o alcohol, y mantener una rutina de cuidado suave y consistente.',
+                ],
+                'hair' => [
+                    'normal' => 'Tener el cabello normal significa que tu cabello tiene un equilibrio adecuado de humedad y producción de sebo, lo que le permite lucir saludable, suave y con brillo natural. Este tipo de cabello no es ni demasiado seco ni demasiado graso, y generalmente no presenta problemas significativos como caspa o daño excesivo. Para cuidar el cabello normal, es importante mantener una rutina de cuidado básica que incluya lavado regular con un champú suave, acondicionamiento ligero y protección contra el calor.',
+                    'seco' => 'Tener el cabello seco significa que tu cabello carece de humedad y aceites naturales, lo que puede hacer que se sienta áspero, quebradizo y sin brillo. Este tipo de cabello es más propenso a dañarse con el peinado, el uso de herramientas de calor o la exposición al sol. Para cuidar el cabello seco, es importante usar champús hidratantes, acondicionadores ricos en emolientes y tratamientos profundos regularmente para restaurar la humedad.',
+                    'graso' => 'Tener el cabello graso significa que tu cabello produce un exceso de sebo, lo que puede hacer que luzca brillante y propenso a desarrollar caspa. Este tipo de cabello suele tener raíces grasas y es más común en adolescentes y adultos jóvenes, aunque puede afectar a personas de todas las edades. Para cuidar el cabello graso, es importante usar champús específicos para controlar el exceso de grasa, evitar productos comedogénicos y mantener una rutina de cuidado que incluya acondicionamiento ligero.',
+                    'mixto' => 'Tener el cabello mixto significa que tu cabello presenta características tanto de cabello seco como de cabello graso. Generalmente, las raíces tienden a ser más grasas, mientras que las puntas pueden ser secas o normales. Este tipo de cabello puede ser un desafío para cuidar, ya que requiere productos específicos para cada área. Para cuidar el cabello mixto, es importante usar champús suaves, acondicionadores equilibrados y productos que ayuden a controlar el exceso de grasa en las raíces sin resecar las puntas.',
+                    'sensible' => 'Tener el cabello sensible significa que tu cuero cabelludo es propenso a reaccionar de manera exagerada a factores externos como el clima, productos de cuidado o incluso el estrés. Este tipo de cuero cabelludo puede presentar enrojecimiento, picazón, ardor o descamación con facilidad. Para cuidar el cuero cabelludo sensible, es importante usar productos hipoalergénicos, evitar ingredientes irritantes como fragancias o alcohol, y mantener una rutina de cuidado suave y consistente.',
+                ]
             ];
 
-            $resultDesc = $descriptions[$resultLabel] ?? 'Descripción no disponible.';
+            $resultDesc = $descriptions[$test->category][$resultLabel] ?? 'Descripción no disponible.';
 
             // Productos
             $recommendedProducts = Product::where('description', 'like', "%{$resultLabel}%")->get();

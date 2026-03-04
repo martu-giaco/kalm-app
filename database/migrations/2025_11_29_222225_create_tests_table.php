@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('key')->unique();
             $table->string('title');
+            $table->string('category'); // 'skin' o 'hair'
             $table->string('description')->nullable();
             $table->json('questions')->nullable();
             $table->timestamps();

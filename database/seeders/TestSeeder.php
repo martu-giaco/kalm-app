@@ -22,6 +22,7 @@ class TestSeeder extends Seeder
             [
                 'key' => 'piel',
                 'title' => '¿Qué tipo de piel tengo?',
+                'category' => 'skin',
                 'description' => '10 preguntas · 7 minutos',
                 'questions' => json_encode([
                     [
@@ -132,6 +133,7 @@ class TestSeeder extends Seeder
             [
                 'key' => 'cabello',
                 'title' => '¿Qué tipo de cabello tengo?',
+                'category' => 'hair',
                 'description' => '10 preguntas · 9 minutos',
                 'questions' => json_encode([
                     [
