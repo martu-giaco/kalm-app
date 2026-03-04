@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         // Home admin
         Route::get('/', [HomeController::class, 'adminHome'])->name('admin.home');
+        Route::get('/team', [ProfileController::class, 'equipokalm'])->name('admin.equipokalm');
 
         //Usuarios CRUD
         Route::get('/users', [ProfileController::class, 'index'])->name('admin.users.index');

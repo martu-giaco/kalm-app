@@ -1,8 +1,11 @@
 <x-layout :title="$category->name">
     <section class="h-full px-5 pt-10 bg-white rounded-t-3xl">
-        <h1 class="text-3xl font-bold text-[#2A4043] border-b pb-3 border-gray-100">
+        <h1 class="text-3xl font-bold text-[#2A4043] border-b pb-2 border-gray-100">
             {{ $category->name }}
         </h1>
+        <p class="mt-3 mb-6 text-[#37A0AF] text-sm">
+            {{ $category->description }}
+        </p>
 
         <div>
 

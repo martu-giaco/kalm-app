@@ -139,6 +139,13 @@ class ProfileController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
+    public function equipokalm()
+    {
+        $users = User::orderBy('created_at', 'desc')->paginate(25);
+        // Vista del equipo de Kälm
+        return view('admin.equipokalm', compact('users'));
+    }
+
     // Ver detalle de un usuario (route model binding posible)
     public function view(User $user)
     {

@@ -163,6 +163,16 @@
                             </a>
                         </li>
 
+                        <!-- Premium -->
+                        <li class="flex flex-col items-center font-bold text-[#306067]">
+                            <a href="{{ route('subscription.show') }}" class="flex flex-col items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#306067">
+                                    <path d="M127-793q12-12 28-12t28 12l29 28q12 12 12 28.5T212-708q-12 12-28.5 12T155-708l-28-29q-12-12-12-28t12-28Zm381.5-75.5Q520-857 520-840v40q0 17-11.5 28.5T480-760q-17 0-28.5-11.5T440-800v-40q0-17 11.5-28.5T480-880q17 0 28.5 11.5ZM832-793q12 12 11.5 28T831-737l-28 29q-12 12-28 12t-28-12q-12-12-12-28.5t12-28.5l28-28q12-12 28.5-12t28.5 12ZM205-400h550q14 0 19 12t-5 22L536-136q-23 23-56 23t-56-23L191-366q-10-10-5-22t19-12Zm-22-113 113-138q11-14 27.5-21.5T358-680h244q18 0 34.5 7.5T664-651l113 138q8 10 3 21.5T762-480H198q-13 0-18-11.5t3-21.5Z"/>
+                                </svg>
+                                <span class="sr-only">Premium</span>
+                            </a>
+                        </li>
+
                         <!-- perfil -->
                         <li class="flex flex-col items-center font-bold text-[#306067]">
                             <a href="{{ route('profile.show') }}" class="flex flex-col items-center">
@@ -172,16 +182,6 @@
                                             d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-240v-32q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v32q0 33-23.5 56.5T720-160H240q-33 0-56.5-23.5T160-240Z" />
                                     </svg>
                                 <span class="sr-only">Perfil</span>
-                            </a>
-                        </li>
-
-                        <!-- Premium -->
-                        <li class="flex flex-col items-center font-bold text-[#306067]">
-                            <a href="{{ route('subscription.show') }}" class="flex flex-col items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960" width="35px" fill="#306067">
-                                    <path d="M127-793q12-12 28-12t28 12l29 28q12 12 12 28.5T212-708q-12 12-28.5 12T155-708l-28-29q-12-12-12-28t12-28Zm381.5-75.5Q520-857 520-840v40q0 17-11.5 28.5T480-760q-17 0-28.5-11.5T440-800v-40q0-17 11.5-28.5T480-880q17 0 28.5 11.5ZM832-793q12 12 11.5 28T831-737l-28 29q-12 12-28 12t-28-12q-12-12-12-28.5t12-28.5l28-28q12-12 28.5-12t28.5 12ZM205-400h550q14 0 19 12t-5 22L536-136q-23 23-56 23t-56-23L191-366q-10-10-5-22t19-12Zm-22-113 113-138q11-14 27.5-21.5T358-680h244q18 0 34.5 7.5T664-651l113 138q8 10 3 21.5T762-480H198q-13 0-18-11.5t3-21.5Z"/>
-                                </svg>
-                                <span class="sr-only">Premium</span>
                             </a>
                         </li>
 
@@ -379,7 +379,7 @@
                             @else
                             <li>
                                 <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
-                                    href="{{ route('help') }}">
+                                    href="{{ route('admin.equipokalm') }}">
                                     Equipo Kälm
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                         width="24px" fill="#306067" class="p-0">

@@ -78,20 +78,20 @@
                         @if (!empty($product->tags) && $product->tags->count())
                             <div class="flex flex-wrap gap-2 mt-4">
                                 @foreach ($product->tags as $tag)
-                                    <button
-                                        class="text-white text-sm truncate bg-[#37A0AF] px-2 py-1 rounded-xl">{{ $tag->name }}</button>
+                                    <a
+                                        class="text-white text-sm truncate bg-[#37A0AF] px-2 py-1 rounded-xl">{{ $tag->name }}</a>
                                 @endforeach
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="flex flex-wrap gap-2 my-3">
-                                <button
+                                <a
                                     class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                                     ✨{{ $product->type->name ?? '-' }}
-                                </button>
-                                <button
+                                </a>
+                                <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"
                                     class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                                     {{ $product->category->name ?? '-' }}
-                                </button>
+                                </a>
                             </div>
                         @endif
                     </div>

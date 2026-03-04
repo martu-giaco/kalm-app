@@ -37,8 +37,15 @@
 <body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
     <div class="max-w-3xl px-7 py-8 mx-auto">
-        <article class="pt-6">
+        <div class="flex items-end justify-end max-w-3xl mx-auto w-full">
+            <a href="{{ route('profile.results') }}" class="self-end cursor-pointer" aria-label="close sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#2A4043" aria-hidden="true">
+                    <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+                </svg>
+            </a>
+        </div>
 
+        <article class="pt-6">
             {{-- Mostrar notificación de éxito si existe --}}
             @if (session('success'))
                 <div class="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg shadow-md animate-fadeIn">

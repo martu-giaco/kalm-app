@@ -16,6 +16,7 @@ class ProductCategory extends Model
         'slug',
         'type_id',
         'icon_svg',
+        'description',
     ];
 
     /**
