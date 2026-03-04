@@ -110,6 +110,17 @@ class HomeController extends Controller
             ],
         ];
 
+        // Verificar si el producto es favorito
+        $user = auth()->user();
+        $idsFavoritos = $user ? array_map('intval', ($user->favoritos ?? [])) : [];
+
+        foreach ($product_sections as &$section) {
+            foreach ($section['products'] as $product) {
+                $product->isFavorito = in_array((int) $product->id, $idsFavoritos);
+            }
+        }
+        unset($section);
+
         // --- 8. Retornar vista ---
         return view('user.home', compact(
             'categories',

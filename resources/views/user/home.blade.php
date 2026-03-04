@@ -76,38 +76,12 @@
                 <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
                 <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
-                        <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
-                            <div class="overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
-
-                                {{-- Imagen del producto --}}
-                                <div class="w-full h-40 overflow-hidden">
-                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                        class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
-                                </div>
-
-                                {{-- Info simplificada --}}
-                                <div class="flex flex-col p-3">
-                                    <h3 class="text-sm font-semibold text-[#2A4043] truncate">
-                                        {{ $product->name }}
-                                    </h3>
-
-                                    @if (!empty($product->brand?->name))
-                                        <h3 class="text-[13px] text-[#37A0AF] truncate">
-                                            {{ $product->brand->name }}</h3>
-                                    @endif
-                                    @if (!empty($product->type?->name))
-                                        <button class="text-[10px] mt-2 w-20 inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
-                                            ✨{{ $product->type->name }}
-                                        </button>
-                                    @endif
-                                </div>
-
-                            </div>
-                        </a>
+                        <x-product-card :product="$product" />
                     @endforeach
                 </div>
             </div>
         @endforeach
     </section>
+
 
 </x-layout>
