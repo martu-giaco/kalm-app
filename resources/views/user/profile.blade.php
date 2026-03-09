@@ -8,15 +8,15 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <h2 class="text-3xl me-2 text-[#306067]">{{ $user->name ?? 'Invitado' }}</h2>
-                        @if(auth()->user()->role === 'free')
+                        @if(auth()->user()?->role === 'free')
                             <a href="{{ route('subscription.show') }}" class="py-1 px-3 rounded-xl bg-[#CCE2E5] text-[#306067]">
                                 <p class="text-sm">Free</p>
                             </a>
-                        @elseif(auth()->user()->role === 'premium')
+                        @elseif(auth()->user()?->role === 'premium')
                             <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                                 <p class="text-sm">Premium</p>
                             </div>
-                        @elseif(auth()->user()->role === 'admin')
+                        @elseif(auth()->user()?->role === 'admin')
                             <div  class="py-1 px-3 rounded-xl" style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
                                 <p class="text-sm">Admin</p>
                             </div>

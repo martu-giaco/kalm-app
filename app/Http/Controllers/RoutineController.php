@@ -176,7 +176,7 @@ class RoutineController extends Controller
 
     private function authorizeOwner(Routine $routine)
     {
-        if ($routine->user_id != auth()->id()) {
+        if ($routine->user_id && $routine->user_id != auth()->id()) {
             abort(403, 'No tenés permiso para realizar esta acción.');
         }
     }

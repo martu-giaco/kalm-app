@@ -25,7 +25,7 @@
     <h1 class="text-white text-2xl font-semibold">No pudimos procesar tu solicitud</h1>
     <p class="text-[#CCE2E5] text-md mt-2 mb-20 pb-20">Intentelo nuevamente más tarde</p>
 
-    <a @if(auth()->user()->role === 'admin') href="{{ route('admin.home') }}" @else href="{{ route('home') }}" @endif class="mt-20 btn hover:bg-transparent hover:border-[#CCE2E5] hover:text-[#CCE2E5] w-full inline-flex border-2 border-[#CCE2E5] text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">Volver al inicio</a>
+    <a @if(auth()->check() && auth()->user()?->role === 'admin') href="{{ route('admin.home') }}" @else href="{{ route('home') }}" @endif class="mt-20 btn hover:bg-transparent hover:border-[#CCE2E5] hover:text-[#CCE2E5] w-full inline-flex border-2 border-[#CCE2E5] text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">Volver al inicio</a>
 
 </body>
 </html>
