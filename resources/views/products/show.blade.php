@@ -84,8 +84,7 @@
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="flex flex-wrap gap-2 my-3">
-                                <a
-                                    class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                <a class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                                     ✨{{ $product->type->name ?? '-' }}
                                 </a>
                                 <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"
@@ -151,10 +150,10 @@
                             </a>
                         @endif
                     @else
-                        <button onclick="document.getElementById('premium-modal').classList.remove('hidden')"
-                            class="mt-4 inline-block bg-[#FFDE21] text-[#164d4f] px-5 py-2 rounded-lg font-bold hover:bg-[#E6C917]">
+                        <a href="{{ route('subscription.show') }}"
+                            class="mt-4 inline-block bg-[#37A0AF] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#2B7C87] transition">
                             Kälm Premium
-                        </button>
+                        </a>
                     @endif
                 @endif
             </div>

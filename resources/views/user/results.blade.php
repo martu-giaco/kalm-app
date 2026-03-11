@@ -1,19 +1,19 @@
 <x-layout>
-    <div class="px-5 py-10 rounded-t-3xl min-h-full bg-white">
+    <div class="min-h-full px-5 py-10 bg-white rounded-t-3xl">
         <h1 class="text-3xl font-bold text-[#164d4f] mb-6">Mis Resultados</h1>
 
         @if($results->isEmpty())
             <div class="p-8 text-center">
-                <p class="text-gray-600 mb-4">Aún no has completado ningún test</p>
+                <p class="mb-4 text-gray-600">Aún no has completado ningún test</p>
                 <a href="{{ route('tests.index') }}" class="inline-block px-6 py-2 bg-[#164d4f] text-white rounded-lg hover:bg-[#0d3537] transition">
-                    Realizar un test
+                    Realizar un Test
                 </a>
             </div>
         @else
             <div class="space-y-6">
                     @foreach($results as $result)
-                    <div class="bg-white p-6 rounded-xl shadow-xl transition">
-                        <div class="flex justify-between items-start">
+                    <div class="p-6 transition bg-white shadow-xl rounded-xl">
+                        <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <h2 class="text-xl font-semibold text-[#164d4f]">
                                     Tu {{ ($result->test_key) }} es
