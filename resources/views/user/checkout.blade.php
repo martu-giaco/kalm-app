@@ -1,7 +1,7 @@
 <x-layout :title="'Checkout - Kälm Premium'">
 
-    <section class="flex flex-col items-center w-full justify-center pt-10 pb-20">
-        <h1 class="text-4xl font-bold text-[#306067] mb-2">Confirmar Suscripción</h1>
+    <section class="flex flex-col items-center justify-center w-full pt-10 pb-20">
+        <h1 class="text-4xl text-center font-bold text-[#306067] mb-2">Confirmar Suscripción</h1>
         <p class="text-[#37A0AF] mb-12 px-4">Estás a un paso de disfrutar Kälm Premium</p>
 
         <div class="w-full max-w-md px-4">
@@ -11,22 +11,22 @@
 
                 <!-- Detalles del plan -->
                 <div class="space-y-4 pb-4 border-b-2 border-[#CCE2E5]">
-                    <div class="flex justify-between items-center">
+                    <div class="flex items-center justify-between">
                         <span class="text-[#2A4043]">Producto</span>
                         <span class="font-bold text-[#306067]">Kälm Premium</span>
                     </div>
-                    <div class="flex justify-between items-center">
+                    <div class="flex items-center justify-between">
                         <span class="text-[#2A4043]">Periodo</span>
                         <span class="font-bold text-[#306067]">Mensual</span>
                     </div>
-                    <div class="flex justify-between items-center">
+                    <div class="flex items-center justify-between">
                         <span class="text-[#2A4043]">Precio</span>
                         <span class="text-3xl font-extrabold text-[#37A0AF]">ARS $7,000</span>
                     </div>
                 </div>
 
                 <!-- Total -->
-                <div class="flex justify-between items-center mt-4">
+                <div class="flex items-center justify-between mt-4">
                     <span class="text-lg font-bold text-[#306067]">Total a pagar</span>
                     <span class="text-3xl font-extrabold" style="background: linear-gradient(135deg, #37A0AF, #CCE2E5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ARS $7,000</span>
                 </div>
@@ -84,7 +84,7 @@
                 </a>
             </div>
 
-            <p class="text-[#306067] text-xs text-center mt-6">
+            <p class="text-[#306067] text-xs text-center my-6">
                 Transacción segura • Esta suscripción se puede cancelar sin penalizaciones
             </p>
         </div>
