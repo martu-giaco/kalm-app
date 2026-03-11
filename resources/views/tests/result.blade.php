@@ -36,8 +36,8 @@
 
 <body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
 
-    <div class="max-w-3xl px-7 py-8 mx-auto">
-        <div class="flex items-end justify-end max-w-3xl mx-auto w-full">
+    <div class="max-w-3xl py-8 mx-auto px-7">
+        <div class="flex items-end justify-end w-full max-w-3xl mx-auto">
             <a href="{{ route('profile.results') }}" class="self-end cursor-pointer" aria-label="close sidebar">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#2A4043" aria-hidden="true">
                     <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
@@ -48,7 +48,7 @@
         <article class="pt-6">
             {{-- Mostrar notificación de éxito si existe --}}
             @if (session('success'))
-                <div class="mb-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 rounded-lg shadow-md animate-fadeIn">
+                <div class="p-4 mb-6 border-l-4 border-green-500 rounded-lg shadow-md bg-gradient-to-r from-green-50 to-emerald-50 animate-fadeIn">
                     <div class="flex items-center gap-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600" viewBox="0 -960 960 960" fill="currentColor">
                             <path d="M382-240 154-468l51-51 177 177 360-360 51 51-411 411Z"/>
@@ -115,7 +115,7 @@
                         </form>
                     @endauth
                 @else
-                    <p class="text-gray-500 text-center mt-4">
+                    <p class="mt-4 text-center text-gray-500">
                         No hay una rutina cargada para este resultado.
                     </p>
                 @endif
@@ -175,7 +175,7 @@
     </div>
 
     {{-- Botones de acción --}}
-    <div class="sticky bottom-0 flex flex-wrap gap-3 mt-6 p-4 py-7 bg-white w-full">
+    <div class="sticky bottom-0 flex flex-wrap w-full gap-3 p-4 mt-6 bg-white py-7">
         @php $testKey = session('test_key'); @endphp
 
         @auth
@@ -184,12 +184,12 @@
                 <input type="hidden" name="test_key" value="{{ $testKey }}">
                 <input type="hidden" name="result_key" value="{{ $resultLabel }}">
                 <input type="hidden" name="answers" value='{{ json_encode(session('test_answers', [])) }}'>
-                <button type="submit" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full">Guardar resultado
-                    en perfil</button>
+                <button type="submit" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full">Guardar Resultado
+                    en Perfil</button>
             </form>
         @else
             <a href="{{ route('auth.login') }}" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full">
-                Iniciar sesión para guardar
+                Iniciar Sesión para guardar
             </a>
         @endauth
 

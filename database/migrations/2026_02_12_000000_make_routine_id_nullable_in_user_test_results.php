@@ -10,31 +10,40 @@ return new class extends Migration
     {
         Schema::table('user_test_results', function (Blueprint $table) {
 
-            // 1 eliminar foreign key
             $table->dropForeign(['routine_id']);
 
-            // 2 hacer nullable
+            Schema::table('user_test_results', function (Blueprint $table) {
+            // Índice único compuesto: 1 resultado por usuario y por test_key
+            $table->unique(['user_id', 'test_key'], 'unique_user_test_per_type');
+        });
+
+            // 2. Hacer la columna nullable
             $table->unsignedBigInteger('routine_id')->nullable()->change();
 
-            // 3 volver a crear foreign key
+            // 3. Recrear la foreign key con SET NULL
             $table->foreign('routine_id')
-                ->references('id')
+                ->references('routine_id')           // clave primaria de la tabla routines
                 ->on('routines')
-                ->nullOnDelete();
+                ->onDelete('set null');
         });
     }
 
     public function down(): void
     {
         Schema::table('user_test_results', function (Blueprint $table) {
-
+            // Revertir: eliminar FK actual
             $table->dropForeign(['routine_id']);
 
+            // Volver a NOT NULL (como estaba originalmente)
             $table->unsignedBigInteger('routine_id')->nullable(false)->change();
 
+            // Recrear FK sin SET NULL (la versión más común por defecto es RESTRICT)
             $table->foreign('routine_id')
-                ->references('id')
-                ->on('routines');
+                ->references('routine_id')
+                ->on('routines')
+                ->cascadeOnDelete();
+
+            $table->dropUnique('unique_user_test_per_type');
         });
     }
 };
