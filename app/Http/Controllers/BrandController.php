@@ -15,10 +15,44 @@ class BrandController extends Controller
         return view('admin.brands.index', compact('brands'));
     }
 
-    // Ver detalle de un usuario (route model binding posible)
+    // Ver detalle de una marca
     public function view(Brand $brand)
     {
         return view('admin.brands.view', compact('brand'));
+    }
+
+        // Formulario para crear marca (solo admin)
+    public function create()
+    {
+        $this->authorizeAdmin();
+        return view('admin.brands.create');
+    }
+
+    public function adminIndex()
+    {
+        $brands = Brand::orderByDesc('created_at')->get();
+        return view('admin.brands.index', compact('brands'));
+    }
+
+    // Guardar nueva marca (solo admin)
+    public function store(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'logo' => ['nullable', 'image', 'max:2048'], // 2MB máximo
+        ]);
+
+        // Subida de imagen
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $validated['logo'] = $path;
+        }
+
+        Brand::create($validated);
+
+        return redirect()->route('admin.brands.index')->with('success', 'Marca creada correctamente.');
     }
 
     //Formulario de edición.
@@ -31,7 +65,7 @@ class BrandController extends Controller
     }
 
     /**
-     * Actualizar marca //A ESTO LE FALTA, ES COPYPASTE DE USUARIO, HAY QUE ADAPTARLO A MARCA
+     * Actualizar marca
      */
     public function update(Request $request, $id)
     {
@@ -40,18 +74,17 @@ class BrandController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('brands')->ignore($brand->id)],
-            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
+            'logo' => ['nullable', 'image', 'max:2048'], // 2MB máximo
         ]);
 
-        // Subida de avatar
-        if ($request->hasFile('avatar')) {
-            // Borrar avatar anterior si existe
-            if ($brand->avatar) {
-                Storage::disk('public')->delete($brand->avatar);
+        // Subida de logo
+        if ($request->hasFile('logo')) {
+            // Borrar logo anterior si existe
+            if ($brand->logo) {
+                Storage::disk('public')->delete($brand->logo);
             }
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $data['avatar'] = $path;
+            $path = $request->file('logo')->store('logos', 'public');
+            $data['logo'] = $path;
         }
 
         $brand->update($data);

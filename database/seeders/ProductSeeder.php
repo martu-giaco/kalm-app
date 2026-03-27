@@ -13,42 +13,6 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        $brandNamesMap = [
-            1 => 'CeraVe',
-            2 => 'La Roche-Posay',
-            3 => 'Neutrogena',
-            5 => 'Kérastase',
-            6 => 'L’Oréal',
-            7 => 'Redken',
-            8 => 'Icono Cosmetica',
-            9 => 'The Ordinary',
-            10 => 'Dermaglós',
-            11 => 'Eucerin',
-            12 => 'Isdin',
-            13 => 'Vichy',
-            14 => 'Glow Factor',
-            15 => 'Paula\'s Choice',
-            16 => 'Capilatis',
-            17 => 'Olaplex',
-            18 => 'Nivea',
-            19 => 'Cetaphil',
-            20 => 'Avène',
-            21 => 'Bioderma',
-            22 => 'EltaMD',
-            23 => 'Nécessaire',
-            24 => 'Aveeno',
-            25 => 'SkinCeuticals',
-            26 => 'Blue Lizard',
-            27 => 'COSRX',
-            28 => 'Aestura',
-        ];
-
-        $actualBrands = [];
-        foreach ($brandNamesMap as $keyId => $name) {
-            $brand = Brand::firstOrCreate(['name' => $name]);
-            $actualBrands[$keyId] = $brand->id;
-        }
-
         $typesCategories = [
             'Skincare' => [
                 'Limpiadores' => [
@@ -636,7 +600,7 @@ class ProductSeeder extends Seeder
                             'formato' => 'Loción',
                             'rating' => 5,
                             'skin_types' => [2, 5],
-                            'concerns' => [3, 15],
+                            'concerns' => [3],
                         ],
                         [
                             'name' => 'La Roche-Posay Lipikar Lotion',
@@ -695,8 +659,6 @@ class ProductSeeder extends Seeder
                 );
 
                 foreach ($categoryData['products'] as $productData) {
-                    $originalBrandId = $productData['brand_id'];
-                    $productData['brand_id'] = $actualBrands[$originalBrandId];
                     $skinTypes = $productData['skin_types'] ?? [];
                     $concerns = $productData['concerns'] ?? [];
                     unset($productData['skin_types'], $productData['concerns']);

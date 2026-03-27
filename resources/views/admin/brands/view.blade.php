@@ -3,21 +3,21 @@
 use Illuminate\Support\Facades\Storage;
 ?>
 
-<x-layout :title="'Detalle de Producto - Panel de Administración'">
+<x-layout :title="'Detalle de Marca - Panel de Administración'">
     <div class="container my-5 px-5 bg-white rounded-t-3xl min-h-full pt-5">
         <div class="flex gap-2 flex-wrap justify-between items-center mb-4">
-            <a href="{{ route('admin.products.index') }}" class="bg-transparent border-transparent shadow-none">
+            <a href="{{ route('admin.brands.index') }}" class="bg-transparent border-transparent shadow-none">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m142-480 294 294q15 15 14.5 35T435-116q-15 15-35 15t-35-15L57-423q-12-12-18-27t-6-30q0-15 6-30t18-27l308-308q15-15 35.5-14.5T436-844q15 15 15 35t-15 35L142-480Z"/></svg>
             </a>
 
             <div class="flex gap-3">
                 @auth
-                    <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="btn font-bold text-white bg-[#306067] border-[#306067]">
+                    <a href="{{ route('admin.brands.edit', ['brand' => $brand->id]) }}" class="btn font-bold text-white bg-[#306067] border-[#306067]">
                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#fff"><path d="M200-200h57l391-391-57-57-391 391v57Zm-40 80q-17 0-28.5-11.5T120-160v-97q0-16 6-30.5t17-25.5l505-504q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L313-143q-11 11-25.5 17t-30.5 6h-97Zm600-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
                         Editar
                     </a>
 
-                    <form action="{{ route('admin.products.destroy', ['product' => $product->id]) }}" method="POST" onsubmit="return confirm('¿Confirma que desea eliminar este producto?');">
+                    <form action="{{ route('admin.brands.destroy', ['brand' => $brand->id]) }}" method="POST" onsubmit="return confirm('¿Confirma que desea eliminar esta marca?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn font-bold text-white bg-[#430000] border-[#430000]">
@@ -29,13 +29,13 @@ use Illuminate\Support\Facades\Storage;
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold text-[#306067]">{{ $product->name }}</h1>
+        <h1 class="text-3xl font-bold text-[#306067]">{{ $brand->name }}</h1>
 
         {{-- Imagen principal --}}
                 <div class="relative md:flex-shrink-0 md:w-1/2">
                     <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
-                        @if (!empty($product->image))
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                        @if (!empty($brand->image))
+                            <img src="{{ $brand->image_url }}" alt="{{ $brand->name }}"
                                 class="object-cover w-full bg-white h-80">
                         @else
                             <div class="flex items-center justify-center w-full text-gray-400 h-80">
@@ -43,39 +43,6 @@ use Illuminate\Support\Facades\Storage;
                             </div>
                         @endif
                     </div>
-                    @if (!empty($product->brand->name))
-                            <h2 class="mt-1 text-lg text-[#37A0AF] truncate">{{ $product->brand->name }}</h2>
-                        @endif
-
-        <ul class="mb-4">
-            <li class="mb-4">
-                <strong>Descripción:</strong> {{ $product->description ?? 'Sin descripción' }}
-            </li>
-            <li class="mb-4">
-                <strong>Categoría:</strong> {{ $product->category->name ?? 'Sin categoría' }}
-            </li>
-            <li class="mb-4">
-                <strong>Tipo:</strong> {{ $product->type->name ?? 'Sin tipo' }}
-            </li>
-            <li class="mb-4">
-                <strong>Tipo de piel:</strong> {{ $product->skinTypes->pluck('name')->implode(', ') ?? 'Sin tipo de piel' }}
-            </li>
-            <li class="mb-4">
-                <strong>Preocupaciones:</strong> {{ $product->concerns->pluck('name')->implode(', ') ?? 'Sin preocupaciones' }}
-            </li>
-            <li class="mb-4">
-                <strong>Ingredientes:</strong> {{ $product->ingredients ?? 'Sin ingredientes' }}
-            </li>
-            <li class="mb-4">
-                <strong>Activos:</strong> {{ $product->activos ?? 'Sin activos' }}
-            </li>
-            <li class="mb-4">
-                <strong>Rating:</strong> {{ $product->rating ?? 'Sin rating' }}
-            </li>
-            <li class="mb-4">
-                <strong>Formato:</strong> {{ $product->formato ?? 'Sin formato' }}
-            </li>
-        </ul>
 
     </div>
 </x-layout>
