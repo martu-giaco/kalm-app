@@ -52,36 +52,62 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="skin_type" class="block mb-1 text-sm">Tipo de piel</label>
-                <select name="skinTypes[]" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar tipo de piel</option>
-                    @php
+            <div class="mb-5">
+                <p for="skin_type" class="block mb-3 text-sm font-bold text-[#2A4043]">Tipo de piel</p>
+                @php
                         $selectedSkinTypes = old('skinTypes', $product->skinTypes->pluck('id')->toArray());
                         $selectedSkinTypes = is_array($selectedSkinTypes) ? $selectedSkinTypes : [$selectedSkinTypes];
                     @endphp
+                <div class="flex flex-wrap gap-x-1 gap-y-4 align-middle">
                     @foreach($skinTypes as $skinType)
-                        <option value="{{ $skinType->id }}" {{ in_array($skinType->id, $selectedSkinTypes) ? 'selected' : '' }}>
-                            {{ $skinType->name }}
-                        </option>
+                        <label class="cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="skin_types[]"
+                                value="{{ $skinType->id }}"
+                                class="hidden peer"
+                                {{ in_array($skinType->id, $selectedSkinTypes) ? 'checked' : '' }}
+                            >
+
+                            <span class="px-4 py-2 text-sm text-center rounded-full border border-[#CCE2E5] bg-white text-[#2A4043]
+                                peer-checked:bg-[#37A0AF]
+                                peer-checked:text-white
+                                peer-checked:border-[#37A0AF]
+                                transition-all duration-200">
+                                {{ $skinType->name }}
+                            </span>
+                        </label>
                     @endforeach
-                </select>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="concern" class="block mb-1 text-sm">Preocupaciones</label>
-                <select name="concerns[]" id="concern" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar preocupaciones</option>
+            <div class="mb-5">
+                <p for="concern" class="block mb-3 text-sm font-bold text-[#2A4043]">Preocupaciones</p>
                     @php
                         $selectedConcerns = old('concerns', $product->concerns->pluck('id')->toArray());
                         $selectedConcerns = is_array($selectedConcerns) ? $selectedConcerns : [$selectedConcerns];
                     @endphp
+                <div class="flex flex-wrap gap-x-1 gap-y-4 align-middle">
                     @foreach($concerns as $concern)
-                        <option value="{{ $concern->id }}" {{ in_array($concern->id, $selectedConcerns) ? 'selected' : '' }}>
-                            {{ $concern->name }}
-                        </option>
+                        <label class="cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="concerns[]"
+                                value="{{ $concern->id }}"
+                                class="hidden peer"
+                                {{ in_array($concern->id, $selectedConcerns) ? 'checked' : '' }}
+                            >
+
+                            <span class="px-4 py-2 text-sm text-center rounded-full border border-[#CCE2E5] bg-white text-[#2A4043]
+                                peer-checked:bg-[#37A0AF]
+                                peer-checked:text-white
+                                peer-checked:border-[#37A0AF]
+                                transition-all duration-200">
+                                {{ $concern->name }}
+                            </span>
+                        </label>
                     @endforeach
-                </select>
+                </div>
             </div>
 
             <div class="mb-3">
