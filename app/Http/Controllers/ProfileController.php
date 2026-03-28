@@ -51,7 +51,7 @@ class ProfileController extends Controller
         $user = auth()->user();
 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:20'],
+            'name' => ['required', 'string', 'max:10'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
         ]);
@@ -169,7 +169,7 @@ class ProfileController extends Controller
         $user = User::findOrFail($id);
 
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:20'],
+            'name' => ['required', 'string', 'max:10'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
             'role' => ['required', 'string', 'max:255'],
