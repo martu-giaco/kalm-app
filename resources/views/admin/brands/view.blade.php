@@ -34,8 +34,8 @@ use Illuminate\Support\Facades\Storage;
         {{-- Imagen principal --}}
                 <div class="relative md:flex-shrink-0 md:w-1/2">
                     <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
-                        @if (!empty($brand->image))
-                            <img src="{{ $brand->image_url }}" alt="{{ $brand->name }}"
+                        @if (!empty($brand->logo))
+                            <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}"
                                 class="object-cover w-full bg-white h-80">
                         @else
                             <div class="flex items-center justify-center w-full text-gray-400 h-80">
