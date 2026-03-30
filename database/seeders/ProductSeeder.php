@@ -259,7 +259,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'La Roche-Posay Anthelios UVMune 400 Invisible Fluid SPF50+',
                             'brand_id' => 2,
-                            'image' => 'anthelios-uvmune.jpg',
+                            'image' => 'anthelios-uvmune.webp',
                             'description' => 'Fluido invisible con protección ultra amplia contra UVA largos.',
                             'ingredients' => 'Mexoryl 400, Netlock Technology',
                             'activos' => 'FPS 50+, Mexoryl',
@@ -336,7 +336,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'SkinCeuticals C E Ferulic',
                             'brand_id' => 25,
-                            'image' => 'skinceuticals-ce-ferulic.png',
+                            'image' => 'skinceuticals-ce-ferulic.webp',
                             'description' => 'Sérum antioxidante con 15% Vitamina C, Vitamina E y Ácido Ferúlico.',
                             'ingredients' => 'L-Ascorbic Acid 15%, Vitamin E, Ferulic Acid',
                             'activos' => 'Vitamina C 15%',
@@ -377,7 +377,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'The Ordinary Glycolic Acid 7% Toning Solution',
                             'brand_id' => 9,
-                            'image' => 'ordinary-glycolic-toner.jpg',
+                            'image' => 'ordinary-glycolic-toner.webp',
                             'description' => 'Tónico exfoliante AHA para luminosidad y textura suave.',
                             'ingredients' => 'Glycolic Acid 7%, Tasmanian Pepperberry',
                             'activos' => 'Ácido Glicólico 7%',
@@ -443,8 +443,8 @@ class ProductSeeder extends Seeder
                         ],
                         [
                             'name' => 'Vegamour GRO+ Advanced Balancing Shampoo',
-                            'brand_id' => 23,
-                            'image' => 'vegamour-gro-shampoo.jpg',
+                            'brand_id' => 30,
+                            'image' => 'vegamour-gro-shampoo.webp',
                             'description' => 'Shampoo estimulante para cabello fino y caída.',
                             'ingredients' => 'Mung Bean, Red Clover',
                             'activos' => 'Fito-activos',
@@ -525,7 +525,7 @@ class ProductSeeder extends Seeder
                         ],
                         [
                             'name' => 'Moroccanoil Revitalizing Scalp Tonic',
-                            'brand_id' => 3,
+                            'brand_id' => 29,
                             'image' => 'moroccanoil-scalp-tonic.jpg',
                             'description' => 'Tónico para cuero cabelludo y crecimiento.',
                             'ingredients' => 'Argania Spinosa Kernel Oil',
@@ -581,7 +581,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'La Roche-Posay Lipikar Lotion',
                             'brand_id' => 2,
-                            'image' => 'lipikar-lotion.jpg',
+                            'image' => 'la-roche-lipikar.jpg',
                             'description' => 'Loción reparadora 48h con niacinamida y karité.',
                             'ingredients' => 'Niacinamide, Shea Butter',
                             'activos' => 'Niacinamida, Manteca de Karité',
@@ -593,7 +593,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'Eucerin Advanced Repair Lotion',
                             'brand_id' => 11,
-                            'image' => 'eucerin-advanced-repair.jpg',
+                            'image' => 'eucerin-advanced-repair.avif',
                             'description' => 'Loción reparadora para piel muy seca con urea.',
                             'ingredients' => 'Urea, Ceramides',
                             'activos' => 'Urea 5%',

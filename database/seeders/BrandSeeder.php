@@ -39,7 +39,9 @@ class BrandSeeder extends Seeder
             ['id' => 25, 'name' => 'SkinCeuticals'],
             ['id' => 26, 'name' => 'Blue Lizard'],
             ['id' => 27, 'name' => 'COSRX'],
-            ['id' => 28, 'name' => 'Aestura']
+            ['id' => 28, 'name' => 'Aestura'],
+            ['id' => 29, 'name' => 'Moroccanoil'],
+            ['id' => 30, 'name' => 'Vegamour'],
         ]);
     }
 }
