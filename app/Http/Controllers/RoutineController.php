@@ -102,11 +102,15 @@ class RoutineController extends Controller
 
         //Divisón visual por pasos
         $stepsOrder = [
+            'tratamientos' => 'Tratamientos',
             'limpiadores' => 'Limpieza',
+            'shampoo' => 'Limpieza',
             'exfoliantes' => 'Exfoliación',
             'tonicos' => 'Tonificación',
             'serums' => 'Tratamiento',
             'hidratantes' => 'Hidratación',
+            'acondicionador' => 'Hidratación',
+            'hidratantes-corporales' => 'Hidratación',
             'protectores-solares' => 'Protección solar',
         ];
 
