@@ -1,8 +1,8 @@
 <a href="{{ route('products.show', $product) }}" class="group block">
                                 <div
-                                    class="flex items-center gap-4 border-b border-gray-200 py-2 transition-shadow bg-white">
+                                    class="flex px-5 items-center gap-4 py-2 transition-shadow bg-white">
                                     {{-- Imagen redonda --}}
-                                    <div class="flex-shrink-0 w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
+                                    <div class="flex-shrink-0 rounded-md w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
                                         @php
                                             $img = $product->image ?? null;
 

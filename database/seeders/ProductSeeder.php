@@ -146,7 +146,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'La Roche-Posay Toleriane Double Matt Repair Moisturizer',
                             'brand_id' => 2,
-                            'image' => 'matt.jpg',
+                            'image' => 'matt.webp',
                             'description' => 'Hidratante para piel sensible con ceramidas y niacinamida. Restaura la barrera protectora.',
                             'ingredients' => 'Aqua, Glycerin, Ceramides, Niacinamide',
                             'activos' => 'Ceramidas, Niacinamida',
@@ -431,7 +431,7 @@ class ProductSeeder extends Seeder
                         ],
                         [
                             'name' => 'Nizoral Anti-Dandruff Shampoo 1% Ketoconazole',
-                            'brand_id' => 3,
+                            'brand_id' => 31,
                             'image' => 'nizoral-shampoo.jpg',
                             'description' => 'Shampoo medicado contra caspa y dermatitis seborreica.',
                             'ingredients' => 'Ketoconazole 1%',
@@ -456,7 +456,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'Olaplex No.4 Bond Maintenance Shampoo',
                             'brand_id' => 17,
-                            'image' => 'olaplex-no4.jpg',
+                            'image' => 'olaplex-no4.webp',
                             'description' => 'Shampoo reparador de enlaces para cabello dañado.',
                             'ingredients' => 'Bis-Aminopropyl Diglycol Dimaleate',
                             'activos' => 'Tecnología Bond Building',

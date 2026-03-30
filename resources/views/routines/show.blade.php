@@ -1,7 +1,7 @@
 {{-- resources/views/routines/show.blade.php --}}
 <x-layout :title="$routine->name">
-    <section class="px-5 pt-10 pb-20 bg-white rounded-t-3xl">
-        <section class="mb-6">
+    <section class=" pt-10 pb-20 bg-white rounded-t-3xl">
+        <section class="mb-6 px-5">
             <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             <h2 class="text-3xl font-medium text-[#306067]">{{ $routine->name }}</h2>
@@ -30,22 +30,53 @@
 
         </section>
 
-        <div class="space-y-6">
-            @forelse($routine->assignedProducts as $product)
-                @php
-                    $imgSrc = $product->image_url;
-                    $brand = $product->brand?->name ?? null;
-                    $skin = $product->skin_type ?? $product->skin ?? null;
-                @endphp
-                    <x-product-card-hor :product="$product"/>
+        <div class="space-y-3">
+            @forelse($steps as $step)
+
+                <div>
+                    <div class="flex justify-between items-center px-3 py-1 border-b-2 border-[#CCE2E5]">
+                        <h3 class="text-lg font-bold text-[#306067]">
+                            Paso {{ $step['number'] }}: {{ $step['title'] }}
+                        </h3>
+                        <button onclick="event.stopPropagation(); document.getElementById('menu_rutina_{{ $routine->id }}').showModal()">
+                            {{-- CAMBIAR A MODAL CON INFO SOBRE EL PASO --}}
+                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067">
+                            <path d="M513.5-254.5Q528-269 528-290t-14.5-35.5Q499-340 478-340t-35.5 14.5Q428-311 428-290t14.5 35.5Q457-240 478-240t35.5-14.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm4-172q25 0 43.5 16t18.5 40q0 22-13.5 39T502-525q-23 20-40.5 44T444-427q0 14 10.5 23.5T479-394q15 0 25.5-10t13.5-25q4-21 18-37.5t30-31.5q23-22 39.5-48t16.5-58q0-51-41.5-83.5T484-720q-38 0-72.5 16T359-655q-7 12-4.5 25.5T368-609q14 8 29 5t25-17q11-15 27.5-23t34.5-8Z"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col gap-3">
+                        @foreach($step['products'] as $product)
+                            <x-product-card-hor :product="$product"/>
+                        @endforeach
+                    </div>
+                </div>
+
             @empty
                 <div class="py-10 text-center">
                     <p class="text-lg text-[#CCE2E5]">No hay productos en esta rutina.</p>
                     <a href="{{ route('products.search') }}"
-                            class="inline-block text-[#37A0AF] text-sm mt-2">Ver todos los productos</a>
+                        class="inline-block text-[#37A0AF] text-sm mt-2">
+                        Ver todos los productos
+                    </a>
                 </div>
             @endforelse
         </div>
+
+        @foreach ($product_sections as $section)
+                @php
+                    $products_with_tag = $section['products'];
+                @endphp
+
+                <div class="pt-6 mt-6 ps-5">
+                    <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
+                    <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
+                        @foreach ($products_with_tag as $product)
+                            <x-product-card :product="$product" />
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
     </section>
 
     <dialog id="menu_rutina_{{ $routine->id }}" class="modal modal-bottom">

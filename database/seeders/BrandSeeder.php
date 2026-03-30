@@ -42,6 +42,7 @@ class BrandSeeder extends Seeder
             ['id' => 28, 'name' => 'Aestura'],
             ['id' => 29, 'name' => 'Moroccanoil'],
             ['id' => 30, 'name' => 'Vegamour'],
+            ['id' => 31, 'name' => 'Nizoral'],
         ]);
     }
 }

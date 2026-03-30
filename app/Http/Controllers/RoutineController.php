@@ -8,6 +8,7 @@ use App\Models\RoutineType;
 use App\Models\RoutineTime;
 use App\Models\RoutineNeed;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\RecommendedRoutine;
 use Illuminate\Support\Facades\Auth;
 
@@ -93,9 +94,65 @@ class RoutineController extends Controller
     public function show($routine_id)
     {
         $routine = Routine::findOrFail($routine_id);
+        $user = Auth::user();
+
         $this->authorizeOwner($routine);
-        $routine->load(['RoutineType', 'RoutineNeed', 'routineTime', 'products']);
-        return view('routines.show', compact('routine'));
+
+        $routine->load(['RoutineType', 'RoutineNeed', 'routineTime', 'assignedProducts.category']);
+
+        //Divisón visual por pasos
+        $stepsOrder = [
+            'limpiadores' => 'Limpieza',
+            'exfoliantes' => 'Exfoliación',
+            'tonicos' => 'Tonificación',
+            'serums' => 'Tratamiento',
+            'hidratantes' => 'Hidratación',
+            'protectores-solares' => 'Protección solar',
+        ];
+
+
+        // Agrupar productos por nombre de categoría
+        $groupedProducts = $routine->assignedProducts->groupBy(function ($product) {
+            return $product->category?->slug;
+        });
+        // Construir pasos en orden fijo
+        $steps = [];
+        $stepNumber = 1;
+
+        foreach ($stepsOrder as $slug => $label) {
+            if ($groupedProducts->has($slug)) {
+                $steps[] = [
+                    'number' => $stepNumber++,
+                    'title' => $label,
+                    'products' => $groupedProducts[$slug],
+                ];
+            }
+        }
+
+        //Productos recomendados para la rutina
+        $productsForYouQuery = Product::with('brand', 'type');
+        $titleForYou = 'Productos recomendados';
+
+        $isPremiumUser = $user && $user->role === 'premium' && in_array($user->theme, ['skincare', 'haircare']);
+
+        if ($isPremiumUser) {
+            $productsForYouQuery->whereHas('type', function ($query) use ($user) {
+                $query->where('name', $user->theme);
+            });
+        } else {
+            $productsForYouQuery->latest()->inRandomOrder();
+        }
+
+        $productsForYou = $productsForYouQuery->limit(12)->get();
+
+        $product_sections = [
+            [
+                'title' => 'Productos para tu rutina',
+                'products' => $productsForYou,
+            ],
+        ];
+
+        return view('routines.show', compact('routine', 'product_sections', 'steps', 'groupedProducts'));
     }
 
     public function edit($routine_id)

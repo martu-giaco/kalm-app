@@ -158,6 +158,21 @@
                 @endif
             </div>
 
+            @foreach ($product_sections as $section)
+                @php
+                    $products_with_tag = $section['products'];
+                @endphp
+
+                <div class="pt-6 mt-6 border-t">
+                    <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
+                        <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
+                        @foreach ($products_with_tag as $sectionProduct)
+                            <x-product-card :product="$sectionProduct" />
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+
             {{-- Detalles del producto --}}
             <div class="pt-6 mt-6 border-t">
                 <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Detalles del producto</h2>
@@ -191,7 +206,6 @@
                 <h2 class="text-lg font-bold text-[#164d4f] mb-2">Ingredientes</h2>
                 <p class="text-sm font-bold">{{ Str::limit($product->ingredients, 50) }}</p>
             </div>
-
         </article>
     </div>
 
@@ -266,8 +280,8 @@
                                                 $visible = $products->take(3);
                                                 $remaining = $products->count() - 3;
                                             @endphp
-                                            @forelse($visible as $product)
-                                                <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                                            @forelse($visible as $assignedProduct)
+                                                <img src="{{ $assignedProduct->image_url }}" alt="{{ $assignedProduct->name }}"
                                                     class="object-contain w-16 h-16 rounded-md">
                                             @empty
                                                 <p class="text-md text-[#CCE2E5]">

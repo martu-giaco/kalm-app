@@ -89,7 +89,7 @@ class HomeController extends Controller
             $productsForYouQuery->latest()->inRandomOrder();
         }
 
-        $productsForYou = $productsForYouQuery->limit(6)->get();
+        $productsForYou = $productsForYouQuery->limit(12)->get();
 
         // --- 6. Favoritos de la comunidad ---
         $communityFavorites = Product::with('brand', 'type')->orderByDesc('rating')->limit(6)->get();
