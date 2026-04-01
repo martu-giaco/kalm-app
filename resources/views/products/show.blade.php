@@ -112,6 +112,15 @@
                 </p>
             </div>
 
+            {{-- Concerns --}}
+            <div class="pt-6 mt-6 border-t">
+                <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Preocupaciones</h2>
+                @foreach ($product->concerns as $concern)
+                    <span
+                        class="inline-block px-3 py-1 mb-2 text-sm text-white bg-[#37A0AF] rounded-full">{{ $concern->name }}</span>
+                @endforeach
+            </div>
+
             {{-- Reviews --}}
             <div class="pt-6 mt-6 border-t">
                 <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Reseñas de usuarios</h2>
