@@ -38,8 +38,7 @@
                         <h3 class="text-lg font-bold text-[#306067]">
                             Paso {{ $step['number'] }}: {{ $step['title'] }}
                         </h3>
-                        <button onclick="event.stopPropagation(); document.getElementById('menu_rutina_{{ $routine->id }}').showModal()">
-                            {{-- CAMBIAR A MODAL CON INFO SOBRE EL PASO --}}
+                        <button onclick="event.stopPropagation(); document.getElementById('desc_paso_{{ $step['number'] }}').showModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067">
                             <path d="M513.5-254.5Q528-269 528-290t-14.5-35.5Q499-340 478-340t-35.5 14.5Q428-311 428-290t14.5 35.5Q457-240 478-240t35.5-14.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Zm4-172q25 0 43.5 16t18.5 40q0 22-13.5 39T502-525q-23 20-40.5 44T444-427q0 14 10.5 23.5T479-394q15 0 25.5-10t13.5-25q4-21 18-37.5t30-31.5q23-22 39.5-48t16.5-58q0-51-41.5-83.5T484-720q-38 0-72.5 16T359-655q-7 12-4.5 25.5T368-609q14 8 29 5t25-17q11-15 27.5-23t34.5-8Z"/></svg>
                         </button>
@@ -48,6 +47,16 @@
                     <div class="flex flex-col gap-3">
                         @foreach($step['products'] as $product)
                             <x-product-card-hor :product="$product"/>
+                            <!-- MODAL DESCRIPCIÓN PASOS -->
+                            <dialog id="desc_paso_{{ $step['number'] }}" class="modal">
+                            <div class="modal-box">
+                                <h3 class="text-lg font-bold">Paso {{ $step['number'] }}: {{ $step['title'] }}</h3>
+                                <p class="py-4">{{ $step['products']->first()->category?->description }}</p>
+                            </div>
+                            <form method="dialog" class="modal-backdrop">
+                                <button>close</button>
+                            </form>
+                            </dialog>
                         @endforeach
                     </div>
                 </div>
@@ -79,25 +88,26 @@
             @endforeach
     </section>
 
+
     <dialog id="menu_rutina_{{ $routine->id }}" class="modal modal-bottom">
-                                        <div class="modal-box">
-                                            <a href="{{ route('routines.edit', $routine) }}" class=" btn w-full inline-flex border-0 bg-[#CCE2E5] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold">
-                                                <p>Editar Rutina</p>
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M202.63-202.87h57.24l374.74-374.74-56.76-57-375.22 375.22v56.52Zm-45.26 91q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33v-102.26q0-18.15 6.84-34.69 6.83-16.53 19.51-29.2l501.17-500.41q12.48-11.72 27.7-17.96 15.21-6.24 31.93-6.24 16.48 0 32.2 6.24 15.71 6.24 27.67 18.72l65.28 65.56q12.48 11.72 18.34 27.56 5.86 15.83 5.86 31.79 0 16.72-5.86 32.05-5.86 15.34-18.34 27.82L324-138.22q-12.67 12.68-29.21 19.51-16.53 6.84-34.68 6.84H157.37Zm597.37-586.39-56.24-56.48 56.24 56.48Zm-148.89 92.41-28-28.76 56.76 57-28.76-28.24Z"/></svg>
-                                            </a>
-                                            <form action="{{ route('routines.destroy', $routine) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold">
-                                                    <p class="font-semibold text-white">Eliminar rutina</p>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#CCE2E5"><path d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z"/></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <form method="dialog" class="modal-backdrop">
-                                            <button>close</button>
-                                        </form>
-                            </dialog>
+        <div class="modal-box">
+            <a href="{{ route('routines.edit', $routine) }}" class=" btn w-full inline-flex border-0 bg-[#CCE2E5] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold">
+                <p>Editar Rutina</p>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M202.63-202.87h57.24l374.74-374.74-56.76-57-375.22 375.22v56.52Zm-45.26 91q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33v-102.26q0-18.15 6.84-34.69 6.83-16.53 19.51-29.2l501.17-500.41q12.48-11.72 27.7-17.96 15.21-6.24 31.93-6.24 16.48 0 32.2 6.24 15.71 6.24 27.67 18.72l65.28 65.56q12.48 11.72 18.34 27.56 5.86 15.83 5.86 31.79 0 16.72-5.86 32.05-5.86 15.34-18.34 27.82L324-138.22q-12.67 12.68-29.21 19.51-16.53 6.84-34.68 6.84H157.37Zm597.37-586.39-56.24-56.48 56.24 56.48Zm-148.89 92.41-28-28.76 56.76 57-28.76-28.24Z"/></svg>
+            </a>
+            <form action="{{ route('routines.destroy', $routine) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold">
+                    <p class="font-semibold text-white">Eliminar rutina</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#CCE2E5"><path d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z"/></svg>
+                </button>
+            </form>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
 
     <script>
         // Función para togglear favoritos
