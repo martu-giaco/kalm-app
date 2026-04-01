@@ -15,7 +15,7 @@ return new class extends Migration
 
             // Relaciones
             $table->foreignId('brand_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('type_id')->constrained('product_types')->cascadeOnDelete();
+            $table->foreignId('type_id')->constrained('types')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('product_categories')->cascadeOnDelete();
 
             // Datos del producto

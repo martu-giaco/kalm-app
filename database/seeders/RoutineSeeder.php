@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Routine;
-use App\Models\RoutineType;
+use App\Models\Type;
 use App\Models\RoutineTime;
 use App\Models\RoutineNeed;
 use App\Models\User;
@@ -20,9 +20,9 @@ class RoutineSeeder extends Seeder
         );
 
         // Asegurarse de que existan los tipos
-        $typesList = ['skincare','haircare'];
+        $typesList = ['skincare','haircare','bodycare'];
         foreach ($typesList as $typeName) {
-            RoutineType::firstOrCreate(['name' => $typeName]);
+            Type::firstOrCreate(['name' => $typeName]);
         }
 
         // Asegurarse de que existan las necesidades
@@ -38,7 +38,7 @@ class RoutineSeeder extends Seeder
         }
 
         // Cargar tipos y tiempos existentes
-        $types = RoutineType::whereIn('name', $typesList)->get()->keyBy('name');
+        $types = Type::whereIn('name', $typesList)->get()->keyBy('name');
         $times = RoutineTime::whereIn('name', $timesList)->get()->keyBy('name');
 
         $examples = [

@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Brand;
-use App\Models\ProductType;
+use App\Models\Type;
 use App\Models\ProductCategory;
 
 class ProductSeeder extends Seeder
@@ -620,7 +620,7 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($typesCategories as $typeName => $categories) {
-            $type = ProductType::firstOrCreate(['name' => $typeName]);
+            $type = Type::firstOrCreate(['name' => $typeName]);
 
             foreach ($categories as $categoryName => $categoryData) {
                 $category = ProductCategory::updateOrCreate(

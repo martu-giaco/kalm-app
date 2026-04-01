@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Routine;
-use App\Models\RoutineType;
+use App\Models\Type;
 use App\Models\UserTestResult;
 use App\Models\Product;
 use App\Models\RecommendedRoutine;
@@ -77,13 +77,13 @@ class TestController extends Controller
         arsort($scores);
         $topKey = array_key_first($scores);
 
-        $routineType = RoutineType::where('name', $topKey)->first();
+        $type = Type::where('name', $topKey)->first();
 
         session([
             'test_answers' => $answers,
             'test_key' => $test->key,
             'result_key' => $topKey,
-            'routine_type_id' => $routineType?->type_id,
+            'routine_type_id' => $type?->type_id,
         ]);
 
         Log::info('Test completado', session()->all());

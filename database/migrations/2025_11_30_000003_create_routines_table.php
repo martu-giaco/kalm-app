@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::dropIfExists('routine_product');
         Schema::dropIfExists('routines_have_types');
         Schema::dropIfExists('routines');
-        Schema::dropIfExists('routine_types');
         Schema::dropIfExists('routine_needs');
         Schema::dropIfExists('routine_times');
 
@@ -25,12 +24,6 @@ return new class extends Migration
         // Tabla de tiempos de rutina
         Schema::create('routine_times', function (Blueprint $table) {
             $table->bigIncrements('time_id');
-            $table->string('name');
-            $table->timestamps();
-        });
-
-        Schema::create('routine_types', function (Blueprint $table) {
-            $table->bigIncrements('type_id');
             $table->string('name');
             $table->timestamps();
         });
@@ -51,13 +44,12 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('time_id')->nullable();
             $table->unsignedBigInteger('need_id')->nullable();
-            $table->unsignedBigInteger('type_id')->nullable();
 
             // FKs
             $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->foreign('time_id')->references('time_id')->on('routine_times')->nullOnDelete();
             $table->foreign('need_id')->references('need_id')->on('routine_needs')->nullOnDelete();
-            $table->foreign('type_id')->references('type_id')->on('routine_types')->nullOnDelete();
+            $table->foreignId('type_id')->nullable()->constrained('types')->nullOnDelete();
         });
 
         // Pivot
@@ -77,7 +69,6 @@ return new class extends Migration
         Schema::dropIfExists('routine_product');
         Schema::dropIfExists('routines_have_types');
         Schema::dropIfExists('routines');
-        Schema::dropIfExists('routine_types');
         Schema::dropIfExists('routine_needs');
         Schema::dropIfExists('routine_times');
     }

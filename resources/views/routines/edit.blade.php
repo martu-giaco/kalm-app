@@ -18,9 +18,9 @@
                 <select name="type_id" id="type_id" required
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo</option>
-                    @foreach ($routine_types as $type)
-                        <option value="{{ $type->type_id }}"
-                            {{ old('type_id', $routine->type_id) == $type->type_id ? 'selected' : '' }}>
+                    @foreach ($types as $type)
+                        <option value="{{ $type->id }}"
+                            {{ old('type_id', $routine->type_id) == $type->id ? 'selected' : '' }}>
                             {{ $type->name }}
                         </option>
                     @endforeach
@@ -29,10 +29,10 @@
 
             {{-- Necesidad de rutina --}}
             <div class="mb-4">
-                <label for="need_id" class="block mb-1 text-sm">Necesidad de rutina</label>
+                <label for="need_id" class="block mb-1 text-sm">Tipo de piel</label>
                 <select name="need_id" id="need_id" required
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar necesidad</option>
+                    <option value="">Seleccionar tipo de piel</option>
                     @foreach ($routine_needs as $need)
                         <option value="{{ $need->need_id }}"
                             {{ old('need_id', $routine->need_id) == $need->need_id ? 'selected' : '' }}>
@@ -54,31 +54,6 @@
                         </option>
                     @endforeach
                 </select>
-            </div>
-
-            {{-- Horario de recordatorio --}}
-            <div class="mb-6">
-                <label for="reminder_time" class="block mb-1 text-sm">Horario de recordatorio</label>
-                <div class="relative">
-                    <input 
-                        type="time" 
-                        name="reminder_time" 
-                        id="reminder_time" 
-                        value="{{ old('reminder_time', $routine->reminder_time ? $routine->reminder_time->format('H:i') : null) }}"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
-                    >
-                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#306067]">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="13" r="8"/>
-                            <path d="M12 9v4l2 2"/>
-                            <path d="M5 3 2 6"/>
-                            <path d="m22 6-3-3"/>
-                        </svg>
-                    </span>
-                </div>
-                <p class="mt-1 text-xs text-[#2A4043]/70">
-                    Elige la hora a la que quieres recibir la notificación.
-                </p>
             </div>
 
             {{-- Frecuencia de recordatorio --}}
@@ -126,6 +101,31 @@
                     class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                 <p class="mt-1 text-xs text-[#2A4043]/70">
                     Ingresa el número de días entre recordatorios (ej: 3 para cada 3 días).
+                </p>
+            </div>
+
+            {{-- Horario de recordatorio --}}
+            <div class="mb-6">
+                <label for="reminder_time" class="block mb-1 text-sm">Horario de recordatorio</label>
+                <div class="relative">
+                    <input
+                        type="time"
+                        name="reminder_time"
+                        id="reminder_time"
+                        value="{{ old('reminder_time', $routine->reminder_time ? $routine->reminder_time->format('H:i') : null) }}"
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
+                    >
+                    <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#306067]">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="13" r="8"/>
+                            <path d="M12 9v4l2 2"/>
+                            <path d="M5 3 2 6"/>
+                            <path d="m22 6-3-3"/>
+                        </svg>
+                    </span>
+                </div>
+                <p class="mt-1 text-xs text-[#2A4043]/70">
+                    Elige la hora a la que quieres recibir la notificación.
                 </p>
             </div>
 

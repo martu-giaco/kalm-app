@@ -37,9 +37,9 @@ class Routine extends Model
         return $this->belongsTo(RoutineTime::class, 'time_id', 'time_id');
     }
 
-    public function routineType(): BelongsTo
+    public function type()
     {
-        return $this->belongsTo(RoutineType::class, 'type_id', 'type_id');
+        return $this->belongsTo(Type::class);
     }
 
     public function routineNeed(): BelongsTo

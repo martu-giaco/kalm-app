@@ -24,7 +24,7 @@
 
             {{-- Tipo y tiempo de rutina --}}
             <p class="text-sm text-[#37A0AF] mt-1">
-                    {{ $routine->routineType?->name ?? 'No definido' }} ·
+                    {{ $routine->type?->name ?? 'No definido' }} ·
                     {{ $routine->assignedProducts->count() }} {{ Str::plural('producto', $routine->assignedProducts->count()) }}
             </p>
 

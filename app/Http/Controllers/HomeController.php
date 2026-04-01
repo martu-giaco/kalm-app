@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductType;
+use App\Models\Type;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +67,7 @@ class HomeController extends Controller
         ];
 
         // --- 4. Tipos de productos con íconos ---
-        $product_types = ProductType::all()->map(function ($type) use ($type_icons) {
+        $types = Type::all()->map(function ($type) use ($type_icons) {
             $normalized = strtolower(str_replace([' ', '_'], '', $type->name));
             return [
                 'name' => ucfirst($type->name),
@@ -127,7 +127,7 @@ class HomeController extends Controller
             'recentProducts',
             'topRatedProducts',
             'banners',
-            'product_types',
+            'types',
             'product_sections'
         ));
     }

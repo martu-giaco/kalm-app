@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\ProductType;
+use App\Models\Type;
 
-class ProductTypeSeeder extends Seeder
+class TypeSeeder extends Seeder
 {
     public function run()
     {
@@ -16,7 +16,7 @@ class ProductTypeSeeder extends Seeder
         ];
 
         foreach ($types as $type) {
-            ProductType::create($type);
+            Type::create($type);
         }
     }
 }

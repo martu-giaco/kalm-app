@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\ProductType;
+use App\Models\Type;
 use App\Models\ProductCategory;
 use App\Models\SkinType;
 use App\Models\Concern;
@@ -71,7 +71,7 @@ class ProductController extends Controller
      */
     public function byType($typeSlug)
     {
-        $type = ProductType::where('slug', $typeSlug)->firstOrFail();
+        $type = Type::where('slug', $typeSlug)->firstOrFail();
 
         $products = Product::with(['brand', 'category'])
             ->where('type_id', $type->id)
@@ -195,7 +195,7 @@ class ProductController extends Controller
     {
         $queryText = $request->input('q');
 
-        $types = ProductType::all();
+        $types = Type::all();
         $categories = ProductCategory::all();
         $skinTypes = SkinType::all();
         $concerns = Concern::all();
@@ -260,7 +260,7 @@ class ProductController extends Controller
         {
             $this->authorizeAdmin();
             $product = Product::findOrFail($id);
-            $types = ProductType::all();
+            $types = Type::all();
             $categories = ProductCategory::all();
             $skinTypes = SkinType::all();
             $concerns = Concern::all();
@@ -274,7 +274,7 @@ class ProductController extends Controller
          */
         public function create()
         {
-            $types = ProductType::all();
+            $types = Type::all();
             $categories = ProductCategory::all();
             $skinTypes = SkinType::all();
             $concerns = Concern::all();
@@ -300,7 +300,7 @@ class ProductController extends Controller
                     'activos' => 'nullable|string',
                     'paso' => 'nullable|string',
                     'formato' => 'nullable|string',
-                    'type_id' => 'required|integer|exists:product_types,id',
+                    'type_id' => 'required|integer|exists:types,id',
                     'category_id' => 'required|integer|exists:product_categories,id',
                     'rating' => 'nullable|integer|min:0|max:5',
             ]);
@@ -355,7 +355,7 @@ class ProductController extends Controller
                     'activos' => 'nullable|string',
                     'paso' => 'nullable|string',
                     'formato' => 'nullable|string',
-                    'type_id' => 'required|integer|exists:product_types,id',
+                    'type_id' => 'required|integer|exists:types,id',
                     'category_id' => 'required|integer|exists:product_categories,id',
                     'rating' => 'nullable|integer|min:0|max:5',
                 ]);

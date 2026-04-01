@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Routine;
-use App\Models\RoutineType;
+use App\Models\Type;
 
 class TestResultController extends Controller
 {

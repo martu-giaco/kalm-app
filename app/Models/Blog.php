@@ -13,15 +13,17 @@ class Blog extends Model
 
     protected $fillable = [
         'title',
+        'description',
         'image',
         'author',
         'credentials',
         'content',
         'is_premium',
+        'category_id',
     ];
 
     protected $casts = [
-        'is_premium' => 'boolean', 
+        'is_premium' => 'boolean',
     ];
 
     // Relación temporal de likes por usuario (no se guarda en DB)

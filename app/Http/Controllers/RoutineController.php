@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Routine;
-use App\Models\RoutineType;
+use App\Models\Type;
 use App\Models\RoutineTime;
 use App\Models\RoutineNeed;
 use App\Models\Product;
@@ -31,12 +31,12 @@ class RoutineController extends Controller
 
     public function create()
     {
-        $routine_types = RoutineType::orderBy('name')->get();
+        $types = Type::orderBy('name')->get();
         $routine_needs = RoutineNeed::orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
         return view('routines.create', compact(
-            'routine_types',
+            'types',
             'routine_needs',
             'routine_times'
         ));
@@ -64,7 +64,7 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
-            'type_id' => 'nullable|exists:routine_types,type_id',
+            'type_id' => 'nullable|exists:types,id',
             'need_id' => 'nullable|exists:routine_needs,need_id',
             'products' => 'nullable|array',
             'products.*' => 'nullable|exists:products,product_id',
@@ -98,7 +98,7 @@ class RoutineController extends Controller
 
         $this->authorizeOwner($routine);
 
-        $routine->load(['RoutineType', 'RoutineNeed', 'routineTime', 'assignedProducts.category']);
+        $routine->load(['Type', 'RoutineNeed', 'routineTime', 'assignedProducts.category']);
 
         //Divisón visual por pasos
         $stepsOrder = [
@@ -164,11 +164,11 @@ class RoutineController extends Controller
         $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
 
-        $routine_types = RoutineType::whereIn('name', ['Haircare', 'Skincare'])->orderBy('name')->get();
+        $types = Type::orderBy('name')->get();
         $routine_needs = RoutineNeed::orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
-        return view('routines.edit', compact('routine', 'routine_types', 'routine_needs', 'routine_times'));
+        return view('routines.edit', compact('routine', 'types', 'routine_needs', 'routine_times'));
     }
 
     public function update(Request $request, $routine_id)
@@ -176,10 +176,10 @@ class RoutineController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'time_id' => 'nullable|exists:routine_times,time_id',
-            'type_id' => 'nullable|exists:routine_types,type_id',
+            'type_id' => 'nullable|exists:types,id',
             'need_id' => 'nullable|exists:routine_needs,need_id',
             'products' => 'nullable|array',
-            'products.*' => 'nullable|exists:products,product_id',
+            'products.*' => 'nullable|exists:products,id',
         ]);
 
         $routine = Routine::findOrFail($routine_id);

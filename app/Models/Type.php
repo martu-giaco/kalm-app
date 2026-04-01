@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RoutineType extends Model
+class Type extends Model
 {
-    protected $table = 'routine_types';
-    protected $primaryKey = 'type_id';
+    protected $table = 'types';
     protected $fillable = ['name'];
 }
