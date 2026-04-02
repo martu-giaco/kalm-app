@@ -21,6 +21,18 @@
             </div>
 
             <div class="mb-3">
+                <label for="type" class="block mb-1 text-sm">Categoría</label>
+                <select name="type_id" id="type" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                    <option value="">Seleccionar Categoría</option>
+                    @foreach($types as $type)
+                        <option value="{{ $type->id }}" {{ old('type_id', $blog->type_id) == $type->id ? 'selected' : '' }}>
+                            {{ $type->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label for="author" class="block mb-1 text-sm">Autor</label>
                 <input type="text" name="author" id="author" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('author', $blog->author) }}">
             </div>
@@ -29,7 +41,7 @@
                 <p class="mb-1 text-sm">Imagen</p>
                 @if($blog->image)
                     <div class="mb-2">
-                        <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" style="max-width: 200px; max-height: 200px;">
+                        <img id="image-preview" class="rounded-xl" src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" style="max-width: 200px; max-height: 200px;">
                     </div>
                 @endif
                 <label for="image"
@@ -48,6 +60,11 @@
             </div>
 
             <div class="mb-3">
+                <label for="description" class="block mb-1 text-sm">Descripción</label>
+                <textarea name="description" id="description" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('description', $blog->description) }}</textarea>
+            </div>
+
+            <div class="mb-3">
                 <label for="content" class="block mb-1 text-sm">Contenido</label>
                 <textarea name="content" id="content" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">{{ old('content', $blog->content) }}</textarea>
             </div>
@@ -55,4 +72,33 @@
             <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Editar Blog</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('image');
+            const preview = document.getElementById('image-preview');
+
+            if (!input || !preview) return;
+
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+
+                if (!file) return;
+
+                if (!file.type.startsWith('image/')) {
+                    alert('El archivo debe ser una imagen');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result; // 🔥 reemplaza la imagen actual
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </x-layout>

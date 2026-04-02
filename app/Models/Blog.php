@@ -19,12 +19,17 @@ class Blog extends Model
         'credentials',
         'content',
         'is_premium',
-        'category_id',
+        'type_id',
     ];
 
     protected $casts = [
         'is_premium' => 'boolean',
     ];
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
+    }
 
     // Relación temporal de likes por usuario (no se guarda en DB)
     public function isLikedByUser($userId)

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Storage;
 ?>
 
 <x-layout :title="'Detalle de Marca - Panel de Administración'">
-    <div class="container my-5 px-5 bg-white rounded-t-3xl min-h-full pt-5">
+    <div class="container my-5 px-5 bg-white rounded-t-3xl min-h-full pt-5 text-center">
         <div class="flex gap-2 flex-wrap justify-between items-center mb-4">
             <a href="{{ route('admin.brands.index') }}" class="bg-transparent border-transparent shadow-none">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m142-480 294 294q15 15 14.5 35T435-116q-15 15-35 15t-35-15L57-423q-12-12-18-27t-6-30q0-15 6-30t18-27l308-308q15-15 35.5-14.5T436-844q15 15 15 35t-15 35L142-480Z"/></svg>
@@ -29,20 +29,20 @@ use Illuminate\Support\Facades\Storage;
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold text-[#306067]">{{ $brand->name }}</h1>
-
         {{-- Imagen principal --}}
-                <div class="relative md:flex-shrink-0 md:w-1/2">
-                    <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
+                <div class="relative md:flex-shrink-0 md:w-1/2 flex flex-col items-center">
+                    <div class="mb-6 overflow-hidden bg-white">
                         @if (!empty($brand->logo))
                             <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}"
-                                class="object-cover w-full bg-white h-80">
+                                class="shadow-lg object-cover rounded-full h-80 w-80 bg-white">
                         @else
-                            <div class="flex items-center justify-center w-full text-gray-400 h-80">
+                            <div class="flex items-center justify-center shadow-lg object-cover rounded-full h-80 w-80 text-gray-400">
                                 Sin imagen
                             </div>
                         @endif
                     </div>
 
-    </div>
+                    <h1 class="text-3xl font-bold text-[#306067]">{{ $brand->name }}</h1>
+
+                </div>
 </x-layout>

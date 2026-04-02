@@ -52,32 +52,59 @@
                 </select>
             </div>
 
-            <div class="mb-3">
-                <label for="skin_type" class="block mb-1 text-sm">Tipo de piel</label>
-                <select name="skinType[]" id="skin_type" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar tipo de piel</option>
+            <div class="mb-5">
+                <p for="skin_type" class="block mb-3 text-sm font-bold text-[#2A4043]">Tipo de piel</p>
+                <div class="flex flex-wrap gap-x-1 gap-y-4 align-middle">
                     @foreach($skinTypes as $skinType)
-                        <option value="{{ $skinType->id }}">
-                            {{ $skinType->name }}
-                        </option>
+                        <label class="cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="skin_types[]"
+                                value="{{ $skinType->id }}"
+                                class="hidden peer"
+                            >
+
+                            <span class="px-4 py-2 text-sm text-center rounded-full border border-[#CCE2E5] bg-white text-[#2A4043]
+                                peer-checked:bg-[#37A0AF]
+                                peer-checked:text-white
+                                peer-checked:border-[#37A0AF]
+                                transition-all duration-200">
+                                {{ $skinType->name }}
+                            </span>
+                        </label>
                     @endforeach
-                </select>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="concerns" class="block mb-1 text-sm">Preocupaciones</label>
-                <select name="concerns[]" id="concerns" multiple class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar preocupaciones</option>
+            <div class="mb-5">
+                <p for="concern" class="block mb-3 text-sm font-bold text-[#2A4043]">Preocupaciones</p>
+                <div class="flex flex-wrap gap-x-1 gap-y-4 align-middle">
                     @foreach($concerns as $concern)
-                        <option value="{{ $concern->id }}">
-                            {{ $concern->name }}
-                        </option>
+                        <label class="cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="concerns[]"
+                                value="{{ $concern->id }}"
+                                class="hidden peer"
+                            >
+                            <span class="px-4 py-2 text-sm text-center rounded-full border border-[#CCE2E5] bg-white text-[#2A4043]
+                                peer-checked:bg-[#37A0AF]
+                                peer-checked:text-white
+                                peer-checked:border-[#37A0AF]
+                                transition-all duration-200">
+                                {{ $concern->name }}
+                            </span>
+                        </label>
                     @endforeach
-                </select>
+                </div>
             </div>
 
             <div class="mb-3">
                 <p class="mb-1 text-sm">Imagen</p>
+                <div id="image-preview-container" class="my-3 hidden">
+                    <p class="text-sm text-[#2A4043] mb-2">Vista previa:</p>
+                    <img id="image-preview" style="max-width: 200px; max-height: 200px;" />
+                </div>
                 <label for="image"
                                 class="flex justify-between mb-1 text-md p-3 bg-transparent rounded-xl border-2 border-[#2A4043] placeholder-[#CCE2E5] focus:outline-[#2A4043] text-[#2A4043]">
                                 <p>Subir una foto</p>
@@ -116,4 +143,40 @@
             <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Crear Producto</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('image');
+            const preview = document.getElementById('image-preview');
+            const container = document.getElementById('image-preview-container');
+
+            if (!input) return;
+
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+
+                if (!file) {
+                    container.classList.add('hidden');
+                    preview.src = '';
+                    return;
+                }
+
+                // Validación básica (opcional pero recomendable)
+                if (!file.type.startsWith('image/')) {
+                    alert('El archivo debe ser una imagen');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    container.classList.remove('hidden');
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </x-layout>

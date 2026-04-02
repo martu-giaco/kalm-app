@@ -13,7 +13,9 @@ return new class extends Migration {
             $table->string('author');
             $table->string('credentials')->nullable();
             $table->text('content');
+            $table->text('description');
             $table->boolean('is_premium')->default(false);
+            $table->foreignId('type_id')->nullable()->constrained('types')->nullOnDelete();
             $table->timestamps();
         });
     }

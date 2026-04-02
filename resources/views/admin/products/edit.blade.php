@@ -116,7 +116,7 @@
                     <div class="relative md:flex-shrink-0 md:w-1/2">
                     <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
                         @if (!empty($product->image))
-                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}"
+                            <img id="image-preview" class="rounded-xl" src="{{ $product->image_url }}" alt="{{ $product->name }}"
                                 class="object-cover w-full bg-white h-80">
                         @else
                             <div class="flex items-center justify-center w-full text-gray-400 h-80">
@@ -163,4 +163,33 @@
             <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Editar Producto</button>
         </form>
     </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('image');
+            const preview = document.getElementById('image-preview');
+
+            if (!input || !preview) return;
+
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+
+                if (!file) return;
+
+                if (!file.type.startsWith('image/')) {
+                    alert('El archivo debe ser una imagen');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result; // 🔥 reemplaza la imagen actual
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </x-layout>

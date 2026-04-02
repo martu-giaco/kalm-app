@@ -236,11 +236,9 @@
             <div class="space-y-3">
                 @if (isset($routines) && $routines->count())
                     <div class="space-y-2 rounded-lg">
-                        {{-- Botón flotante para crear nueva rutina --}}
-
                         <a href="{{ route('routines.create') }}"
                             class="rounded-lg p-3 bg-[#306067] flex items-center justify-between shadow-xl">
-                            <p class="text-white">Crear Rutina</p>
+                            <p class="text-white">Nueva Rutina</p>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                 width="24px" fill="#FFFFFF">
                                 <path
@@ -320,7 +318,7 @@
                     <div>
                         <a href="{{ route('routines.create') }}"
                             class="p-3 bg-[#2A4043] flex items-center justify-center rounded-lg shadow-xl">
-                            Crear Rutina
+                            Nueva Rutina
                         </a>
                     </div>
                 @endif

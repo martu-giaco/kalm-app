@@ -20,12 +20,12 @@
                 <p class="mb-1 text-sm">Logo</p>
                 @if($brand->logo)
                     <div class="relative md:flex-shrink-0 md:w-1/2">
-                    <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-3xl">
+                    <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-full h-80 w-80">
                         @if (!empty($brand->logo))
-                            <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}"
-                                class="object-cover w-full bg-white h-80">
+                            <img id="image-preview" class="rounded-xl" src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}"
+                                class="object-cover bg-white">
                         @else
-                            <div class="flex items-center justify-center w-full text-gray-400 h-80">
+                            <div class="flex items-center justify-center text-gray-400">
                                 Sin logo
                             </div>
                         @endif
@@ -49,4 +49,33 @@
             <button type="submit" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">Editar marca</button>
         </form>
     </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('image');
+            const preview = document.getElementById('image-preview');
+
+            if (!input || !preview) return;
+
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+
+                if (!file) return;
+
+                if (!file.type.startsWith('image/')) {
+                    alert('El archivo debe ser una imagen');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result; // 🔥 reemplaza la imagen actual
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    </script>
 </x-layout>

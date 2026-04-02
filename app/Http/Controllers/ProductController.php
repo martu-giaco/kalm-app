@@ -363,7 +363,10 @@ class ProductController extends Controller
                     $data['image'] = $request->file('image')->store('products', 'public');
                 }
 
-                Product::create($data);
+                $product = Product::create($data);
+
+                $product->skinTypes()->sync($request->input('skin_types', []));
+                $product->concerns()->sync($request->input('concerns', []));
 
                 return redirect()->route('admin.products.index')
                     ->with('feedback.message', 'Producto creado correctamente');

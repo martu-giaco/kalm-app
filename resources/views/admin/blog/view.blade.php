@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Storage;
         {{-- Imagen principal / placeholder --}}
         <div class="mb-4 d-flex justify-content-center">
             @if($blog->image)
-                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid rounded" style="max-width: 100%; max-height: 480px; object-fit: cover;">
+                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid rounded-xl" style="max-width: 100%; max-height: 480px; object-fit: cover;">
             @else
                 <div class="border border-[#CCE2E5] rounded bg-light d-flex align-items-center text-center justify-content-center w-full py-4">
                     <p class="text-center text-[#CCE2E5]">Sin imagen disponible</p>
@@ -43,15 +43,20 @@ use Illuminate\Support\Facades\Storage;
 
         <h1 class="text-3xl font-bold text-[#306067]">{{ $blog->title }}</h1>
 
+        @if(!empty($blog->type))
+            <a  class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                ✨{{ $blog->type->name }}
+            </a>
+        @endif
+
         <p class="mb-4 flex justify-between items-center">
             {{ $blog->author ?? 'Anónimo' }}
-            @if(!empty($blog->category))
-                | <strong>Categoría:</strong> {{ $blog->category }}
-            @endif
             @if($blog->created_at)
                 <small class="text-[#37A0AF]">{{ $blog->created_at->format('d/m/Y') }}</small>
             @endif
         </p>
+
+        <p class="font-bold">{{ $blog->description }}</p>
 
         <div class="mb-4 fs-5" style="white-space:pre-wrap; line-height:1.6;">
             {!! nl2br(e($blog->content)) !!}

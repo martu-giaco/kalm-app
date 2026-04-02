@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
@@ -43,7 +44,9 @@ class BlogController extends Controller
     public function create()
     {
         $this->authorizeAdmin();
-        return view('admin.blog.create');
+        $types = Type::orderBy('name')->get();
+
+        return view('admin.blog.create', compact('types'));
     }
 
     public function adminIndex()
@@ -56,6 +59,7 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $this->authorizeAdmin();
+        $types = Type::all();
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -63,7 +67,9 @@ class BlogController extends Controller
             'author' => 'required|string|max:255',
             'credentials' => 'nullable|string|max:255',
             'content' => 'required|string',
+            'description' => 'required|string',
             'is_premium' => 'nullable|boolean',
+            'type_id' => 'required|integer|exists:types,id',
         ]);
 
         // Subida de imagen
@@ -74,7 +80,7 @@ class BlogController extends Controller
 
         Blog::create($validated);
 
-        return redirect()->route('blog.index')->with('success', 'Blog creado correctamente.');
+        return redirect()->route('blog.index', compact('types'))->with('success', 'Blog creado correctamente.');
     }
 
     // Mostrar blog individual
@@ -103,7 +109,9 @@ class BlogController extends Controller
     {
         $this->authorizeAdmin();
         $blog = Blog::findOrFail($id);
-        return view('admin.blog.edit', compact('blog'));
+        $types = Type::all();
+
+        return view('admin.blog.edit', compact('blog', 'types'));
     }
 
     // Actualizar blog (solo admin)
@@ -118,7 +126,9 @@ class BlogController extends Controller
             'author' => 'required|string|max:255',
             'credentials' => 'nullable|string|max:255',
             'content' => 'required|string',
+            'description' => 'required|string',
             'is_premium' => 'nullable|boolean',
+            'type_id' => 'required|integer|exists:types,id',
         ]);
 
         // Subida de imagen

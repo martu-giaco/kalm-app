@@ -78,8 +78,8 @@
                 {{-- Imagen grande del blog --}}
                 @if ($blog->image)
                     <div class="flex-shrink-0 w-full h-48 overflow-hidden">
-                        <img src="{{ $blog->image }}" alt="{{ $blog->title }}"
-                            class="object-contain w-full h-full transition-transform group-hover:scale-105">
+                        <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}"
+                            class="object-cover w-full h-full transition-transform group-hover:scale-105">
                     </div>
                 @endif
 
