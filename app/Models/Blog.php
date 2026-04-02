@@ -36,4 +36,9 @@ class Blog extends Model
     {
         return in_array($userId, $this->tempLikes ?? []);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

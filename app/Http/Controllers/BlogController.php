@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Blog;
 use App\Models\Type;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
@@ -45,8 +46,9 @@ class BlogController extends Controller
     {
         $this->authorizeAdmin();
         $types = Type::orderBy('name')->get();
+        $tags = Tag::all();
 
-        return view('admin.blog.create', compact('types'));
+        return view('admin.blog.create', compact('types', 'tags'));
     }
 
     public function adminIndex()
@@ -60,6 +62,7 @@ class BlogController extends Controller
     {
         $this->authorizeAdmin();
         $types = Type::all();
+        $tags = Tag::all();
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -70,6 +73,8 @@ class BlogController extends Controller
             'description' => 'required|string',
             'is_premium' => 'nullable|boolean',
             'type_id' => 'required|integer|exists:types,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         // Subida de imagen
@@ -78,9 +83,11 @@ class BlogController extends Controller
             $validated['image'] = $path;
         }
 
-        Blog::create($validated);
+        $blog = Blog::create($validated);
 
-        return redirect()->route('blog.index', compact('types'))->with('success', 'Blog creado correctamente.');
+        $blog->tags()->sync($request->tags ?? []);
+
+        return redirect()->route('blog.index')->with('success', 'Blog creado correctamente.');
     }
 
     // Mostrar blog individual
@@ -110,8 +117,9 @@ class BlogController extends Controller
         $this->authorizeAdmin();
         $blog = Blog::findOrFail($id);
         $types = Type::all();
+        $tags = Tag::all();
 
-        return view('admin.blog.edit', compact('blog', 'types'));
+        return view('admin.blog.edit', compact('blog', 'types', 'tags'));
     }
 
     // Actualizar blog (solo admin)
@@ -129,6 +137,8 @@ class BlogController extends Controller
             'description' => 'required|string',
             'is_premium' => 'nullable|boolean',
             'type_id' => 'required|integer|exists:types,id',
+            'tags' => 'array',
+            'tags.*' => 'exists:tags,id',
         ]);
 
         // Subida de imagen
@@ -140,6 +150,8 @@ class BlogController extends Controller
             $path = $request->file('image')->store('images', 'public');
             $validated['image'] = $path;
         }
+
+        $blog->tags()->sync($request->tags ?? []);
 
         $blog->update($validated);
 

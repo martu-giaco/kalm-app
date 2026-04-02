@@ -1,0 +1,31 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Tag;
+use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
+
+class TagSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $tags = [
+            'Estilo de vida y Hábitos',
+            'Salud Mental',
+            'Salud de la piel',
+            'Ingredientes',
+        ];
+
+        foreach ($tags as $tag) {
+            Tag::create([
+                'name' => $tag,
+                'slug' => Str::slug($tag),
+            ]);
+        }
+    }
+}

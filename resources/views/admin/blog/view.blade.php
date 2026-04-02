@@ -49,6 +49,15 @@ use Illuminate\Support\Facades\Storage;
             </a>
         @endif
 
+        @if(!empty($blog->tags))
+            @foreach($blog->tags as $tag)
+                <a
+                    class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                    {{ $tag->name }}
+                </a>
+            @endforeach
+        @endif
+
         <p class="mb-4 flex justify-between items-center">
             {{ $blog->author ?? 'Anónimo' }}
             @if($blog->created_at)

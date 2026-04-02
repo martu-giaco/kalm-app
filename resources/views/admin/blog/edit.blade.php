@@ -32,9 +32,43 @@
                 </select>
             </div>
 
+            <div class="mb-5">
+                <p for="tag" class="block mb-3 text-sm font-bold text-[#2A4043]">Etiquetas</p>
+                    @php
+                        $selectedTags = old('tags', $blog->tags->pluck('id')->toArray());
+                        $selectedTags = is_array($selectedTags) ? $selectedTags : [$selectedTags];
+                    @endphp
+                <div class="flex flex-wrap gap-x-1 gap-y-4 align-middle">
+                    @foreach($tags as $tag)
+                        <label class="cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="tags[]"
+                                value="{{ $tag->id }}"
+                                class="hidden peer"
+                                {{ in_array($tag->id, $selectedTags) ? 'checked' : '' }}
+                            >
+
+                            <span class="px-4 py-2 text-sm text-center rounded-full border border-[#CCE2E5] bg-white text-[#2A4043]
+                                peer-checked:bg-[#37A0AF]
+                                peer-checked:text-white
+                                peer-checked:border-[#37A0AF]
+                                transition-all duration-200">
+                                {{ $tag->name }}
+                            </span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label for="author" class="block mb-1 text-sm">Autor</label>
                 <input type="text" name="author" id="author" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('author', $blog->author) }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="credentials" class="block mb-1 text-sm">Credenciales</label>
+                <input type="text" name="credentials" id="credentials" class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]" value="{{ old('credentials', $blog->credentials) }}">
             </div>
 
             <div class="mb-3">
