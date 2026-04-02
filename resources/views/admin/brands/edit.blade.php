@@ -22,7 +22,17 @@
                     <div class="relative md:flex-shrink-0 md:w-1/2">
                     <div class="mb-6 overflow-hidden bg-white shadow-lg rounded-full h-80 w-80">
                         @if (!empty($brand->logo))
-                            <img id="image-preview" class="rounded-xl" src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}"
+                            @php
+                                $logo = $brand->logo;
+                                if ($logo && (str_starts_with($logo, 'http://') || str_starts_with($logo, 'https://'))) {
+                                    $logoUrl = $logo;
+                                } elseif ($logo && str_starts_with($logo, 'images/')) {
+                                    $logoUrl = asset($logo);
+                                } else {
+                                    $logoUrl = asset('storage/' . $logo);
+                                }
+                            @endphp
+                            <img id="image-preview" class="rounded-xl" src="{{ $logoUrl }}" alt="{{ $brand->name }}"
                                 class="object-cover bg-white">
                         @else
                             <div class="flex items-center justify-center text-gray-400">
@@ -52,7 +62,7 @@
 
         <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const input = document.getElementById('image');
+            const input = document.getElementById('logo');
             const preview = document.getElementById('image-preview');
 
             if (!input || !preview) return;
@@ -71,7 +81,7 @@
                 const reader = new FileReader();
 
                 reader.onload = function (e) {
-                    preview.src = e.target.result; // 🔥 reemplaza la imagen actual
+                    preview.src = e.target.result;
                 };
 
                 reader.readAsDataURL(file);

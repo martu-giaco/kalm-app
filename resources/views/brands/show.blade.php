@@ -6,10 +6,12 @@
                 @php
                 $img = $brand->logo ?? null;
 
-                if ($img && Str::startsWith($img, ['http://', 'https://'])) {
-                    $imgUrl = $img; // URL absoluta
+                if ($img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'))) {
+                    $imgUrl = $img; // absolute URL
+                } elseif ($img && str_starts_with($img, 'images/')) {
+                    $imgUrl = asset($img); // seeded public images
                 } elseif ($img) {
-                    $imgUrl = asset($img);
+                    $imgUrl = asset('storage/' . $img); // uploaded to storage
                 } else {
                     $imgUrl = asset('images/default.jpg'); // fallback
                 }

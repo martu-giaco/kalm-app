@@ -185,7 +185,7 @@
                 const reader = new FileReader();
 
                 reader.onload = function (e) {
-                    preview.src = e.target.result; // 🔥 reemplaza la imagen actual
+                    preview.src = e.target.result;
                 };
 
                 reader.readAsDataURL(file);

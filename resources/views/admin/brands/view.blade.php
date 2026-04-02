@@ -33,7 +33,12 @@ use Illuminate\Support\Facades\Storage;
                 <div class="relative md:flex-shrink-0 md:w-1/2 flex flex-col items-center">
                     <div class="mb-6 overflow-hidden bg-white">
                         @if (!empty($brand->logo))
-                            <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}"
+                            @php
+                                $logoUrl = str_starts_with($brand->logo, 'images/')
+                                    ? asset($brand->logo)
+                                    : asset('storage/' . $brand->logo);
+                            @endphp
+                            <img src="{{ $logoUrl }}" alt="{{ $brand->name }}"
                                 class="shadow-lg object-cover rounded-full h-80 w-80 bg-white">
                         @else
                             <div class="flex items-center justify-center shadow-lg object-cover rounded-full h-80 w-80 text-gray-400">
