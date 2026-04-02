@@ -84,7 +84,7 @@
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="flex flex-wrap gap-2 my-3">
-                                <a class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                <a href="{{ route('products.search', ['q' => '', 'type_id' => $product->type->id]) }}" class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                                     ✨{{ $product->type->name ?? '-' }}
                                 </a>
                                 <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"

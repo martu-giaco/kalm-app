@@ -88,8 +88,8 @@ Route::middleware('auth')->group(function () {
     // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // Comunidad
-    Route::get('/community', [CommunityController::class, 'community'])->name('community');
+    // Marca
+    Route::get('/brands/{brand}', [BrandController::class, 'show'])->name('brands.show');
 
     /*
     |--------------------------------------------------------------------------
@@ -224,7 +224,7 @@ Route::middleware('auth')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | RUTINES
+    | ROUTINES
     |--------------------------------------------------------------------------
     */
     Route::prefix('routine')->name('routines.')->group(function () {

@@ -12,7 +12,8 @@ class Brand extends Model
         'logo',
     ];
 
-    public function products(){
-        return $this->belongsToMany(Product::class);
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

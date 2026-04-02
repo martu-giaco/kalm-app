@@ -1,6 +1,6 @@
 <a href="{{ route('products.show', $product) }}" class="group block">
                                 <div
-                                    class="flex px-5 items-center gap-4 py-2 transition-shadow bg-white">
+                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-white">
                                     {{-- Imagen redonda --}}
                                     <div class="flex-shrink-0 rounded-md w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
                                         @php
@@ -22,11 +22,10 @@
                                     {{-- Info --}}
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between gap-3">
-
                                             <div class="flex w-full justify-between items-end">
                                                 <h2 class="text-md font-semibold text-[#2A4043] truncate">{{ $product->name }}</h2>
                                                 <button type="button"
-                                                    class="p-2 transition bg-white rounded-full hover:scale-105"
+                                                    class="flex items-center justify-center transition h-full bg-white rounded-full hover:scale-105"
                                                     title="Marcar favorito" onclick="toggleFavorito({{ $product->id }}, this)">
                                                     <label class="swap">
                                                         <!-- this hidden checkbox controls the state -->

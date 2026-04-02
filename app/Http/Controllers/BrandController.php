@@ -4,11 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use App\Models\Product;
+use App\Models\Type;
+use App\Models\ProductCategory;
+use App\Models\SkinType;
+use App\Models\Concern;
 use Illuminate\Support\Facades\Storage;
 
 
 class BrandController extends Controller
 {
+    // Ver detalle de una marca
+    public function show(Brand $brand)
+    {
+        $types = Type::all();
+        $categories = ProductCategory::all();
+        $skinTypes = SkinType::all();
+        $concerns = Concern::all();
+        $brand = $brand->loadCount('products');
+
+        $products = Product::where('brand_id', $brand->id)
+            ->with(['brand', 'type'])
+            ->get();
+
+        return view('brands.show', [
+            'products' => $products,
+            'types' => $types,
+            'brand' => $brand,
+            'categories' => $categories,
+            'skinTypes' => $skinTypes,
+            'concerns' => $concerns,
+        ]);
+    }
+
     public function index()
     {
         $brands = Brand::all();
@@ -22,7 +50,7 @@ class BrandController extends Controller
         return view('admin.brands.view', compact('brand'));
     }
 
-        // Formulario para crear marca (solo admin)
+    // Formulario para crear marca (solo admin)
     public function create()
     {
         $this->authorizeAdmin();

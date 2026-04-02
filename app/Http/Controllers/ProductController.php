@@ -67,20 +67,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Mostrar productos filtrados por tipo
-     */
-    public function byType($typeSlug)
-    {
-        $type = Type::where('slug', $typeSlug)->firstOrFail();
-
-        $products = Product::with(['brand', 'category'])
-            ->where('type_id', $type->id)
-            ->get();
-
-        return view('products.by_type', compact('products', 'type'));
-    }
-
-    /**
      * Mostrar productos filtrados por categoría
      */ // ProductController.php
     public function byCategory($slug)
@@ -199,14 +185,22 @@ class ProductController extends Controller
         $categories = ProductCategory::all();
         $skinTypes = SkinType::all();
         $concerns = Concern::all();
+        $brands = collect();
 
         $qb = Product::with(['brand', 'type', 'category', 'skinTypes', 'concerns']);
 
         if ($queryText) {
-            $qb->where('name', 'like', "%{$queryText}%")
-                ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
-                ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
-                ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"));
+            $qb->where(function ($q) use ($queryText) {
+                $q->where('name', 'like', "%{$queryText}%")
+                    ->orWhereHas('brand', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
+                    ->orWhere('description', 'like', "%{$queryText}%")
+                    ->orWhereHas('type', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"))
+                    ->orWhereHas('category', fn($q2) => $q2->where('name', 'like', "%{$queryText}%"));
+            });
+            $brands = Brand::withCount('products')
+                ->where('name', 'like', "%{$queryText}%")
+                ->orderBy('name')
+                ->get();
         }
 
         // filtros explícitos por GET
@@ -236,6 +230,7 @@ class ProductController extends Controller
             'products' => $products,
             'query' => $queryText,
             'types' => $types,
+            'brands' => $brands,
             'categories' => $categories,
             'skinTypes' => $skinTypes,
             'concerns' => $concerns,

@@ -27,7 +27,7 @@
                 </select>
             </div>
 
-            {{-- Necesidad de rutina --}}
+            {{-- Tipo de piel de rutina --}}
             <div class="mb-4">
                 <label for="need_id" class="block mb-1 text-sm">Tipo de piel</label>
                 <select name="need_id" id="need_id" required
