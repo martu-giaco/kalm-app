@@ -159,10 +159,10 @@
                             </a>
                         @endif
                     @else
-                        <a href="{{ route('subscription.show') }}"
-                            class="mt-4 inline-block bg-[#37A0AF] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#2B7C87] transition">
+                        <button onclick="document.getElementById('premium-modal').classList.remove('hidden')"
+                            class="mt-4 inline-block bg-[#FFDE21] text-[#164d4f] px-5 py-2 rounded-lg font-bold hover:bg-[#E6C917]">
                             Kälm Premium
-                        </a>
+                        </button>
                     @endif
                 @endif
             </div>
