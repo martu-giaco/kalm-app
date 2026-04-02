@@ -95,6 +95,7 @@ class RoutineController extends Controller
     {
         $routine = Routine::findOrFail($routine_id);
         $user = Auth::user();
+        $routineType = $routine->type;
 
         $this->authorizeOwner($routine);
 
@@ -135,17 +136,19 @@ class RoutineController extends Controller
 
         //Productos recomendados para la rutina
         $productsForYouQuery = Product::with('brand', 'type');
-        $titleForYou = 'Productos recomendados';
 
-        $isPremiumUser = $user && $user->role === 'premium' && in_array($user->theme, ['skincare', 'haircare']);
-
-        if ($isPremiumUser) {
-            $productsForYouQuery->whereHas('type', function ($query) use ($user) {
-                $query->where('name', $user->theme);
-            });
-        } else {
-            $productsForYouQuery->latest()->inRandomOrder();
+        if ($routine->type_id) {
+            $productsForYouQuery->where('type_id', $routine->type_id);
         }
+
+        // opcional: evitar productos ya usados en la rutina
+        $productsForYouQuery->whereNotIn(
+            'id',
+            $routine->assignedProducts->pluck('id')
+        );
+
+        // orden más natural
+        $productsForYouQuery->inRandomOrder();
 
         $productsForYou = $productsForYouQuery->limit(12)->get();
 

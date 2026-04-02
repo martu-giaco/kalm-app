@@ -67,4 +67,15 @@ class User extends Authenticatable
         return $this->hasMany(UserTestResult::class);
     }
 
+    public function getFavoritosCountAttribute()
+    {
+        $favoritos = $this->favoritos ?? [];
+
+        if (!is_array($favoritos)) {
+            $favoritos = json_decode($favoritos, true) ?? [];
+        }
+
+        return count($favoritos);
+    }
+
 }

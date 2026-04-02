@@ -50,20 +50,20 @@
                         </div>
                     </div>
 
-                    {{-- Stats HACER FUNCIONAL!!! --}}
+                    {{-- Stats  --}}
                     <div class="w-full">
                         <div class="flex justify-center gap-7">
-                            <div class="flex flex-col items-center">
-                                <strong class="text-[#306067] text-2xl">{{ $user->faves_count ?? 0 }}</strong>
+                            <a href="{{ route('favorites') }}" class="flex flex-col items-center">
+                                <strong class="text-[#306067] text-2xl">{{ $user->favoritos_count }}</strong>
                                 <p class="text-xs">
-                                    @if ($user->faves_count === 1)
+                                    @if ($user->favoritos_count === 1)
                                         Favorito
                                     @else
                                         Favoritos
                                     @endif
                                 </p>
-                            </div>
-                            <div class="flex flex-col items-center">
+                            </a>
+                            <a href="{{ route('home') }}" class="flex flex-col items-center">
                                 <strong class="text-[#306067] text-2xl">{{ $user->reviews_count ?? 0 }}</strong>
                                 <p class="text-xs">
                                     @if ($user->reviews_count === 1)
@@ -72,8 +72,8 @@
                                         Reviews
                                     @endif
                                 </p>
-                            </div>
-                            <div class="flex flex-col items-center">
+                            </a>
+                            <a href="{{ route('routines.index') }}" class="flex flex-col items-center">
                                 <strong class="text-[#306067] text-2xl">{{ $user->routines_count }}</strong>
                                 <p class="text-xs">
                                     @if ($user->routines_count === 1)
@@ -82,7 +82,7 @@
                                         Rutinas
                                     @endif
                                 </p>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>
