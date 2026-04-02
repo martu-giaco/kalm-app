@@ -66,7 +66,7 @@
                                 <div class="flex items-center gap-2 mt-3">
                                     <div class="text-md text-[#CCE2E5]">{{ number_format($product->rating, 1) }}</div>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                        width="24px" fill="#FFDE21">
+                                        width="24px" fill="#facc15">
                                         <path
                                             d="m682.11-375.7 152-130 27.91 2.24q19.39 2 30.33 15.68 10.93 13.67 10.93 29.82 0 9.2-3.59 18.16-3.6 8.95-12.32 15.91l-97.3 85.02 28.84 125.67q1 2.48 1.12 5.22.12 2.74.12 5.22 0 19.15-13.67 32.33-13.68 13.17-31.83 13.17-5.71 0-11.93-1.74t-11.94-5.22l-22.91-14.19-45.76-197.29Zm-99.5-308.26-40.33-94.17 9.48-22.72q5.72-13.67 17.65-20.89 11.94-7.22 24.37-7.22 12.68 0 24.49 6.72 11.82 6.72 17.53 20.63l53.81 127.37-107-9.72ZM185.15-208.41l44.24-189.72L81.67-525.85q-8.71-6.95-11.93-15.91-3.22-8.96-3.22-18.15 0-16.16 10.94-29.83 10.93-13.67 30.32-15.67l194.72-17 75.48-178.96q5.72-13.91 17.53-20.63 11.82-6.72 24.49-6.72 12.67 0 24.49 6.72 11.81 6.72 17.53 20.63l75.48 178.96 194.72 17q19.39 2 30.32 15.67 10.94 13.67 10.94 29.83 0 9.19-3.22 18.15-3.22 8.96-11.93 15.91L610.61-398.13l44.24 189.72q.76 2.28 1.24 10.43 0 19.15-13.68 32.33-13.67 13.17-31.82 13.17-3.96 0-23.87-6.95L420-259.91 253.28-159.43q-5.71 3.47-11.93 5.21-6.22 1.74-11.94 1.74-20.63 0-35.3-16.53-14.68-16.53-8.96-39.4Z" />
                                     </svg>
@@ -100,6 +100,32 @@
                         <label for="modal-routines" class="btn font-bold w-full bg-[#306067] text-white cursor-pointer">
                             Agregar a rutina
                         </label>
+                    </div>
+
+                    <style>
+                    .mask-custom-star {
+                        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z'/%3E%3C/svg%3E");
+                        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z'/%3E%3C/svg%3E");
+
+                        mask-size: contain;
+                        mask-repeat: no-repeat;
+                        mask-position: center;
+
+                        -webkit-mask-size: contain;
+                        -webkit-mask-repeat: no-repeat;
+                        -webkit-mask-position: center;
+                    }
+                    .rating input:checked,
+                    .rating input:checked ~ input {
+                        background-color: #facc15 !important; /* yellow-400 */
+                    }
+                    </style>
+                    <div class="rating mt-6 flex flex-row-reverse justify-center ">
+                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="5" />
+                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="4" />
+                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="3" />
+                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="2" />
+                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="1" />
                     </div>
                 </div>
             </div>
