@@ -30,7 +30,7 @@
     </section>
 
     <section class="min-h-screen px-5 pt-7 pb-10 bg-white rounded-t-3xl">
-        <div class="bg-white rounded-t-3xl">
+        <div class="pb-3 bg-white rounded-t-3xl">
             {{-- Cabecera resultados --}}
             <div class="flex items-start justify-between w-full gap-4">
                 <div class="flex justify-between w-full">
@@ -141,27 +141,57 @@
                     </div>
                 </dialog>
             </div>
+
+            @if(request()->hasAny(['q','type_id','tags']))
+                <div class="flex flex-wrap gap-2">
+                    {{-- Tipo --}}
+                    @if(request('type_id'))
+                        @php $type = $types->firstWhere('id', request('type_id')); @endphp
+                        @if($type)
+                            <a href="{{ route('blog.index', request()->except('type_id')) }}"
+                                class="px-3 py-1 text-sm bg-[#CCE2E5] rounded-full flex items-center">
+                                {{ $type->name }}
+                                ✕
+                            </a>
+                        @endif
+                    @endif
+                    {{-- Tags --}}
+                    @if(request('tags'))
+                        @foreach(request('tags') as $tagId)
+                            @php $tag = $tags->firstWhere('id', $tagId); @endphp
+                            @if($tag)
+                                <a href="{{ route('blog.index', ['tags' => array_diff(request('tags'), [$tagId])] + request()->except('tags')) }}"
+                                    class="px-3 py-1 text-sm bg-[#CCE2E5] rounded-full flex items-center">
+                                    {{ $tag->name }}
+                                    ✕
+                                </a>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+                @endif
             </div>
 
-        <section>
-            @foreach($blogsByTag as $tagName => $blogs)
-                <h2 class="text-2xl font-bold text-[#306067] mt-5 mb-2">{{ $tagName }}</h2>
-                <div class="flex gap-5 pb-5 overflow-x-auto scroll-smooth scrollbar-hide">
-                            @foreach($blogs as $blog)
-                                <x-blog-card :blog="$blog" />
-                            @endforeach
-                </div>
-            @endforeach
-
-            @foreach($blogsByType as $typeName => $blogs)
-                <h2 class="text-2xl font-bold text-[#306067] mt-5 mb-2">{{ $typeName }}</h2>
-                <div class="flex gap-5 pb-5 overflow-x-auto scroll-smooth scrollbar-hide">
-                            @foreach($blogs as $blog)
-                                <x-blog-card :blog="$blog" />
-                            @endforeach
-                </div>
-            @endforeach
-        </section>
+        <div>
+                {{-- Empty state o lista de blogs --}}
+                @if ($blogs->isEmpty())
+                    <div class="text-center py-14 min-h-[50vh] flex flex-col items-center justify-center">
+                        <p class="text-sm text-[#2A4043] mb-4">
+                            No se encontraron blogs que coincidan con su búsqueda.
+                        </p>
+                        <a href="{{ route('blog.index') }}" class="inline-block text-[#37A0AF]">
+                            Ver todos los blogs
+                        </a>
+                    </div>
+                @else
+                    {{-- Lista de blogs: sin height fija, scroll natural del body --}}
+                    <div class="mb-8">
+                        @foreach ($blogs as $blog)
+                            <x-blog-card-hor :blog="$blog" />
+                        @endforeach
+                    </div>
+                @endif
+            </div>
 
     </section>
 

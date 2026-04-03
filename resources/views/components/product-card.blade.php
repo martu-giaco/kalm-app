@@ -39,7 +39,7 @@
                                             {{ $product->brand->name }}</h3>
                                     @endif
                                     @if (!empty($product->type?->name))
-                                        <button class="text-[10px] mt-2 w-20 inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                        <button class="text-[10px] mt-2 w-20 text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
                                             ✨{{ $product->type->name }}
                                         </button>
                                     @endif

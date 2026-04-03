@@ -16,8 +16,11 @@ class BlogController extends Controller
     }
 
     // Vista principal de blogs
-    public function index()
+    public function index(Request $request)
     {
+        $queryText = $request->input('q');
+        $types = Type::all();
+        $tags = Tag::all();
         $user = auth()->user();
 
         $banners = [
@@ -31,13 +34,127 @@ class BlogController extends Controller
             ],
         ];
 
-        $blogs = Blog::orderByDesc('created_at')->get()->map(function ($blog) use ($user) {
-            $blog->canView = !$blog->is_premium || $user->role === 'premium' || $user->role === 'admin';
+        $qb = Blog::with(['type', 'tags']);
+
+        if ($queryText) {
+            $qb->where(function ($q) use ($queryText) {
+                $q->where('title', 'like', "%{$queryText}%") // ⚠️ usar title, no name
+                ->orWhere('description', 'like', "%{$queryText}%")
+                ->orWhere('content', 'like', "%{$queryText}%")
+                ->orWhere('author', 'like', "%{$queryText}%")
+                ->orWhereHas('type', fn($q2) =>
+                        $q2->where('name', 'like', "%{$queryText}%")
+                )
+                ->orWhereHas('tags', fn($q2) =>
+                        $q2->where('name', 'like', "%{$queryText}%")
+                );
+            });
+        }
+
+        $queryWords = explode(' ', $queryText);
+
+        foreach ($queryWords as $word) {
+            $qb->where(function ($q) use ($word) {
+                $q->where('title', 'like', "%{$word}%")
+                ->orWhere('content', 'like', "%{$word}%");
+            });
+        }
+
+        if ($request->filled('type_id')) {
+            $qb->where('type_id', $request->input('type_id'));
+        }
+
+        if ($request->filled('tag_id')) {
+            $qb->whereHas('tags', function ($q) use ($request) {
+                $q->where('tags.id', $request->input('tag_id'));
+            });
+        }
+
+        $blogs = Blog::with(['type', 'tags'])
+            ->latest()
+            ->get();
+
+        $blogs = $blogs->transform(function ($blog) use ($user) {
+            $blog->canView = !$blog->is_premium ||
+                ($user && ($user->role === 'premium' || $user->role === 'admin'));
+
             $blog->blurred = !$blog->canView;
+
             return $blog;
         });
 
-        return view('blogs.index', compact('blogs', 'user', 'banners'));
+        $blogsByType = $blogs->groupBy(function ($blog) {
+            return $blog->type?->name ?? 'Todos los blogs';
+        });
+
+        $blogsByTag = [];
+
+        foreach ($blogs as $blog) {
+            foreach ($blog->tags as $tag) {
+                $blogsByTag[$tag->name][] = $blog;
+            }
+        }
+
+
+        return view('blogs.index', compact('blogs', 'types', 'tags', 'user', 'banners', 'blogsByType', 'blogsByTag'));
+    }
+
+    // Vista principal de blogs
+    public function search(Request $request)
+    {
+        $queryText = $request->input('q');
+        $types = Type::all();
+        $tags = Tag::all();
+        $user = auth()->user();
+        $qb = Blog::with(['type', 'tags']);
+
+        if ($queryText) {
+            $qb->where(function ($q) use ($queryText) {
+                $q->where('title', 'like', "%{$queryText}%") // ⚠️ usar title, no name
+                ->orWhere('description', 'like', "%{$queryText}%")
+                ->orWhere('content', 'like', "%{$queryText}%")
+                ->orWhere('author', 'like', "%{$queryText}%")
+                ->orWhereHas('type', fn($q2) =>
+                        $q2->where('name', 'like', "%{$queryText}%")
+                )
+                ->orWhereHas('tags', fn($q2) =>
+                        $q2->where('name', 'like', "%{$queryText}%")
+                );
+            });
+        }
+
+        $queryWords = explode(' ', $queryText);
+        foreach ($queryWords as $word) {
+            $qb->where(function ($q) use ($word) {
+                $q->where('title', 'like', "%{$word}%")
+                ->orWhere('content', 'like', "%{$word}%");
+            });
+        }
+
+        if ($request->filled('type_id')) {
+            $qb->where('type_id', $request->input('type_id'));
+        }
+
+        if ($request->filled('tag_id')) {
+            $qb->whereHas('tags', function ($q) use ($request) {
+                $q->where('tags.id', $request->input('tag_id'));
+            });
+        }
+
+        $blogs = $qb->orderByDesc('created_at')
+                    ->paginate(12)
+                    ->appends($request->except('page'));
+
+        $blogs->getCollection()->transform(function ($blog) use ($user) {
+            $blog->canView = !$blog->is_premium ||
+                            ($user && ($user->role === 'premium' || $user->role === 'admin'));
+
+            $blog->blurred = !$blog->canView;
+
+            return $blog;
+        });
+
+        return view('blogs.search', compact('blogs', 'types', 'tags', 'user'));
     }
 
 

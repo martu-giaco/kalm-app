@@ -44,10 +44,10 @@
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>
                                             <div class="flex flex-wrap gap-2 my-3">
-                                                <button class="text-[10px] inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
                                                     ✨{{ $product->type->name ?? '-' }}
                                                 </button>
-                                                <button class="text-[10px] inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
                                                     {{ $product->category->name ?? '-' }}
                                                 </button>
                                             </div>

@@ -15,9 +15,9 @@ class TagSeeder extends Seeder
     public function run(): void
     {
         $tags = [
-            'Estilo de vida y Hábitos',
+            'Estilo de Vida y Hábitos',
             'Salud Mental',
-            'Salud de la piel',
+            'Salud de la Piel',
             'Ingredientes',
         ];
 

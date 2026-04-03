@@ -99,6 +99,7 @@ Route::middleware('auth')->group(function () {
 
     // Blog index y detalle (premium)
     Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blogs/search', [BlogController::class, 'search'])->name('blog.search');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->middleware('premium.blog')->name('blog.show');
     Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])->name('blog.like');
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Storage;
 ?>
 
 <x-layout :title="'Detalle de Blog - Panel de Administración'">
-    <div class="container my-5 px-5 bg-white rounded-t-3xl min-h-full pt-5">
+    <div class="container my-5 pb-10 px-5 bg-white rounded-t-3xl min-h-full pt-5">
         <div class="flex gap-2 flex-wrap justify-between items-center mb-4">
             <a href="{{ route('admin.blog.index') }}" class="bg-transparent border-transparent shadow-none">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m142-480 294 294q15 15 14.5 35T435-116q-15 15-35 15t-35-15L57-423q-12-12-18-27t-6-30q0-15 6-30t18-27l308-308q15-15 35.5-14.5T436-844q15 15 15 35t-15 35L142-480Z"/></svg>
@@ -70,5 +70,7 @@ use Illuminate\Support\Facades\Storage;
         <div class="mb-4 fs-5" style="white-space:pre-wrap; line-height:1.6;">
             {!! nl2br(e($blog->content)) !!}
         </div>
+
+        <x-author-card-hor :blog="$blog" />
     </div>
 </x-layout>
