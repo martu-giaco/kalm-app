@@ -25,17 +25,22 @@
                                 </label>
                         </div>
                         {{-- Imagen --}}
-                        @if ($blog->image)
-                            <div class="w-50 h-48 overflow-hidden">
-                                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}"
-                                    class="object-cover w-full h-full">
-                            </div>
-                        @else
-                            <div class="w-50 h-48 overflow-hidden">
-                                <img src="{{ asset('images/default.jpg') }}" alt="{{ $blog->title }}"
-                                    class="object-cover w-full h-full">
-                            </div>
-                        @endif
+                        @php
+                            $img = $blog->image ?? null;
+                            if ($img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'))) {
+                                $imgUrl = $img;
+                            } elseif ($img && str_starts_with($img, 'images/')) {
+                                $imgUrl = asset($img);
+                            } elseif ($img) {
+                                $imgUrl = asset('storage/' . $img);
+                            } else {
+                                $imgUrl = asset('images/default.jpg');
+                            }
+                        @endphp
+                        <div class="w-50 h-48 overflow-hidden">
+                            <img src="{{ $imgUrl }}" alt="{{ $blog->title }}"
+                                class="object-cover w-full h-full">
+                        </div>
                     </div>
                     {{-- Info --}}
                     <div class="flex flex-col p-4 relative">

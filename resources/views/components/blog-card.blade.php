@@ -25,8 +25,18 @@
                     </div>
                     {{-- Imagen --}}
                     @if ($blog->image)
+                        @php
+                            $img = $blog->image;
+                            if ($img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'))) {
+                                $imgUrl = $img;
+                            } elseif ($img && str_starts_with($img, 'images/')) {
+                                $imgUrl = asset($img);
+                            } else {
+                                $imgUrl = asset('storage/' . $img);
+                            }
+                        @endphp
                         <div class="w-full h-48 overflow-hidden">
-                            <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}"
+                            <img src="{{ $imgUrl }}" alt="{{ $blog->title }}"
                                 class="object-cover w-full h-full">
                         </div>
                     @endif

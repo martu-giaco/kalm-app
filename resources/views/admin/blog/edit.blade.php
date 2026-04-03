@@ -73,11 +73,25 @@
 
             <div class="mb-3">
                 <p class="mb-1 text-sm">Imagen</p>
-                @if($blog->image)
-                    <div class="mb-2">
-                        <img id="image-preview" class="rounded-xl" src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" style="max-width: 200px; max-height: 200px;">
-                    </div>
-                @endif
+                    @php
+                        $img = $blog->image ?? null;
+                        if ($img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'))) {
+                            $imgUrl = $img;
+                        } elseif ($img && str_starts_with($img, 'images/')) {
+                            $imgUrl = asset($img);
+                        } elseif ($img) {
+                            $imgUrl = asset('storage/' . $img);
+                        } else {
+                            $imgUrl = null;
+                        }
+                    @endphp
+                    @if($imgUrl)
+                        <img id="image-preview" class="rounded-xl" src="{{ $imgUrl }}" alt="{{ $blog->title }}" style="max-width: 200px; max-height: 200px;">
+                    @else
+                        <div class="flex items-center justify-center text-gray-400">
+                            Sin imagen
+                        </div>
+                    @endif
                 <label for="image"
                                 class="flex justify-between mb-1 text-md p-3 bg-transparent rounded-xl border-2 border-[#2A4043] placeholder-[#CCE2E5] focus:outline-[#2A4043] text-[#2A4043]">
                                 <p>Subir una foto</p>

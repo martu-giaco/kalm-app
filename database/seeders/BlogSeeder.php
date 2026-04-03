@@ -9,116 +9,180 @@ class BlogSeeder extends Seeder
 {
     public function run(): void
     {
-        // ---------------------------
-        // BLOGS GRATUITOS
-        // ---------------------------
+        $blogs = [
 
-        $blog1 = Blog::create([
-            'title' => 'Rutina básica de limpieza facial',
-            'image' => 'https://via.placeholder.com/600x400?text=Skincare+Free+1',
-            'author' => 'Laura Fernández',
-            'credentials' => 'Dermatóloga general',
-            'content' => 'Descubre cómo limpiar tu rostro de manera efectiva en 5 minutos.',
-            'description' => 'Una rutina básica para mantener tu piel limpia y saludable.',
-            'type_id' => 1,
-            'is_premium' => false,
-        ]);
-        $blog1->tags()->sync([1]);
+            // ---------------------------
+            // SKINCARE
+            // ---------------------------
+            [
+                'title' => 'Rutina completa para piel grasa',
+                'author' => 'Laura Fernández',
+                'credentials' => 'Dermatóloga general',
+                'image' => 'images/blogs/greasy.jpg',
+                'content' => "La piel grasa requiere un enfoque equilibrado que controle el exceso de sebo sin comprometer la hidratación natural de la piel.
 
+Una rutina efectiva comienza con un limpiador suave con ácido salicílico para eliminar impurezas y reducir poros obstruidos. Luego, es fundamental aplicar un tónico equilibrante que ayude a restaurar el pH de la piel.
 
+El uso de un serum con niacinamida puede ayudar a regular la producción de grasa, mientras que una crema hidratante ligera es esencial para evitar el efecto rebote.
 
-        $blog2 = Blog::create([
-            'title' => 'Tips rápidos para cabello brillante',
-            'image' => 'https://via.placeholder.com/600x400?text=Haircare+Free+1',
-            'author' => 'Carlos Méndez',
-            'credentials' => 'Estilista profesional',
-            'content' => 'Aprende cómo darle brillo a tu cabello con productos caseros simples.',
-            'description' => 'Consejos para mantener tu cabello saludable y brillante.',
-            'type_id' => 2,
-            'is_premium' => false,
-        ]);
-        $blog2->tags()->sync([1]);
+Por último, el protector solar oil-free es obligatorio para prevenir daños solares sin aportar brillo adicional.
 
+**Recomendación profesional:** evitar productos agresivos que resequen demasiado la piel, ya que esto puede aumentar la producción de sebo.",
+                'description' => 'Rutina ideal para controlar piel grasa sin resecar.',
+                'type_id' => 1,
+                'tags' => [1, 3, 4],
+                'is_premium' => false,
+            ],
 
+            [
+                'title' => 'Cómo armar una rutina nocturna efectiva',
+                'author' => 'Sofía Ramírez',
+                'credentials' => 'Cosmetóloga',
+                'image' => 'images/blogs/night-routine.jpg',
+                'content' => "La rutina nocturna es clave para la regeneración de la piel. Durante la noche, el proceso de renovación celular está en su punto máximo.
 
-        $blog3 = Blog::create([
-            'title' => 'Protección solar diaria',
-            'image' => 'https://via.placeholder.com/600x400?text=Skincare+Free+2',
-            'author' => 'Sofía Ramírez',
-            'credentials' => 'Cosmetóloga',
-            'content' => 'No olvides aplicar protector solar cada mañana, incluso si estás en interiores.',
-            'description' => 'Importancia de la protección solar en tu rutina diaria.',
-            'type_id' => 1,
-            'is_premium' => false,
-        ]);
-        $blog3->tags()->sync([1]);
+Se recomienda comenzar con una doble limpieza: primero un limpiador oleoso para remover maquillaje y luego uno acuoso para limpiar profundamente.
 
+Después, se pueden incorporar activos como retinol o ácidos exfoliantes, siempre de forma gradual para evitar irritaciones.
 
+Finalizar con una crema nutritiva ayuda a sellar la hidratación y potenciar la reparación cutánea.
 
-        // ---------------------------
-        // BLOGS PREMIUM
-        // ---------------------------
+**Consejo clave:** la constancia es más importante que la cantidad de productos.",
+                'description' => 'Guía para aprovechar al máximo tu rutina nocturna.',
+                'type_id' => 1,
+                'tags' => [1, 4],
+                'is_premium' => false,
+            ],
 
-        $blog4 = Blog::create([
-            'title' => 'Guía completa para una piel saludable',
-            'image' => 'https://via.placeholder.com/600x400?text=Skincare+Premium+1',
-            'author' => 'Dr. Alejandro Torres',
-            'credentials' => 'Dermatólogo certificado',
-            'content' => "Mantener una piel saludable requiere una rutina diaria combinando limpieza, hidratación y protección solar.
-Se recomienda usar limpiadores suaves por la mañana y noche, aplicar un serum con antioxidantes y finalizar con protector solar de amplio espectro.
-**Recomendación oficial de profesionales:** evita productos con alcohol excesivo y realiza exfoliación química una vez por semana para prevenir irritaciones.",
-            'description' => 'Una guía completa para mantener tu piel saludable.',
-            'type_id' => 1,
-            'is_premium' => true,
-        ]);
-        $blog4->tags()->sync([1, 3]);
+            [
+                'title' => 'Ingredientes clave para una piel saludable',
+                'author' => 'Dr. Martín Vega',
+                'credentials' => 'Dermatólogo',
+                'image' => 'images/blogs/ingredients.jpg',
+                'content' => "Entender los ingredientes es fundamental para elegir productos adecuados.
 
+La vitamina C es un antioxidante potente que ilumina la piel y combate los radicales libres. El ácido hialurónico hidrata profundamente, mientras que la niacinamida ayuda a reducir inflamación y manchas.
 
+Los retinoides son esenciales para tratar signos de envejecimiento, pero deben usarse con precaución.
 
-        $blog5 = Blog::create([
-            'title' => 'Cómo prevenir la caída del cabello',
-            'image' => 'https://via.placeholder.com/600x400?text=Haircare+Premium+1',
-            'author' => 'Dra. Valentina López',
-            'credentials' => 'Tricóloga certificada',
-            'content' => "La caída del cabello puede prevenirse con una alimentación rica en proteínas, hierro y biotina.
-Es importante utilizar champús suaves, evitar peinados muy apretados y limitar el uso de herramientas de calor.
-**Recomendación oficial de profesionales:** consulta a un especialista si notas pérdida excesiva; un tratamiento personalizado puede ser necesario.",
-            'description' => 'Consejos para prevenir la caída del cabello.',
-            'type_id' => 2,
-            'is_premium' => true,
-        ]);
-        $blog5->tags()->sync([2, 3]);
+**Recomendación:** siempre introducir nuevos activos de forma progresiva.",
+                'description' => 'Los activos más importantes en skincare.',
+                'type_id' => 1,
+                'tags' => [3, 4],
+                'is_premium' => true,
+            ],
 
+            // ---------------------------
+            // HAIRCARE
+            // ---------------------------
+            [
+                'title' => 'Rutina completa para cabello seco',
+                'author' => 'Carlos Méndez',
+                'credentials' => 'Estilista profesional',
+                'image' => 'images/blogs/dry-hair.jpg',
+                'content' => "El cabello seco necesita hidratación profunda y constancia.
 
+Es recomendable utilizar un shampoo sin sulfatos agresivos, seguido de un acondicionador nutritivo. Las mascarillas deben aplicarse al menos dos veces por semana.
 
-        $blog6 = Blog::create([
-            'title' => 'Rutina antiedad para piel madura',
-            'image' => 'https://via.placeholder.com/600x400?text=Skincare+Premium+2',
-            'author' => 'Dr. Martín Vega',
-            'credentials' => 'Dermatólogo especializado en envejecimiento',
-            'content' => "Para piel madura, se recomienda una rutina enfocada en hidratación profunda y estimulación de colágeno.
-Incluye limpieza suave, aplicación de retinoides nocturnos y antioxidantes durante el día.
-**Recomendación oficial de profesionales:** combina tratamientos tópicos con protección solar diaria.",
-            'description' => 'Rutina antiedad para piel madura.',
-            'type_id' => 1,
-            'is_premium' => true,
-        ]);
-        $blog6->tags()->sync([1, 3, 4]);
+El uso de aceites como argán o coco ayuda a sellar la hidratación y aportar brillo.
 
+**Tip profesional:** evitar herramientas de calor excesivo.",
+                'description' => 'Cómo hidratar el cabello seco correctamente.',
+                'type_id' => 2,
+                'tags' => [1, 3],
+                'is_premium' => false,
+            ],
 
+            [
+                'title' => 'Cómo evitar el frizz en climas húmedos',
+                'author' => 'Valentina López',
+                'credentials' => 'Tricóloga',
+                'image' => 'images/blogs/frizz.jpg',
+                'content' => "El frizz es uno de los problemas más comunes en ambientes húmedos.
 
-        $blog7 = Blog::create([
-            'title' => 'Tratamientos profesionales para cabello seco',
-            'image' => 'https://via.placeholder.com/600x400?text=Haircare+Premium+2',
-            'author' => 'Carlos Méndez',
-            'credentials' => 'Estilista profesional',
-            'content' => "El cabello seco requiere nutrición profunda con mascarillas hidratantes y aceites naturales.
-Se recomienda aplicar mascarilla 2-3 veces por semana y usar acondicionador diario.
-**Recomendación oficial de profesionales:** evita lavados con agua muy caliente.",
-            'description' => 'Tratamientos profesionales para cabello seco.',
-            'type_id' => 2,
-            'is_premium' => true,
-        ]);
-        $blog7->tags()->sync([1, 3]);
+La clave está en mantener el cabello bien hidratado y utilizar productos anti-frizz que creen una barrera protectora.
+
+Evitar peinar el cabello en seco y utilizar toallas de microfibra puede marcar una gran diferencia.
+
+**Recomendación:** incorporar leave-in conditioners.",
+                'description' => 'Control del frizz en ambientes húmedos.',
+                'type_id' => 2,
+                'tags' => [1],
+                'is_premium' => false,
+            ],
+
+            [
+                'title' => 'Caída del cabello: causas y soluciones',
+                'author' => 'Dra. Valentina López',
+                'credentials' => 'Tricóloga certificada',
+                'image' => 'images/blogs/hair-loss.jpg',
+                'content' => "La caída del cabello puede estar relacionada con múltiples factores: estrés, alimentación, genética o cambios hormonales.
+
+Es fundamental identificar la causa para aplicar el tratamiento adecuado.
+
+Suplementos, tratamientos tópicos y cambios en el estilo de vida pueden ayudar significativamente.
+
+**Consejo profesional:** consultar siempre a un especialista.",
+                'description' => 'Guía completa sobre caída capilar.',
+                'type_id' => 2,
+                'tags' => [2, 3],
+                'is_premium' => true,
+            ],
+
+            // ---------------------------
+            // LIFESTYLE / SALUD
+            // ---------------------------
+            [
+                'title' => 'Hábitos diarios para mejorar tu piel',
+                'author' => 'Ana Torres',
+                'credentials' => 'Nutricionista',
+                'image' => 'images/blogs/skin-habits.jpg',
+                'content' => "La salud de la piel no depende solo de los productos, sino también de los hábitos diarios.
+
+Dormir bien, mantenerse hidratado y llevar una dieta balanceada son factores clave.
+
+El estrés también impacta directamente en la piel, generando brotes y sensibilidad.
+
+**Recomendación:** adoptar hábitos sostenibles en el tiempo.",
+                'description' => 'Hábitos que impactan en tu piel.',
+                'type_id' => 3,
+                'tags' => [1, 2],
+                'is_premium' => false,
+            ],
+
+            [
+                'title' => 'Relación entre estrés y salud de la piel',
+                'author' => 'Dr. Pablo Ruiz',
+                'credentials' => 'Psicólogo',
+                'image' => 'images/blogs/stress-skin.jpg',
+                'content' => "El estrés tiene un impacto directo en la piel, afectando condiciones como acné, psoriasis y dermatitis.
+
+El cortisol elevado puede alterar la barrera cutánea y aumentar la inflamación.
+
+Practicar técnicas de relajación como mindfulness o ejercicio puede mejorar notablemente la piel.
+
+**Clave:** cuidar la salud mental también es cuidar la piel.",
+                'description' => 'Cómo el estrés afecta tu piel.',
+                'type_id' => 3,
+                'tags' => [2, 3],
+                'is_premium' => true,
+            ],
+        ];
+
+        foreach ($blogs as $data) {
+
+            $blog = Blog::create([
+                'title' => $data['title'],
+                'image' => $data['image'],
+                'author' => $data['author'],
+                'credentials' => $data['credentials'],
+                'content' => $data['content'],
+                'description' => $data['description'],
+                'type_id' => $data['type_id'],
+                'is_premium' => $data['is_premium'],
+            ]);
+
+            $blog->tags()->sync($data['tags']);
+        }
     }
 }

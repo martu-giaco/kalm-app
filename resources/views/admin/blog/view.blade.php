@@ -32,8 +32,21 @@ use Illuminate\Support\Facades\Storage;
 
         {{-- Imagen principal / placeholder --}}
         <div class="mb-4 d-flex justify-content-center">
-            @if($blog->image)
-                <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid rounded-xl" style="max-width: 100%; max-height: 480px; object-fit: cover;">
+            @php
+                $img = $blog->image ?? null;
+                if ($img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'))) {
+                    $imgUrl = $img;
+                } elseif ($img && str_starts_with($img, 'images/')) {
+                    $imgUrl = asset($img);
+                } elseif ($img) {
+                    $imgUrl = asset('storage/' . $img);
+                } else {
+                    $imgUrl = null;
+                }
+            @endphp
+
+            @if($imgUrl)
+                <img src="{{ $imgUrl }}" alt="{{ $blog->title }}" class="img-fluid rounded-xl" style="max-width: 100%; max-height: 480px; object-fit: cover;">
             @else
                 <div class="border border-[#CCE2E5] rounded bg-light d-flex align-items-center text-center justify-content-center w-full py-4">
                     <p class="text-center text-[#CCE2E5]">Sin imagen disponible</p>
