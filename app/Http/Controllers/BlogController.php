@@ -7,6 +7,7 @@ use App\Models\Blog;
 use App\Models\Type;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BlogController extends Controller
 {

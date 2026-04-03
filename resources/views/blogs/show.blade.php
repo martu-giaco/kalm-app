@@ -26,9 +26,15 @@
         </div>
 
         <h1 class="text-3xl font-bold text-[#306067]">{{ $blog->title }}</h1>
+        <p class="mb-4 flex justify-between items-center text-[#306067bf]">
+            {{ $blog->author ?? 'Anónimo' }}
+            @if($blog->created_at)
+                <small class="text-[#37A0AF]">{{ $blog->created_at->format('d/m/Y') }}</small>
+            @endif
+        </p>
 
         {{-- Imagen principal / placeholder --}}
-        <div class="mb-4 d-flex justify-content-center">
+        <div class="mb-4 w-full">
             @php
                 $img = $blog->image ?? null;
                 if ($img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'))) {
@@ -43,10 +49,16 @@
             @endphp
 
             @if($imgUrl)
-                <img src="{{ $imgUrl }}" alt="{{ $blog->title }}" class="img-fluid rounded-xl" style="max-width: 100%; max-height: 480px; object-fit: cover;">
+                <div class="w-full overflow-hidden rounded-xl max-h-80 sm:max-h-80 md:max-h-100 lg:max-h-100">
+                    <img
+                        src="{{ $imgUrl }}"
+                        alt="{{ $blog->title }}"
+                        class="w-full h-full object-cover"
+                    >
+                </div>
             @else
-                <div class="border border-[#CCE2E5] rounded bg-light d-flex align-items-center text-center justify-content-center w-full py-4">
-                    <p class="text-center text-[#CCE2E5]">Sin imagen disponible</p>
+                <div class="border border-[#CCE2E5] rounded bg-light flex items-center justify-center w-full">
+                    <p class="text-[#CCE2E5]">Sin imagen disponible</p>
                 </div>
             @endif
         </div>
@@ -66,17 +78,16 @@
             @endforeach
         @endif
 
-        <p class="mb-4 flex justify-between items-center">
-            {{ $blog->author ?? 'Anónimo' }}
-            @if($blog->created_at)
-                <small class="text-[#37A0AF]">{{ $blog->created_at->format('d/m/Y') }}</small>
-            @endif
-        </p>
+        <p class="font-bold mb-10">{{ $blog->description }}</p>
 
-        <p class="font-bold">{{ $blog->description }}</p>
-
-        <div class="mb-4 fs-5" style="white-space:pre-wrap; line-height:1.6;">
-            {!! nl2br(e($blog->content)) !!}
+        <div class="mb-2 gap-4 flex flex-col">
+            <style>
+                h2 {
+                    font-size: 1.5rem;
+                    margin-top: 0.75rem;
+                }
+            </style>
+            {!! Str::markdown($blog->content) !!}
         </div>
 
         <x-author-card-hor :blog="$blog" />
