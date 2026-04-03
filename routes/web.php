@@ -102,6 +102,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/blogs/search', [BlogController::class, 'search'])->name('blog.search');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->middleware('premium.blog')->name('blog.show');
     Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])->name('blog.like');
+    Route::get('blogs/type/{slug}', [BlogController::class, 'byType'])->name('blog.byType');
+    Route::get('/blogs/tag/{slug}', [BlogController::class, 'byTag'])->name('blog.byTag');
 
     /*
     |--------------------------------------------------------------------------

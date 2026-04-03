@@ -99,6 +99,36 @@ class BlogController extends Controller
         return view('blogs.index', compact('blogs', 'types', 'tags', 'user', 'banners', 'blogsByType', 'blogsByTag'));
     }
 
+    /**
+     * Mostrar productos filtrados por tag
+     */ // BlogController.php
+    public function byTag($slug)
+    {
+        $tag = Tag::where('slug', $slug)->firstOrFail();
+
+        $blogs = Blog::whereHas('tags', function ($query) use ($tag) {
+            $query->where('tags.id', $tag->id);})
+            ->with(['tags', 'type'])
+            ->get();
+
+        return view('blogs.byTag', compact('tag', 'blogs'));
+    }
+
+    /**
+     * Mostrar productos filtrados por type
+     */ // BlogController.php
+    public function byType($slug)
+    {
+        $type = Type::where('slug', $slug)->firstOrFail();
+
+        $blogs = Blog::where('type_id', $type->id)
+            ->with(['tags', 'type'])
+            ->get();
+
+        return view('blogs.byType', compact('type', 'blogs'));
+    }
+
+
     // Vista principal de blogs
     public function search(Request $request)
     {

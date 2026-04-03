@@ -39,14 +39,14 @@
         </div>
 
         @if(!empty($blog->type))
-            <a href="{{ route('blog.search', ['q' => '', 'type_id' => $blog->type->id]) }}" class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+            <a href="{{ route('blog.byType', ['slug' => $blog->type->slug]) }}" class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                 ✨{{ $blog->type->name }}
             </a>
         @endif
 
         @if(!empty($blog->tags))
             @foreach($blog->tags as $tag)
-                <a href="{{ route('blog.search', ['q' => '', 'tag_id' => $tag->id]) }}"
+                <a href="{{ route('blog.byTag', ['slug' => $tag->slug]) }}"
                     class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                     {{ $tag->name }}
                 </a>

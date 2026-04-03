@@ -4,19 +4,22 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Type;
+use Illuminate\Support\Str;
 
 class TypeSeeder extends Seeder
 {
     public function run()
     {
-        $types = [
-            ['name' => 'Skincare'],
-            ['name' => 'Haircare'],
-            ['name' => 'Bodycare'],
-        ];
+        $names = ['Skincare', 'Haircare', 'Bodycare'];
 
-        foreach ($types as $type) {
-            Type::create($type);
+        foreach ($names as $name) {
+            $slug = Str::slug($name);
+            // create explicitly with slug to ensure deterministic seeds
+            Type::firstOrCreate([
+                'name' => $name,
+            ], [
+                'slug' => $slug,
+            ]);
         }
     }
 }

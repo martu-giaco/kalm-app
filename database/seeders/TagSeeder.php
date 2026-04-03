@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Tag;
+use App\Models\Type;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
@@ -27,5 +28,10 @@ class TagSeeder extends Seeder
                 'slug' => Str::slug($tag),
             ]);
         }
+
+        Type::all()->each(function ($type) {
+            $type->slug = Str::slug($type->name);
+            $type->save();
+        });
     }
 }
