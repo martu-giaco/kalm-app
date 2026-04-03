@@ -39,15 +39,39 @@ Por último, el protector solar oil-free es obligatorio para prevenir daños sol
                 'author' => 'Sofía Ramírez',
                 'credentials' => 'Cosmetóloga',
                 'image' => 'images/blogs/night-routine.jpg',
-                'content' => "La rutina nocturna es clave para la regeneración de la piel. Durante la noche, el proceso de renovación celular está en su punto máximo.
+                'content' => <<<MD
+Después de una jornada cargada de ritmo y pantallas, con mil pensamientos cruzando la mente y la piel pidiendo una pausa, lo último que apetece es enfrentarse a una rutina facial interminable. A veces solo quieres soltarlo todo, recogerte el pelo, enfundarte en tu pijama favorito y dejar que el día se derrita lentamente.
 
-Se recomienda comenzar con una doble limpieza: primero un limpiador oleoso para remover maquillaje y luego uno acuoso para limpiar profundamente.
+La verdadera belleza está en la calma. No hace falta una rutina complicada para cuidarte; lo importante es el momento, no los pasos. Por eso, te invitamos a apostar por rituales nocturnos sencillos, efectivos y sensoriales: productos que nutren sin abrumar, texturas que invitan al descanso y ese gesto final que marca el mejor cierre posible —un sueño reparador.
 
-Después, se pueden incorporar activos como retinol o ácidos exfoliantes, siempre de forma gradual para evitar irritaciones.
+¿No sabes por dónde empezar? Para eso estamos: esta es la rutina de noche ideal para mimar tu piel y terminar el día como se merece.
 
-Finalizar con una crema nutritiva ayuda a sellar la hidratación y potenciar la reparación cutánea.
+## Por qué cuidar tu piel por la noche importa
 
-**Consejo clave:** la constancia es más importante que la cantidad de productos.",
+Es simple: mientras duermes, la piel activa de forma natural su proceso de reparación para revertir el daño acumulado durante el día. Ahora imagina potenciar ese mecanismo con los ingredientes perfectos para nutrirla y regenerarla. Además, durante la noche tu piel es más receptiva a los productos tópicos, ya que su barrera es más permeable y la absorción mejora.
+
+### Pero… ¿cuándo?
+A menudo pensamos que la rutina de noche empieza justo antes de dormir, pero no tiene por qué ser así. ¿Quién no ha sentido alguna vez que las horas se escapan justo antes de apagar la luz? Tu rutina nocturna puede empezar tan pronto como la noche comienza.
+
+El regulador del ciclo sueño-vigilia, la melatonina, se libera al caer la tarde, activando el modo descanso y reparación de la piel. Esto significa que puedes disfrutar de tu ritual de skincare nocturno en cualquier momento después del atardecer: al salir de la ducha, después de entrenar o al volver de un café con amigas. Escoge tu momento favorito y disfrútalo.
+
+## Ingredientes clave para una rutina nocturna de skincare
+
+### Melatonina
+La melatonina es un potente antioxidante que estimula las defensas naturales de la piel mientras duermes. Ayuda a combatir los radicales libres y favorece la reparación del daño oxidativo.
+
+Incluir melatonina en tu rutina nocturna potencia la regeneración y mejora la luminosidad al despertar.
+
+## Retinal
+Tres veces más potente que el retinol, este ingrediente antiaging estimula la renovación de la piel para redefinir su textura y minimizar las arrugas. Aunque no es tan conocido como su amigo el retinol, el retinal se convierte en su forma activa más rápido, lo que hace que el camino hacia una piel rejuvenecida vaya en la dirección correcta.
+
+Bakuchiol
+De origen vegetal y con una larga historia en la medicina tradicional oriental, el bakuchiol se ha ganado un lugar destacado en la cosmética moderna por sus propiedades rejuvenecedoras.
+
+Apto para todo tipo de pieles, incluso las más sensibles, este compuesto ayuda a mejorar la firmeza, suavizar la textura y reducir la apariencia de líneas de expresión. Un aliado perfecto para quienes buscan una alternativa 100% de origen natural del retinol.
+
+La rutina de noche perfecta para levantarse con buena cara
+MD,
                 'description' => 'Guía para aprovechar al máximo tu rutina nocturna.',
                 'type_id' => 1,
                 'tags' => [1, 4],
