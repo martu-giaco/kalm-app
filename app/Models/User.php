@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -57,6 +58,11 @@ class User extends Authenticatable
     {
         return $query->where('role', 'admin');
     }
+
+    public function isPremium()
+    {
+        return in_array($this->role, ['premium', 'admin']);
+    }
     public function routines()
     {
         return $this->hasMany(Routine::class);
@@ -78,4 +84,8 @@ class User extends Authenticatable
         return count($favoritos);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class); 
+    }
 }

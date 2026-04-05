@@ -38,15 +38,15 @@ class Product extends Model
     }
 
     public function getImageUrlAttribute()
-            {
-                if (!$this->image) return null;
+    {
+        if (!$this->image) return null;
 
-                if (str_starts_with($this->image, 'images/')) {
-                    return asset($this->image);
-                }
+        if (str_starts_with($this->image, 'images/')) {
+            return asset($this->image);
+        }
 
-                return asset('storage/' . $this->image);
-            }
+        return asset('storage/' . $this->image);
+    }
 
     // 🔹 Relaciones existentes
     public function brand()
@@ -55,9 +55,9 @@ class Product extends Model
     }
 
     public function skinTypes()
-        {
-            return $this->belongsToMany(SkinType::class);
-        }
+    {
+        return $this->belongsToMany(SkinType::class);
+    }
 
     public function type()
     {
@@ -71,7 +71,12 @@ class Product extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class)->latest();
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
     }
 
     public function concerns()

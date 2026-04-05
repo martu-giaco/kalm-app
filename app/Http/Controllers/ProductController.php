@@ -32,7 +32,6 @@ class ProductController extends Controller
         // Verificar si el producto es favorito
         $user = auth()->user();
         $idsFavoritos = $user->favoritos ?? [];
-        // Convertir a enteros para comparación correcta
         $idsFavoritos = array_map('intval', $idsFavoritos);
         $isFavorito = in_array((int) $product->id, $idsFavoritos);
 
@@ -55,6 +54,10 @@ class ProductController extends Controller
         // Productos top rating
         $topRatedProducts = Product::orderBy('rating', 'desc')->take(5)->get();
 
+        // 🔹 RESEÑAS DEL PRODUCTO
+        $reviews = $product->reviews()->latest()->get();
+        $avgRating = $reviews->avg('rating') ?: 0; // promedio del rating
+
         return view('products.show', compact(
             'product',
             'categories',
@@ -62,7 +65,9 @@ class ProductController extends Controller
             'banners',
             'product_sections',
             'topRatedProducts',
-            'isFavorito'
+            'isFavorito',
+            'reviews',    
+            'avgRating'   
         ));
     }
 
@@ -98,11 +103,10 @@ class ProductController extends Controller
                 return in_array((int) $product->id, $idsFavoritos);
             });
 
-            // 🔥 ESTA ES LA LÍNEA QUE FALTA
+
             foreach ($favorites as $product) {
                 $product->isFavorito = true;
             }
-
         } else {
             $favorites = collect();
         }
@@ -238,137 +242,137 @@ class ProductController extends Controller
     }
 
     //ADMIN
-        public function adminIndex()
-        {
-            $products = Product::orderBy('created_at', 'desc')->paginate(25);
-            return view('admin.products.index', compact('products'));
-        }
+    public function adminIndex()
+    {
+        $products = Product::orderBy('created_at', 'desc')->paginate(25);
+        return view('admin.products.index', compact('products'));
+    }
 
-        // Ver detalle de un producto (route model binding posible)
-        public function view(Product $product)
-        {
-            return view('admin.products.view', compact('product'));
-        }
+    // Ver detalle de un producto (route model binding posible)
+    public function view(Product $product)
+    {
+        return view('admin.products.view', compact('product'));
+    }
 
-        //Formulario de edición.
-        public function edit($id)
-        {
-            $this->authorizeAdmin();
-            $product = Product::findOrFail($id);
-            $types = Type::all();
-            $categories = ProductCategory::all();
-            $skinTypes = SkinType::all();
-            $concerns = Concern::all();
-            $brands = Brand::all();
+    //Formulario de edición.
+    public function edit($id)
+    {
+        $this->authorizeAdmin();
+        $product = Product::findOrFail($id);
+        $types = Type::all();
+        $categories = ProductCategory::all();
+        $skinTypes = SkinType::all();
+        $concerns = Concern::all();
+        $brands = Brand::all();
 
-            return view('admin.products.edit', compact('product', 'types', 'categories', 'skinTypes', 'concerns', 'brands'));
-        }
+        return view('admin.products.edit', compact('product', 'types', 'categories', 'skinTypes', 'concerns', 'brands'));
+    }
 
-        /**
-         * Mostrar el formulario de creación de producto
-         */
-        public function create()
-        {
-            $types = Type::all();
-            $categories = ProductCategory::all();
-            $skinTypes = SkinType::all();
-            $concerns = Concern::all();
-            $brands = Brand::all();
+    /**
+     * Mostrar el formulario de creación de producto
+     */
+    public function create()
+    {
+        $types = Type::all();
+        $categories = ProductCategory::all();
+        $skinTypes = SkinType::all();
+        $concerns = Concern::all();
+        $brands = Brand::all();
 
-            return view('admin.products.create', compact('types', 'categories', 'skinTypes', 'concerns', 'brands'));
-        }
+        return view('admin.products.create', compact('types', 'categories', 'skinTypes', 'concerns', 'brands'));
+    }
 
-        /**
-         * Actualizar producto.
-         */
-        public function update(Request $request, $id)
-        {
-            $this->authorizeAdmin();
-            $product = Product::findOrFail($id);
+    /**
+     * Actualizar producto.
+     */
+    public function update(Request $request, $id)
+    {
+        $this->authorizeAdmin();
+        $product = Product::findOrFail($id);
 
-            $data = $request->validate([
-                    'name' => 'required|string|max:255',
-                    'brand_id' => 'required|exists:brands,id',
-                    'image' => 'nullable|image',
-                    'description' => 'nullable|string',
-                    'ingredients' => 'nullable|string',
-                    'activos' => 'nullable|string',
-                    'paso' => 'nullable|string',
-                    'formato' => 'nullable|string',
-                    'type_id' => 'required|integer|exists:types,id',
-                    'category_id' => 'required|integer|exists:product_categories,id',
-                    'rating' => 'nullable|integer|min:0|max:5',
-            ]);
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'image' => 'nullable|image',
+            'description' => 'nullable|string',
+            'ingredients' => 'nullable|string',
+            'activos' => 'nullable|string',
+            'paso' => 'nullable|string',
+            'formato' => 'nullable|string',
+            'type_id' => 'required|integer|exists:types,id',
+            'category_id' => 'required|integer|exists:product_categories,id',
+            'rating' => 'nullable|integer|min:0|max:5',
+        ]);
 
-            // Subida de imagen
-            if ($request->hasFile('image')) {
-                // Borrar imagen anterior si existe
-                if ($product->image) {
-                    Storage::disk('public')->delete($product->image);
-                }
-                $path = $request->file('image')->store('products', 'public');
-                $data['image'] = $path;
+        // Subida de imagen
+        if ($request->hasFile('image')) {
+            // Borrar imagen anterior si existe
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
             }
-
-            $product->update($data);
-            $product->skinTypes()->sync($request->input('skin_types', []));
-            $product->concerns()->sync($request->input('concerns', []));
-
-            return redirect()->route('admin.products.index')
-                ->with('feedback.message', 'Producto actualizado correctamente')
-                ->with('feedback.type', 'success');
+            $path = $request->file('image')->store('products', 'public');
+            $data['image'] = $path;
         }
 
-        // Eliminar producto
-        public function destroy($id)
-        {
-            $this->authorizeAdmin();
-            $product = Product::findOrFail($id);
-            $product->delete();
+        $product->update($data);
+        $product->skinTypes()->sync($request->input('skin_types', []));
+        $product->concerns()->sync($request->input('concerns', []));
 
-            return redirect()->route('admin.products.index')->with('success', 'El producto fue eliminado correctamente.');
+        return redirect()->route('admin.products.index')
+            ->with('feedback.message', 'Producto actualizado correctamente')
+            ->with('feedback.type', 'success');
+    }
+
+    // Eliminar producto
+    public function destroy($id)
+    {
+        $this->authorizeAdmin();
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return redirect()->route('admin.products.index')->with('success', 'El producto fue eliminado correctamente.');
+    }
+
+    private function authorizeAdmin()
+    {
+        if (auth()->user()->role !== 'admin') {
+            abort(403, 'No tenés permiso para realizar esta acción.');
+        }
+    }
+
+    /**
+     * Almacenar un nuevo producto
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
+            'image' => 'nullable|image',
+            'description' => 'nullable|string',
+            'ingredients' => 'nullable|string',
+            'activos' => 'nullable|string',
+            'paso' => 'nullable|string',
+            'formato' => 'nullable|string',
+            'type_id' => 'required|integer|exists:types,id',
+            'category_id' => 'required|integer|exists:product_categories,id',
+            'rating' => 'nullable|integer|min:0|max:5',
+        ]);
+
+
+        $data = $request->all();
+
+        // Guardar imagen si existe
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
         }
 
-        private function authorizeAdmin()
-        {
-            if (auth()->user()->role !== 'admin') {
-                abort(403, 'No tenés permiso para realizar esta acción.');
-            }
-        }
+        $product = Product::create($data);
 
-            /**
-             * Almacenar un nuevo producto
-             */
-            public function store(Request $request)
-            {
-                $request->validate([
-                    'name' => 'required|string|max:255',
-                    'brand_id' => 'required|exists:brands,id',
-                    'image' => 'nullable|image',
-                    'description' => 'nullable|string',
-                    'ingredients' => 'nullable|string',
-                    'activos' => 'nullable|string',
-                    'paso' => 'nullable|string',
-                    'formato' => 'nullable|string',
-                    'type_id' => 'required|integer|exists:types,id',
-                    'category_id' => 'required|integer|exists:product_categories,id',
-                    'rating' => 'nullable|integer|min:0|max:5',
-                ]);
+        $product->skinTypes()->sync($request->input('skin_types', []));
+        $product->concerns()->sync($request->input('concerns', []));
 
-
-                $data = $request->all();
-
-                // Guardar imagen si existe
-                if ($request->hasFile('image')) {
-                    $data['image'] = $request->file('image')->store('products', 'public');
-                }
-
-                $product = Product::create($data);
-
-                $product->skinTypes()->sync($request->input('skin_types', []));
-                $product->concerns()->sync($request->input('concerns', []));
-
-                return redirect()->route('admin.products.index')
-                    ->with('feedback.message', 'Producto creado correctamente');
-            }
+        return redirect()->route('admin.products.index')
+            ->with('feedback.message', 'Producto creado correctamente');
+    }
 }

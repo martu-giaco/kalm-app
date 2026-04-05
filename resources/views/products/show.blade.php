@@ -84,7 +84,8 @@
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="flex flex-wrap gap-2 my-3">
-                                <a href="{{ route('products.search', ['q' => '', 'type_id' => $product->type->id]) }}" class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                <a href="{{ route('products.search', ['q' => '', 'type_id' => $product->type->id]) }}"
+                                    class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
                                     ✨{{ $product->type->name ?? '-' }}
                                 </a>
                                 <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"
@@ -102,31 +103,6 @@
                         </label>
                     </div>
 
-                    <style>
-                    .mask-custom-star {
-                        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z'/%3E%3C/svg%3E");
-                        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M480-269 314-169q-11 7-23 6t-21-8q-9-7-14-17.5t-2-23.5l44-189-147-127q-10-9-12.5-20.5T140-571q4-11 12-18t22-9l194-17 75-178q5-12 15.5-18t21.5-6q11 0 21.5 6t15.5 18l75 178 194 17q14 2 22 9t12 18q4 11 1.5 22.5T809-528L662-401l44 189q3 13-2 23.5T690-171q-9 7-21 8t-23-6L480-269Z'/%3E%3C/svg%3E");
-
-                        mask-size: contain;
-                        mask-repeat: no-repeat;
-                        mask-position: center;
-
-                        -webkit-mask-size: contain;
-                        -webkit-mask-repeat: no-repeat;
-                        -webkit-mask-position: center;
-                    }
-                    .rating input:checked,
-                    .rating input:checked ~ input {
-                        background-color: #facc15 !important; /* yellow-400 */
-                    }
-                    </style>
-                    <div class="rating mt-6 flex flex-row-reverse justify-center ">
-                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="5" />
-                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="4" />
-                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="3" />
-                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="2" />
-                        <input type="radio" name="rating" class="mask mask-custom-star w-12 h-12 bg-gray-300 checked:bg-[#facc15]" value="1" />
-                    </div>
                 </div>
             </div>
 
@@ -149,48 +125,70 @@
 
             {{-- Reviews --}}
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Reseñas de usuarios</h2>
-                @if ($product->reviews->count())
+
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-[#164d4f]">
+                        Reseñas de usuarios
+                    </h2>
+
+                    {{-- Ver todas --}}
+                    @if ($product->reviews->count())
+                        <a href="{{ route('reviews.show', $product) }}"
+                            class="text-sm text-[#37A0AF] font-semibold hover:underline">
+                            Ver todas →
+                        </a>
+                    @endif
+                </div>
+
+                @php
+                    $reviewCount = $product->reviews->count();
+                    $avgRating = $reviewCount > 0 ? round($product->reviews->avg('rating'), 1) : 0;
+                @endphp
+
+                
+
+                {{-- Lista de últimas 3 reseñas --}}
+                @if ($reviewCount > 0)
                     <div class="space-y-4">
-                        @foreach ($product->reviews as $review)
-                            <div class="p-4 border rounded-xl bg-gray-50">
-                                <div class="flex items-center justify-between mb-2">
-                                    <p class="font-semibold text-[#306067]">{{ $review->user->name }}</p>
-                                    <div class="flex items-center gap-1 text-yellow-400">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="16px"
-                                                viewBox="0 -960 960 960" width="16px"
-                                                fill="{{ $i <= $review->rating ? '#FFDE21' : '#d1d5db' }}">
-                                                <path
-                                                    d="M480-501.48l60.82 123.57 136.44 19.81-98.61 96.05 23.27 135.92L480 744.1l-122.94 64.83 23.27-135.92-98.61-96.05 136.44-19.81L480-501.48Z" />
-                                            </svg>
-                                        @endfor
-                                    </div>
-                                </div>
-                                <p>{{ $review->comment }}</p>
-                            </div>
+                        @foreach ($reviews->take(3) as $review)
+                            @include('reviews.review', ['review' => $review])
                         @endforeach
                     </div>
                 @else
-                    <p class="text-gray-500">Este producto aún no tiene reseñas.</p>
+                    <p class="text-sm text-gray-500">
+                        Este producto aún no tiene reseñas.
+                    </p>
                 @endif
 
-                {{-- Botón para crear reseña --}}
-                @if (auth()->check())
-                    @if (auth()->user()->premium)
-                        @if (!auth()->user()->reviews->where('product_id', $product->id)->count())
-                            <a href="{{ route('reviews.create', $product) }}"
-                                class="mt-4 inline-block bg-[#306067] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#164d4f]">
-                                Escribir reseña
-                            </a>
+                {{-- CTA --}}
+                <div class="mt-4">
+
+                    @auth
+
+                        {{-- USUARIO PREMIUM --}}
+                        @if (auth()->user()->isPremium())
+                            @if (!$reviews->where('user_id', auth()->id())->count())
+                                <a href="{{ route('reviews.create', $product) }}"
+                                    class="inline-block bg-[#306067] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#164d4f]">
+                                    Escribir reseña
+                                </a>
+                            @else
+                                <p class="text-sm font-semibold text-green-600">
+                                    Ya hizo una reseña para este producto. ¡Gracias por compartir tu opinión!
+                                </p>
+                            @endif
+
+                            {{-- NO PREMIUM --}}
+                        @else
+                            <button onclick="document.getElementById('premium-modal').classList.remove('hidden')"
+                                class="inline-block bg-[#54cbcf] text-[#164d4f] px-5 py-2 rounded-lg font-bold">
+                                Hacerse Premium para crear Reseña
+                            </button>
                         @endif
-                    @else
-                        <button onclick="document.getElementById('premium-modal').classList.remove('hidden')"
-                            class="mt-4 inline-block bg-[#FFDE21] text-[#164d4f] px-5 py-2 rounded-lg font-bold hover:bg-[#E6C917]">
-                            Kälm Premium
-                        </button>
-                    @endif
-                @endif
+
+                    @endauth
+
+                </div>
             </div>
 
             @foreach ($product_sections as $section)
@@ -200,7 +198,7 @@
 
                 <div class="pt-6 mt-6 border-t">
                     <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
-                        <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
+                    <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                         @foreach ($products_with_tag as $sectionProduct)
                             <x-product-card :product="$sectionProduct" />
                         @endforeach
@@ -314,7 +312,8 @@
                                                 $remaining = $products->count() - 3;
                                             @endphp
                                             @forelse($visible as $assignedProduct)
-                                                <img src="{{ $assignedProduct->image_url }}" alt="{{ $assignedProduct->name }}"
+                                                <img src="{{ $assignedProduct->image_url }}"
+                                                    alt="{{ $assignedProduct->name }}"
                                                     class="object-contain w-16 h-16 rounded-md">
                                             @empty
                                                 <p class="text-md text-[#CCE2E5]">

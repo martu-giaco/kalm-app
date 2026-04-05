@@ -25,13 +25,17 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        $user = auth()->user()->loadCount('routines');
+        $user = auth()->user()->loadCount(['routines', 'reviews']); // quitar favoritos si es JSON
 
-        $routines = $user->routines()
-            ->with('routineTime')
-            ->get();
+        // Traer rutinas del usuario
+        $routines = $user->routines()->with('routineTime')->latest()->get();
 
-        return view('user.profile', compact('user', 'routines'));
+        // Traer solo reviews hechas por el usuario
+        $reviews = $user->reviews()->latest()->get(); // esto asume que tu relación 'reviews' está definida como reviews hechas por el user
+        // Si tu relación 'reviews' devuelve reviews recibidas, hacé esto:
+        // $reviews = \App\Models\Review::where('user_id', $user->id)->latest()->get();
+
+        return view('user.profile', compact('user', 'routines', 'reviews'));
     }
 
     /**
@@ -104,7 +108,7 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('feedback.message', 'Contraseña actualizada correctamente.')
-                    ->with('feedback.type', 'success');
+            ->with('feedback.type', 'success');
     }
 
     /**

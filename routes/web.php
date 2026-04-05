@@ -69,8 +69,21 @@ Route::prefix('tests')->name('tests.')->group(function () {
 */
 Route::middleware('auth')->group(function () {
 
-    Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
+
+
+    // Mostrar formulario para crear o editar review
+    Route::get('/reviews/create/{product}', [ReviewController::class, 'create'])->name('reviews.create');
+
+    // Guardar o actualizar review
+    Route::post('/reviews/store/{product}', [ReviewController::class, 'store'])->name('reviews.store');
+
+    // Mostrar review individual de un producto
+    Route::get('/reviews/show/{product}', [ReviewController::class, 'show'])->name('reviews.show');
+
+    // Eliminar review
+    Route::delete('products/{product}/reviews/{review}', [ReviewController::class, 'destroy'])
+        ->name('reviews.destroy');
     // Logout
     Route::post('/cerrar-sesion', [AuthController::class, 'logout'])->name('auth.logout');
 
