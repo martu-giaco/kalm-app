@@ -114,12 +114,28 @@ class TestController extends Controller
                     }
 
             // Rutina recomendada
-            $recommendedRoutine = RecommendedRoutine::with('routineTime')
+            $recommendedRoutine = RecommendedRoutine::with(['routineTime'])
                 ->where('test_key', $testKey)
                 ->where('result_key', $resultLabel)
                 ->first();
 
-            // Descripciones
+            // Cargar los productos de la rutina recomendada
+            if ($recommendedRoutine) {
+                // Acceder al atributo raw sin pasar por el accesor
+                $productsJson = $recommendedRoutine->getAttributeValue('products');
+                $productIds = is_string($productsJson)
+                    ? json_decode($productsJson, true)
+                    : $productsJson;
+
+                if (!empty($productIds)) {
+                    $recommendedProducts = Product::whereIn('id', $productIds)->with(['brand', 'type', 'category'])->get();
+                } else {
+                    $recommendedProducts = Product::limit(6)->get();
+                }
+            } else {
+                // Si no hay rutina recomendada, buscar productos por descripción
+                $recommendedProducts = Product::limit(6)->get();
+            }
             $descriptions = [
                 'skin' => [
                     'normal' => 'Tener la piel normal significa que tu piel tiene un equilibrio adecuado de humedad y producción de sebo, lo que le permite lucir saludable, suave y con poros poco visibles. Este tipo de piel no es ni demasiado seca ni demasiado grasa, y generalmente no presenta problemas significativos como acné o sensibilidad. Para cuidar la piel normal, es importante mantener una rutina de cuidado básica que incluya limpieza suave, hidratación ligera y protección solar diaria.',
@@ -138,13 +154,6 @@ class TestController extends Controller
             ];
 
             $resultDesc = $descriptions[$test->category][$resultLabel] ?? 'Descripción no disponible.';
-
-            // Productos
-            $recommendedProducts = Product::where('description', 'like', "%{$resultLabel}%")->get();
-
-            if ($recommendedProducts->isEmpty()) {
-                $recommendedProducts = Product::limit(6)->get();
-            }
 
             return view('tests.result', compact(
                 'testKey',
@@ -165,31 +174,84 @@ class TestController extends Controller
      =========================== */
     public function saveResult(Request $request)
     {
-        $user = Auth::user();
-        if (!$user) return redirect()->route('auth.login');
+        try {
+            $user = Auth::user();
+            if (!$user) return redirect()->route('auth.login');
 
-        $testKey = $request->input('test_key', session('test_key'));
-        $resultKey = $request->input('result_key', session('result_key'));
-        $answers = $request->input('answers', session('test_answers'));
+            $testKey = $request->input('test_key', session('test_key'));
+            $resultKey = $request->input('result_key', session('result_key'));
+            $answers = $request->input('answers', session('test_answers'));
 
-        if (!$resultKey) {
-            return redirect()->route('tests.index')->with('error', 'No hay resultado.');
+            if (!$resultKey) {
+                return redirect()->route('tests.index')->with('error', 'No hay resultado.');
+            }
+
+            $answersToStore = is_array($answers)
+                ? json_encode($answers)
+                : $answers;
+
+            // Buscar si existe una rutina recomendada para este resultado
+            $recommendedRoutine = RecommendedRoutine::where('test_key', $testKey)
+                ->where('result_key', $resultKey)
+                ->first();
+
+            // Crear rutina en el perfil del usuario PRIMERO
+            $routineId = null;
+            if ($recommendedRoutine) {
+                $createdRoutine = $this->createRoutineFromRecommended($user, $recommendedRoutine, $testKey);
+                $routineId = $createdRoutine->routine_id; // Obtenemos el ID de la rutina creada
+            }
+
+            // Guardar el resultado del test CON el ID correcto
+            $testResult = UserTestResult::create([
+                'user_id' => $user->id,
+                'routine_id' => $routineId,
+                'test_key' => $testKey,
+                'result_key' => $resultKey,
+                'answers' => $answersToStore,
+            ]);
+
+            return redirect()->route('profile.results')
+                ->with('success', 'Resultado guardado correctamente.');
+        } catch (\Exception $e) {
+            Log::error('Error en saveResult', ['error' => $e->getMessage()]);
+            return redirect()->route('profile.results')
+                ->with('error', 'Ocurrió un error al guardar el resultado: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Crear una rutina en el perfil del usuario basada en una rutina recomendada
+     */
+    private function createRoutineFromRecommended($user, $recommendedRoutine, $testKey)
+    {
+        $productIds = is_string($recommendedRoutine->products)
+            ? json_decode($recommendedRoutine->products, true)
+            : $recommendedRoutine->products;
+
+        // Determinar el type_id basado en el test_key
+        $typeId = null;
+        if ($testKey === 'piel') {
+            // Skincare = 1
+            $typeId = Type::where('name', 'Skincare')->first()?->id;
+        } elseif ($testKey === 'cabello') {
+            // Haircare = 2
+            $typeId = Type::where('name', 'Haircare')->first()?->id;
         }
 
-        $answersToStore = is_array($answers)
-            ? json_encode($answers)
-            : $answers;
-
-        UserTestResult::create([
+        $routine = Routine::create([
             'user_id' => $user->id,
-            'routine_id' => null,
-            'test_key' => $testKey,
-            'result_key' => $resultKey,
-            'answers' => $answersToStore,
+            'name' => $recommendedRoutine->name,
+            'steps' => $recommendedRoutine->steps,
+            'type_id' => $typeId,
         ]);
 
-        return redirect()->route('profile.results')
-            ->with('success', 'Resultado guardado correctamente.');
+        // Asociar productos a la rutina
+        if (!empty($productIds)) {
+            $routine->products()->attach($productIds);
+        }
+
+        return $routine;
     }
 
     /* ===========================

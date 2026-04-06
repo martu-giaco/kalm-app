@@ -15,22 +15,32 @@
             {{-- Tipo de rutina --}}
             <div class="mb-4">
                 <label for="type_id" class="block mb-1 text-sm">Tipo de rutina</label>
-                <select name="type_id" id="type_id" required
-                    class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar tipo</option>
-                    @foreach ($types as $type)
-                        <option value="{{ $type->id }}"
-                            {{ old('type_id', $routine->type_id) == $type->id ? 'selected' : '' }}>
-                            {{ $type->name }}
-                        </option>
-                    @endforeach
-                </select>
+                @if ($isFromRecommended && $routine->type_id)
+                    {{-- Es una rutina predeterminada: mostrar tipo automáticamente --}}
+                    <div class="w-full p-3 mb-3 bg-[#CCE2E5]/50 rounded-xl border-2 border-[#37A0AF] text-md text-[#306067] font-semibold">
+                        {{ $routine->type?->name ?? 'No especificado' }}
+                    </div>
+                    <input type="hidden" name="type_id" value="{{ $routine->type_id }}">
+                    <p class="text-xs text-[#37A0AF]">Esta es una rutina predeterminada. El tipo se asignó automáticamente.</p>
+                @else
+                    {{-- Es una rutina manual: permite que el usuario elija --}}
+                    <select name="type_id" id="type_id"
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        <option value="">Seleccionar tipo de rutina</option>
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}"
+                                {{ old('type_id', $routine->type_id) == $type->id ? 'selected' : '' }}>
+                                {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                @endif
             </div>
 
             {{-- Tipo de piel de rutina --}}
             <div class="mb-4">
                 <label for="need_id" class="block mb-1 text-sm">Tipo de piel</label>
-                <select name="need_id" id="need_id" required
+                <select name="need_id" id="need_id"
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo de piel</option>
                     @foreach ($routine_needs as $need)
@@ -44,7 +54,7 @@
             {{-- Tiempo de rutina --}}
             <div class="mb-4">
                 <label for="time_id" class="block mb-1 text-sm">Tiempo de rutina</label>
-                <select name="time_id" id="time_id" required
+                <select name="time_id" id="time_id"
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tiempo</option>
                     @foreach ($routine_times as $time)
@@ -129,6 +139,25 @@
                 </p>
             </div>
 
+            {{-- Productos de la rutina --}}
+            <div class="mb-6">
+                <label class="block mb-3 text-sm font-semibold text-[#306067]">Productos en la rutina</label>
+                @if ($routine->assignedProducts->count() > 0)
+                    <div class="space-y-2 mb-4" id="products_list">
+                        @foreach ($routine->assignedProducts as $product)
+                            <div class="flex items-center justify-between p-3 bg-[#CCE2E5]/50 rounded-lg border border-[#37A0AF]" id="product_container_{{ $product->id }}">
+                                <span class="text-sm text-[#306067]">{{ $product->name }}</span>
+                                <button type="button" class="text-red-600 hover:text-red-800 text-xs font-semibold"
+                                    onclick="removeProduct({{ $product->id }}); return false;">
+                                    Eliminar
+                                </button>
+                                <input type="hidden" name="products[]" value="{{ $product->id }}" id="product_{{ $product->id }}">
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
             <button type="submit"
                 class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
                 Actualizar Rutina
@@ -138,6 +167,17 @@
 </section>
 
 <script>
+    // Función para eliminar productos
+    function removeProduct(productId) {
+        const container = document.getElementById('product_container_' + productId);
+        const input = document.getElementById('product_' + productId);
+
+        if (container && input) {
+            container.remove();
+            input.remove();
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const frequencySelect = document.getElementById('reminder_frequency');
         const weeklyDiv = document.getElementById('weekly_days');

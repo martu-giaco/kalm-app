@@ -57,7 +57,7 @@
                         </h1>
 
                         <div class="flex items-center justify-between">
-                            @if (!empty($product->brand->name))
+                            @if (!empty($product->brand) && !empty($product->brand->name))
                                 <h2 class="mt-1 text-lg text-[#37A0AF] truncate">{{ $product->brand->name }}</h2>
                             @endif
 
@@ -84,14 +84,18 @@
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="flex flex-wrap gap-2 my-3">
-                                <a href="{{ route('products.search', ['q' => '', 'type_id' => $product->type->id]) }}"
-                                    class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
-                                    ✨{{ $product->type->name ?? '-' }}
-                                </a>
-                                <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"
-                                    class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
-                                    {{ $product->category->name ?? '-' }}
-                                </a>
+                                @if($product->type)
+                                    <a href="{{ route('products.search', ['q' => '', 'type_id' => $product->type->id]) }}"
+                                        class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                        ✨{{ $product->type->name ?? '-' }}
+                                    </a>
+                                @endif
+                                @if($product->category)
+                                    <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"
+                                        class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                        {{ $product->category->name ?? '-' }}
+                                    </a>
+                                @endif
                             </div>
                         @endif
                     </div>
@@ -145,7 +149,7 @@
                     $avgRating = $reviewCount > 0 ? round($product->reviews->avg('rating'), 1) : 0;
                 @endphp
 
-                
+
 
                 {{-- Lista de últimas 3 reseñas --}}
                 @if ($reviewCount > 0)

@@ -12,6 +12,7 @@ class Test extends Model
     protected $fillable = [
         'key',
         'title',
+        'category',
         'description',
         'questions',
     ];

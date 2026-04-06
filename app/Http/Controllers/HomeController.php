@@ -22,7 +22,7 @@ class HomeController extends Controller
         $category_icons = [
             'Limpiadores' => asset('images/icons/limpiadores.svg'),
             'Hidratantes Corporales' => asset('images/icons/hidratantes-corporales.png'),
-            'Sérums' => asset('images/icons/serums.svg'),
+            'Sueros/Sérums' => asset('images/icons/serums.svg'),
             'Tratamientos' => asset('images/icons/tratamientos.svg'),
             'Exfoliantes' => asset('images/icons/exfoliacion.svg'),
             'Shampoo' => asset('images/icons/shampoo.svg'),

@@ -171,7 +171,10 @@ class RoutineController extends Controller
         $routine_needs = RoutineNeed::orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
-        return view('routines.edit', compact('routine', 'types', 'routine_needs', 'routine_times'));
+        // Verificar si es una rutina predeterminada (creada desde test)
+        $isFromRecommended = \App\Models\UserTestResult::where('routine_id', $routine->routine_id)->exists();
+
+        return view('routines.edit', compact('routine', 'types', 'routine_needs', 'routine_times', 'isFromRecommended'));
     }
 
     public function update(Request $request, $routine_id)
@@ -196,9 +199,13 @@ class RoutineController extends Controller
             'need_id' => $validated['need_id'] ?? null,
         ]);
 
-        // Actualizar productos
-        $productIds = !empty($validated['products']) ? array_filter($validated['products'], fn($id) => !empty($id)) : [];
-        $routine->products()->sync($productIds);
+        // Actualizar productos si se envió el campo
+        if ($request->has('products')) {
+            // Obtener productos a mantener
+            $productIds = $validated['products'] ?? [];
+            $productIds = array_filter($productIds, fn($id) => !empty($id));
+            $routine->products()->sync($productIds);
+        }
 
         return redirect()->route('routines.show', $routine->routine_id)
             ->with('success', 'Rutina actualizada correctamente.');

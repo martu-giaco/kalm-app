@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with(['type', 'category', 'brand', 'concerns', 'reviews'])->findOrFail($id);
 
         // Categorías
         $categories = ProductCategory::all();
@@ -66,8 +66,8 @@ class ProductController extends Controller
             'product_sections',
             'topRatedProducts',
             'isFavorito',
-            'reviews',    
-            'avgRating'   
+            'reviews',
+            'avgRating'
         ));
     }
 

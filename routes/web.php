@@ -254,7 +254,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{routine_id}', [RoutineController::class, 'show'])->name('show');
         Route::get('/{routine_id}/edit', [RoutineController::class, 'edit'])->name('edit');
         Route::patch('/{routine_id}', [RoutineController::class, 'update'])->name('update');
-        Route::post('/{routine}/delete', [RoutineController::class, 'destroy'])->name('destroy');
+        Route::delete('/{routine}', [RoutineController::class, 'destroy'])->name('destroy');
 
         Route::post('/{routine_id}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
         Route::delete('/{routine_id}/product/{product_id}', [RoutineController::class, 'removeProduct'])->name('product.remove');
