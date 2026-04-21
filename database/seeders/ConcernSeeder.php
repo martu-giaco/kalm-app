@@ -14,21 +14,28 @@ class ConcernSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('concerns')->insert([
-        ['id' => 1, 'name' => 'Acné'],
-        ['id' => 2, 'name' => 'Manchas'],
-        ['id' => 3, 'name' => 'Arrugas'],
-        ['id' => 4, 'name' => 'Rosácea'],
-        ['id' => 5, 'name' => 'Poros Dilatados'],
-        ['id' => 6, 'name' => 'Ojeras'],
-        ['id' => 7, 'name' => 'Eczema'],
-        ['id' => 8, 'name' => 'Puntos Negros'],
-        ['id' => 9, 'name' => 'Sin Fragancia'],
-        ['id' => 10, 'name' => 'Sin TACC'],
-        ['id' => 11, 'name' => 'Puntas Abiertas'],
-        ['id' => 12, 'name' => 'Cabello Dañado'],
-        ['id' => 13, 'name' => 'Caspa'],
-        ['id' => 14, 'name' => 'Caída del cabello'],
-        ]);
+        $concerns = [
+            'Acné',
+            'Manchas',
+            'Arrugas',
+            'Rosácea',
+            'Poros Dilatados',
+            'Ojeras',
+            'Eczema',
+            'Puntos Negros',
+            'Sin Fragancia',
+            'Sin TACC',
+            'Puntas Abiertas',
+            'Cabello Dañado',
+            'Caspa',
+            'Caída del cabello',
+        ];
+
+        foreach ($concerns as $name) {
+            Concern::updateOrCreate(
+                ['name' => $name], // condición (único)
+                ['name' => $name]  // valores a actualizar (podés agregar más campos)
+            );
+        }
     }
 }
