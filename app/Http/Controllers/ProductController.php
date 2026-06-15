@@ -319,8 +319,7 @@ class ProductController extends Controller
         $product->concerns()->sync($request->input('concerns', []));
 
         return redirect()->route('admin.products.index')
-            ->with('feedback.message', 'Producto actualizado correctamente')
-            ->with('feedback.type', 'success');
+            ->with('feedback', ['message' => 'Producto actualizado correctamente', 'type' => 'success']);
     }
 
     // Eliminar producto
@@ -330,7 +329,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('admin.products.index')->with('success', 'El producto fue eliminado correctamente.');
+        return redirect()->route('admin.products.index')->with('feedback', ['message' => 'El producto fue eliminado correctamente.', 'type' => 'success']);
     }
 
     private function authorizeAdmin()
@@ -373,6 +372,6 @@ class ProductController extends Controller
         $product->concerns()->sync($request->input('concerns', []));
 
         return redirect()->route('admin.products.index')
-            ->with('feedback.message', 'Producto creado correctamente');
+            ->with('feedback', ['message' => 'Producto creado correctamente', 'type' => 'success']);
     }
 }

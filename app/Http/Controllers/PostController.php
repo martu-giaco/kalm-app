@@ -35,7 +35,7 @@ class PostController extends Controller
 
         $post->save();
 
-        return redirect()->route('community')->with('success', 'Post creado correctamente!');
+        return redirect()->route('community')->with('feedback', ['message' => 'Post creado correctamente!', 'type' => 'success']);
     }
 
     // Feed de comunidad
@@ -75,14 +75,14 @@ public function userPosts($userId)
     public function report(Post $post)
     {
         $post->update(['is_reported' => true]);
-        return back()->with('success', 'Post reportado.');
+        return back()->with('feedback', ['message' => 'Post reportado.', 'type' => 'success']);
     }
 
     // Eliminar post (soft delete)
     public function destroy(Post $post)
     {
         $post->update(['is_deleted' => true]);
-        return back()->with('success', 'Post eliminado.');
+        return back()->with('feedback', ['message' => 'Post eliminado.', 'type' => 'success']);
     }
 
     // Like toggle

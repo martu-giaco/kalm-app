@@ -67,7 +67,7 @@ class TestController extends Controller
             $value = $request->input($input);
 
             if (!$value) {
-                return back()->withInput()->with('error', 'Falta responder la pregunta #' . ($index + 1));
+                return back()->withInput()->with('feedback', ['message' => 'Falta responder la pregunta #' . ($index + 1), 'type' => 'error']);
             }
 
             $answers[$input] = $value;
@@ -102,7 +102,7 @@ class TestController extends Controller
 
             if (!$testKey || !$resultLabel) {
                 return redirect()->route('tests.index')
-                    ->with('error', 'No hay resultados disponibles.');
+                    ->with('feedback', ['message' => 'No hay resultados disponibles.', 'type' => 'error']);
             }
 
             // BUSCAR EL TEST
@@ -110,7 +110,7 @@ class TestController extends Controller
 
                     if (!$test) {
                         return redirect()->route('tests.index')
-                            ->with('error', 'Test no encontrado.');
+                            ->with('feedback', ['message' => 'Test no encontrado.', 'type' => 'error']);
                     }
 
             // Rutina recomendada
@@ -165,7 +165,7 @@ class TestController extends Controller
         } catch (\Exception $e) {
             Log::error('Error en result', ['error' => $e->getMessage()]);
             return redirect()->route('tests.index')
-                ->with('error', 'Ocurrió un error al mostrar el resultado.');
+                ->with('feedback', ['message' => 'Ocurrió un error al mostrar el resultado.', 'type' => 'error']);
         }
     }
 
@@ -183,7 +183,7 @@ class TestController extends Controller
             $answers = $request->input('answers', session('test_answers'));
 
             if (!$resultKey) {
-                return redirect()->route('tests.index')->with('error', 'No hay resultado.');
+                return redirect()->route('tests.index')->with('feedback', ['message' => 'No hay resultado.', 'type' => 'error']);
             }
 
             $answersToStore = is_array($answers)
@@ -212,11 +212,11 @@ class TestController extends Controller
             ]);
 
             return redirect()->route('profile.results')
-                ->with('success', 'Resultado guardado correctamente.');
+                ->with('feedback', ['message' => 'Resultado guardado correctamente.', 'type' => 'success']);
         } catch (\Exception $e) {
             Log::error('Error en saveResult', ['error' => $e->getMessage()]);
             return redirect()->route('profile.results')
-                ->with('error', 'Ocurrió un error al guardar el resultado: ' . $e->getMessage());
+                ->with('feedback', ['message' => 'Ocurrió un error al guardar el resultado: ' . $e->getMessage(), 'type' => 'error']);
         }
     }
 
@@ -274,6 +274,6 @@ class TestController extends Controller
         }
 
         return redirect()->route('routines.edit', $routine->routine_id)
-            ->with('success', 'Rutina creada. Personalízala.');
+            ->with('feedback', ['message' => 'Rutina creada. Personalízala.', 'type' => 'success']);
     }
 }

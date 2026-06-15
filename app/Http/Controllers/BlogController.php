@@ -235,7 +235,7 @@ class BlogController extends Controller
 
         $blog->tags()->sync($request->tags ?? []);
 
-        return redirect()->route('blog.index')->with('success', 'Blog creado correctamente.');
+        return redirect()->route('blog.index')->with('feedback', ['message' => 'Blog creado correctamente.', 'type' => 'success']);
     }
 
     // Mostrar blog individual
@@ -303,7 +303,7 @@ class BlogController extends Controller
 
         $blog->update($validated);
 
-        return redirect()->route('admin.blog.index')->with('success', 'Blog actualizado correctamente.');
+        return redirect()->route('admin.blog.index')->with('feedback', ['message' => 'Blog actualizado correctamente.', 'type' => 'success']);
     }
 
     // Eliminar blog (solo admin)
@@ -313,7 +313,7 @@ class BlogController extends Controller
         $blog = Blog::findOrFail($id);
         $blog->delete();
 
-        return redirect()->route('admin.blog.index')->with('success', 'Blog eliminado correctamente.');
+        return redirect()->route('admin.blog.index')->with('feedback', ['message' => 'Blog eliminado correctamente.', 'type' => 'success']);
     }
 
     // Función para likes temporales (estilo YouTube)

@@ -74,7 +74,7 @@
                     <option value="none" {{ old('reminder_frequency', $routine->reminder_frequency ?? 'none') == 'none' ? 'selected' : '' }}>Ninguna</option>
                     <option value="daily" {{ old('reminder_frequency', $routine->reminder_frequency ?? 'none') == 'daily' ? 'selected' : '' }}>Diario</option>
                     <option value="weekly" {{ old('reminder_frequency', $routine->reminder_frequency ?? 'none') == 'weekly' ? 'selected' : '' }}>Semanal</option>
-                    <option value="every_x_days" {{ old('reminder_frequency', $routine->reminder_frequency ?? 'none') == 'every_x_days' ? 'selected' : '' }}>Cada X días</option>
+                    <option value="every_x_days" {{ old('reminder_frequency', $routine->reminder_frequency ?? 'none') == 'every_x_days' ? 'selected' : '' }}>Personalizado</option>
                 </select>
             </div>
 

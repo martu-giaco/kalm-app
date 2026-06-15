@@ -81,7 +81,7 @@ class BrandController extends Controller
 
         Brand::create($validated);
 
-        return redirect()->route('admin.brands.index')->with('success', 'Marca creada correctamente.');
+        return redirect()->route('admin.brands.index')->with('feedback', ['message' => 'Marca creada correctamente.', 'type' => 'success']);
     }
 
     //Formulario de edición.
@@ -119,8 +119,7 @@ class BrandController extends Controller
         $brand->update($data);
 
         return redirect()->route('admin.brands.index')
-            ->with('feedback.message', 'Marca actualizada correctamente')
-            ->with('feedback.type', 'success');
+            ->with('feedback', ['message' => 'Marca actualizada correctamente', 'type' => 'success']);
     }
 
     // Eliminar marca
@@ -130,7 +129,7 @@ class BrandController extends Controller
         $brand = Brand::findOrFail($id);
         $brand->delete();
 
-        return redirect()->route('admin.brands.index')->with('success', 'La marca fue eliminada correctamente.');
+        return redirect()->route('admin.brands.index')->with('feedback', ['message' => 'La marca fue eliminada correctamente.', 'type' => 'success']);
     }
 
     private function authorizeAdmin()

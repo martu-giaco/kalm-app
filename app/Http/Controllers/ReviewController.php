@@ -46,7 +46,7 @@ class ReviewController extends Controller
         );
 
         return redirect()->route('reviews.show', $product)
-            ->with('success', 'Reseña guardada correctamente.');
+            ->with('feedback', ['message' => 'Reseña guardada correctamente.', 'type' => 'success']);
     }
 
     /**
@@ -90,7 +90,7 @@ class ReviewController extends Controller
         $review->update($request->only('rating', 'comment'));
 
         return redirect()->route('reviews.show', $review->product)
-            ->with('success', 'Reseña actualizada correctamente.');
+            ->with('feedback', ['message' => 'Reseña actualizada correctamente.', 'type' => 'success']);
     }
 
     /**
@@ -103,6 +103,6 @@ class ReviewController extends Controller
         $review->delete();
 
         return redirect()->route('reviews.show', $product)
-            ->with('success', 'Reseña eliminada correctamente.');
+            ->with('feedback', ['message' => 'Reseña eliminada correctamente.', 'type' => 'success']);
     }
 }

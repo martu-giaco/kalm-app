@@ -73,8 +73,7 @@ class ProfileController extends Controller
         $user->update($data);
 
         return redirect()->route('profile.show')
-            ->with('feedback.message', 'Perfil actualizado correctamente')
-            ->with('feedback.type', 'success');
+            ->with('feedback', ['message' => 'Perfil actualizado correctamente', 'type' => 'success']);
     }
 
     /**
@@ -107,8 +106,7 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return back()->with('feedback.message', 'Contraseña actualizada correctamente.')
-            ->with('feedback.type', 'success');
+        return back()->with('feedback', ['message' => 'Contraseña actualizada correctamente.', 'type' => 'success']);
     }
 
     /**
@@ -129,7 +127,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user()->delete();
 
-        return redirect()->route('home')->with('success', 'Su cuenta fue eliminada correctamente.');
+        return redirect()->route('home')->with('feedback', ['message' => 'Su cuenta fue eliminada correctamente.', 'type' => 'success']);
     }
 
     //-------------------------
@@ -203,7 +201,7 @@ class ProfileController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('admin.users.index')->with('success', 'El usuario fue eliminado correctamente.');
+        return redirect()->route('admin.users.index')->with('feedback', ['message' => 'El usuario fue eliminado correctamente.', 'type' => 'success']);
     }
 
     private function authorizeAdmin()

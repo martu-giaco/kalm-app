@@ -68,6 +68,19 @@ class User extends Authenticatable
         return $this->hasMany(Routine::class);
     }
 
+    /**
+     * Indica si el usuario puede crear una nueva rutina.
+     * Usuarios premium/admin siempre pueden. Usuarios free tienen tope de 2.
+     */
+    public function canCreateRoutine(): bool
+    {
+        if ($this->isPremium()) {
+            return true;
+        }
+
+        return $this->routines()->count() < 2;
+    }
+
     public function testResults()
     {
         return $this->hasMany(UserTestResult::class);
@@ -86,6 +99,6 @@ class User extends Authenticatable
 
     public function reviews()
     {
-        return $this->hasMany(Review::class); 
+        return $this->hasMany(Review::class);
     }
 }
