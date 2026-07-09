@@ -39,6 +39,11 @@ return new class extends Migration
             $table->string('name');
             $table->json('products')->nullable();
             $table->json('steps')->nullable();
+            
+            // Columnas para notificaciones del dispositivo
+            $table->time('reminder_time')->nullable(); 
+            $table->boolean('is_reminder_enabled')->default(false);
+
             $table->timestamps();
 
             $table->unsignedBigInteger('user_id')->nullable();
@@ -60,6 +65,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('routine_id')->references('routine_id')->on('routines')->onDelete('cascade');
+            // Corregido: vuelve a apuntar a la columna 'id' de la tabla 'products'
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }

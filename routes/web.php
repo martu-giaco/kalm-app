@@ -28,6 +28,16 @@ use App\Http\Controllers\BrandController;
 |--------------------------------------------------------------------------
 | RUTAS PÚBLICAS
 |--------------------------------------------------------------------------
+
+*/
+
+/* web push
+
+Route::view('/push-notification', 'PushNotification.notification');
+
+Route::view('push-notification', 'PushNotification.Index');
+Route::post('save-push-noitification-subscription', [PushNotificationController::class, 'saveSubscription']);
+
 */
 
 // Autenticación
@@ -213,13 +223,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('auth');
 
     // Éxito / error
-    Route::get('/premium/success', [SubscriptionController::class, 'success'])
-        ->name('user.paysuccess')
-        ->middleware('auth');
-
-    Route::get('/premium/error', [SubscriptionController::class, 'error'])
-        ->name('user.payerror')
-        ->middleware('auth');
+    // Rutas para los retornos de Mercado Pago
+Route::get('/premium/success', [SubscriptionController::class, 'success'])->name('subscription.success');
+Route::get('/premium/error', [SubscriptionController::class, 'failure'])->name('subscription.failure');
 
     /*
     |--------------------------------------------------------------------------

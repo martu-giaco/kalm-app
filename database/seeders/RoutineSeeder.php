@@ -13,43 +13,36 @@ class RoutineSeeder extends Seeder
 {
     public function run()
     {
-        // Crear usuario "infalible" si no existe
         $user = User::firstOrCreate(
             ['email' => 'seeduser@example.com'],
             ['name' => 'Usuario Seed', 'password' => bcrypt('password')]
         );
 
-        // Asegurarse de que existan los tipos
         $typesList = ['skincare','haircare','bodycare'];
         foreach ($typesList as $typeName) {
             Type::firstOrCreate(['name' => $typeName]);
         }
 
-        // Asegurarse de que existan las necesidades
         $needsList = ['Normal','Seca','Oleosa','Mixta','Sensible'];
         foreach ($needsList as $needName) {
             RoutineNeed::firstOrCreate(['name' => $needName]);
         }
 
-        // Asegurarse de que existan los tiempos
         $timesList = ['Día','Noche'];
         foreach ($timesList as $timeName) {
             RoutineTime::firstOrCreate(['name' => $timeName]);
         }
 
-        // Cargar tipos y tiempos existentes
         $types = Type::whereIn('name', $typesList)->get()->keyBy('name');
+        $needs = RoutineNeed::whereIn('name', $needsList)->get()->keyBy('name');
         $times = RoutineTime::whereIn('name', $timesList)->get()->keyBy('name');
 
         $examples = [
-            ['name' => 'Rutina Normal',   'type' => 'Normal',   'time' => 'Día',   'products' => [1,2,3]],
-            ['name' => 'Rutina Seca',     'type' => 'Seca',     'time' => 'Noche', 'products' => [4,5,6]],
-            ['name' => 'Rutina Oleosa',    'type' => 'Oleosa',    'time' => 'Día',   'products' => [7,8,9]],
-            ['name' => 'Rutina Mixta',    'type' => 'Mixta',    'time' => 'Día',   'products' => [10,11,12]],
-            ['name' => 'Rutina Sensible', 'type' => 'Sensible', 'time' => 'Noche', 'products' => [13,14,15]],
-            ['name' => 'Rutina Extra 1',  'type' => 'Normal',   'time' => 'Día',   'products' => [16,17]],
-            ['name' => 'Rutina Extra 2',  'type' => 'Seca',     'time' => 'Noche', 'products' => [18,19]],
-            ['name' => 'Rutina Extra 3',  'type' => 'Oleosa',    'time' => 'Día',   'products' => [20,21,22]],
+            ['name' => 'Rutina Normal',   'type' => 'skincare', 'need' => 'Normal',   'time' => 'Día',   'reminder' => '08:00:00'],
+            ['name' => 'Rutina Seca',     'type' => 'skincare', 'need' => 'Seca',     'time' => 'Noche', 'reminder' => '21:30:00'],
+            ['name' => 'Rutina Oleosa',    'type' => 'haircare', 'need' => 'Oleosa',    'time' => 'Día',   'reminder' => '09:00:00'],
+            ['name' => 'Rutina Mixta',    'type' => 'skincare', 'need' => 'Mixta',    'time' => 'Día',   'reminder' => '08:30:00'],
+            ['name' => 'Rutina Sensible', 'type' => 'bodycare', 'need' => 'Sensible', 'time' => 'Noche', 'reminder' => '22:00:00'],
         ];
 
         foreach ($examples as $ex) {
@@ -58,11 +51,14 @@ class RoutineSeeder extends Seeder
             Routine::updateOrCreate(
                 [
                     'name' => $ex['name'],
-                    'time_id' => $times[$ex['time']]->time_id ?? null,
-                    'user_id' => $user->id, // usar el usuario "infalible"
+                    'user_id' => $user->id,
                 ],
                 [
-                    'products' => $ex['products'],
+                    'time_id' => $times[$ex['time']]->time_id ?? null,
+                    'type_id' => $types[$ex['type']]->id ?? null,
+                    'need_id' => $needs[$ex['need']]->need_id ?? null,
+                    'reminder_time' => $ex['reminder'],
+                    'is_reminder_enabled' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]

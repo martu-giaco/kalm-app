@@ -8,10 +8,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use HasPushSubscriptions;
 
     protected $fillable = [
         'name',
@@ -63,21 +65,27 @@ class User extends Authenticatable
     {
         return in_array($this->role, ['premium', 'admin']);
     }
+    /**
+     * Relación con las rutinas del usuario.
+     */
     public function routines()
     {
-        return $this->hasMany(Routine::class);
+        return $this->hasMany(Routine::class, 'user_id');
     }
 
     /**
-     * Indica si el usuario puede crear una nueva rutina.
-     * Usuarios premium/admin siempre pueden. Usuarios free tienen tope de 2.
+     * Verifica si el usuario puede crear una nueva rutina.
+     * Los usuarios free solo pueden tener hasta 2 rutinas.
+     *
+     * @return bool
      */
     public function canCreateRoutine(): bool
     {
-        if ($this->isPremium()) {
+        if ($this->role === 'premium') {
             return true;
         }
 
+        // Si no es premium, cuenta las rutinas actuales y permite crear si tiene menos de 2
         return $this->routines()->count() < 2;
     }
 

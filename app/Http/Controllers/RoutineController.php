@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Routine;
+use App\Models\User;
 use App\Models\Type;
 use App\Models\RoutineTime;
 use App\Models\RoutineNeed;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use App\Models\RecommendedRoutine;
 use Illuminate\Support\Facades\Auth;
-
 
 class RoutineController extends Controller
 {
@@ -22,11 +21,11 @@ class RoutineController extends Controller
 
     public function index()
     {
-        $routines = Routine::where('user_id', auth()->id())
+        $routines = Routine::where('user_id', Auth::id())
             ->orderByDesc('created_at')
             ->paginate(10);
 
-        $user = auth()->user();
+        $user = Auth::user();
         $canCreate = $user ? $user->canCreateRoutine() : false;
 
         return view('routines.index', compact('routines', 'canCreate'));
@@ -38,41 +37,47 @@ class RoutineController extends Controller
         $routine_needs = RoutineNeed::orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user && !$user->canCreateRoutine()) {
             return redirect()->route('routines.index')
-                ->with('feedback', ['message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Elimina o edita una existente, o actualizate a Premium.', 'type' => 'error']);
+                ->with('feedback', [
+                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Elimina o edita una existente, o actualizate a Premium.', 
+                    'type' => 'error'
+                ]);
         }
 
-        return view('routines.create', compact(
-            'types',
-            'routine_needs',
-            'routine_times'
-        ));
+        return view('routines.create', compact('types', 'routine_needs', 'routine_times'));
     }
 
     public function storeFromRecommended($id)
     {
         $rec = RecommendedRoutine::findOrFail($id);
 
-        // Limitar a 2 rutinas para usuarios free
-        $user = auth()->user();
+        $user = Auth::user();
         if (!$user->canCreateRoutine()) {
             return redirect()->route('routines.index')
-                ->with('feedback', ['message' => 'Los usuarios free solo pueden guardar hasta 2 rutinas. Prueba actualizar a Premium.', 'type' => 'error']);
+                ->with('feedback', [
+                    'message' => 'Los usuarios free solo pueden guardar hasta 2 rutinas. Prueba actualizar a Premium.', 
+                    'type' => 'error'
+                ]);
         }
 
         $routine = Routine::create([
             'name' => $rec->name,
-            'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
             'time_id' => $rec->time_id,
             'type_id' => $rec->type_id,
             'need_id' => $rec->need_id,
             'steps' => $rec->steps,
+            'reminder_time' => null,
+            'is_reminder_enabled' => false,
         ]);
 
         return redirect()->route('routines.index')
-            ->with('feedback', ['message' => 'Rutina guardada en tu perfil ✨', 'type' => 'success']);
+            ->with('feedback', [
+                'message' => 'Rutina guardada en tu perfil ✨', 
+                'type' => 'success'
+            ]);
     }
 
     public function store(Request $request)
@@ -83,26 +88,30 @@ class RoutineController extends Controller
             'type_id' => 'nullable|exists:types,id',
             'need_id' => 'nullable|exists:routine_needs,need_id',
             'products' => 'nullable|array',
-            'products.*' => 'nullable|exists:products,product_id',
+            'products.*' => 'nullable|exists:products,id',
+            'reminder_time' => 'nullable|date_format:H:i',
+            'is_reminder_enabled' => 'boolean',
         ]);
 
-        // Verificar límite para usuarios free
-        $user = auth()->user();
-        if (!$user->canCreateRoutine()) {
+        $user = Auth::user();
+        if ($user && !$user->canCreateRoutine()) {
             return redirect()->route('routines.index')
-                ->with('feedback', ['message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Prueba actualizar a Premium.', 'type' => 'error']);
+                ->with('feedback', [
+                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Prueba actualizar a Premium.', 
+                    'type' => 'error'
+                ]);
         }
 
-        // Crear la rutina
         $routine = new Routine();
         $routine->name = $validated['name'];
-        $routine->user_id = auth()->id();
+        $routine->user_id = $user->getKey(); // Método seguro para obtener la PK del usuario
         $routine->time_id = $validated['time_id'] ?? null;
         $routine->type_id = $validated['type_id'] ?? null;
         $routine->need_id = $validated['need_id'] ?? null;
+        $routine->reminder_time = $validated['reminder_time'] ?? null;
+        $routine->is_reminder_enabled = $request->has('is_reminder_enabled');
         $routine->save();
 
-        // Filtrar valores vacíos y asociar productos seleccionados (pivot)
         if (!empty($validated['products'])) {
             $productIds = array_filter($validated['products'], fn($id) => !empty($id));
             if (!empty($productIds)) {
@@ -111,20 +120,19 @@ class RoutineController extends Controller
         }
 
         return redirect()->route('routines.index')
-            ->with('feedback', ['message' => 'Rutina creada correctamente.', 'type' => 'success']);
+            ->with('feedback', [
+                'message' => 'Rutina creada correctamente.', 
+                'type' => 'success'
+            ]);
     }
 
     public function show($routine_id)
     {
         $routine = Routine::findOrFail($routine_id);
-        $user = Auth::user();
-        $routineType = $routine->type;
-
         $this->authorizeOwner($routine);
 
         $routine->load(['Type', 'RoutineNeed', 'routineTime', 'assignedProducts.category']);
 
-        //Divisón visual por pasos
         $stepsOrder = [
             'tratamientos' => 'Tratamientos',
             'limpiadores' => 'Limpieza',
@@ -138,12 +146,10 @@ class RoutineController extends Controller
             'protectores-solares' => 'Protección solar',
         ];
 
-
-        // Agrupar productos por nombre de categoría
         $groupedProducts = $routine->assignedProducts->groupBy(function ($product) {
             return $product->category?->slug;
         });
-        // Construir pasos en orden fijo
+
         $steps = [];
         $stepNumber = 1;
 
@@ -157,20 +163,12 @@ class RoutineController extends Controller
             }
         }
 
-        //Productos recomendados para la rutina
         $productsForYouQuery = Product::with('brand', 'type');
-
         if ($routine->type_id) {
             $productsForYouQuery->where('type_id', $routine->type_id);
         }
-
-        // opcional: evitar productos ya usados en la rutina
-        $productsForYouQuery->whereNotIn(
-            'id',
-            $routine->assignedProducts->pluck('id')
-        );
-
-        // orden más natural
+        
+        $productsForYouQuery->whereNotIn('id', $routine->assignedProducts->pluck('id'));
         $productsForYouQuery->inRandomOrder();
 
         $productsForYou = $productsForYouQuery->limit(12)->get();
@@ -194,7 +192,6 @@ class RoutineController extends Controller
         $routine_needs = RoutineNeed::orderBy('name')->get();
         $routine_times = RoutineTime::orderBy('name')->get();
 
-        // Verificar si es una rutina predeterminada (creada desde test)
         $isFromRecommended = \App\Models\UserTestResult::where('routine_id', $routine->routine_id)->exists();
 
         return view('routines.edit', compact('routine', 'types', 'routine_needs', 'routine_times', 'isFromRecommended'));
@@ -209,36 +206,44 @@ class RoutineController extends Controller
             'need_id' => 'nullable|exists:routine_needs,need_id',
             'products' => 'nullable|array',
             'products.*' => 'nullable|exists:products,id',
+            'reminder_time' => 'nullable|date_format:H:i',
+            'is_reminder_enabled' => 'boolean',
         ]);
 
         $routine = Routine::findOrFail($routine_id);
         $this->authorizeOwner($routine);
 
-        // Actualizar rutina
         $routine->update([
             'name' => $validated['name'],
             'time_id' => $validated['time_id'] ?? null,
             'type_id' => $validated['type_id'] ?? null,
             'need_id' => $validated['need_id'] ?? null,
+            'reminder_time' => $validated['reminder_time'] ?? null,
+            'is_reminder_enabled' => $request->has('is_reminder_enabled'),
         ]);
 
-        // Actualizar productos si se envió el campo
         if ($request->has('products')) {
-            // Obtener productos a mantener
             $productIds = $validated['products'] ?? [];
             $productIds = array_filter($productIds, fn($id) => !empty($id));
             $routine->products()->sync($productIds);
         }
 
         return redirect()->route('routines.show', $routine->routine_id)
-            ->with('feedback', ['message' => 'Rutina actualizada correctamente.', 'type' => 'success']);
+            ->with('feedback', [
+                'message' => 'Rutina actualizada correctamente.', 
+                'type' => 'success'
+            ]);
     }
 
     public function destroy(Routine $routine)
     {
         $this->authorizeOwner($routine);
         $routine->delete();
-        return redirect()->route('routines.index')->with('feedback', ['message' => 'Rutina eliminada correctamente.', 'type' => 'success']);
+        return redirect()->route('routines.index')
+            ->with('feedback', [
+                'message' => 'Rutina eliminada correctamente.', 
+                'type' => 'success'
+            ]);
     }
 
     public function addProduct(Request $request, $routine)
@@ -246,31 +251,39 @@ class RoutineController extends Controller
         $rutina = Routine::findOrFail($routine);
         $this->authorizeOwner($rutina);
 
-        $productId = $request->input('product_id');
-        if ($productId && !$rutina->products()->where('product_id', $productId)->exists()) {
+        $productId = $request->input('id');
+        if ($productId && !$rutina->products()->where('id', $productId)->exists()) {
             $rutina->products()->attach($productId);
         }
 
-        return redirect()->back()->with('feedback', ['message' => 'Producto agregado a la rutina.', 'type' => 'success']);
+        return redirect()->back()
+            ->with('feedback', [
+                'message' => 'Producto agregado a la rutina.', 
+                'type' => 'success'
+            ]);
     }
 
     public function removeProduct(Routine $routine, Product $product)
     {
         $this->authorizeOwner($routine);
         $routine->products()->detach($product->id);
-        return redirect()->back()->with('feedback', ['message' => 'Producto eliminado de la rutina', 'type' => 'success']);
+        return redirect()->back()
+            ->with('feedback', [
+                'message' => 'Producto eliminado de la rutina', 
+                'type' => 'success'
+            ]);
     }
 
     public function productShow($productId)
     {
         $product = Product::findOrFail($productId);
-        $routines = Routine::where('user_id', auth()->id())->get();
+        $routines = Routine::where('user_id', Auth::id())->get();
         return view('products.show', compact('product', 'routines'));
     }
 
     private function authorizeOwner(Routine $routine)
     {
-        if ($routine->user_id && $routine->user_id != auth()->id()) {
+        if ($routine->user_id && $routine->user_id != Auth::id()) {
             abort(403, 'No tenés permiso para realizar esta acción.');
         }
     }

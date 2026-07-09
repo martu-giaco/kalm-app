@@ -1,12 +1,12 @@
 <x-layout :title="'Checkout - Kälm Premium'">
 
-    <section class="flex flex-col items-center justify-center w-full pt-10 pb-20">
+    <section class="flex flex-col items-center justify-center w-full min-h-screen pt-10 pb-20 content-wrapper">
         <h1 class="text-4xl text-center font-bold text-[#306067] mb-2">Confirmar Suscripción</h1>
-        <p class="text-[#37A0AF] mb-12 px-4">Estás a un paso de disfrutar Kälm Premium</p>
+        <p class="text-[#37A0AF] mb-12 px-4 text-center">Estás a un paso de disfrutar Kälm Premium</p>
 
         <div class="w-full max-w-md px-4">
             <!-- Resumen de la orden -->
-            <div class="bg-white rounded-2xl p-6 mb-6 shadow-md border-2 border-[#CCE2E5]">
+            <div class="bg-white rounded-2xl p-6 mb-6 border-2 border-[#CCE2E5] custom-card">
                 <h2 class="text-2xl font-bold text-[#306067] mb-4">Resumen de tu compra</h2>
 
                 <!-- Detalles del plan -->
@@ -28,12 +28,12 @@
                 <!-- Total -->
                 <div class="flex items-center justify-between mt-4">
                     <span class="text-lg font-bold text-[#306067]">Total a pagar</span>
-                    <span class="text-3xl font-extrabold" style="background: linear-gradient(135deg, #37A0AF, #CCE2E5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ARS $7,000</span>
+                    <span class="text-3xl font-extrabold text-gradient">ARS $7,000</span>
                 </div>
             </div>
 
             <!-- Datos del usuario -->
-            <div class="bg-white rounded-2xl p-6 mb-6 shadow-md border-2 border-[#CCE2E5]">
+            <div class="bg-white rounded-2xl p-6 mb-6 border-2 border-[#CCE2E5] custom-card">
                 <h3 class="text-lg font-bold text-[#306067] mb-4">Datos de la suscripción</h3>
                 <div class="space-y-3">
                     <div>
@@ -47,37 +47,23 @@
                 </div>
             </div>
 
-            <!-- Métodos de pago -->
-            <div class="bg-gradient-to-r from-[#E8F4F5] to-[#F0FAFB] rounded-2xl p-6 mb-6">
-                <h3 class="text-lg font-bold text-[#306067] mb-4">Selecciona tu método de pago</h3>
-
-                <div class="space-y-3">
-                    <button disabled class="w-full py-3 px-4 bg-[#306067] text-white rounded-xl font-bold hover:bg-[#255055] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M202.87-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-554.26q0-37.78 26.61-64.39t64.39-26.61h554.26q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H202.87Zm36.54-91q0 10.77 7.24 18.01 7.23 7.23 18 7.23h109.92q10.77 0 18.01-7.23 7.24-7.24 7.24-18.01v-36.78q0-10.77-7.24-18.01-7.24-7.24-18.01-7.24H264.65q-10.77 0-18-7.24-7.23-7.24-7.23-18v-36.78q0-10.77 7.23-18.01 7.23-7.24 18-7.24h109.92q10.77 0 18.01 7.24 7.24 7.24 7.24 18.01v36.78q0 10.77-7.24 18.01-7.24 7.23-18.01 7.23H264.65q-10.77 0-18-7.23-7.23-7.24-7.23-18.01v36.78Zm345.48 0q0 10.77 7.24 18.01 7.23 7.23 18 7.23h109.92q10.77 0 18.01-7.23 7.24-7.24 7.24-18.01v-36.78q0-10.77-7.24-18.01-7.24-7.24-18.01-7.24H610.13q-10.77 0-18-7.24-7.23-7.24-7.23-18v-36.78q0-10.77 7.23-18.01 7.23-7.24 18-7.24h109.92q10.77 0 18.01 7.24 7.24 7.24 7.24 18.01v36.78q0 10.77-7.24 18.01-7.24 7.23-18.01 7.23H610.13q-10.77 0-18-7.23-7.23-7.24-7.23-18.01v36.78Z"/>
-                        </svg>
-                        Mercado Pago
-                    </button>
-
-                    <button disabled class="w-full py-3 px-4 border-2 border-[#37A0AF] text-[#37A0AF] rounded-xl font-bold hover:bg-[#37A0AF]/10 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
-                            <path d="M202.87-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-554.26q0-37.78 26.61-64.39t64.39-26.61h554.26q37.78 0 64.39 26.61t26.61 64.39v554.26q0 37.78-26.61 64.39t-64.39 26.61H202.87Zm36.54-91q0 10.77 7.24 18.01 7.23 7.23 18 7.23h109.92q10.77 0 18.01-7.23 7.24-7.24 7.24-18.01v-36.78q0-10.77-7.24-18.01-7.24-7.24-18.01-7.24H264.65q-10.77 0-18-7.24-7.23-7.24-7.23-18v-36.78q0-10.77 7.23-18.01 7.23-7.24 18-7.24h109.92q10.77 0 18.01 7.24 7.24 7.24 7.24 18.01v36.78q0 10.77-7.24 18.01-7.24 7.23-18.01 7.23H264.65q-10.77 0-18-7.23-7.23-7.24-7.23-18.01v36.78Zm345.48 0q0 10.77 7.24 18.01 7.23 7.23 18 7.23h109.92q10.77 0 18.01-7.23 7.24-7.24 7.24-18.01v-36.78q0-10.77-7.24-18.01-7.24-7.24-18.01-7.24H610.13q-10.77 0-18-7.24-7.23-7.24-7.23-18v-36.78q0-10.77 7.23-18.01 7.23-7.24 18-7.24h109.92q10.77 0 18.01 7.24 7.24 7.24 7.24 18.01v36.78q0 10.77-7.24 18.01-7.24 7.23-18.01 7.23H610.13q-10.77 0-18-7.23-7.23-7.24-7.23-18.01v36.78Z"/>
-                        </svg>
-                        Tarjeta de crédito
-                    </button>
-                </div>
-            </div>
-
             <!-- Términos y condiciones -->
             <div class="flex items-start gap-3 mb-6">
-                <input type="checkbox" id="terms" class="w-5 h-5 mt-1 rounded border-2 border-[#CCE2E5]">
-                <label for="terms" class="text-sm text-[#2A4043]">
-                    Acepto los <a href="{{ route('auth.terms.show') }}" class="text-[#37A0AF] font-bold underline">términos y condiciones</a> y autorizo el cobro automático mensual de ARS $7,000 para la suscripción a Kälm Premium. Esta suscripción se puede cancelar en cualquier momento.
+                <input type="checkbox" id="terms" class="w-5 h-5 mt-1 rounded border-2 border-[#CCE2E5] cursor-pointer">
+                <label for="terms" class="text-sm text-[#2A4043] select-none cursor-pointer">
+                    Acepto los <a href="{{ route('auth.terms.show') }}" class="text-[#37A0AF] font-bold underline">términos y condiciones</a> y autorizo el cobro de ARS $7,000 para la activación de Kälm Premium.
                 </label>
             </div>
 
-            <!-- Botones -->
-            <div class="space-y-3">
+            <!-- Métodos de pago (Contenedor oficial de Mercado Pago) -->
+            <div id="mp-payment-container" class="hidden mb-6 transition-opacity duration-300 opacity-0">
+                <h3 class="text-lg font-bold text-[#306067] mb-4">Finalizá tu pago seguro</h3>
+                <!-- Contenedor donde se renderiza el botón oficial -->
+                <div id="walletBrick_container"></div>
+            </div>
+
+            <!-- Botones de navegación alternativos -->
+            <div id="back-button-container" class="space-y-3">
                 <a href="{{ route('subscription.show') }}"
                     class="w-full py-3 px-6 bg-[#CCE2E5] text-[#2A4043] rounded-xl font-bold text-center hover:bg-[#B5D5D9] transition block">
                     Volver atrás
@@ -85,33 +71,89 @@
             </div>
 
             <p class="text-[#306067] text-xs text-center my-6">
-                Transacción segura • Esta suscripción se puede cancelar sin penalizaciones
+                Transacción de prueba (Sandbox) • Podés cancelar en cualquier momento
             </p>
-        </div>
         </div>
     </section>
 
+    <!-- SDK de Mercado Pago v2 -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+    <script>
+        // Inicializar Mercado Pago con la clave pública de pruebas
+        const mp = new MercadoPago("{{ config('services.mercadopago.public_key') }}", {
+            locale: 'es-AR'
+        });
+        const bricksBuilder = mp.bricks();
+        
+        const termsCheckbox = document.getElementById('terms');
+        const mpContainer = document.getElementById('mp-payment-container');
+        const preferenceId = "{{ $preferenceId }}"; 
+        let walletBrickController = null;
+
+        // Función para renderizar el botón oficial de Mercado Pago
+        async function renderWalletBrick() {
+            if (!preferenceId || walletBrickController) return;
+
+            try {
+                walletBrickController = await bricksBuilder.create('wallet', 'walletBrick_container', {
+                    initialization: {
+                        preferenceId: preferenceId,
+                        redirectMode: 'self' // Redirige en la misma pestaña a la pasarela de MP
+                    },
+                    customization: {
+                        texts: {
+                            valueProp: 'smart_option', // Muestra "Pagar con Mercado Pago" optimizado
+                        },
+                    },
+                });
+            } catch (error) {
+                console.error("Error al cargar el Wallet Brick de Mercado Pago:", error);
+            }
+        }
+
+        // Monitorear el estado del checkbox de Términos y Condiciones
+        termsCheckbox.addEventListener('change', async function() {
+            if (this.checked) {
+                // Renderizar el brick si aún no se hizo
+                await renderWalletBrick();
+                
+                // Mostrar el contenedor animado
+                mpContainer.classList.remove('hidden');
+                setTimeout(() => {
+                    mpContainer.classList.remove('opacity-0');
+                    mpContainer.classList.add('opacity-100');
+                }, 10);
+            } else {
+                // Ocultar el contenedor si desmarcan
+                mpContainer.classList.remove('opacity-100');
+                mpContainer.classList.add('opacity-0');
+                setTimeout(() => {
+                    mpContainer.classList.add('hidden');
+                }, 300);
+            }
+        });
+    </script>
+
     <style>
-        section {
+        .content-wrapper {
             background: linear-gradient(to bottom, #fafcfc, #f0fafa);
         }
 
-        .bg-white {
+        .custom-card {
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
-        button[disabled] {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .text-gradient {
+            background: linear-gradient(135deg, #37A0AF, #306067);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
-            }
-            h2 {
-                font-size: 1.25rem;
-            }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.25rem; }
         }
     </style>
 
