@@ -146,7 +146,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'La Roche-Posay Toleriane Double Matt Repair Moisturizer',
                             'brand_id' => 2,
-                            'image' => 'matt.webp',
+                            'image' => 'matt.jpg',
                             'description' => 'Hidratante para piel sensible con ceramidas y niacinamida. Restaura la barrera protectora.',
                             'ingredients' => 'Aqua, Glycerin, Ceramides, Niacinamide',
                             'activos' => 'Ceramidas, Niacinamida',

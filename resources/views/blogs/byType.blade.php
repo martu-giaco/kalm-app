@@ -3,9 +3,6 @@
         <h1 class="text-3xl font-bold text-[#2A4043] border-b pb-2 border-gray-100">
             {{ $type->name }}
         </h1>
-        <p class="mt-3 mb-6 text-[#37A0AF] text-sm">
-            alguna desc???
-        </p>
 
         {{-- Empty state o lista de blogs --}}
                 @if ($blogs->isEmpty())

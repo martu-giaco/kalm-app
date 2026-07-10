@@ -76,10 +76,7 @@ class BlogController extends Controller
             ->get();
 
         $blogs = $blogs->transform(function ($blog) use ($user) {
-            $blog->canView = !$blog->is_premium ||
-                ($user && ($user->role === 'premium' || $user->role === 'admin'));
-
-            $blog->blurred = !$blog->canView;
+            $this->applyBlogAccess($blog, $user);
 
             return $blog;
         });
@@ -107,10 +104,16 @@ class BlogController extends Controller
     {
         $tag = Tag::where('slug', $slug)->firstOrFail();
 
+        $user = auth()->user();
+
         $blogs = Blog::whereHas('tags', function ($query) use ($tag) {
             $query->where('tags.id', $tag->id);})
             ->with(['tags', 'type'])
             ->get();
+
+        $blogs->each(function ($blog) use ($user) {
+            $this->applyBlogAccess($blog, $user);
+        });
 
         return view('blogs.byTag', compact('tag', 'blogs'));
     }
@@ -122,9 +125,15 @@ class BlogController extends Controller
     {
         $type = Type::where('slug', $slug)->firstOrFail();
 
+        $user = auth()->user();
+
         $blogs = Blog::where('type_id', $type->id)
             ->with(['tags', 'type'])
             ->get();
+
+        $blogs->each(function ($blog) use ($user) {
+            $this->applyBlogAccess($blog, $user);
+        });
 
         return view('blogs.byType', compact('type', 'blogs'));
     }
@@ -177,10 +186,7 @@ class BlogController extends Controller
                     ->appends($request->except('page'));
 
         $blogs->getCollection()->transform(function ($blog) use ($user) {
-            $blog->canView = !$blog->is_premium ||
-                            ($user && ($user->role === 'premium' || $user->role === 'admin'));
-
-            $blog->blurred = !$blog->canView;
+            $this->applyBlogAccess($blog, $user);
 
             return $blog;
         });
@@ -245,8 +251,7 @@ class BlogController extends Controller
         $user = auth()->user();
 
         // Usuario puede ver si: no es premium o es premium/admin
-        $blog->canView = !$blog->is_premium || $user->role === 'premium' || $user->role === 'admin';
-        $blog->blurred = !$blog->canView;
+        $this->applyBlogAccess($blog, $user);
 
         // No abortamos, solo controlamos la vista
         return view('blogs.show', compact('blog', 'user'));
@@ -333,6 +338,17 @@ class BlogController extends Controller
         $blog->tempLikes = $likes;
 
         return response()->json(['likes' => count($likes), 'liked' => in_array($userId, $likes)]);
+    }
+
+    private function applyBlogAccess($blog, $user = null)
+    {
+        $user = $user ?? auth()->user();
+
+        $blog->canView = !$blog->is_premium ||
+            ($user && ($user->role === 'premium' || $user->role === 'admin'));
+        $blog->blurred = !$blog->canView;
+
+        return $blog;
     }
 
     private function authorizeAdmin()

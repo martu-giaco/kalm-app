@@ -52,7 +52,7 @@
                             </p>
                         @endif
 
-                        <p class="mt-2 text-sm text-gray-700 line-clamp-3 {{ $blog->canView ? '' : 'blur-sm' }}">
+                        <p class="mt-2 text-sm text-gray-700 line-clamp-3 {{ ($blog->canView ?? true) ? '' : 'blur-sm' }}">
                             {{ $blog->description }}
                         </p>
 
@@ -60,7 +60,7 @@
                         @if(auth()->user()?->role === 'free' && $blog->is_premium === true)
                             @if (file_exists(public_path('images/plan-premium.png')))
                                 <div class="absolute bottom-3 left-0 right-0 justify-center mt-2">
-                                    <img src="/images/plan-premium.png" alt="Premium"
+                                    <img src="{{ asset('images/plan-premium.png') }}" alt="Premium"
                                         class="px-4 py-2 font-bold transition cursor-pointer hover:scale-105">
                                 </div>
                             @endif
