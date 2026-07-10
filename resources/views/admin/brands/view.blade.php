@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Storage;
 
         {{-- Imagen principal --}}
                 <div class="relative md:flex-shrink-0 md:w-1/2 flex flex-col items-center">
-                    <div class="mb-6 overflow-hidden bg-white">
+                    <div class="mb-6 overflow-hidden pb-3 bg-white">
                         @if (!empty($brand->logo))
                             @php
                                 $logoUrl = str_starts_with($brand->logo, 'images/')
