@@ -13,7 +13,7 @@
                         {{-- icono de bookmark --}}
                         <div class="flex justify-end mt-2 absolute top-2 right-2 z-10">
                                 <label class="cursor-pointer swap" onclick="event.stopPropagation()">
-                                    <input type="checkbox" data-id="{{ $blog->id }}" class="like-toggle" />
+                                    <input type="checkbox" data-id="{{ $blog->id }}" class="like-toggle" {{ (auth()->user()?->bookmarked_blogs ?? []) && in_array($blog->id, array_map('intval', auth()->user()->bookmarked_blogs ?? [])) ? 'checked' : '' }} />
                                     <svg class="swap-off fill-[#facc15]" xmlns="http://www.w3.org/2000/svg" height="30px"
                                         viewBox="0 -960 960 960" width="30px">
                                         <path d="m480-240-168 72q-40 17-76-6.5T200-241v-519q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v519q0 43-36 66.5t-76 6.5l-168-72Zm0-88 200 86v-518H280v518l200-86Zm0-432H280h400-200Z" />

@@ -340,6 +340,63 @@ class BlogController extends Controller
         return response()->json(['likes' => count($likes), 'liked' => in_array($userId, $likes)]);
     }
 
+    public function toggleBookmark(Request $request, $id)
+    {
+        $blog = Blog::findOrFail($id);
+        $user = auth()->user();
+
+        $bookmarks = $user->bookmarked_blogs ?? [];
+
+        if (!is_array($bookmarks)) {
+            $bookmarks = json_decode($bookmarks, true) ?? [];
+        }
+
+        $bookmarks = array_map('intval', $bookmarks);
+        $blogId = (int) $blog->id;
+
+        if (in_array($blogId, $bookmarks, true)) {
+            $bookmarks = array_values(array_diff($bookmarks, [$blogId]));
+            $bookmarked = false;
+        } else {
+            $bookmarks[] = $blogId;
+            $bookmarked = true;
+        }
+
+        $bookmarks = array_values(array_unique($bookmarks));
+        $user->update(['bookmarked_blogs' => $bookmarks]);
+
+        return response()->json(['bookmarked' => $bookmarked, 'count' => count($bookmarks)]);
+    }
+
+    public function bookmarks()
+    {
+        $user = auth()->user();
+        $bookmarks = $user->bookmarked_blogs ?? [];
+
+        if (!is_array($bookmarks)) {
+            $bookmarks = json_decode($bookmarks, true) ?? [];
+        }
+
+        $bookmarks = array_map('intval', $bookmarks);
+
+        $blogs = collect();
+
+        if (!empty($bookmarks)) {
+            $blogs = Blog::with(['type', 'tags'])
+                ->whereIn('id', $bookmarks)
+                ->get()
+                ->sortBy(function ($blog) use ($bookmarks) {
+                    return array_search((int) $blog->id, $bookmarks);
+                });
+        }
+
+        $blogs->each(function ($blog) use ($user) {
+            $this->applyBlogAccess($blog, $user);
+        });
+
+        return view('blogs.bookmarks', compact('blogs'));
+    }
+
     private function applyBlogAccess($blog, $user = null)
     {
         $user = $user ?? auth()->user();

@@ -26,6 +26,7 @@ class User extends Authenticatable
         'accepted_terms',
         'terms_accepted_at',
         'favoritos',
+        'bookmarked_blogs',
     ];
 
     protected $hidden = [
@@ -38,6 +39,7 @@ class User extends Authenticatable
         'accepted_terms' => 'boolean',
         'terms_accepted_at' => 'datetime',
         'favoritos' => 'json',
+        'bookmarked_blogs' => 'json',
     ];
 
     // Si usás Laravel 10+ y querés hashing automático, podés mantenerlo;
@@ -103,6 +105,17 @@ class User extends Authenticatable
         }
 
         return count($favoritos);
+    }
+
+    public function getBookmarkedBlogsCountAttribute()
+    {
+        $bookmarks = $this->bookmarked_blogs ?? [];
+
+        if (!is_array($bookmarks)) {
+            $bookmarks = json_decode($bookmarks, true) ?? [];
+        }
+
+        return count($bookmarks);
     }
 
     public function reviews()

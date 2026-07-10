@@ -123,8 +123,10 @@ Route::middleware('auth')->group(function () {
     // Blog index y detalle (premium)
     Route::get('/blogs', [BlogController::class, 'index'])->name('blog.index');
     Route::get('/blogs/search', [BlogController::class, 'search'])->name('blog.search');
+    Route::get('/blogs/bookmarks', [BlogController::class, 'bookmarks'])->name('blog.bookmarks');
     Route::get('/blogs/{id}', [BlogController::class, 'show'])->middleware('premium.blog')->name('blog.show');
     Route::post('/blogs/{id}/like', [BlogController::class, 'toggleLike'])->name('blog.like');
+    Route::post('/blogs/{id}/bookmark', [BlogController::class, 'toggleBookmark'])->name('blog.bookmark');
     Route::get('blogs/type/{slug}', [BlogController::class, 'byType'])->name('blog.byType');
     Route::get('/blogs/tag/{slug}', [BlogController::class, 'byTag'])->name('blog.byTag');
 

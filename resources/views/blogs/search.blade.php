@@ -199,7 +199,7 @@
         document.querySelectorAll('.like-toggle').forEach(el => {
             el.addEventListener('change', function() {
                 const blogId = this.dataset.id;
-                fetch(`/blogs/${blogId}/like`, {
+                fetch(`/blogs/${blogId}/bookmark`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
