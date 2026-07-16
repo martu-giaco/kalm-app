@@ -247,21 +247,23 @@ class RoutineController extends Controller
     }
 
     public function addProduct(Request $request, $routine)
-    {
-        $rutina = Routine::findOrFail($routine);
-        $this->authorizeOwner($rutina);
+{
+    $rutina = Routine::findOrFail($routine);
+    $this->authorizeOwner($rutina);
 
-        $productId = $request->input('id');
-        if ($productId && !$rutina->products()->where('id', $productId)->exists()) {
-            $rutina->products()->attach($productId);
-        }
-
-        return redirect()->back()
-            ->with('feedback', [
-                'message' => 'Producto agregado a la rutina.', 
-                'type' => 'success'
-            ]);
+    // CORRECCIÓN: Cambiar 'id' por 'product_id'
+    $productId = $request->input('product_id'); 
+    
+    if ($productId && !$rutina->products()->where('products.id', $productId)->exists()) {
+        $rutina->products()->attach($productId);
     }
+
+    return redirect()->back()
+        ->with('feedback', [
+            'message' => 'Producto agregado a la rutina.', 
+            'type' => 'success'
+        ]);
+}
 
     public function removeProduct(Routine $routine, Product $product)
     {
