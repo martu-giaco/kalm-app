@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'premium.blog' => \App\Http\Middleware\BlogMiddleware::class, 
         ]);
     })
+    
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

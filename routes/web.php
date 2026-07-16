@@ -23,6 +23,11 @@ use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
+use App\Models\Routine;
+use App\Notifications\RoutineReminderNotification;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -33,12 +38,33 @@ use App\Http\Controllers\BrandController;
 
 /* web push
 
-Route::view('/push-notification', 'PushNotification.notification');
-
-Route::view('push-notification', 'PushNotification.Index');
-Route::post('save-push-noitification-subscription', [PushNotificationController::class, 'saveSubscription']);
 
 */
+Route::middleware(['auth'])->group(function () {
+    // Ruta para guardar o actualizar el token del dispositivo del usuario
+    Route::post('/push-subscriptions', function (Request $request) {
+        
+        // 1. CORRECCIÓN: Usar $request->validate() en vez de $this->validate()
+        $request->validate([
+            'endpoint'    => 'required',
+            'keys.auth'   => 'required',
+            'keys.p256dh' => 'required'
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        
+        // 2. Guardar la suscripción en la base de datos
+        $user->updatePushSubscription(
+            $request->endpoint,
+            $request->keys['p256dh'],
+            $request->keys['auth']
+        );
+
+        return response()->json(['success' => true], 200);
+    });
+});
+
 
 // Autenticación
 Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');

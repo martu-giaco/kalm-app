@@ -519,7 +519,11 @@
                                     <a class="flex flex-row text-lg text-[#2A4043] w-full justify-between items-center hover:bg-transparent"
                                         href="{{ route('blog.bookmarks') }}">
                                         Bookmarks
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="m480-240-168 72q-40 17-76-6.5T200-241v-519q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v519q0 43-36 66.5t-76 6.5l-168-72Z"/></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+                                            width="24px" fill="#306067">
+                                            <path
+                                                d="m480-240-168 72q-40 17-76-6.5T200-241v-519q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v519q0 43-36 66.5t-76 6.5l-168-72Z" />
+                                        </svg>
                                     </a>
                                 </li>
 
@@ -612,48 +616,50 @@
         </div>
     </div>
     </div>
-    <script>
-        if ('serviceWorker' in navigator && 'PushManager' in window) {
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(swReg) {
-                    console.log('Service Worker Registrado');
-                    inicializarSuscripcionPush(swReg);
-                });
-        }
+    @auth
+        <script>
+            if ('serviceWorker' in navigator && 'PushManager' in window) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(swReg) {
+                        console.log('Service Worker registrado correctamente.');
 
-        function inicializarSuscripcionPush(swReg) {
-        //     // Reemplaza con tu VAPID_PUBLIC_KEY del .env de Laravel
-        //     const applicationServerKey = urlB64ToUint8Array('TU_VAPID_PUBLIC_KEY_AQUI');
-
-        //     swReg.pushManager.subscribe({
-        //             userVisibleOnly: true,
-        //             applicationServerKey: applicationServerKey
-        //         })
-        //         .then(function(subscription) {
-        //             // Enviar el token del dispositivo a tu backend de Laravel
-        //             fetch('/api/push-subscribe', {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json',
-        //                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-        //                         'content')
-        //                 },
-        //                 body: JSON.stringify(subscription)
-        //             });
-        //         });
-        // }
-
-        function urlB64ToUint8Array(base64String) {
-            const padding = '='.repeat((4 - base64String.length % 4) % 4);
-            const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
-            const rawData = window.atob(base64);
-            const outputArray = new Uint8Array(rawData.length);
-            for (let i = 0; i < rawData.length; ++i) {
-                outputArray[i] = rawData.charCodeAt(i);
+                        Notification.requestPermission().then(permission => {
+                            if (permission === 'granted') {
+                                swReg.pushManager.subscribe({
+                                        userVisibleOnly: true,
+                                        // Reemplaza con tu Clave Pública VAPID generada por el paquete
+                                        applicationServerKey: urlB64ToUint8Array('TU_LLAVE_VAPID_PUBLICA_AQUI')
+                                    })
+                                    .then(function(subscription) {
+                                        // Enviar la suscripción estructurada a tu nueva ruta de Laravel
+                                        fetch('/push-subscriptions', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'X-CSRF-TOKEN': document.querySelector(
+                                                    'meta[name="csrf-token"]').getAttribute(
+                                                    'content')
+                                            },
+                                            body: JSON.stringify(subscription)
+                                        });
+                                    });
+                            }
+                        });
+                    });
             }
-            return outputArray;
-        }
-    </script>
+
+            function urlB64ToUint8Array(base64String) {
+                const padding = '='.repeat((4 - base64String.length % 4) % 4);
+                const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+                const rawData = window.atob(base64);
+                const outputArray = new Uint8Array(rawData.length);
+                for (let i = 0; i < rawData.length; ++i) {
+                    outputArray[i] = rawData.charCodeAt(i);
+                }
+                return outputArray;
+            }
+        </script>
+    @endauth
 </body>
 
 </html>
