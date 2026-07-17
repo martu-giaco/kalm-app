@@ -3,6 +3,17 @@
     <section class="px-5 pt-10 bg-white vh rounded-t-3xl">
         <h1 class="text-2xl font-semibold mb-6 text-[#306067]">Editar Rutina</h1>
         <main>
+            @php
+                $selectedType = null;
+                if (old('type_id')) {
+                    $selectedType = $types->firstWhere('id', old('type_id'));
+                } elseif ($routine->type) {
+                    $selectedType = $routine->type;
+                }
+                $needLabelText = $selectedType && strtolower($selectedType->name) === 'haircare'
+                    ? 'Tipo de pelo'
+                    : 'Tipo de piel';
+            @endphp
             <form action="{{ route('routines.update', $routine->routine_id) }}" method="POST">
                 @csrf
                 @method('PATCH')
@@ -33,6 +44,7 @@
                             <option value="">Seleccionar tipo de rutina</option>
                             @foreach ($types as $type)
                                 <option value="{{ $type->id }}"
+                                    data-need-label="{{ strtolower($type->name) === 'haircare' ? 'tipo de pelo' : 'tipo de piel' }}"
                                     {{ old('type_id', $routine->type_id) == $type->id ? 'selected' : '' }}>
                                     {{ $type->name }}
                                 </option>
@@ -43,10 +55,10 @@
 
                 {{-- Tipo de piel de rutina --}}
                 <div class="mb-4">
-                    <label for="need_id" class="block mb-1 text-sm">Tipo de piel</label>
+                    <label for="need_id" id="need_label" class="block mb-1 text-sm">{{ $needLabelText }}</label>
                     <select name="need_id" id="need_id"
                         class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                        <option value="">Seleccionar tipo de piel</option>
+                        <option value="" id="need_placeholder">Seleccionar {{ strtolower($needLabelText) }}</option>
                         @foreach ($routine_needs as $need)
                             <option value="{{ $need->need_id }}"
                                 {{ old('need_id', $routine->need_id) == $need->need_id ? 'selected' : '' }}>
@@ -238,6 +250,24 @@
 
             frequencySelect.addEventListener('change', toggleFields);
             toggleFields(); // Inicial
+
+            const typeSelect = document.getElementById('type_id');
+            const needLabel = document.getElementById('need_label');
+            const needPlaceholder = document.getElementById('need_placeholder');
+
+            if (typeSelect && needLabel && needPlaceholder) {
+                function updateNeedText() {
+                    const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+                    const labelText = selectedOption.dataset.needLabel || 'tipo de piel';
+                    const capitalized = labelText.charAt(0).toUpperCase() + labelText.slice(1);
+
+                    needLabel.textContent = capitalized;
+                    needPlaceholder.textContent = 'Seleccionar ' + labelText;
+                }
+
+                typeSelect.addEventListener('change', updateNeedText);
+                updateNeedText();
+            }
         });
     </script>
 </x-layout>

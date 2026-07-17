@@ -10,6 +10,13 @@
             </div>
         @endif
 
+        @php
+            $selectedType = $types->firstWhere('id', old('type_id'));
+            $needLabelText = $selectedType && strtolower($selectedType->name) === 'haircare'
+                ? 'Tipo de pelo'
+                : 'Tipo de piel';
+        @endphp
+
         <form action="{{ route('routines.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
@@ -36,7 +43,9 @@
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tipo</option>
                     @foreach ($types as $type)
-                        <option value="{{ $type->id }}">
+                        <option value="{{ $type->id }}"
+                            data-need-label="{{ strtolower($type->name) === 'haircare' ? 'tipo de pelo' : 'tipo de piel' }}"
+                            {{ old('type_id') == $type->id ? 'selected' : '' }}>
                             {{ $type->name }}
                         </option>
                     @endforeach
@@ -45,14 +54,15 @@
 
             {{-- Necesidad de rutina --}}
             <div class="mb-4">
-                <label for="need_id" class="block mb-1 text-sm text-[#2A4043]">
-                    Tipo de piel
+                <label for="need_id" id="need_label" class="block mb-1 text-sm text-[#2A4043]">
+                    {{ $needLabelText }}
                 </label>
                 <select name="need_id" id="need_id"
                     class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
-                    <option value="">Seleccionar tipo de piel</option>
+                    <option value="" id="need_placeholder">Seleccionar {{ strtolower($needLabelText) }}</option>
                     @foreach ($routine_needs as $need)
-                        <option value="{{ $need->need_id }}">
+                        <option value="{{ $need->need_id }}"
+                            {{ old('need_id') == $need->need_id ? 'selected' : '' }}>
                             {{ $need->name }}
                         </option>
                     @endforeach
@@ -68,7 +78,8 @@
                     class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
                     <option value="">Seleccionar tiempo</option>
                     @foreach ($routine_times as $time)
-                        <option value="{{ $time->time_id }}">
+                        <option value="{{ $time->time_id }}"
+                            {{ old('time_id') == $time->time_id ? 'selected' : '' }}>
                             {{ $time->name }}
                         </option>
                     @endforeach
@@ -83,4 +94,28 @@
 
         </form>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const typeSelect = document.getElementById('type_id');
+            const needLabel = document.getElementById('need_label');
+            const needPlaceholder = document.getElementById('need_placeholder');
+
+            if (!typeSelect || !needLabel || !needPlaceholder) {
+                return;
+            }
+
+            function updateNeedText() {
+                const selectedOption = typeSelect.options[typeSelect.selectedIndex];
+                const labelText = selectedOption.dataset.needLabel || 'tipo de piel';
+                const capitalized = labelText.charAt(0).toUpperCase() + labelText.slice(1);
+
+                needLabel.textContent = capitalized;
+                needPlaceholder.textContent = 'Seleccionar ' + labelText;
+            }
+
+            typeSelect.addEventListener('change', updateNeedText);
+            updateNeedText();
+        });
+    </script>
 </x-layout>
