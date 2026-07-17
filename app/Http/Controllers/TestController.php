@@ -195,21 +195,33 @@ class TestController extends Controller
                 ->where('result_key', $resultKey)
                 ->first();
 
-            // Crear rutina en el perfil del usuario PRIMERO
-            $routineId = null;
-            if ($recommendedRoutine) {
+            // Guardar o actualizar el resultado del test para este usuario y test
+            $testResult = UserTestResult::where('user_id', $user->id)
+                ->where('test_key', $testKey)
+                ->first();
+
+            $routineId = $testResult?->routine_id;
+
+            if (!$routineId && $recommendedRoutine) {
                 $createdRoutine = $this->createRoutineFromRecommended($user, $recommendedRoutine, $testKey);
-                $routineId = $createdRoutine->routine_id; // Obtenemos el ID de la rutina creada
+                $routineId = $createdRoutine->routine_id;
             }
 
-            // Guardar el resultado del test CON el ID correcto
-            $testResult = UserTestResult::create([
-                'user_id' => $user->id,
-                'routine_id' => $routineId,
-                'test_key' => $testKey,
-                'result_key' => $resultKey,
-                'answers' => $answersToStore,
-            ]);
+            if ($testResult) {
+                $testResult->update([
+                    'routine_id' => $routineId,
+                    'result_key' => $resultKey,
+                    'answers' => $answersToStore,
+                ]);
+            } else {
+                $testResult = UserTestResult::create([
+                    'user_id' => $user->id,
+                    'routine_id' => $routineId,
+                    'test_key' => $testKey,
+                    'result_key' => $resultKey,
+                    'answers' => $answersToStore,
+                ]);
+            }
 
             return redirect()->route('profile.results')
                 ->with('feedback', ['message' => 'Resultado guardado correctamente.', 'type' => 'success']);
