@@ -194,7 +194,7 @@ class ProductSeeder extends Seeder
                         [
                             'name' => 'La Roche-Posay Toleriane Double Repair Face Moisturizer',
                             'brand_id' => 2,
-                            'image' => 'toleriane-double-repair.jpg',
+                            'image' => 'toleriane-double-repair.webp',
                             'description' => 'Crema reparadora diaria con prebiótico, ceramidas y niacinamida para piel sensible.',
                             'ingredients' => 'Ceramides, Niacinamide, Prebiotic Thermal Water',
                             'activos' => 'Ceramidas, Niacinamida',
