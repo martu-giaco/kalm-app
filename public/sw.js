@@ -1,16 +1,20 @@
-self.addEventListener('push', function (event) {
+// public/sw.js
+
+// Escuchar el evento de notificación push enviado desde Laravel
+self.addEventListener('push', function(event) {
     if (!event.data) return;
-    
+
     const payload = event.data.json();
-    
     const options = {
         body: payload.body,
-        icon: '/images/logo-notification.png', 
-        badge: '/images/badge.png',
-        vibrate: [100, 50, 100],
+        icon: payload.icon || '/images/logo-icon.png',
+        badge: payload.badge || '/images/badge-icon.png',
         data: {
-            url: payload.url || '/routines'
-        }
+            // Guardamos la URL de la rutina que viene desde Laravel
+            url: payload.data.url 
+        },
+        vibrate: [200, 100, 200],
+        requireInteraction: true
     };
 
     event.waitUntil(
@@ -18,10 +22,26 @@ self.addEventListener('push', function (event) {
     );
 });
 
-// Al hacer clic en la push, redirigir a la rutina
-self.addEventListener('notificationclick', function (event) {
-    event.notification.close();
+// Escuchar el click sobre la notificación y redirigir
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close(); // Cierra el banner
+
+    const targetUrl = event.notification.data.url;
+
     event.waitUntil(
-        clients.openWindow(event.notification.data.url)
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+            // Si la aplicación ya estaba abierta en alguna pestaña, la navega y le hace foco
+            for (let i = 0; i < clientList.length; i++) {
+                let client = clientList[i];
+                if ('focus' in client) {
+                    client.navigate(targetUrl);
+                    return client.focus();
+                }
+            }
+            // Si estaba completamente cerrada, abre una nueva ventana con la url de la rutina
+            if (clients.openWindow) {
+                return clients.openWindow(targetUrl);
+            }
+        })
     );
 });
