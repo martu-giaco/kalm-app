@@ -12,19 +12,19 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasPushSubscriptions;
+    use HasFactory, Notifiable, HasPushSubscriptions;
 
     protected $fillable = [
-        'name', 
-        'email', 
-        'password', 
-        'avatar', 
-        'bio', 
-        'role', 
-        'theme', 
-        'accepted_terms', 
-        'terms_accepted_at', 
-        'favoritos', 
+        'name',
+        'email',
+        'password',
+        'avatar',
+        'bio',
+        'role',
+        'theme',
+        'accepted_terms',
+        'terms_accepted_at',
+        'favoritos',
         'bookmarked_blogs',
     ];
 

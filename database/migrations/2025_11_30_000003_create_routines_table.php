@@ -37,11 +37,10 @@ return new class extends Migration
         Schema::create('routines', function (Blueprint $table) {
             $table->bigIncrements('routine_id');
             $table->string('name');
-            $table->json('products')->nullable();
             $table->json('steps')->nullable();
-            
+
             // Columnas para notificaciones del dispositivo
-            $table->time('reminder_time')->nullable(); 
+            $table->time('reminder_time')->nullable();
             $table->boolean('is_reminder_enabled')->default(false);
 
             $table->timestamps();

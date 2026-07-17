@@ -13,12 +13,11 @@ class Routine extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'name', 'user_id', 'time_id', 'type_id', 'need_id', 
-        'products', 'steps', 'reminder_time', 'is_reminder_enabled', 
+        'name', 'user_id', 'time_id', 'type_id', 'need_id',
+        'steps', 'reminder_time', 'is_reminder_enabled',
     ];
 
     protected $casts = [
-        'products' => 'array',
         'steps' => 'array',
         'is_reminder_enabled' => 'boolean',
         'reminder_time' => 'datetime:H:i',
