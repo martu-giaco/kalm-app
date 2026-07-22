@@ -104,54 +104,52 @@ class SubscriptionController extends Controller
      * Muestra la pantalla de checkout/confirmación utilizando la API REST de Mercado Pago.
      */
     public function checkout()
-    {
-        try {
-            $accessToken = config('services.mercadopago.access_token') ?? env('MP_ACCESS_TOKEN');
-            $appUrl = rtrim(env('APP_URL', 'http://127.0.0.1:8000'), '/');
+{
+    try {
+        $accessToken = config('services.mercadopago.access_token') ?? env('MP_ACCESS_TOKEN');
+        $appUrl = rtrim(env('APP_URL', 'http://127.0.0.1:8000'), '/');
 
-            $preferenceData = [
-                "items" => [
-                    [
-                        "id" => "premium-monthly",
-                        "title" => "Kälm Premium - Suscripción Mensual",
-                        "quantity" => 1,
-                        "unit_price" => 7000,
-                        "currency_id" => "ARS"
-                    ]
-                ],
-                "payer" => [
-                    "email" => Auth::user()->email
-                ],
-                "back_urls" => [
-                    "success" => $appUrl . '/premium/success',
-                    "failure" => $appUrl . '/premium/error',
-                    "pending" => $appUrl . '/premium/error',
+        $preferenceData = [
+            "items" => [
+                [
+                    "id" => "premium-monthly",
+                    "title" => "Kälm Premium - Suscripción Mensual",
+                    "quantity" => 1,
+                    "unit_price" => 7000,
+                    "currency_id" => "ARS"
                 ]
-            ];
+            ],
+            "payer" => [
+                "email" => Auth::user()->email
+            ],
+            "back_urls" => [
+                "success" => $appUrl . '/premium/success',
+                "failure" => $appUrl . '/premium/error',
+                "pending" => $appUrl . '/premium/error',
+            ],
+            
+            "auto_return" => "approved" 
+        ];
 
-            if (!str_contains($appUrl, '127.0.0.1') && !str_contains($appUrl, 'localhost') && str_starts_with($appUrl, 'https')) {
-                $preferenceData['auto_return'] = 'approved';
-            }
+        $response = Http::withToken($accessToken)
+            ->withoutVerifying()
+            ->post('https://api.mercadopago.com/checkout/preferences', $preferenceData)
+            ->json();
 
-            $response = Http::withToken($accessToken)
-                ->withoutVerifying()
-                ->post('https://api.mercadopago.com/checkout/preferences', $preferenceData)
-                ->json();
-
-            if (!isset($response['id'])) {
-                throw new \Exception('Respuesta inválida de Mercado Pago: ' . json_encode($response));
-            }
-
-            return view('user.checkout', [
-                'preferenceId' => $response['id']
-            ]);
-
-        } catch (\Exception $e) {
-            return back()->withErrors([
-                'error' => 'No se pudo inicializar el checkout de Mercado Pago: ' . $e->getMessage()
-            ]);
+        if (!isset($response['id'])) {
+            throw new \Exception('Respuesta inválida de Mercado Pago: ' . json_encode($response));
         }
+
+        return view('user.checkout', [
+            'preferenceId' => $response['id']
+        ]);
+
+    } catch (\Exception $e) {
+        return back()->withErrors([
+            'error' => 'No se pudo inicializar el checkout de Mercado Pago: ' . $e->getMessage()
+        ]);
     }
+}
 
     /**
      * Redirige al usuario directamente a Mercado Pago utilizando un link seguro de checkout (Antiguo mercadoPago).
@@ -298,17 +296,21 @@ class SubscriptionController extends Controller
     /**
      * Vista cuando el pago es exitoso (Retorno síncrono del cliente)
      */
-    public function success(Request $request)
-    {
-        // Actualizamos también aquí al volver para asegurar inmediatez visual en el front
-        if (Auth::check()) {
-            $this->assignPremiumStatus(Auth::id());
-        }
-
-        return view('user.subscription-success')
-            ->with('feedback.message', '¡Pago aprobado! Ahora eres premium.')
-            ->with('feedback.type', 'success');
+    /**
+ * Vista cuando el pago es exitoso (Retorno síncrono del cliente)
+ */
+public function success(Request $request)
+{
+    // Actualizamos aquí al volver para asegurar inmediatez visual en el front
+    if (Auth::check()) {
+        $this->assignPremiumStatus(Auth::id()); //
     }
+
+    // Redirige directamente a la ruta 'profile.show' definida en tus rutas
+    return redirect()->route('profile.show')
+        ->with('feedback.message', '¡Pago aprobado! Ahora eres premium.')
+        ->with('feedback.type', 'success');
+}
 
     /**
      * Vista cuando el pago falla

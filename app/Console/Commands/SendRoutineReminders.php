@@ -38,9 +38,10 @@ class SendRoutineReminders extends Command
         }
 
         if ($routine->reminder_frequency === 'weekly') {
-            $days = json_decode($routine->reminder_days ?? '[]', true);
-            return in_array($currentDayName, $days);
-        }
+    // Como ya es un array por el Cast de Eloquent, no hace falta el json_decode
+    $days = $routine->reminder_days ?? []; 
+    return in_array($currentDayName, $days);
+}
 
         if ($routine->reminder_frequency === 'every_x_days') {
             // Validar la diferencia de días usando la última fecha de ejecución guardada
@@ -56,15 +57,11 @@ class SendRoutineReminders extends Command
     }
 
     private function dispatchPushNotification($routine)
-    {
-        $user = $routine->user;
-        if (!$user) return;
+{
+    $user = $routine->user;
+    if (!$user) return;
 
-        // Aquí construyes el payload dinámico redirigiendo a su vista de detalle de rutina
-        $url = route('routines.show', $routine->routine_id); // Genera: /routines/id
-
-        // Enviar vía tu servicio Push elegido (FCM o paquete WebPush)
-        // Ejemplo conceptual:
-        // $user->notify(new RoutineReminderNotification($routine, $url));
-    }
+    // Descomentar e instanciar la clase de notificación real de tu app
+    $user->notify(new \App\Notifications\RoutineReminderNotification($routine));
+}
 }

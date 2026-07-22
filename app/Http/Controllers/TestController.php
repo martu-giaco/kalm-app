@@ -18,19 +18,18 @@ class TestController extends Controller
      * LISTAR TESTS
      =========================== */
     public function index()
-        {
-            $tests = Test::all();
+    {
+        $tests = Test::all();
+        $completedTests = [];
 
-            $completedTests = [];
-
-            if (Auth::check()) {
-                $completedTests = UserTestResult::where('user_id', Auth::id())
-                    ->pluck('test_key')
-                    ->toArray();
-            }
-
-            return view('tests.index', compact('tests', 'completedTests'));
+        if (Auth::check()) {
+            $completedTests = UserTestResult::where('user_id', Auth::id())
+                ->pluck('test_key')
+                ->toArray();
         }
+
+        return view('tests.index', compact('tests', 'completedTests'));
+    }
 
     /* ===========================
      * MOSTRAR TEST
@@ -67,7 +66,10 @@ class TestController extends Controller
             $value = $request->input($input);
 
             if (!$value) {
-                return back()->withInput()->with('feedback', ['message' => 'Falta responder la pregunta #' . ($index + 1), 'type' => 'error']);
+                return back()->withInput()->with('feedback', [
+                    'message' => 'Falta responder la pregunta #' . ($index + 1), 
+                    'type' => 'error'
+                ]);
             }
 
             $answers[$input] = $value;
@@ -83,8 +85,13 @@ class TestController extends Controller
             'test_answers' => $answers,
             'test_key' => $test->key,
             'result_key' => $topKey,
-            'routine_type_id' => $type?->type_id,
+            'routine_type_id' => $type?->type_id ?? $type?->id,
         ]);
+
+        // Guardar o actualizar automáticamente si el usuario inició sesión
+        if (Auth::check()) {
+            $this->saveOrUpdateUserTestResult(Auth::user(), $test->key, $topKey, $answers);
+        }
 
         Log::info('Test completado', session()->all());
 
@@ -100,18 +107,30 @@ class TestController extends Controller
             $testKey = session('test_key');
             $resultLabel = session('result_key');
 
+            // Recuperar el último resultado guardado si la sesión expiró pero el usuario está autenticado
+            if ((!$testKey || !$resultLabel) && Auth::check()) {
+                $latestResult = UserTestResult::where('user_id', Auth::id())
+                    ->latest('updated_at')
+                    ->first();
+
+                if ($latestResult) {
+                    $testKey = $latestResult->test_key;
+                    $resultLabel = $latestResult->result_key;
+                }
+            }
+
             if (!$testKey || !$resultLabel) {
                 return redirect()->route('tests.index')
                     ->with('feedback', ['message' => 'No hay resultados disponibles.', 'type' => 'error']);
             }
 
             // BUSCAR EL TEST
-                $test = Test::where('key', $testKey)->first();
+            $test = Test::where('key', $testKey)->first();
 
-                    if (!$test) {
-                        return redirect()->route('tests.index')
-                            ->with('feedback', ['message' => 'Test no encontrado.', 'type' => 'error']);
-                    }
+            if (!$test) {
+                return redirect()->route('tests.index')
+                    ->with('feedback', ['message' => 'Test no encontrado.', 'type' => 'error']);
+            }
 
             // Rutina recomendada
             $recommendedRoutine = RecommendedRoutine::with(['routineTime'])
@@ -120,8 +139,8 @@ class TestController extends Controller
                 ->first();
 
             // Cargar los productos de la rutina recomendada
+            $recommendedProducts = collect();
             if ($recommendedRoutine) {
-                // Acceder al atributo raw sin pasar por el accesor
                 $productsJson = $recommendedRoutine->getAttributeValue('products');
                 $productIds = is_string($productsJson)
                     ? json_decode($productsJson, true)
@@ -133,9 +152,9 @@ class TestController extends Controller
                     $recommendedProducts = Product::limit(6)->get();
                 }
             } else {
-                // Si no hay rutina recomendada, buscar productos por descripción
                 $recommendedProducts = Product::limit(6)->get();
             }
+
             $descriptions = [
                 'skin' => [
                     'normal' => 'Tener la piel normal significa que tu piel tiene un equilibrio adecuado de humedad y producción de sebo, lo que le permite lucir saludable, suave y con poros poco visibles. Este tipo de piel no es ni demasiado seca ni demasiado grasa, y generalmente no presenta problemas significativos como acné o sensibilidad. Para cuidar la piel normal, es importante mantener una rutina de cuidado básica que incluya limpieza suave, hidratación ligera y protección solar diaria.',
@@ -182,46 +201,18 @@ class TestController extends Controller
             $resultKey = $request->input('result_key', session('result_key'));
             $answers = $request->input('answers', session('test_answers'));
 
-            if (!$resultKey) {
+            if (!$resultKey || !$testKey) {
                 return redirect()->route('tests.index')->with('feedback', ['message' => 'No hay resultado.', 'type' => 'error']);
             }
 
-            $answersToStore = is_array($answers)
-                ? json_encode($answers)
-                : $answers;
-
-            // Buscar si existe una rutina recomendada para este resultado
-            $recommendedRoutine = RecommendedRoutine::where('test_key', $testKey)
-                ->where('result_key', $resultKey)
-                ->first();
-
-            // Guardar o actualizar el resultado del test para este usuario y test
-            $testResult = UserTestResult::where('user_id', $user->id)
-                ->where('test_key', $testKey)
-                ->first();
-
-            $routineId = $testResult?->routine_id;
-
-            if (!$routineId && $recommendedRoutine) {
-                $createdRoutine = $this->createRoutineFromRecommended($user, $recommendedRoutine, $testKey);
-                $routineId = $createdRoutine->routine_id;
+            if (is_string($answers)) {
+                $decoded = json_decode($answers, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    $answers = $decoded;
+                }
             }
 
-            if ($testResult) {
-                $testResult->update([
-                    'routine_id' => $routineId,
-                    'result_key' => $resultKey,
-                    'answers' => $answersToStore,
-                ]);
-            } else {
-                $testResult = UserTestResult::create([
-                    'user_id' => $user->id,
-                    'routine_id' => $routineId,
-                    'test_key' => $testKey,
-                    'result_key' => $resultKey,
-                    'answers' => $answersToStore,
-                ]);
-            }
+            $this->saveOrUpdateUserTestResult($user, $testKey, $resultKey, $answers);
 
             return redirect()->route('profile.results')
                 ->with('feedback', ['message' => 'Resultado guardado correctamente.', 'type' => 'success']);
@@ -233,6 +224,44 @@ class TestController extends Controller
     }
 
     /**
+     * Guarda o actualiza (sobreescribe) el resultado del test de un usuario sin duplicarlo.
+     */
+    private function saveOrUpdateUserTestResult($user, $testKey, $resultKey, $answers)
+    {
+        $answersToStore = is_array($answers)
+            ? json_encode($answers)
+            : $answers;
+
+        $recommendedRoutine = RecommendedRoutine::where('test_key', $testKey)
+            ->where('result_key', $resultKey)
+            ->first();
+
+        $testResult = UserTestResult::where('user_id', $user->id)
+            ->where('test_key', $testKey)
+            ->first();
+
+        $routineId = $testResult?->routine_id;
+
+        // Si no tenía rutina o si cambió el tipo de resultado al rehacer el test
+        if ($recommendedRoutine && (!$routineId || ($testResult && $testResult->result_key !== $resultKey))) {
+            $createdRoutine = $this->createRoutineFromRecommended($user, $recommendedRoutine, $testKey);
+            $routineId = $createdRoutine->getKey();
+        }
+
+        return UserTestResult::updateOrCreate(
+            [
+                'user_id'  => $user->id,
+                'test_key' => $testKey,
+            ],
+            [
+                'routine_id' => $routineId,
+                'result_key' => $resultKey,
+                'answers'    => $answersToStore,
+            ]
+        );
+    }
+
+    /**
      * Crear una rutina en el perfil del usuario basada en una rutina recomendada
      */
     private function createRoutineFromRecommended($user, $recommendedRoutine, $testKey)
@@ -241,14 +270,11 @@ class TestController extends Controller
             ? json_decode($recommendedRoutine->products, true)
             : $recommendedRoutine->products;
 
-        // Determinar el type_id basado en el test_key
         $typeId = null;
         if ($testKey === 'piel') {
-            // Skincare = 1
-            $typeId = Type::where('name', 'Skincare')->first()?->id;
+            $typeId = Type::where('name', 'Skincare')->first()?->id ?? Type::where('name', 'Skincare')->first()?->type_id;
         } elseif ($testKey === 'cabello') {
-            // Haircare = 2
-            $typeId = Type::where('name', 'Haircare')->first()?->id;
+            $typeId = Type::where('name', 'Haircare')->first()?->id ?? Type::where('name', 'Haircare')->first()?->type_id;
         }
 
         $routine = Routine::create([
@@ -258,8 +284,7 @@ class TestController extends Controller
             'type_id' => $typeId,
         ]);
 
-        // Asociar productos a la rutina
-        if (!empty($productIds)) {
+        if (!empty($productIds) && is_array($productIds)) {
             $routine->products()->attach($productIds);
         }
 
@@ -285,7 +310,7 @@ class TestController extends Controller
             $routine->types()->attach(session('routine_type_id'));
         }
 
-        return redirect()->route('routines.edit', $routine->routine_id)
+        return redirect()->route('routines.edit', $routine->getKey())
             ->with('feedback', ['message' => 'Rutina creada. Personalízala.', 'type' => 'success']);
     }
 }

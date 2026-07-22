@@ -170,7 +170,7 @@
                                 recordatorio</label>
                             <input type="time" id="reminder_time" name="reminder_time"
                                 class="form-control @error('reminder_time') is-invalid @enderror"
-                                value="{{ old('reminder_time', $routine->reminder_time ? \Illuminate\Support\Carbon::parse($routine->routine_time ?? $routine->reminder_time)->format('H:i') : '') }}">
+                                value="{{ old('reminder_time', $routine->formatted_time) }}"
                             @error('reminder_time')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

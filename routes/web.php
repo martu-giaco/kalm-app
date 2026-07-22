@@ -43,25 +43,22 @@ use Illuminate\Http\Request;
 Route::middleware(['auth'])->group(function () {
     // Ruta para guardar o actualizar el token del dispositivo del usuario
     Route::post('/push-subscriptions', function (Request $request) {
+        $endpoint = $request->input('endpoint');
+        $key = $request->input('keys.p256dh');
+        $token = $request->input('keys.auth');
         
-        // 1. CORRECCIÓN: Usar $request->validate() en vez de $this->validate()
-        $request->validate([
-            'endpoint'    => 'required',
-            'keys.auth'   => 'required',
-            'keys.p256dh' => 'required'
-        ]);
-
+        // Validación rápida de que el navegador envió los datos correctos
+        if (!$endpoint || !$key || !$token) {
+            return response()->json(['success' => false, 'error' => 'Datos de suscripción incompletos.'], 422);
+        }
+        
         /** @var \App\Models\User $user */
         $user = Auth::user();
         
-        // 2. Guardar la suscripción en la base de datos
-        $user->updatePushSubscription(
-            $request->endpoint,
-            $request->keys['p256dh'],
-            $request->keys['auth']
-        );
-
-        return response()->json(['success' => true], 200);
+        // updatePushSubscription es un método nativo del Trait HasPushSubscriptions
+        $user->updatePushSubscription($endpoint, $key, $token);
+        
+        return response()->json(['success' => true]);
     });
 });
 

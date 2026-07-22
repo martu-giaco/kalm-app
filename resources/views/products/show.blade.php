@@ -103,7 +103,7 @@
                     {{-- Botón principal --}}
                     <div class="mt-6">
                         <label for="modal-routines" class="btn font-bold w-full bg-[#306067] text-white cursor-pointer">
-                            Agregar a rutina
+                            Agregar a Rutina
                         </label>
                     </div>
 
@@ -174,7 +174,7 @@
                             @if (!$reviews->where('user_id', auth()->id())->count())
                                 <a href="{{ route('reviews.create', $product) }}"
                                     class="inline-block bg-[#306067] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#164d4f]">
-                                    Escribir reseña
+                                    Escribir reseña de este Producto
                                 </a>
                             @else
                                 <p class="text-sm font-semibold text-green-600">

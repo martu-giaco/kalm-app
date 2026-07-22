@@ -69,10 +69,6 @@
                     Volver atrás
                 </a>
             </div>
-
-            <p class="text-[#306067] text-xs text-center my-6">
-                Transacción de prueba (Sandbox) • Podés cancelar en cualquier momento
-            </p>
         </div>
     </section>
 

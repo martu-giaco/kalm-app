@@ -198,42 +198,51 @@ class RoutineController extends Controller
     }
 
     public function update(Request $request, $routine_id)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'time_id' => 'nullable|exists:routine_times,time_id',
-            'type_id' => 'nullable|exists:types,id',
-            'need_id' => 'nullable|exists:routine_needs,need_id',
-            'products' => 'nullable|array',
-            'products.*' => 'nullable|exists:products,id',
-            'reminder_time' => 'nullable|date_format:H:i',
-            'is_reminder_enabled' => 'boolean',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'time_id' => 'nullable|exists:routine_times,time_id',
+        'type_id' => 'nullable|exists:types,id',
+        'need_id' => 'nullable|exists:routine_needs,need_id',
+        'products' => 'nullable|array',
+        'products.*' => 'nullable|exists:products,id',
+        'reminder_time' => 'nullable|date_format:H:i',
+        'is_reminder_enabled' => 'boolean',
+        // Agregar las validaciones de los nuevos campos:
+        'reminder_frequency' => 'required|string|in:none,daily,weekly,every_x_days',
+        'reminder_days' => 'nullable|array',
+        'reminder_days.*' => 'string|in:mon,tue,wed,thu,fri,sat,sun',
+        'reminder_interval' => 'nullable|integer|min:1|max:30',
+    ]);
 
-        $routine = Routine::findOrFail($routine_id);
-        $this->authorizeOwner($routine);
+    $routine = Routine::findOrFail($routine_id);
+    $this->authorizeOwner($routine);
 
-        $routine->update([
-            'name' => $validated['name'],
-            'time_id' => $validated['time_id'] ?? null,
-            'type_id' => $validated['type_id'] ?? null,
-            'need_id' => $validated['need_id'] ?? null,
-            'reminder_time' => $validated['reminder_time'] ?? null,
-            'is_reminder_enabled' => $request->has('is_reminder_enabled'),
-        ]);
+    $routine->update([
+        'name' => $validated['name'],
+        'time_id' => $validated['time_id'] ?? null,
+        'type_id' => $validated['type_id'] ?? null,
+        'need_id' => $validated['need_id'] ?? null,
+        'reminder_time' => $validated['reminder_time'] ?? null,
+        'is_reminder_enabled' => $request->has('is_reminder_enabled'),
+        // Guardar los nuevos campos validados:
+        'reminder_frequency' => $validated['reminder_frequency'],
+        'reminder_days' => $validated['reminder_days'] ?? null, // Gracias al cast de Eloquent, se guarda como JSON solo
+        'reminder_interval' => $validated['reminder_interval'] ?? null,
+    ]);
 
-        if ($request->has('products')) {
-            $productIds = $validated['products'] ?? [];
-            $productIds = array_filter($productIds, fn($id) => !empty($id));
-            $routine->products()->sync($productIds);
-        }
-
-        return redirect()->route('routines.show', $routine->routine_id)
-            ->with('feedback', [
-                'message' => 'Rutina actualizada correctamente.', 
-                'type' => 'success'
-            ]);
+    if ($request->has('products')) {
+        $productIds = $validated['products'] ?? [];
+        $productIds = array_filter($productIds, fn($id) => !empty($id));
+        $routine->products()->sync($productIds);
     }
+
+    return redirect()->route('routines.show', $routine->routine_id)
+        ->with('feedback', [
+            'message' => 'Rutina actualizada correctamente.', 
+            'type' => 'success'
+        ]);
+}
 
     public function destroy(Routine $routine)
     {

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ $title ?? 'Kälm - Skincare & Haircare' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96" />
@@ -49,7 +50,6 @@
                             timeout: 15000,
                             vibrate: [100, 100, 100],
                             onClick: function() {
-                                // Redirección directa al formulario de edición de la rutina
                                 window.location = `/routines/${routine.routine_id}/edit`;
                                 window.focus();
                                 this.close();
@@ -625,23 +625,32 @@
 
                         Notification.requestPermission().then(permission => {
                             if (permission === 'granted') {
+                                
+                                // 2. CORRECCIÓN: Obtener de forma segura el meta tag
+                                const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+                                const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : '';
+
                                 swReg.pushManager.subscribe({
                                         userVisibleOnly: true,
-                                        // Reemplaza con tu Clave Pública VAPID generada por el paquete
-                                        applicationServerKey: urlB64ToUint8Array('TU_LLAVE_VAPID_PUBLICA_AQUI')
+                                        // 3. CORRECCIÓN: Inyectar dinámicamente tu clave pública VAPID de Laravel
+                                        // Cambiá 'VAPID_PUBLIC_KEY' por la variable exacta de tu .env o config
+                                        applicationServerKey: urlB64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
                                     })
                                     .then(function(subscription) {
-                                        // Enviar la suscripción estructurada a tu nueva ruta de Laravel
+                                        // Enviar la suscripción estructurada a tu ruta de Laravel
                                         fetch('/push-subscriptions', {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': document.querySelector(
-                                                    'meta[name="csrf-token"]').getAttribute(
-                                                    'content')
+                                                'X-CSRF-TOKEN': csrfToken
                                             },
                                             body: JSON.stringify(subscription)
-                                        });
+                                        })
+                                        .then(res => console.log('Suscripción enviada al servidor backend con éxito.'))
+                                        .catch(err => console.error('Error al enviar la suscripción al servidor:', err));
+                                    })
+                                    .catch(function(err) {
+                                        console.error('Error al suscribir el usuario a Pushmanager:', err);
                                     });
                             }
                         });
@@ -649,6 +658,7 @@
             }
 
             function urlB64ToUint8Array(base64String) {
+                if (!base64String) return new Uint8Array();
                 const padding = '='.repeat((4 - base64String.length % 4) % 4);
                 const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
                 const rawData = window.atob(base64);

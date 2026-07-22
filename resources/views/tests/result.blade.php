@@ -200,7 +200,7 @@
 
         <a href="{{ $testKey ? route('tests.show', $testKey) : route('tests.index') }}"
             class="w-full text-center px-4 py-2 text-[#37A0AF] border-2 border-[#37A0AF] rounded-lg">
-            {{ $testKey ? 'Rehacer test' : 'Volver a tests' }}
+            {{ $testKey ? 'Rehacer Test' : 'Volver a tests' }}
         </a>
 
     </div>
