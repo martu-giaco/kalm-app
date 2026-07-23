@@ -146,13 +146,7 @@
                 <!-- Sección de Recordatorio Push -->
                 <div class="mb-4 border-0 shadow-sm card">
                     <div class="card-body">
-                        <h3 class="gap-2 mb-3 h5 d-flex align-items-center">
-                            🔔 Configurar Recordatorio Push
-                        </h3>
-                        <p class="text-muted small">
-                            Activá las alertas para que el navegador te notifique automáticamente cuándo realizar esta
-                            rutina.
-                        </p>
+
 
                         <!-- Switch para Activar/Desactivar el Recordatorio -->
                         <div class="mb-3 form-check form-switch">
@@ -188,32 +182,23 @@
                         💾 Guardar Recordatorio y Rutina
                     </button>
                 </div>
+            </div>
 
 
                 {{-- Productos de la rutina --}}
                 <div class="mb-6">
-                    <label class="block mb-3 text-sm font-semibold text-[#306067]">Productos en la rutina</label>
+                    <p>Productos en la rutina</p>
                     @if ($routine->assignedProducts->count() > 0)
                         <div class="mb-4 space-y-2" id="products_list">
                             @foreach ($routine->assignedProducts as $product)
-                                <div class="flex items-center justify-between p-3 bg-[#CCE2E5]/50 rounded-lg border border-[#37A0AF]"
-                                    id="product_container_{{ $product->id }}">
-                                    <span class="text-sm text-[#306067]">{{ $product->name }}</span>
-                                    <button type="button"
-                                        class="text-xs font-semibold text-red-600 hover:text-red-800"
-                                        onclick="removeProduct({{ $product->id }}); return false;">
-                                        Eliminar
-                                    </button>
-                                    <input type="hidden" name="products[]" value="{{ $product->id }}"
-                                        id="product_{{ $product->id }}">
-                                </div>
+                                <x-product-card-delete :product="$product" />
                             @endforeach
                         </div>
                     @endif
                 </div>
 
                 <button type="submit"
-                    class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
+                    class="btn w-full mb-10 px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
                     Actualizar Rutina
                 </button>
             </form>
@@ -221,17 +206,6 @@
     </section>
 
     <script>
-        // Función para eliminar productos
-        function removeProduct(productId) {
-            const container = document.getElementById('product_container_' + productId);
-            const input = document.getElementById('product_' + productId);
-
-            if (container && input) {
-                container.remove();
-                input.remove();
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             const frequencySelect = document.getElementById('reminder_frequency');
             const weeklyDiv = document.getElementById('weekly_days');

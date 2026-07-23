@@ -88,7 +88,7 @@
 
             {{-- Botón --}}
             <button type="submit"
-                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
+                class="btn w-full mb-10 px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
                 Crear Rutina
             </button>
 

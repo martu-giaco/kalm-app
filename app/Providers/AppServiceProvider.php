@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Routine;
@@ -24,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         putenv('OPENSSL_CONF=C:/laragon/bin/apache/apache-2.4.54-win64-VS16/conf/openssl.cnf');
+
+        App::setLocale(config('app.locale', 'es'));
 
         // Comparte las rutinas activas del usuario solo con la vista del layout principal
         View::composer('layouts.app', function ($view) {
