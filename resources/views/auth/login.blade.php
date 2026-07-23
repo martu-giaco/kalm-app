@@ -26,40 +26,6 @@
         <div>
             <h1 class="text-2xl font-bold text-[#2A4043]">Iniciar Sesión</h1>
 
-        {{-- BLOQUE DE FEEDBACK: muestra feedback.message, status, message y errores --}}
-        @php
-            $feedbackMessage = session('feedback.message') ?? session('status') ?? session('message') ?? null;
-            $feedbackType = session('feedback.type')
-                            ?? (session('status') ? 'success' : null)
-                            ?? session('type')
-                            ?? 'info';
-        @endphp
-
-        @if ($feedbackMessage)
-            <div class="mx-4 my-4">
-                <div class="rounded-xl p-4 shadow-lg
-                    @if($feedbackType === 'success') bg-green-50 text-green-800
-                    @elseif(in_array($feedbackType, ['error','danger'])) bg-red-50 text-red-800
-                    @elseif($feedbackType === 'warning') bg-yellow-50 text-yellow-800
-                    @else bg-blue-50 text-blue-800 @endif">
-                    {{ $feedbackMessage }}
-                </div>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="mx-4 my-4">
-                <div class="p-4 text-red-800 shadow-lg rounded-xl bg-red-50">
-                    <ul class="pl-5 list-disc">
-                        @foreach ($errors->all() as $err)
-                            <li>{{ $err }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        @endif
-        {{-- FIN BLOQUE DE FEEDBACK --}}
-
         <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-4">
             @csrf
 

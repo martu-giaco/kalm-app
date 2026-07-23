@@ -2,38 +2,6 @@
 
 <x-layout :title="'Mi perfil'">
     <section class="min-h-full pt-5 pb-20 mx-auto bg-white rounded-t-3xl">
-        {{-- Mensaje de Feedback flotante/alerta --}}
-        @if (session()->has('feedback.message'))
-            <div
-                class="mx-5 mb-5 p-4 rounded-2xl border flex items-center gap-3 transition-all duration-300 shadow-xs
-                @if (session('feedback.type') === 'success') bg-emerald-50 border-emerald-200 text-emerald-800
-                @elseif(session('feedback.type') === 'error') bg-rose-50 border-rose-200 text-rose-800
-                @else bg-blue-50 border-blue-200 text-blue-800 @endif">
-
-                {{-- Icono según el tipo de feedback --}}
-                @if (session('feedback.type') === 'success')
-                    <svg class="flex-shrink-0 w-5 h-5 text-emerald-600" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                @elseif(session('feedback.type') === 'error')
-                    <svg class="flex-shrink-0 w-5 h-5 text-rose-600" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                @else
-                    <svg class="flex-shrink-0 w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                @endif
-
-                <p class="text-sm font-semibold">{{ session('feedback.message') }}</p>
-            </div>
-        @endif
         {{-- Header: avatar + datos --}}
         <div class="flex flex-col items-center gap-3 px-5 mb-5 md:flex-row md:items-center md:gap-8">
             <div class="w-full max-w-3xl">
