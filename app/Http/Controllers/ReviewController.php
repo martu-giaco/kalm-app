@@ -63,13 +63,13 @@ class ReviewController extends Controller
     }
 
     /**
-     * Mostrar formulario de edición de reseña (opcional)
+     * Mostrar formulario de edición de reseña
      */
     public function edit(Review $review)
     {
-        $this->authorize('update', $review);
+        $this->authorizeReview($review);
 
-        return view('reviews.create', [
+        return view('reviews.edit', [
             'product' => $review->product,
             'userReview' => $review
         ]);
@@ -80,7 +80,7 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        $this->authorize('update', $review);
+        $this->authorizeReview($review);
 
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
@@ -98,11 +98,23 @@ class ReviewController extends Controller
      */
     public function destroy(Product $product, Review $review)
     {
-        $this->authorize('delete', $review);
+        $this->authorizeReview($review);
 
         $review->delete();
 
         return redirect()->route('reviews.show', $product)
             ->with('feedback', ['message' => 'Reseña eliminada correctamente.', 'type' => 'success']);
+    }
+
+    /**
+     * Autoriza solo al dueño de la reseña o a un admin.
+     */
+    private function authorizeReview(Review $review)
+    {
+        $user = auth()->user();
+
+        if (!$user || ($user->id != $review->user_id && $user->role !== 'admin')) {
+            abort(403, 'No tenés permiso para realizar esta acción.');
+        }
     }
 }

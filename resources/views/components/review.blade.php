@@ -26,7 +26,7 @@
 
         @if (auth()->check() && (auth()->id() === $review->user_id || auth()->user()->role === 'admin'))
             <div class="flex gap-2 ml-4">
-                <a href="{{ route('reviews.create', $review->product) }}"
+                <a href="{{ route('reviews.edit', $review) }}"
                     class="text-sm font-semibold text-blue-500 hover:text-blue-700">
                     Editar
                 </a>

@@ -16,14 +16,14 @@
         @if(auth()->user() && auth()->user()->isPremium())
             <form action="{{ route('reviews.update', $userReview) }}" method="POST" class="space-y-4">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
 
                 <!-- Calificación con DaisyUI Mask Star -->
                 <div>
                     <label class="block mb-2 font-semibold text-gray-700">Calificación</label>
                     <div class="flex flex-row-reverse justify-center gap-2 mt-2 rating">
                         @for($i = 5; $i >= 1; $i--)
-                            <input type="radio" name="rating" value="{{ $i }}" 
+                            <input type="radio" name="rating" value="{{ $i }}"
                                    class="w-12 h-12 bg-gray-300 mask mask-custom-star checked:bg-yellow-400"
                                    {{ ($userReview->rating == $i || old('rating') == $i) ? 'checked' : '' }} />
                         @endfor

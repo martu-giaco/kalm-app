@@ -8,7 +8,7 @@
             <div class="flex-1">
                 <h1 class="text-3xl font-bold text-[#164d4f] mb-2">{{ $product->name }}</h1>
                 <p class="mb-3 text-gray-600">{{ $product->description }}</p>
-                
+
                 <div class="flex items-center gap-3">
                     <div class="flex items-center gap-1">
                         @php
@@ -35,7 +35,7 @@
                 <h2 class="text-xl font-bold text-[#164d4f] mb-4">Reseñas de usuarios</h2>
                 <div class="space-y-4">
                     @foreach($reviews as $review)
-                        @include('reviews.review', ['review' => $review])
+                        @include('components.review', ['review' => $review])
                     @endforeach
                 </div>
             @else

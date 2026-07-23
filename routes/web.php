@@ -46,18 +46,18 @@ Route::middleware(['auth'])->group(function () {
         $endpoint = $request->input('endpoint');
         $key = $request->input('keys.p256dh');
         $token = $request->input('keys.auth');
-        
+
         // Validación rápida de que el navegador envió los datos correctos
         if (!$endpoint || !$key || !$token) {
             return response()->json(['success' => false, 'error' => 'Datos de suscripción incompletos.'], 422);
         }
-        
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        
+
         // updatePushSubscription es un método nativo del Trait HasPushSubscriptions
         $user->updatePushSubscription($endpoint, $key, $token);
-        
+
         return response()->json(['success' => true]);
     });
 });
@@ -103,13 +103,17 @@ Route::prefix('tests')->name('tests.')->group(function () {
 Route::middleware('auth')->group(function () {
 
 
-
-
-    // Mostrar formulario para crear o editar review
+    // Mostrar formulario para crear review
     Route::get('/reviews/create/{product}', [ReviewController::class, 'create'])->name('reviews.create');
 
-    // Guardar o actualizar review
+    // Mostrar formulario para editar review
+    Route::get('/reviews/edit/{review}', [ReviewController::class, 'edit'])->name('reviews.edit');
+
+    // Guardar nueva review
     Route::post('/reviews/store/{product}', [ReviewController::class, 'store'])->name('reviews.store');
+
+    // Actualizar review existente
+    Route::patch('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
 
     // Mostrar review individual de un producto
     Route::get('/reviews/show/{product}', [ReviewController::class, 'show'])->name('reviews.show');
@@ -251,23 +255,6 @@ Route::middleware('auth')->group(function () {
     // Rutas para los retornos de Mercado Pago
 Route::get('/premium/success', [SubscriptionController::class, 'success'])->name('subscription.success');
 Route::get('/premium/error', [SubscriptionController::class, 'failure'])->name('subscription.failure');
-
-    /*
-    |--------------------------------------------------------------------------
-    | POSTS
-    |--------------------------------------------------------------------------
-    */
-    Route::prefix('posts')->name('posts.')->group(function () {
-        Route::get('/create', [PostController::class, 'create'])->name('create');
-        Route::get('/{post}', [PostController::class, 'show'])->name('show');
-        Route::post('/', [PostController::class, 'store'])->name('store');
-        Route::post('/{post}/report', [PostController::class, 'report'])->whereNumber('post')->name('report');
-        Route::delete('/{post}', [PostController::class, 'destroy'])->name('destroy');
-
-        // Likes y guardados
-        Route::post('/{post}/like', [PostController::class, 'like'])->name('like');
-        Route::post('/{post}/save', [PostController::class, 'save'])->name('save');
-    });
 
     /*
     |--------------------------------------------------------------------------

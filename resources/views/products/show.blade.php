@@ -155,7 +155,7 @@
                 @if ($reviewCount > 0)
                     <div class="space-y-4">
                         @foreach ($reviews->take(3) as $review)
-                            @include('reviews.review', ['review' => $review])
+                            @include('components.review', ['review' => $review])
                         @endforeach
                     </div>
                 @else
