@@ -19,15 +19,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <!-- Librería Push.js -->
-    <script src="{{ asset('js/push.min.js') }}"></script>
 
     @auth
         <script>
             const userReminders = @json($userReminders ?? []);
             const sentNotifications = new Set();
 
-            if (userReminders.length > 0) {
+            if (userReminders.length > 0 && window.Push) {
                 Push.Permission.request();
             }
 
@@ -67,6 +65,55 @@
             setInterval(checkRoutineReminders, 30000);
         </script>
     @endauth
+
+    <script>
+        window.kalmFavoriteState = window.kalmFavoriteState || { isProcessing: false };
+
+        window.toggleFavorito = function (productId, btn) {
+            if (window.kalmFavoriteState.isProcessing) {
+                return;
+            }
+
+            window.kalmFavoriteState.isProcessing = true;
+
+            const checkbox = btn.querySelector('input[type="checkbox"]');
+            const initialState = checkbox.checked;
+            checkbox.checked = !initialState;
+
+            fetch(`/productos/${productId}/favorito`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Error del servidor');
+                return res.json();
+            })
+            .then(data => {
+                checkbox.checked = data.favorito;
+
+                if (!data.favorito && window.location.pathname.includes('favoritos')) {
+                    const card = btn.closest('a');
+                    if (card) {
+                        card.style.transition = 'all 0.3s ease';
+                        card.style.opacity = '0';
+                        card.style.transform = 'scale(0.95)';
+
+                        setTimeout(() => card.remove(), 300);
+                    }
+                }
+            })
+            .catch(() => {
+                checkbox.checked = initialState;
+                alert('Error al actualizar favorito');
+            })
+            .finally(() => {
+                window.kalmFavoriteState.isProcessing = false;
+            });
+        };
+    </script>
 
 </head>
 
@@ -614,7 +661,7 @@
 
                         Notification.requestPermission().then(permission => {
                             if (permission === 'granted') {
-                                
+
                                 // 2. CORRECCIÓN: Obtener de forma segura el meta tag
                                 const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
                                 const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : '';

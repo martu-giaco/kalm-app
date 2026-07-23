@@ -248,49 +248,5 @@
         </div>
     </section>
 
-     <script>
-        // Función para togglear favoritos
-        let isProcessing = false;
 
-        function toggleFavorito(productId, btn) {
-            if (isProcessing) {
-                console.log('Solicitud en progreso, esperando respuesta...');
-                return false;
-            }
-
-            isProcessing = true;
-            const checkbox = btn.querySelector('input[type="checkbox"]');
-            const initialState = checkbox.checked;
-
-            checkbox.checked = !checkbox.checked;
-
-            fetch(`/productos/${productId}/favorito`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(res => {
-                    if (!res.ok) {
-                        throw new Error(`Error del servidor: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    checkbox.checked = data.favorito;
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    checkbox.checked = initialState;
-                    alert('Error al actualizar favoritos: ' + err.message);
-                })
-                .finally(() => {
-                    isProcessing = false;
-                });
-        }
-    </script>
 </x-layout>

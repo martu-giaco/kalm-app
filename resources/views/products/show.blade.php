@@ -362,56 +362,5 @@
         </div>
     </div>
 
-    <script>
-        let isProcessing = false; // Prevenir múltiples requests simultáneos
 
-        function toggleFavorito(productId, btn) {
-            // Prevenir múltiples clicks mientras se procesa
-            if (isProcessing) {
-                console.log('Solicitud en progreso, esperando respuesta...');
-                return false;
-            }
-
-            isProcessing = true;
-            const checkbox = btn.querySelector('input[type="checkbox"]');
-            const initialState = checkbox.checked;
-
-            // Cambiar visualmente de inmediato (optimistic update)
-            checkbox.checked = !checkbox.checked;
-            console.log('Checkbox toggled to:', checkbox.checked);
-
-            fetch(`/productos/${productId}/favorito`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(res => {
-                    console.log('Status:', res.status);
-                    if (!res.ok) {
-                        throw new Error(`Error del servidor: ${res.status}`);
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    console.log('Respuesta servidor:', data);
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    // Confirmar el estado con la respuesta del servidor
-                    checkbox.checked = data.favorito;
-                    console.log('Estado confirmado:', data.favorito);
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    checkbox.checked = initialState;
-                    alert('Error al actualizar favoritos: ' + err.message);
-                })
-                .finally(() => {
-                    isProcessing = false;
-                    console.log('Solicitud completada, se pueden hacer nuevos clicks');
-                });
-        }
-    </script>
 </x-layout>
