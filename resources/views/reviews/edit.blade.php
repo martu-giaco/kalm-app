@@ -1,17 +1,10 @@
 <x-layout :title="'Editar reseña de ' . $product->name">
     <div class="max-w-3xl p-6 mx-auto mt-6 bg-white shadow-md rounded-3xl">
 
-        <h1 class="text-2xl font-bold text-[#164d4f] mb-4">Editar reseña de {{ $product->name }}</h1>
+        <h1 class="text-2xl font-bold text-[#164d4f] mb-4">Editar reseña</h1>
 
         <!-- Información del producto -->
-        <div class="flex gap-4 p-4 mb-6 border border-gray-200 rounded-lg bg-gray-50">
-            <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="object-cover w-20 h-20 rounded-lg">
-            <div>
-                <p class="text-lg font-semibold text-gray-800">{{ $product->name }}</p>
-                <p class="text-sm text-gray-600">{{ $product->brand->name ?? 'Sin marca' }}</p>
-                <p class="mt-1 text-xs text-gray-500">{{ Str::limit($product->description, 100) }}</p>
-            </div>
-        </div>
+        <x-product-card-hor :product="$product"/>
 
         @if(auth()->user() && auth()->user()->isPremium())
             <form action="{{ route('reviews.update', $userReview) }}" method="POST" class="space-y-4">
@@ -20,11 +13,11 @@
 
                 <!-- Calificación con DaisyUI Mask Star -->
                 <div>
-                    <label class="block mb-2 font-semibold text-gray-700">Calificación</label>
-                    <div class="flex flex-row-reverse justify-center gap-2 mt-2 rating">
-                        @for($i = 5; $i >= 1; $i--)
+                    <p>Calificación</p>
+                    <div class="flex flex-row justify-center gap-2 mt-2 rating">
+                        @for($i = 1; $i <= 5; $i++)
                             <input type="radio" name="rating" value="{{ $i }}"
-                                   class="w-12 h-12 bg-gray-300 mask mask-custom-star checked:bg-yellow-400"
+                                   class="w-12 h-12 bg-yellow-400 mask mask-star"
                                    {{ ($userReview->rating == $i || old('rating') == $i) ? 'checked' : '' }} />
                         @endfor
                     </div>
@@ -33,20 +26,18 @@
 
                 <!-- Comentario -->
                 <div>
-                    <label for="comment" class="block mb-2 font-semibold text-gray-700">Tu reseña</label>
+                    <p class="mb-2">Reseña</p>
                     <textarea name="comment" id="comment" rows="5"
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#37A0AF] resize-none">{{ old('comment', $userReview->comment) }}</textarea>
                     @error('comment') <span class="text-sm text-red-500">{{ $message }}</span> @enderror
                 </div>
 
-                <div class="flex gap-3 pt-4">
-                    <button type="submit" class="bg-[#306067] hover:bg-[#164d4f] text-white px-6 py-2 rounded-lg font-bold transition">
+                    <button type="submit" class="mt-1 btn w-full inline-flex border-2 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">
                         Actualizar reseña
                     </button>
-                    <a href="{{ route('reviews.show', $product) }}" class="px-6 py-2 font-bold text-gray-800 transition bg-gray-300 rounded-lg hover:bg-gray-400">
+                    <a href="{{ route('reviews.show', $product) }}" class=" btn w-full inline-flex border-2 border-[#306067] text-[#306067] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">
                         Cancelar
                     </a>
-                </div>
             </form>
         @else
             <div class="p-6 border border-yellow-200 rounded-lg bg-yellow-50">

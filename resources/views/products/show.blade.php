@@ -107,6 +107,15 @@
                         </label>
                     </div>
 
+                    <!-- Calificación con DaisyUI Mask Star -->
+                    <div>
+                        <a href="{{ route('reviews.create', $product) }}" class="flex flex-row justify-center gap-2 mt-5 rating">
+                            @for ($i = 5; $i >= 1; $i--)
+                                <span class="w-7 h-7 bg-[#a8c2c6] mask mask-star cursor-pointer"></span>
+                            @endfor
+                        </a>
+                        <p class="text-sm text-center mt-2">Dejar una reseña</p>
+                    </div>
                 </div>
             </div>
 
@@ -159,7 +168,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-sm text-gray-500">
+                    <p class="text-sm text-center text-gray-500">
                         Este producto aún no tiene reseñas.
                     </p>
                 @endif
@@ -173,13 +182,10 @@
                         @if (auth()->user()->isPremium())
                             @if (!$reviews->where('user_id', auth()->id())->count())
                                 <a href="{{ route('reviews.create', $product) }}"
-                                    class="inline-block bg-[#306067] text-white px-5 py-2 rounded-lg font-bold hover:bg-[#164d4f]">
+                                    class="inline-block bg-[#306067] text-white w-full text-center px-5 py-2 rounded-lg font-bold hover:bg-[#164d4f]">
                                     Escribir reseña de este Producto
                                 </a>
                             @else
-                                <p class="text-sm font-semibold text-green-600">
-                                    Ya hizo una reseña para este producto. ¡Gracias por compartir tu opinión!
-                                </p>
                             @endif
 
                             {{-- NO PREMIUM --}}

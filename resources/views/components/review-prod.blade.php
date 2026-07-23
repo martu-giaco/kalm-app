@@ -1,5 +1,6 @@
 <div class="p-4 mb-4 bg-white rounded-lg shadow-md border-l-4 border-[#37A0AF]">
-    <div>
+    <x-product-card-hor :product="$product"/>
+    <div class="mt-4">
             <div class="flex justify-between items-center gap-2 mb-2">
                 <div class="flex items-center gap-2 mb-2">
                     <img src="{{ $review->user->avatar ? asset('storage/' . $review->user->avatar) : asset('images/pfp.svg') }}"
