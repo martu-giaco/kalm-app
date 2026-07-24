@@ -19,6 +19,52 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.2/dist/full.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <style>
+        @media (prefers-color-scheme: dark) {
+            .header-bg {
+                background-image: url('{{ asset('images/bg-desktop-dark.png') }}') !important;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) and (max-width: 1024px) {
+            .header-bg {
+                background-image: url('{{ asset('images/fondo-dark.png') }}') !important;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) and (max-width: 640px) {
+            .header-bg {
+                background-image: url('{{ asset('images/bg-desktop-dark.png') }}') !important;
+            }
+        }
+
+        html[data-kalm-color-scheme='dark'] .header-bg {
+            background-image: url('{{ asset('images/bg-desktop-dark.png') }}') !important;
+        }
+
+        @media (max-width: 1024px) {
+            html[data-kalm-color-scheme='dark'] .header-bg {
+                background-image: url('{{ asset('images/fondo-dark.png') }}') !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            html[data-kalm-color-scheme='dark'] .header-bg {
+                background-image: url('{{ asset('images/bg-desktop-dark.png') }}') !important;
+            }
+        }
+    </style>
+    <script>
+        (function () {
+            const updateScheme = () => {
+                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-kalm-color-scheme', isDark ? 'dark' : 'light');
+            };
+
+            updateScheme();
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateScheme);
+        })();
+    </script>
 
     @auth
         <script>

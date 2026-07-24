@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="flex items-end bg-center bg-cover min-h-screen" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<body class="flex items-end bg-center bg-cover min-h-screen header-bg">
     <div class="p-6 mx-auto mt-20 bg-white shadow pt-9 rounded-t-3xl">
             <h1 class="text-[#306067] text-2xl font-semibold mb-4">Términos y Condiciones</h1>
             {{-- CONTENIDO DE TÉRMINOS: solo este bloque es scrollable --}}

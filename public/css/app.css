@@ -120,8 +120,35 @@
     }
 }
 
+@media (prefers-color-scheme: dark) {
+    .header-bg {
+        background-image: url('/images/bg-desktop-dark.png');
+    }
+}
 
+@media (max-width:1024px) {
+    .header-bg {
+        background-image: url('/images/fondo.jpg');
+    }
+}
 
+@media (prefers-color-scheme: dark) and (max-width: 1024px) {
+    .header-bg {
+        background-image: url('/images/fondo-dark.png');
+    }
+}
+
+@media (max-width:640px) {
+    .header-bg {
+        background-image: url('/images/fondo.png');
+    }
+}
+
+@media (prefers-color-scheme: dark) and (max-width: 640px) {
+    .header-bg {
+        background-image: url('/images/bg-desktop-dark.png');
+    }
+}
 
 h1 {
     font-family: 'Tropiline Bold';
@@ -241,17 +268,6 @@ body {
             transparent);
     transition: background-color 400ms cubic-bezier(1, 0, 0.4, 1),
         box-shadow 400ms cubic-bezier(1, 0, 0.4, 1);
-}
-
-.header-bg {
-    background-image: url('/images/fondo.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
 }
 
 h1 {

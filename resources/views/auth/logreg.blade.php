@@ -19,22 +19,22 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
-
-    <!-- Overlay suave para legibilidad -->
-    <div class="absolute inset-0 bg-white/40 backdrop-blur-sm"></div>
+<body class="min-h-screen bg-center bg-cover header-bg">
 
     <div class="relative flex flex-col justify-between max-w-2xl min-h-screen p-6 mx-auto">
 
         <!-- LOGO -->
         <div class="mt-16 text-center">
-            <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-6">
+            <picture class="h-24 mx-auto mb-6">
+                <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)" type="image/svg+xml" />
+                <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-6" />
+            </picture>
 
-            <h1 class="text-3xl font-extrabold text-[#2A4043] tracking-tight mb-2">
+            <h1 class="text-3xl font-extrabold text-[#2A4043] tracking-tight mb-2 dark:text-[#CCE2E5]">
                 Tu momento de calma
             </h1>
 
-            <p class="text-[#306067] text-base max-w-sm mx-auto">
+            <p class="text-[#306067] text-base max-w-sm mx-auto dark:text-[#E9E5E3]">
                 Recordatorios inteligentes para tus rutinas de skincare y haircare.
             </p>
         </div>
@@ -78,12 +78,12 @@
         <!-- BOTONES (SIN CAMBIOS FUNCIONALES) -->
         <div class="mb-10">
             <a href="{{ route('auth.login') }}"
-                class="btn w-full px-5 mb-4 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067]">
+                class="btn w-full px-5 mb-4 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] disabled:opacity-80 disabled:cursor-not-allowed bg-[#306067] dark:bg-[#E9E5E3] dark:hover:bg-[#E9E5E3] dark:text-[#306067] border-none">
                 Iniciar Sesión
             </a>
 
             <a href="{{ route('auth.register') }}"
-                class="w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                class="btn w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 dark:border-[#E9E5E3] dark:text-[#E9E5E3]">
                 Crear Cuenta
             </a>
         </div>

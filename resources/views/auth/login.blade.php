@@ -19,43 +19,46 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<body class="min-h-screen bg-center bg-cover header-bg">
 
-    <div class="flex flex-col justify-between max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto">
-        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-5">
+    <div class="flex flex-col justify-between max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto w-full">
+        <picture class="h-24 mx-auto mb-6">
+                <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)" type="image/svg+xml" />
+                <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-6" />
+            </picture>
         <div>
-            <h1 class="text-2xl font-bold text-[#2A4043]">Iniciar Sesión</h1>
+            <h1 class="text-2xl font-bold text-[#2A4043] dark:text-[#CCE2E5]">Iniciar Sesión</h1>
 
         <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-4">
             @csrf
 
             <div>
-                <label for="email" class="block mb-1 text-sm">Email</label>
+                <label for="email" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Email</label>
                 <input id="email" name="email" aria-label="Email" type="email" placeholder="Email"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
+                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
                     required>
             </div>
 
             <div>
-                <label for="password" class="block mb-1 text-sm">Contraseña</label>
+                <label for="password" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Contraseña</label>
                 <input id="password" name="password" aria-label="Contraseña" type="password" placeholder="Contraseña"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]"
+                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
                     required>
             </div>
 
             <input type="submit" value="Ingresar"
-                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
+                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067] dark:bg-[#E9E5E3] dark:hover:bg-[#E9E5E3] dark:text-[#306067] border-none">
 
-            <a class="block text-center font-bold text-sm text-[#2A4043] mt-2" href="#">Olvidé la
+            <a class="block text-center font-bold text-sm text-[#2A4043] mt-2 dark:text-[#E9E5E3]" href="#">Olvidé la
                 contraseña</a>
         </form>
         </div>
 
         <div>
-            <p class="decorated text-[#2A4043] text-sm mt-6 mb-3">No tengo cuenta</p>
+            <p class="decorated text-[#2A4043] text-sm mt-6 mb-3 dark:text-[#E9E5E3]">No tengo cuenta</p>
 
             <a href="{{ route('auth.register') }}"
-                class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 dark:border-[#E9E5E3] dark:hover:border-[#E9E5E3] dark:text-[#E9E5E3]">
                 Crear Cuenta
             </a>
         </div>
