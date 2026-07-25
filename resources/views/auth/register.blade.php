@@ -18,22 +18,24 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-center bg-cover" style="background-image: url('{{ asset('images/fondo.png') }}');">
+<body class="min-h-screen bg-center bg-cover header-bg">
 
-    <div class="flex flex-col justify-between max-w-2xl min-h-screen p-6 mx-auto">
+    <div class="flex flex-col justify-between max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto w-full">
 
-        <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-20 mx-auto mt-5">
-
+        <picture class="h-24 mx-auto mb-6">
+                <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)" type="image/svg+xml" />
+                <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-6" />
+            </picture>
         <div>
-                    <h1 class="text-2xl font-bold text-[#2A4043]">Crear Cuenta</h1>
+                    <h1 class="text-2xl font-bold text-[#2A4043] dark:text-[#CCE2E5]">Crear Cuenta</h1>
 
         <form action="{{ route('auth.register.store') }}" method="POST" class="space-y-4" novalidate>
             @csrf
 
             <div>
-                <label for="name" class="block mb-1 text-sm">Nombre</label>
+                <label for="name" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Nombre</label>
                 <input id="name" placeholder="Nombre" name="name" aria-label="Nombre" value="{{ old('name') }}" type="text"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
                         required>
 
                 @error('name')
@@ -44,9 +46,9 @@
 
 
             <div>
-                <label for="email" class="block mb-1 text-sm">Email</label>
+                <label for="email" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Email</label>
                 <input id="email" placeholder="Email" aria-label="email" name="email" value="{{ old('email') }}" type="email"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
                         required>
 
                 @error('email')
@@ -55,9 +57,9 @@
             </div>
 
             <div>
-                <label for="password" class="block mb-1 text-sm">Contraseña</label>
+                <label for="password" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Contraseña</label>
                 <input id="password" placeholder="Contraseña" aria-label="Contraseña" name="password" type="password"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
                         required>
 
                 @error('password')
@@ -66,21 +68,21 @@
             </div>
 
             <div>
-                <label for="password_confirmation" class="block mb-1 text-sm">Repetir contraseña</label>
+                <label for="password_confirmation" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Repetir contraseña</label>
                 <input id="password_confirmation" placeholder="Repetir contraseña" name="password_confirmation" type="password"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]""
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
                         required>
             </div>
 
-            <input type="submit" value="Registrarme" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] bg-[#306067]">
+            <input type="submit" value="Registrarme" class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] bg-[#306067] border-none dark:bg-[#E9E5E3] dark:text-[#306067]">
         </form>
         </div>
 
         <div>
-            <p class="decorated text-[#2A4043] text-sm mt-6 mb-3">¿Ya tenés una cuenta?</p>
+            <p class="decorated text-[#2A4043] text-sm mt-6 mb-3 dark:text-[#E9E5E3]">¿Ya tenés una cuenta?</p>
 
             <a href="{{ route('auth.login') }}"
-                class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2">
+                class="btn hover:bg-transparent hover:border-[#306067] hover:text-[#2A4043] w-full inline-flex border-2 border-[#306067] text-[#2A4043] bg-transparent px-6 py-3 rounded-xl font-bold transition-all duration-300 items-center justify-center gap-2 dark:text-[#E9E5E3] dark:border-[#E9E5E3]">
                 Iniciar Sesión
             </a>
         </div>
