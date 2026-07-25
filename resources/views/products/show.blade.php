@@ -1,7 +1,7 @@
 <x-layout :title="$product->name ?? 'Producto'">
     <div class="max-w-3xl mx-auto">
 
-        <article class="px-5 pb-20 bg-white pt-7 rounded-t-3xl">
+        <article class="px-5 pb-20 bg-white dark:bg-[#2A4043] pt-7 rounded-t-3xl">
             <div class="flex flex-col gap-6 md:flex-row">
 
                 {{-- Imagen principal --}}
@@ -52,19 +52,19 @@
                 {{-- Información lateral --}}
                 <div class="flex flex-col justify-between md:w-1/2">
                     <div>
-                        <h1 class="text-2xl md:text-2xl font-semibold text-[#164d4f] leading-tight">
+                        <h1 class="text-2xl md:text-2xl font-semibold text-[#164d4f] dark:text-[#CCE2E5] leading-tight">
                             {{ $product->name ?? 'Producto sin nombre' }}
                         </h1>
 
                         <div class="flex items-center justify-between">
                             @if (!empty($product->brand) && !empty($product->brand->name))
-                                <h2 class="mt-1 text-lg text-[#37A0AF] truncate">{{ $product->brand->name }}</h2>
+                                <h2 class="mt-1 text-lg text-[#37A0AF] dark:text-[#E9E5E3] truncate">{{ $product->brand->name }}</h2>
                             @endif
 
                             {{-- Rating --}}
                             @if (isset($product->rating))
                                 <div class="flex items-center gap-2 mt-3">
-                                    <div class="text-md text-[#CCE2E5]">{{ number_format($product->rating, 1) }}</div>
+                                    <div class="text-md text-[#CCE2E5] dark:text-[#E9E5E3]">{{ number_format($product->rating, 1) }}</div>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                         width="24px" fill="#facc15">
                                         <path
@@ -79,20 +79,20 @@
                             <div class="flex flex-wrap gap-2 mt-4">
                                 @foreach ($product->tags as $tag)
                                     <a
-                                        class="text-white text-sm truncate bg-[#37A0AF] px-2 py-1 rounded-xl">{{ $tag->name }}</a>
+                                        class="text-white text-sm truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">{{ $tag->name }}</a>
                                 @endforeach
                             </div>
                         @elseif(!empty($product->category->name))
                             <div class="flex flex-wrap gap-2 my-3">
                                 @if($product->type)
                                     <a href="{{ route('products.search', ['q' => '', 'type_id' => $product->type->id]) }}"
-                                        class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                        class="text-sm inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-3 py-1 rounded-2xl">
                                         ✨{{ $product->type->name ?? '-' }}
                                     </a>
                                 @endif
                                 @if($product->category)
                                     <a href="{{ route('products.byCategory', ['category' => $product->category->slug]) }}"
-                                        class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                                        class="text-sm inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-3 py-1 rounded-2xl">
                                         {{ $product->category->name ?? '-' }}
                                     </a>
                                 @endif
@@ -102,7 +102,7 @@
 
                     {{-- Botón principal --}}
                     <div class="mt-6">
-                        <label for="modal-routines" class="btn font-bold w-full bg-[#306067] text-white cursor-pointer">
+                        <label for="modal-routines" class="btn font-bold w-full bg-[#306067] border-none text-[#CCE2E5] dark:bg-[#CCE2E5] dark:text-[#306067] cursor-pointer">
                             Agregar a Rutina
                         </label>
                     </div>
@@ -111,7 +111,7 @@
                     <div>
                         <a href="{{ route('reviews.create', $product) }}" class="flex flex-row justify-center gap-2 mt-5 rating">
                             @for ($i = 5; $i >= 1; $i--)
-                                <span class="w-7 h-7 bg-[#a8c2c6] mask mask-star cursor-pointer"></span>
+                                <span class="w-7 h-7 bg-[#c7d9db] mask mask-star cursor-pointer"></span>
                             @endfor
                         </a>
                         <p class="text-sm text-center mt-2">Dejar una reseña</p>
@@ -121,18 +121,18 @@
 
             {{-- Descripción --}}
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Descripción</h2>
-                <p class="leading-relaxed text-gray-700">
+                <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Descripción</h2>
+                <p class="leading-relaxed text-gray-700 dark:text-[#E9E5E3]">
                     {{ $product->description ?? 'No hay descripción disponible.' }}
                 </p>
             </div>
 
             {{-- Concerns --}}
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Preocupaciones</h2>
+                <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Preocupaciones</h2>
                 @foreach ($product->concerns as $concern)
                     <span
-                        class="inline-block px-3 py-1 mb-2 text-sm text-white bg-[#37A0AF] rounded-full">{{ $concern->name }}</span>
+                        class="inline-block px-3 py-1 mb-2 text-sm text-white bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] rounded-full">{{ $concern->name }}</span>
                 @endforeach
             </div>
 
@@ -140,14 +140,14 @@
             <div class="pt-6 mt-6 border-t">
 
                 <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-lg font-semibold text-[#164d4f]">
+                    <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5]">
                         Reseñas de usuarios
                     </h2>
 
                     {{-- Ver todas --}}
                     @if ($product->reviews->count())
                         <a href="{{ route('reviews.show', $product) }}"
-                            class="text-sm text-[#37A0AF] font-semibold hover:underline">
+                            class="text-sm text-[#37A0AF] dark:text-[#CCE2E5] font-semibold hover:underline">
                             Ver todas →
                         </a>
                     @endif
@@ -168,7 +168,7 @@
                         @endforeach
                     </div>
                 @else
-                    <p class="text-sm text-center text-gray-500">
+                    <p class="text-sm text-center text-gray-500 dark:text-[#CCE2E5]">
                         Este producto aún no tiene reseñas.
                     </p>
                 @endif

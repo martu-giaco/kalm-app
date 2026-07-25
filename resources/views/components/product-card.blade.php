@@ -1,5 +1,5 @@
 <a href="{{ route('products.show', $product->id) }}" class="flex-shrink-0 w-40 md:w-44 group">
-                            <div class="relative overflow-hidden transition duration-300 bg-white shadow-md rounded-xl hover:shadow-lg">
+                            <div class="relative overflow-hidden transition duration-300 bg-white dark:bg-[#306067] shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
                                 <div class="w-full h-40 overflow-hidden">
@@ -30,16 +30,16 @@
 
                                 {{-- Info simplificada --}}
                                 <div class="flex flex-col p-3">
-                                    <h3 class="text-sm font-semibold text-[#2A4043] truncate">
+                                    <h3 class="text-sm font-semibold text-[#2A4043] dark:text-[#CCE2E5] truncate">
                                         {{ $product->name }}
                                     </h3>
 
                                     @if (!empty($product->brand?->name))
-                                        <h3 class="text-[13px] text-[#37A0AF] truncate">
+                                        <h3 class="text-[13px] text-[#37A0AF] dark:text-[#E9E5E3] truncate">
                                             {{ $product->brand->name }}</h3>
                                     @endif
                                     @if (!empty($product->type?->name))
-                                        <button class="text-[10px] mt-2 w-20 text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                        <button class="text-[10px] mt-2 w-20 text-center inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">
                                             ✨{{ $product->type->name }}
                                         </button>
                                     @endif
