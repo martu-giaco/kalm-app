@@ -1,8 +1,8 @@
 <x-layout :title="$blog->title . ' - Blog'">
-    <div class="container my-5 pb-10 px-5 bg-white rounded-t-3xl min-h-full pt-5">
+    <div class="container my-5 pb-10 px-5 bg-white dark:bg-[#2A4043] rounded-t-3xl min-h-full pt-5">
         <div class="flex gap-2 flex-wrap justify-between items-center mb-4">
             <a href="{{ route('blog.index') }}" class="bg-transparent border-transparent shadow-none">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m142-480 294 294q15 15 14.5 35T435-116q-15 15-35 15t-35-15L57-423q-12-12-18-27t-6-30q0-15 6-30t18-27l308-308q15-15 35.5-14.5T436-844q15 15 15 35t-15 35L142-480Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-[#306067] dark:fill-[#CCE2E5]"><path d="m142-480 294 294q15 15 14.5 35T435-116q-15 15-35 15t-35-15L57-423q-12-12-18-27t-6-30q0-15 6-30t18-27l308-308q15-15 35.5-14.5T436-844q15 15 15 35t-15 35L142-480Z"/></svg>
             </a>
 
             <div class="flex gap-3">
@@ -25,11 +25,11 @@
             </div>
         </div>
 
-        <h1 class="text-3xl font-bold text-[#306067]">{{ $blog->title }}</h1>
-        <p class="mb-4 flex justify-between items-center text-[#306067bf]">
+        <h1 class="text-3xl font-bold text-[#306067] dark:text-[#CCE2E5]">{{ $blog->title }}</h1>
+        <p class="mb-4 flex justify-between items-center text-[#306067bf] dark:text-[#E9E5E3]">
             {{ $blog->author ?? 'Anónimo' }}
             @if($blog->created_at)
-                <small class="text-[#37A0AF]">{{ $blog->created_at->format('d/m/Y') }}</small>
+                <small class="text-[#37A0AF] dark:text-[#CCE2E5]">{{ $blog->created_at->format('d/m/Y') }}</small>
             @endif
         </p>
 
@@ -64,7 +64,7 @@
         </div>
 
         @if(!empty($blog->type))
-            <a href="{{ route('blog.byType', ['slug' => $blog->type->slug]) }}" class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+            <a href="{{ route('blog.byType', ['slug' => $blog->type->slug]) }}" class="text-sm inline-block text-[#CCE2E5]  truncate bg-[#37A0AF] dark:text-[#37A0AF] dark:bg-[#CCE2E5] px-3 py-1 rounded-2xl">
                 ✨{{ $blog->type->name }}
             </a>
         @endif
@@ -72,15 +72,15 @@
         @if(!empty($blog->tags))
             @foreach($blog->tags as $tag)
                 <a href="{{ route('blog.byTag', ['slug' => $tag->slug]) }}"
-                    class="text-sm inline-block text-white truncate bg-[#37A0AF] px-3 py-1 rounded-2xl">
+                    class="text-sm inline-block text-[#CCE2E5]  truncate bg-[#37A0AF] dark:text-[#37A0AF] dark:bg-[#CCE2E5] px-3 py-1 rounded-2xl">
                     {{ $tag->name }}
                 </a>
             @endforeach
         @endif
 
-        <p class="font-bold mb-10">{{ $blog->description }}</p>
+        <p class="font-bold mb-10 dark:text-[#E9E5E3] ">{{ $blog->description }}</p>
 
-        <div class="mb-2 gap-4 flex flex-col">
+        <div class="mb-2 gap-4 flex flex-col dark:text-[#E9E5E3]">
             <style>
                 h2 {
                     font-size: 1.5rem;

@@ -8,7 +8,7 @@
     @else
         href="{{ route('blog.show', $blog->id) }}"
     @endif
-                    class="relative flex-shrink-0 overflow-hidden transition-transform transform bg-white shadow-lg w-60 min-h-96 rounded-2xl hover:shadow-2xl">
+                    class="relative flex-shrink-0 overflow-hidden transition-transform transform bg-white dark:bg-[#306067] shadow-lg w-60 min-h-96 rounded-2xl hover:shadow-2xl">
                     {{-- icono de bookmark --}}
                     <div class="flex justify-end mt-2 absolute top-2 right-2 z-10">
                             <label class="cursor-pointer swap" onclick="event.stopPropagation()">
@@ -42,17 +42,17 @@
                     @endif
                     {{-- Info --}}
                     <div class="flex flex-col p-4">
-                        <h3 class="text-xl text-[#306067] mb-1">
+                        <h3 class="text-xl text-[#306067] dark:text-[#CCE2E5] mb-1">
                             {{ $blog->title }}
                         </h3>
 
                         @if(!empty($blog->type))
-                            <p class="text-[10px] mt-1 text-center w-20 truncate inline-block text-white bg-[#37A0AF] px-2 py-1 rounded-xl">
+                            <p class="text-[10px] mt-1 text-center w-20 truncate inline-block text-white bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">
                                 ✨{{ $blog->type->name }}
                             </p>
                         @endif
 
-                        <p class="mt-2 text-sm text-gray-700 line-clamp-3 {{ ($blog->canView ?? true) ? '' : 'blur-sm' }}">
+                        <p class="mt-2 text-sm text-[#306067] dark:text-[#E9E5E3]  line-clamp-3 {{ ($blog->canView ?? true) ? '' : 'blur-sm' }}">
                             {{ $blog->description }}
                         </p>
 

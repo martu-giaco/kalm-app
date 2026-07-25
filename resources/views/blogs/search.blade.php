@@ -14,7 +14,7 @@
                 <input id="search-input" type="text" name="q"
                     placeholder="Buscar productos, marcas o categorías" value="{{ request('q') }}"
                     class="w-full pl-10 p-3 rounded-xl shadow-md bg-white border border-[#CCE2E5] text-[#306067] dark:text-[#E9E5E3] placeholder-[#CCE2E5]
-                        focus:outline-none focus:ring-0 focus:ring-[#37A0AF] focus:border-[#37A0AF] dark:bg-[#306067] dark:border-[#CCE2E5] dark:text-[#E9E5E3] dark:placeholder:text-[#CCE2E5]">
+                        focus:outline-none focus:ring-0 focus:ring-[#37A0AF] focus:border-[#37A0AF] dark:bg-[#306067] dark:border-[#CCE2E5] dark:placeholder:text-[#CCE2E5]">
 
                 <!-- Botón limpiar: visible solo si hay texto -->
                 <button id="search-clear" type="button" aria-label="Limpiar búsqueda"

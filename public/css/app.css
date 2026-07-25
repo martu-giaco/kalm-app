@@ -170,6 +170,14 @@ main p {
     font-family: 'Mulish', sans-serif;
 }
 
+@media (prefers-color-scheme: dark){
+    main p {
+    color: #E9E5E3;
+    font-weight: bold;
+    font-family: 'Mulish', sans-serif;
+}
+}
+
 body {
     width: 100%;
     font-family: 'Mulish', sans-serif;
