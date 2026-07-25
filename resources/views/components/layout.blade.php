@@ -607,7 +607,7 @@
                     <ul class="gap-3 p-3 mb-3">
                         @if (auth()->check() && auth()->user()->role != 'admin')
                             <li>
-                                <a class="flex flex-row text-lg text-[#2A4043] dark:text-[#E9E5E3] dark:text-[#E9E5E3] w-full justify-between items-center hover:bg-transparent"
+                                <a class="flex flex-row text-lg text-[#2A4043] dark:text-[#E9E5E3] w-full justify-between items-center hover:bg-transparent"
                                     href="{{ route('about') }}">
                                     Sobre Kälm
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"

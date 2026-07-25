@@ -1,6 +1,6 @@
 <a href="{{ route('products.show', $product) }}" class="group block">
                                 <div
-                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-white">
+                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-white dark:bg-[#2A4043]">
                                     {{-- Imagen redonda --}}
                                     <div class="flex-shrink-0 rounded-md w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
                                         @php
@@ -23,9 +23,9 @@
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex w-full justify-between items-end">
-                                                <h2 class="text-md font-semibold text-[#2A4043] truncate">{{ $product->name }}</h2>
+                                                <h2 class="text-md font-semibold text-[#2A4043] dark:text-[#E9E5E3] truncate">{{ $product->name }}</h2>
                                                 <button type="button"
-                                                    class="flex items-center justify-center transition h-full bg-white rounded-full hover:scale-105"
+                                                    class="flex items-center justify-center transition h-full bg-white dark:bg-[#2A4043] rounded-full hover:scale-105"
                                                     title="Marcar favorito" onclick="toggleFavorito({{ $product->id }}, this)">
                                                     <label class="swap">
                                                         <!-- this hidden checkbox controls the state -->
@@ -39,15 +39,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="text-xs text-[#2A4043] gap-2">
-                                            <h3 class="text-[13px] text-[#37A0AF] truncate">
+                                        <div class="text-xs text-[#2A4043] dark:text-[#CCE2E5] gap-2">
+                                            <h3 class="text-[13px] text-[#37A0AF] dark:text-[#CCE2E5] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>
                                             <div class="flex flex-wrap gap-2 my-3">
-                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">
                                                     ✨{{ $product->type->name ?? '-' }}
                                                 </button>
-                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">
                                                     {{ $product->category->name ?? '-' }}
                                                 </button>
                                             </div>
