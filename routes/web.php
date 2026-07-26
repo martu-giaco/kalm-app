@@ -268,6 +268,9 @@ Route::get('/premium/error', [SubscriptionController::class, 'failure'])->name('
         Route::post('/from-recommended/{id}', [RoutineController::class, 'storeFromRecommended'])
             ->middleware('auth')
             ->name('fromRecommended');
+        Route::post('/save-recommended', [RoutineController::class, 'saveRecommendedRoutine'])
+            ->middleware('auth')
+            ->name('saveRecommended');
 
         Route::get('/{routine_id}', [RoutineController::class, 'show'])->name('show');
         Route::get('/{routine_id}/edit', [RoutineController::class, 'edit'])->name('edit');

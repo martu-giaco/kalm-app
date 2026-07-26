@@ -58,6 +58,59 @@
                 </div>
             @endif
 
+            {{-- Mostrar advertencia si se alcanzó el límite de rutinas (plan Free) --}}
+            @php
+                $limitInfo = session('feedback.routine_limit_info');
+                $showLimitWarning = session('feedback.type') === 'warning' && $limitInfo;
+            @endphp
+
+            @if ($showLimitWarning)
+                <div class="p-4 mb-6 border-l-4 border-yellow-500 rounded-lg shadow-md bg-gradient-to-r from-yellow-50 to-orange-50 animate-fadeIn">
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-yellow-600 mt-0.5 flex-shrink-0" viewBox="0 -960 960 960" fill="currentColor">
+                                <path d="M479.82-280q15.18 0 25.68-10.5Q516-301 516-316.18q0-15.18-10.5-25.68-10.5-10.5-25.68-10.5Q464-352.36 453.5-341.86q-10.5 10.5-10.5 25.68Q443-301 453.5-290.5q10.5 10.5 25.82 10.5Zm-.9-256q14.08 0 23.58-9.5t9.5-23.5v-240q0-14-9.5-23.5t-23.58-9.5q-14.08 0-23.58 9.5t-9.5 23.5v240q0 14 9.5 23.5t23.58 9.5ZM479-80q-82.5 0-155.125-31.5t-127.5-86Q143-251.5 111.5-324.125T80-479q0-82.5 31.5-155.125t86-127.5Q252.5-815 325.125-846.5T480-878q82.5 0 155.125 31.5t127.5 86Q815-706.5 846.5-633.875T878-479q0 82.5-31.5 155.125t-86 127.5Q706.5-143 633.875-111.5T480-80Zm0-60q137 0 233.5-96.5T810-470q0-137-96.5-233.5T480-800q-137 0-233.5 96.5T150-470q0 137 96.5 233.5T480-140Zm0-330Z"/>
+                            </svg>
+                            <div>
+                                <h3 class="font-bold text-yellow-800">Plan Free - Límite de Rutinas Alcanzado</h3>
+                                <p class="text-yellow-700 text-sm mt-1">Tu plan Free permite guardar solo <strong>2 rutinas</strong>. Actualmente tienes {{ $limitInfo['current_count'] }} guardadas.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 text-sm text-yellow-800">
+                            <span class="font-semibold">Opciones:</span>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li><strong>Elimina una rutina existente</strong> para guardar esta nueva.</li>
+                                <li>O solo <strong>visualiza</strong> la rutina sin guardarla.</li>
+                                <li>También puedes <strong>actualizar a Premium</strong> para rutinas ilimitadas.</li>
+                            </ul>
+                        </div>
+
+                        {{-- Mostrar lista de rutinas para eliminar --}}
+                        @if (!empty($limitInfo['routines']))
+                            <div class="mt-3 p-3 bg-white rounded border border-yellow-200">
+                                <p class="text-sm font-semibold text-yellow-900 mb-2">Tus rutinas guardadas:</p>
+                                <div class="space-y-2">
+                                    @foreach ($limitInfo['routines'] as $routine)
+                                        <div class="flex items-center justify-between p-2 bg-yellow-50 rounded">
+                                            <span class="text-sm text-gray-800">{{ $routine['name'] }}</span>
+                                            <form action="{{ route('routines.destroy', $routine['routine_id']) }}" method="POST" class="inline"
+                                                  onsubmit="return confirm('¿Eliminar esta rutina? No se puede recuperar.')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                                    Eliminar
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
             <div class="mb-7">
                 @if ($testKey === 'cabello')
                     <h1 class="text-2xl font-semibold text-[#306067] text-center">Conocé tu cabello:</h1>
@@ -181,28 +234,62 @@
 
     {{-- Botones de acción --}}
     <div class="sticky bottom-0 flex flex-wrap w-full gap-3 p-4 mt-6 bg-white py-7">
-        @php $testKey = session('test_key'); @endphp
+        @php
+            $testKey = session('test_key');
+            $limitInfo = session('feedback.routine_limit_info');
+            $showLimitWarning = session('feedback.type') === 'warning' && $limitInfo;
+        @endphp
 
         @auth
-            <form action="{{ route('tests.saveResult') }}" method="POST" class="inline w-full">
-                @csrf
-                <input type="hidden" name="test_key" value="{{ $testKey }}">
-                <input type="hidden" name="result_key" value="{{ $resultLabel }}">
-                <input type="hidden" name="answers" value='{{ json_encode(session('test_answers', [])) }}'>
-                <button type="submit" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full">Guardar Resultado
-                    en Perfil</button>
-            </form>
+            @if ($showLimitWarning)
+                {{-- Opciones cuando se alcanzó el límite --}}
+                <form action="{{ route('tests.saveResult') }}" method="POST" class="w-full">
+                    @csrf
+                    <input type="hidden" name="test_key" value="{{ $testKey }}">
+                    <input type="hidden" name="result_key" value="{{ $resultLabel }}">
+                    <input type="hidden" name="answers" value='{{ json_encode(session("test_answers", [])) }}'>
+
+                    <button type="submit"
+                        class="block px-4 py-3 bg-green-600 text-white rounded-lg w-full hover:bg-green-700 transition">
+                        Guardar resultado del test (sin rutina)
+                    </button>
+                </form>
+
+                <a href="{{ route('subscription.show') }}" class="block px-4 py-3 bg-gradient-to-r from-[#37A0AF] to-[#164d4f] text-white rounded-lg w-full text-center font-semibold hover:shadow-lg transition">
+                    Actualizar a Premium
+                </a>
+
+                <a href="{{ $testKey ? route('tests.show', $testKey) : route('tests.index') }}"
+                    class="w-full text-center px-4 py-2 text-[#37A0AF] border-2 border-[#37A0AF] rounded-lg hover:bg-[#37A0AF] hover:text-white transition">
+                    {{ $testKey ? 'Rehacer Test' : 'Volver a tests' }}
+                </a>
+            @else
+                {{-- Opción normal: guardar resultado --}}
+                <form action="{{ route('tests.saveResult') }}" method="POST" class="inline w-full">
+                    @csrf
+                    <input type="hidden" name="test_key" value="{{ $testKey }}">
+                    <input type="hidden" name="result_key" value="{{ $resultLabel }}">
+                    <input type="hidden" name="answers" value='{{ json_encode(session('test_answers', [])) }}'>
+                    <button type="submit" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full hover:bg-[#0f3236] transition">
+                        Guardar Resultado en Perfil
+                    </button>
+                </form>
+
+                <a href="{{ $testKey ? route('tests.show', $testKey) : route('tests.index') }}"
+                    class="w-full text-center px-4 py-2 text-[#37A0AF] border-2 border-[#37A0AF] rounded-lg hover:bg-[#37A0AF] hover:text-white transition">
+                    {{ $testKey ? 'Rehacer Test' : 'Volver a tests' }}
+                </a>
+            @endif
         @else
-            <a href="{{ route('auth.login') }}" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full">
+            <a href="{{ route('auth.login') }}" class="block px-4 py-3 bg-[#164d4f] text-white rounded-lg w-full hover:bg-[#0f3236] transition">
                 Iniciar Sesión para guardar
             </a>
+
+            <a href="{{ $testKey ? route('tests.show', $testKey) : route('tests.index') }}"
+                class="w-full text-center px-4 py-2 text-[#37A0AF] border-2 border-[#37A0AF] rounded-lg hover:bg-[#37A0AF] hover:text-white transition">
+                {{ $testKey ? 'Rehacer Test' : 'Volver a tests' }}
+            </a>
         @endauth
-
-        <a href="{{ $testKey ? route('tests.show', $testKey) : route('tests.index') }}"
-            class="w-full text-center px-4 py-2 text-[#37A0AF] border-2 border-[#37A0AF] rounded-lg">
-            {{ $testKey ? 'Rehacer Test' : 'Volver a tests' }}
-        </a>
-
     </div>
 
 </body>

@@ -41,7 +41,7 @@ class RoutineController extends Controller
         if ($user && !$user->canCreateRoutine()) {
             return redirect()->route('routines.index')
                 ->with('feedback', [
-                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Elimina o edita una existente, o actualizate a Premium.', 
+                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Elimina o edita una existente, o actualizate a Premium.',
                     'type' => 'error'
                 ]);
         }
@@ -57,7 +57,7 @@ class RoutineController extends Controller
         if (!$user->canCreateRoutine()) {
             return redirect()->route('routines.index')
                 ->with('feedback', [
-                    'message' => 'Los usuarios free solo pueden guardar hasta 2 rutinas. Prueba actualizar a Premium.', 
+                    'message' => 'Los usuarios free solo pueden guardar hasta 2 rutinas. Prueba actualizar a Premium.',
                     'type' => 'error'
                 ]);
         }
@@ -75,7 +75,7 @@ class RoutineController extends Controller
 
         return redirect()->route('routines.index')
             ->with('feedback', [
-                'message' => 'Rutina guardada en tu perfil ✨', 
+                'message' => 'Rutina guardada en tu perfil ✨',
                 'type' => 'success'
             ]);
     }
@@ -97,7 +97,7 @@ class RoutineController extends Controller
         if ($user && !$user->canCreateRoutine()) {
             return redirect()->route('routines.index')
                 ->with('feedback', [
-                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Prueba actualizar a Premium.', 
+                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Prueba actualizar a Premium.',
                     'type' => 'error'
                 ]);
         }
@@ -121,7 +121,7 @@ class RoutineController extends Controller
 
         return redirect()->route('routines.index')
             ->with('feedback', [
-                'message' => 'Rutina creada correctamente.', 
+                'message' => 'Rutina creada correctamente.',
                 'type' => 'success'
             ]);
     }
@@ -167,7 +167,7 @@ class RoutineController extends Controller
         if ($routine->type_id) {
             $productsForYouQuery->where('type_id', $routine->type_id);
         }
-        
+
         $productsForYouQuery->whereNotIn('id', $routine->assignedProducts->pluck('id'));
         $productsForYouQuery->inRandomOrder();
 
@@ -239,7 +239,7 @@ class RoutineController extends Controller
 
     return redirect()->route('routines.show', $routine->routine_id)
         ->with('feedback', [
-            'message' => 'Rutina actualizada correctamente.', 
+            'message' => 'Rutina actualizada correctamente.',
             'type' => 'success'
         ]);
 }
@@ -250,7 +250,7 @@ class RoutineController extends Controller
         $routine->delete();
         return redirect()->route('routines.index')
             ->with('feedback', [
-                'message' => 'Rutina eliminada correctamente.', 
+                'message' => 'Rutina eliminada correctamente.',
                 'type' => 'success'
             ]);
     }
@@ -261,15 +261,15 @@ class RoutineController extends Controller
     $this->authorizeOwner($rutina);
 
     // CORRECCIÓN: Cambiar 'id' por 'product_id'
-    $productId = $request->input('product_id'); 
-    
+    $productId = $request->input('product_id');
+
     if ($productId && !$rutina->products()->where('products.id', $productId)->exists()) {
         $rutina->products()->attach($productId);
     }
 
     return redirect()->back()
         ->with('feedback', [
-            'message' => 'Producto agregado a la rutina.', 
+            'message' => 'Producto agregado a la rutina.',
             'type' => 'success'
         ]);
 }
@@ -280,7 +280,83 @@ class RoutineController extends Controller
         $routine->products()->detach($product->id);
         return redirect()->back()
             ->with('feedback', [
-                'message' => 'Producto eliminado de la rutina', 
+                'message' => 'Producto eliminado de la rutina',
+                'type' => 'success'
+            ]);
+    }
+
+    /**
+     * Guarda la rutina recomendada después de que el usuario haya eliminado una existente.
+     * Usado cuando el usuario alcanzó el límite de 2 rutinas (plan free).
+     */
+    public function saveRecommendedRoutine(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('auth.login');
+        }
+
+        $request->validate([
+            'test_key' => 'required|string',
+            'result_key' => 'required|string',
+        ]);
+
+        $testKey = $request->input('test_key');
+        $resultKey = $request->input('result_key');
+
+        // Verificar que el usuario ahora puede crear rutinas
+        if (!$user->canCreateRoutine()) {
+            return redirect()->route('tests.result')
+                ->with('feedback', [
+                    'message' => 'Aún has alcanzado el límite de rutinas. Elimina más para continuar.',
+                    'type' => 'error'
+                ]);
+        }
+
+        // Obtener la rutina recomendada
+        $recommendedRoutine = RecommendedRoutine::where('test_key', $testKey)
+            ->where('result_key', $resultKey)
+            ->first();
+
+        if (!$recommendedRoutine) {
+            return redirect()->route('tests.result')
+                ->with('feedback', [
+                    'message' => 'No se encontró la rutina recomendada.',
+                    'type' => 'error'
+                ]);
+        }
+
+        // Crear la rutina
+        $productIds = is_string($recommendedRoutine->products)
+            ? json_decode($recommendedRoutine->products, true)
+            : $recommendedRoutine->products;
+
+        $typeId = null;
+        if ($testKey === 'piel') {
+            $typeId = Type::where('name', 'Skincare')->first()?->id ?? Type::where('name', 'Skincare')->first()?->type_id;
+        } elseif ($testKey === 'cabello') {
+            $typeId = Type::where('name', 'Haircare')->first()?->id ?? Type::where('name', 'Haircare')->first()?->type_id;
+        }
+
+        $routine = Routine::create([
+            'user_id' => $user->id,
+            'name' => $recommendedRoutine->name,
+            'steps' => $recommendedRoutine->steps,
+            'type_id' => $typeId,
+        ]);
+
+        if (!empty($productIds) && is_array($productIds)) {
+            $routine->products()->attach($productIds);
+        }
+
+        // Actualizar el resultado del test para asociarlo con la rutina
+        UserTestResult::where('user_id', $user->id)
+            ->where('test_key', $testKey)
+            ->update(['routine_id' => $routine->routine_id]);
+
+        return redirect()->route('routines.index')
+            ->with('feedback', [
+                'message' => 'Rutina guardada correctamente ✨',
                 'type' => 'success'
             ]);
     }
