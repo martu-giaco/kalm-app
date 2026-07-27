@@ -35,7 +35,7 @@
                                     </h3>
 
                                     @if (!empty($product->brand?->name))
-                                        <h3 class="text-[13px] text-[#37A0AF] dark:text-[#E9E5E3] truncate">
+                                        <h3 class="text-[13px] text-[#37A0AF] truncate">
                                             {{ $product->brand->name }}</h3>
                                     @endif
                                     @if (!empty($product->type?->name))

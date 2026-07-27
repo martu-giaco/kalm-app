@@ -40,7 +40,7 @@
                                         </div>
 
                                         <div class="text-xs text-[#2A4043] dark:text-[#CCE2E5] gap-2">
-                                            <h3 class="text-[13px] text-[#37A0AF] dark:text-[#CCE2E5] truncate">
+                                            <h3 class="text-[13px] text-[#37A0AF] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>
                                             <div class="flex flex-wrap gap-2 my-3">

@@ -1,7 +1,7 @@
 <div class="flex items-stretch justify-between" id="product_container_{{ $product->id }}">
     <a href="{{ route('products.show', $product) }}" class="group block">
                                 <div
-                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-white">
+                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-transparent">
                                     {{-- Imagen redonda --}}
                                     <div class="flex-shrink-0 rounded-md w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
                                         @php
@@ -23,18 +23,18 @@
                                     {{-- Info --}}
                                     <div class="flex-1 min-w-0">
                                         <div class="flex items-center w-full justify-between gap-3">
-                                                <h2 class="text-md font-semibold text-[#2A4043]">{{ $product->name }}</h2>
+                                                <h2 class="text-md font-semibold text-[#2A4043] dark:text-[#CCE2E5]">{{ $product->name }}</h2>
                                         </div>
 
-                                        <div class="text-xs text-[#2A4043] gap-2">
+                                        <div class="text-xs text-[#2A4043] dark:text-[#CCE2E5] gap-2">
                                             <h3 class="text-[13px] text-[#37A0AF] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>
                                             <div class="flex flex-wrap gap-2 my-3">
-                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">
                                                     ✨{{ $product->type->name ?? '-' }}
                                                 </button>
-                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] px-2 py-1 rounded-xl">
+                                                <button class="text-[10px] text-center inline-block text-white truncate bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] px-2 py-1 rounded-xl">
                                                     {{ $product->category->name ?? '-' }}
                                                 </button>
                                             </div>

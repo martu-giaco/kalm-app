@@ -1,5 +1,5 @@
 <x-layout :title="'Mis Rutinas'">
-    <section class="h-full px-5 pt-10 bg-white dark:bg-[#2A4043] rounded-t-3xl">
+    <section class="min-h-full pb-10 px-5 pt-10 bg-white dark:bg-[#2A4043] rounded-t-3xl">
         <h1 class="text-2xl font-semibold text-[#306067] dark:text-[#CCE2E5] mb-5">Mis Rutinas</h1>
 
         @forelse($routines as $rutina)

@@ -1,7 +1,7 @@
 {{-- resources/views/routines/edit.blade.php --}}
 <x-layout :title="'Editar: ' . $routine->name">
-    <section class="px-5 pt-10 bg-white vh rounded-t-3xl">
-        <h1 class="text-2xl font-semibold mb-6 text-[#306067]">Editar Rutina</h1>
+    <section class="px-5 pt-10 bg-white dark:bg-[#2A4043] vh rounded-t-3xl">
+        <h1 class="text-2xl font-semibold mb-6 text-[#306067] dark:text-[#CCE2E5]">Editar Rutina</h1>
         <main>
             @php
                 $selectedType = null;
@@ -20,14 +20,14 @@
 
                 {{-- Nombre --}}
                 <div class="mb-4">
-                    <label for="name" class="block mb-1 text-sm">Nombre</label>
+                    <label for="name" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">Nombre</label>
                     <input type="text" name="name" id="name" value="{{ old('name', $routine->name) }}" required
-                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:placeholder-[#CCE2E5]">
                 </div>
 
                 {{-- Tipo de rutina --}}
                 <div class="mb-4">
-                    <label for="type_id" class="block mb-1 text-sm">Tipo de rutina</label>
+                    <label for="type_id" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">Tipo de rutina</label>
                     @if ($isFromRecommended && $routine->type_id)
                         {{-- Es una rutina predeterminada: mostrar tipo automáticamente --}}
                         <div
@@ -40,7 +40,7 @@
                     @else
                         {{-- Es una rutina manual: permite que el usuario elija --}}
                         <select name="type_id" id="type_id"
-                            class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                            class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#CCE2E5] dark:placeholder-[#CCE2E5]">
                             <option value="">Seleccionar tipo de rutina</option>
                             @foreach ($types as $type)
                                 <option value="{{ $type->id }}"
@@ -55,9 +55,9 @@
 
                 {{-- Tipo de piel de rutina --}}
                 <div class="mb-4">
-                    <label for="need_id" id="need_label" class="block mb-1 text-sm">{{ $needLabelText }}</label>
+                    <label for="need_id" id="need_label" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">{{ $needLabelText }}</label>
                     <select name="need_id" id="need_id"
-                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#CCE2E5]">
                         <option value="" id="need_placeholder">Seleccionar {{ strtolower($needLabelText) }}</option>
                         @foreach ($routine_needs as $need)
                             <option value="{{ $need->need_id }}"
@@ -70,9 +70,9 @@
 
                 {{-- Tiempo de rutina --}}
                 <div class="mb-4">
-                    <label for="time_id" class="block mb-1 text-sm">Tiempo de rutina</label>
+                    <label for="time_id" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">Tiempo de rutina</label>
                     <select name="time_id" id="time_id"
-                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#CCE2E5]">
                         <option value="">Seleccionar tiempo</option>
                         @foreach ($routine_times as $time)
                             <option value="{{ $time->time_id }}"
@@ -85,9 +85,9 @@
 
                 {{-- Frecuencia de recordatorio --}}
                 <div class="mb-6">
-                    <label for="reminder_frequency" class="block mb-1 text-sm">Frecuencia de recordatorio</label>
+                    <label for="reminder_frequency" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">Frecuencia de recordatorio</label>
                     <select name="reminder_frequency" id="reminder_frequency"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#CCE2E5]">
                         <option value="none"
                             {{ old('reminder_frequency', $routine->reminder_frequency ?? 'none') == 'none' ? 'selected' : '' }}>
                             Ninguna</option>
@@ -105,7 +105,7 @@
 
                 {{-- Días de la semana (para semanal) --}}
                 <div id="weekly_days" class="hidden mb-6">
-                    <label class="block mb-1 text-sm">Días de la semana</label>
+                    <label class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">Días de la semana</label>
                     <div class="grid grid-cols-7 gap-2">
                         @php
                             $days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
@@ -119,7 +119,7 @@
                                     class="hidden peer"
                                     {{ in_array($dayValues[$index], $selectedDays) ? 'checked' : '' }}>
                                 <div
-                                    class="py-2 text-center rounded-xl border border-[#CCE2E5] text-[#2A4043] transition
+                                    class="py-2 text-center rounded-xl border border-[#CCE2E5] text-[#2A4043] dark:text-[#CCE2E5] transition
                                     peer-checked:bg-[#37A0AF] peer-checked:text-white peer-checked:border-[#37A0AF]">
                                     {{ $day }}
                                 </div>
@@ -133,10 +133,10 @@
 
                 {{-- Intervalo para cada X días --}}
                 <div id="every_x_days" class="hidden mb-6">
-                    <label for="reminder_interval" class="block mb-1 text-sm">Cada cuántos días</label>
+                    <label for="reminder_interval" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">Cada cuántos días</label>
                     <input type="number" name="reminder_interval" id="reminder_interval" min="1" max="30"
                         value="{{ old('reminder_interval', $routine->reminder_interval ?? 1) }}"
-                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043]">
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#CCE2E5]">
                     <p class="mt-1 text-xs text-[#2A4043]/70">
                         Ingresa el número de días entre recordatorios (ej: 3 para cada 3 días).
                     </p>
@@ -198,7 +198,7 @@
                 </div>
 
                 <button type="submit"
-                    class="btn w-full mb-10 px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067]">
+                    class="btn w-full mb-10 px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067] border-none dark:bg-[#CCE2E5] dark:text-[#2A4043]">
                     Actualizar Rutina
                 </button>
             </form>
