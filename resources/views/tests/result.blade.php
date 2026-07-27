@@ -73,13 +73,13 @@
                             </svg>
                             <div>
                                 <h3 class="font-bold text-yellow-800">Plan Free - Límite de Rutinas Alcanzado</h3>
-                                <p class="text-yellow-700 text-sm mt-1">Tu plan Free permite guardar solo <strong>2 rutinas</strong>. Actualmente tienes {{ $limitInfo['current_count'] }} guardadas.</p>
+                                <p class="mt-1 text-sm text-yellow-700">Tu plan Free permite guardar solo <strong>2 rutinas</strong>. Actualmente tienes {{ $limitInfo['current_count'] }} guardadas.</p>
                             </div>
                         </div>
 
                         <div class="flex items-start gap-3 text-sm text-yellow-800">
                             <span class="font-semibold">Opciones:</span>
-                            <ul class="list-disc list-inside space-y-1">
+                            <ul class="space-y-1 list-disc list-inside">
                                 <li><strong>Elimina una rutina existente</strong> para guardar esta nueva.</li>
                                 <li>O solo <strong>visualiza</strong> la rutina sin guardarla.</li>
                                 <li>También puedes <strong>actualizar a Premium</strong> para rutinas ilimitadas.</li>
@@ -88,18 +88,18 @@
 
                         {{-- Mostrar lista de rutinas para eliminar --}}
                         @if (!empty($limitInfo['routines']))
-                            <div class="mt-3 p-3 bg-white rounded border border-yellow-200">
-                                <p class="text-sm font-semibold text-yellow-900 mb-2">Tus rutinas guardadas:</p>
+                            <div class="p-3 mt-3 bg-white border border-yellow-200 rounded">
+                                <p class="mb-2 text-sm font-semibold text-yellow-900">Tus rutinas guardadas:</p>
                                 <div class="space-y-2">
                                     @foreach ($limitInfo['routines'] as $routine)
-                                        <div class="flex items-center justify-between p-2 bg-yellow-50 rounded">
+                                        <div class="flex items-center justify-between p-2 rounded bg-yellow-50">
                                             <span class="text-sm text-gray-800">{{ $routine['name'] }}</span>
                                             <form action="{{ route('routines.destroy', $routine['routine_id']) }}" method="POST" class="inline"
                                                 onsubmit="return confirm('¿Eliminar esta rutina? No se puede recuperar.')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="from_test_result" value="1">
-                                                <button type="submit" class="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                                <button type="submit" class="px-3 py-1 text-xs text-white transition bg-red-500 rounded hover:bg-red-600">
                                                     Eliminar
                                                 </button>
                                             </form>
@@ -159,14 +159,14 @@
 
                                     {{-- Mostrar productos para este paso --}}
                                     @if ($recommendedProducts->count() > 0)
-                                        <div class="flex gap-3 overflow-x-auto scrollbar-hide mt-3">
+                                        <div class="flex gap-3 mt-3 overflow-x-auto scrollbar-hide">
                                             @foreach ($recommendedProducts->slice($index * 2, 2) as $product)
                                                 <div class="flex-shrink-0 w-28 md:w-32">
                                                     <a href="{{ route('products.show', $product->id) }}" class="group">
-                                                        <div class="overflow-hidden bg-white shadow-md rounded-lg hover:shadow-lg transition">
+                                                        <div class="overflow-hidden transition bg-white rounded-lg shadow-md hover:shadow-lg">
                                                             <div class="w-full h-24 overflow-hidden">
                                                                 <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
-                                                                    class="object-cover w-full h-full group-hover:scale-105 transition">
+                                                                    class="object-cover w-full h-full transition group-hover:scale-105">
                                                             </div>
                                                             <div class="p-2 text-center">
                                                                 <p class="text-xs font-semibold text-[#2A4043] truncate">{{ $product->name }}</p>
@@ -252,8 +252,8 @@
                     <input type="hidden" name="save_only_result" value="1">
 
                     <button type="submit"
-                        class="block px-4 py-3 bg-green-600 text-white rounded-lg w-full hover:bg-green-700 transition">
-                        Guardar resultado del test (sin rutina)
+                        class="block w-full px-4 py-3 text-white transition bg-green-600 rounded-lg hover:bg-green-700">
+                        Guardar Resultado del Test (Sin Rutina)
                     </button>
                 </form>
                 <a href="{{ route('subscription.show') }}" class="block px-4 py-3 bg-gradient-to-r from-[#37A0AF] to-[#164d4f] text-white rounded-lg w-full text-center font-semibold hover:shadow-lg transition">

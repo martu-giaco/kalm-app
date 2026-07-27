@@ -32,7 +32,7 @@ class ProfileController extends Controller
 
         // Traer solo reviews hechas por el usuario
         $reviews = $user->reviews()->latest()->get(); // esto asume que tu relación 'reviews' está definida como reviews hechas por el user
-        // Si tu relación 'reviews' devuelve reviews recibidas, hacé esto:
+        // Si la relación 'reviews' devuelve reviews recibidas, hacé esto:
         // $reviews = \App\Models\Review::where('user_id', $user->id)->latest()->get();
 
         return view('user.profile', compact('user', 'routines', 'reviews'));
