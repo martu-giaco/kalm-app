@@ -203,9 +203,7 @@ class TestController extends Controller
         $testKey = $request->input('test_key', session('test_key'));
         $resultKey = $request->input('result_key', session('result_key'));
         $answers = $request->input('answers', session('test_answers'));
-
-        // NUEVO
-        $saveOnlyResult = $request->boolean('save_only_result');
+        $saveOnlyResult = $request->boolean('save_only_result', false);
 
         if (!$resultKey || !$testKey) {
             return redirect()->route('tests.index')
@@ -234,7 +232,9 @@ class TestController extends Controller
         if ($result['status'] === 'success') {
             return redirect()->route('profile.results')
                 ->with('feedback', [
-                    'message' => 'Resultado guardado correctamente.',
+                    'message' => $saveOnlyResult
+                        ? 'Resultado guardado correctamente.'
+                        : 'Resultado y rutina guardados correctamente.',
                     'type' => 'success'
                 ]);
         }
@@ -244,16 +244,20 @@ class TestController extends Controller
                 ->with('feedback', [
                     'message' => 'Plan Free permite solo 2 rutinas guardadas.',
                     'type' => 'warning',
-                    'routine_limit_info' => $result['limit_info']
+                    'routine_limit_info' => $result['limit_info'] ?? null
                 ]);
         }
 
-        return redirect()->route('profile.results');
+        return redirect()->route('profile.results')
+            ->with('feedback', [
+                'message' => 'No se pudo guardar el resultado.',
+                'type' => 'error'
+            ]);
 
     } catch (\Exception $e) {
-
         Log::error('Error en saveResult', [
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
         ]);
 
         return redirect()->route('profile.results')

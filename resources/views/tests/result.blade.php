@@ -243,18 +243,18 @@
         @auth
             @if ($showLimitWarning)
                 {{-- Opciones cuando se alcanzó el límite --}}
-                <form action="{{ route('tests.saveResult') }}" method="POST" class="w-full">
+               <form action="{{ route('tests.saveResult') }}" method="POST" class="w-full">
                     @csrf
                     <input type="hidden" name="test_key" value="{{ $testKey }}">
                     <input type="hidden" name="result_key" value="{{ $resultLabel }}">
                     <input type="hidden" name="answers" value='{{ json_encode(session("test_answers", [])) }}'>
+                    <input type="hidden" name="save_only_result" value="1">
 
                     <button type="submit"
                         class="block px-4 py-3 bg-green-600 text-white rounded-lg w-full hover:bg-green-700 transition">
                         Guardar resultado del test (sin rutina)
                     </button>
                 </form>
-
                 <a href="{{ route('subscription.show') }}" class="block px-4 py-3 bg-gradient-to-r from-[#37A0AF] to-[#164d4f] text-white rounded-lg w-full text-center font-semibold hover:shadow-lg transition">
                     Actualizar a Premium
                 </a>
