@@ -95,9 +95,10 @@
                                         <div class="flex items-center justify-between p-2 bg-yellow-50 rounded">
                                             <span class="text-sm text-gray-800">{{ $routine['name'] }}</span>
                                             <form action="{{ route('routines.destroy', $routine['routine_id']) }}" method="POST" class="inline"
-                                                  onsubmit="return confirm('¿Eliminar esta rutina? No se puede recuperar.')">
+                                                onsubmit="return confirm('¿Eliminar esta rutina? No se puede recuperar.')">
                                                 @csrf
                                                 @method('DELETE')
+                                                <input type="hidden" name="from_test_result" value="1">
                                                 <button type="submit" class="text-xs px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
                                                     Eliminar
                                                 </button>

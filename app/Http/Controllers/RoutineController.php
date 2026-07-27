@@ -244,16 +244,23 @@ class RoutineController extends Controller
         ]);
 }
 
-    public function destroy(Routine $routine)
-    {
-        $this->authorizeOwner($routine);
-        $routine->delete();
-        return redirect()->route('routines.index')
-            ->with('feedback', [
-                'message' => 'Rutina eliminada correctamente.',
-                'type' => 'success'
-            ]);
+    public function destroy(Request $request, Routine $routine)
+{
+    $this->authorizeOwner($routine);
+    $routine->delete();
+
+    if ($request->boolean('from_test_result')) {
+        return redirect()->route('tests.result')->with('feedback', [
+            'message' => 'Rutina eliminada correctamente. Ya podés guardar la nueva rutina del test.',
+            'type' => 'success',
+        ]);
     }
+
+    return redirect()->route('routines.index')->with('feedback', [
+        'message' => 'Rutina eliminada correctamente.',
+        'type' => 'success',
+    ]);
+}
 
     public function addProduct(Request $request, $routine)
 {
