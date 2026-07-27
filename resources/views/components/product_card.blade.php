@@ -30,7 +30,7 @@
 
     {{-- Imagen --}}
     {{-- Imagen circular --}}
-    <div class="w-28 h-28 mx-auto mb-2 overflow-hidden rounded-full bg-gray-100">
+    <div class="w-28 h-28 mx-auto mb-2 overflow-hidden rounded-full bg-white">
         <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
     </div>
 

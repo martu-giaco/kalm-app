@@ -2,7 +2,7 @@
                             <div class="relative overflow-hidden transition duration-300 bg-white dark:bg-[#306067] shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
-                                <div class="w-full h-40 overflow-hidden">
+                                <div class="w-full h-40 overflow-hidden bg-white">
                                     <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                         class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
                                 </div>
