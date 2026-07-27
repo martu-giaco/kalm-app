@@ -36,7 +36,7 @@
 
     <section>
         {{-- Resultados container --}}
-        <div class="pb-6 bg-white pt-7 rounded-t-3xl dark:bg-[#2A4043]">
+        <div class="min-h-full pb-6 bg-white pt-7 rounded-t-3xl dark:bg-[#2A4043]">
             {{-- Cabecera resultados --}}
             <div class="px-5 flex items-start justify-between w-full gap-4">
                 <div class="flex justify-between w-full">

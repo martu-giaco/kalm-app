@@ -82,7 +82,7 @@
 
                 <div>
                     <div class="flex justify-between items-center px-3 py-1 border-b-2 border-[#CCE2E5]">
-                        <h3 class="text-lg font-bold text-[#306067]">
+                        <h3 class="text-lg font-bold text-[#306067] dark:text-[#CCE2E5]">
                             Paso {{ $step['number'] }}: {{ $step['title'] }}
                         </h3>
                         <button

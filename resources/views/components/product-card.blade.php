@@ -2,7 +2,7 @@
                             <div class="relative overflow-hidden transition duration-300 bg-white dark:bg-[#306067] shadow-md rounded-xl hover:shadow-lg">
 
                                 {{-- Imagen del producto --}}
-                                <div class="w-full h-40 overflow-hidden">
+                                <div class="w-full h-40 overflow-hidden bg-white">
                                     <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
                                         class="object-cover w-full h-full transition duration-300 group-hover:scale-105">
                                 </div>
@@ -35,7 +35,7 @@
                                     </h3>
 
                                     @if (!empty($product->brand?->name))
-                                        <h3 class="text-[13px] text-[#37A0AF] dark:text-[#E9E5E3] truncate">
+                                        <h3 class="text-[13px] text-[#37A0AF] truncate">
                                             {{ $product->brand->name }}</h3>
                                     @endif
                                     @if (!empty($product->type?->name))

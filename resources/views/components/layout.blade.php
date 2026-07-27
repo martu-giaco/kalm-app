@@ -66,6 +66,8 @@
         </script>
     @endauth
 
+
+
     <script>
         window.kalmFavoriteState = window.kalmFavoriteState || {
             isProcessing: false
@@ -471,12 +473,12 @@
                                 @elseif(auth()->user()->role === 'premium')
                                     <div class="px-3 py-1 rounded-xl"
                                         style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
-                                        <p class="text-sm">Premium</p>
+                                        <p class="text-sm text-[#306067]">Premium</p>
                                     </div>
                                 @elseif(auth()->user()->role === 'admin')
                                     <div class="px-3 py-1 rounded-xl"
                                         style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
-                                        <p class="text-sm">Admin</p>
+                                        <p class="text-sm text-[#306067] ">Admin</p>
                                     </div>
                                 @endif
                                 <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">

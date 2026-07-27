@@ -1,6 +1,6 @@
 <a href="{{ route('products.show', $product) }}" class="group block">
                                 <div
-                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-white dark:bg-[#2A4043]">
+                                    class="flex px-2 items-center gap-4 py-3 transition-shadow border-b-[1px] border-gray-200 bg-white dark:bg-transparent">
                                     {{-- Imagen redonda --}}
                                     <div class="flex-shrink-0 rounded-md w-20 h-20 overflow-hidden bg-[var(--kalm-light)]">
                                         @php
@@ -25,7 +25,7 @@
                                             <div class="flex w-full justify-between items-end">
                                                 <h2 class="text-md font-semibold text-[#2A4043] dark:text-[#E9E5E3] truncate">{{ $product->name }}</h2>
                                                 <button type="button"
-                                                    class="flex items-center justify-center transition h-full bg-white dark:bg-[#2A4043] rounded-full hover:scale-105"
+                                                    class="flex items-center justify-center transition h-full bg-transparent rounded-full hover:scale-105"
                                                     title="Marcar favorito" onclick="toggleFavorito({{ $product->id }}, this)">
                                                     <label class="swap">
                                                         <!-- this hidden checkbox controls the state -->
@@ -40,7 +40,7 @@
                                         </div>
 
                                         <div class="text-xs text-[#2A4043] dark:text-[#CCE2E5] gap-2">
-                                            <h3 class="text-[13px] text-[#37A0AF] dark:text-[#CCE2E5] truncate">
+                                            <h3 class="text-[13px] text-[#37A0AF] truncate">
                                                 {{ $product->brand->name ?? '-' }}
                                             </h3>
                                             <div class="flex flex-wrap gap-2 my-3">

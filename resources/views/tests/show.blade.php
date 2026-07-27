@@ -19,14 +19,13 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="flex flex-col flex-wrap justify-between min-h-screen bg-center bg-cover px-5 py-10" style="background-image: url('{{ asset('images/fondo.png') }}');">
-
+<body class="flex flex-col flex-wrap justify-between min-h-screen bg-center bg-cover px-5 py-10 header-bg">
         <div class="flex items-center justify-between max-w-3xl pb-8 mx-auto w-full">
             <button type="button" id="prevBtn" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2A4043"><path d="m326.15-434.5 186.68 186.67q13.67 13.68 13.29 32.07-.38 18.39-14.05 32.06-13.68 12.68-32.07 13.06-18.39.38-32.07-13.29l-264-264q-6.71-6.72-9.81-14.92-3.1-8.19-3.1-17.15 0-8.96 3.1-17.15 3.1-8.2 9.81-14.92L448.17-776.3q12.92-12.92 31.57-12.92t32.33 12.92q13.67 13.67 13.67 32.44 0 18.77-13.67 32.45L326.15-525.5h436.48q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H326.15Z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#2A4043] dark:fill-[#CCE2E5]" height="24px" viewBox="0 -960 960 960" width="24px" ><path d="m326.15-434.5 186.68 186.67q13.67 13.68 13.29 32.07-.38 18.39-14.05 32.06-13.68 12.68-32.07 13.06-18.39.38-32.07-13.29l-264-264q-6.71-6.72-9.81-14.92-3.1-8.19-3.1-17.15 0-8.96 3.1-17.15 3.1-8.2 9.81-14.92L448.17-776.3q12.92-12.92 31.57-12.92t32.33 12.92q13.67 13.67 13.67 32.44 0 18.77-13.67 32.45L326.15-525.5h436.48q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H326.15Z"/></svg>
             </button>
             <a href="{{ route('home') }}" class="self-end cursor-pointer" aria-label="close sidebar">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#2A4043" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#2A4043] dark:fill-[#CCE2E5]" viewBox="0 -960 960 960"  aria-hidden="true">
                     <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                 </svg>
             </a>
@@ -34,7 +33,7 @@
 
         <div class="max-w-3xl mx-auto ">
             <article class="pb-7 rounded-2xl">
-                <h2 class="text-md font-semibold text-[#37A0AF]">{{ $test->title }}</h2>
+                <h2 class="text-md font-semibold text-[#37A0AF] dark:text-[#CCE2E5]">{{ $test->title }}</h2>
 
                 <form id="testForm" action="{{ route('tests.submit') }}" method="POST" novalidate>
                     @csrf
@@ -45,13 +44,13 @@
                             <div class="mb-10 question" data-index="{{ $index }}"
                                 @if ($index != 0) style="display:none" @endif>
 
-                                <h1 class="text-2xl font-semibold text-[#164d4f] mb-4">
+                                <h1 class="text-2xl font-semibold text-[#164d4f] dark:text-[#E9E5E3] mb-4">
                                     {{ $question['text'] }}
                                 </h1>
 
                                 <div class="space-y-3">
                                     @foreach ($question['options'] as $option)
-                                        <label class="option-card flex items-center gap-5 cursor-pointer bg-white/60 shadow-lg p-5 rounded-lg transition-all duration-300">
+                                        <label class="option-card flex items-center gap-5 cursor-pointer bg-white/70 shadow-lg p-5 rounded-lg transition-all duration-300">
                                             <input type="radio" class="hidden" name="q{{ $index + 1 }}"
                                                 value="{{ $option['scoreKey'] }}"
                                                 class="h-4 w-4 text-[#164d4f] focus:ring-[#164d4f]">
@@ -70,14 +69,14 @@
             </article>
         </div>
 
-        <div>
+        <div class="w-full">
             {{-- Botones --}}
-            <button type="button" id="nextBtn" class="w-full bg-[#306067] text-white px-4 py-3 rounded-lg">
+            <button type="button" id="nextBtn" class="w-full bg-[#306067] text-white dark:text-[#2A4043] dark:bg-[#CCE2E5] px-4 py-3 rounded-lg">
                 Siguiente pregunta
             </button>
             {{-- Barra de progreso --}}
             <div class="w-full h-2 mt-4 bg-white rounded-full shadow-xl">
-                <div id="progressBar" class="bg-[#164d4f] h-2 rounded-full w-0"></div>
+                <div id="progressBar" class="bg-[#306067] dark:bg-[#37A0AF] h-2 rounded-full w-0"></div>
             </div>
         </div>
 

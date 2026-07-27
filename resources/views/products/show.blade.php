@@ -207,7 +207,7 @@
                 @endphp
 
                 <div class="pt-6 mt-6 border-t">
-                    <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
+                    <h2 class="text-xl font-bold text-[#306067] dark:text-[#CCE2E5] mb-2">{{ $section['title'] }}</h2>
                     <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                         @foreach ($products_with_tag as $sectionProduct)
                             <x-product-card :product="$sectionProduct" />
@@ -218,27 +218,27 @@
 
             {{-- Detalles del producto --}}
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Detalles del producto</h2>
+                <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Detalles del producto</h2>
                 <div class="flex flex-wrap gap-4">
 
                     @if (!empty($product->ingredients))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="mb-1 text-sm text-gray-500">Ingredientes</h3>
-                            <p class="text-sm font-bold">{{ Str::limit($product->ingredients, 50) }}</p>
+                            <h3 class="mb-1 text-sm text-[#164d4f]">Ingredientes</h3>
+                            <p class="text-sm font-bold text-[#2A4043]">{{ Str::limit($product->ingredients, 50) }}</p>
                         </div>
                     @endif
 
                     @if (!empty($product->activos))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="mb-1 text-sm text-gray-500">Activos</h3>
-                            <p class="text-sm font-bold">{{ Str::limit($product->activos, 50) }}</p>
+                            <h3 class="mb-1 text-sm text-[#164d4f]">Activos</h3>
+                            <p class="text-sm font-bold text-[#2A4043]">{{ Str::limit($product->activos, 50) }}</p>
                         </div>
                     @endif
 
                     @if (!empty($product->formato))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="mb-1 text-sm text-gray-500">Formato</h3>
-                            <p class="text-sm font-bold">{{ $product->formato }}</p>
+                            <h3 class="mb-1 text-sm text-[#164d4f]">Formato</h3>
+                            <p class="text-sm font-bold text-[#2A4043]">{{ $product->formato }}</p>
                         </div>
                     @endif
 
@@ -246,35 +246,35 @@
             </div>
 
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-bold text-[#164d4f] mb-2">Ingredientes</h2>
-                <p class="text-sm font-bold">{{ Str::limit($product->ingredients, 50) }}</p>
+                <h2 class="text-lg font-bold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Ingredientes</h2>
+                <p class="text-sm font-bold ">{{ Str::limit($product->ingredients, 50) }}</p>
             </div>
         </article>
     </div>
 
     <input type="checkbox" id="modal-routines" class="modal-toggle" />
     <div id="modal-routines" class="modal">
-        <div class="max-w-2xl p-6 modal-box w-90">
+        <div class="max-w-2xl p-6 modal-box w-90 bg-white dark:bg-[#2A4043]">
             <div class="flex items-center justify-between">
                 <label for="modal-routines"
                     class="absolute btn btn-sm btn-circle btn-ghost focus-visible:outline-0 right-4 top-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#306067"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#306067] dark:fill-[#CCE2E5]" viewBox="0 -960 960 960"
                         aria-hidden="true">
                         <path
                             d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                     </svg>
                 </label>
-                <h3 class="text-xl font-bold mb-4 text-[#306067]">Selecciona la rutina</h3>
+                <h3 class="text-xl font-bold mb-4 text-[#306067] dark:text-[#CCE2E5]">Selecciona la rutina</h3>
             </div>
 
             <div class="space-y-3">
                 @if (isset($routines) && $routines->count())
                     <div class="space-y-2 rounded-lg">
                         <a href="{{ route('routines.create') }}"
-                            class="rounded-lg p-3 bg-[#306067] flex items-center justify-between shadow-xl">
-                            <p class="text-white">Nueva Rutina</p>
+                            class="rounded-lg p-3 bg-[#306067] dark:bg-[#CCE2E5] flex items-center justify-between shadow-xl">
+                            <p class="dark:text-[#306067] text-[#CCE2E5]">Nueva Rutina</p>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                width="24px" fill="#FFFFFF">
+                                width="24px" class="fill-[#CCE2E5] dark:fill-[#306067]">
                                 <path
                                     d="M434.5-434.5H237.37q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H434.5v-197.13q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17t32.33 13.17q13.17 13.18 13.17 32.33v197.13h197.13q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H525.5v197.13q0 19.15-13.17 32.33-13.18 13.17-32.33 13.17t-32.33-13.17q-13.17-13.18-13.17-32.33V-434.5Z" />
                             </svg>
@@ -284,24 +284,24 @@
                                 @csrf
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <button type="submit"
-                                    class="flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg">
+                                    class="flex flex-col w-full px-3 py-5 mb-3 transition-shadow bg-white dark:bg-[#306067] rounded-lg shadow-md cursor-pointer hover:shadow-lg">
                                     <div>
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center">
-                                                <h2 class="text-xl font-medium text-[#306067]">{{ $routine->name }}
+                                                <h2 class="text-xl font-medium text-[#306067] dark:text-[#CCE2E5]">{{ $routine->name }}
                                                 </h2>
                                                 @if ($routine->routineTime)
                                                     @if ($routine->routineTime?->name === 'Día')
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                                            viewBox="0 -960 960 960" width="20px" fill="#37A0AF"
-                                                            class="ms-1">
+                                                            viewBox="0 -960 960 960" width="20px"
+                                                            class="ms-1 fill-[#37A0AF] dark:fill-[#CCE2E5]">
                                                             <path
                                                                 d="M480-760q-17 0-28.5-11.5T440-800v-80q0-17 11.5-28.5T480-920q17 0 28.5 11.5T520-880v80q0 17-11.5 28.5T480-760Zm198 82q-11-11-11-27.5t11-28.5l56-57q12-12 28.5-12t28.5 12q11 11 11 28t-11 28l-57 57q-11 11-28 11t-28-11Zm122 238q-17 0-28.5-11.5T760-480q0-17 11.5-28.5T800-520h80q17 0 28.5 11.5T920-480q0 17-11.5 28.5T880-440h-80ZM480-40q-17 0-28.5-11.5T440-80v-80q0-17 11.5-28.5T480-200q17 0 28.5 11.5T520-160v80q0 17-11.5 28.5T480-40ZM226-678l-57-56q-12-12-12-29t12-28q11-11 28-11t28 11l57 57q11 11 11 28t-11 28q-12 11-28 11t-28-11Zm508 509-56-57q-11-12-11-28.5t11-27.5q11-11 27.5-11t28.5 11l57 56q12 11 11.5 28T791-169q-12 12-29 12t-28-12ZM80-440q-17 0-28.5-11.5T40-480q0-17 11.5-28.5T80-520h80q17 0 28.5 11.5T200-480q0 17-11.5 28.5T160-440H80Zm89 271q-11-11-11-28t11-28l57-57q11-11 27.5-11t28.5 11q12 12 12 28.5T282-225l-56 56q-12 12-29 12t-28-12Zm311-71q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm0-80q66 0 113-47t47-113q0-66-47-113t-113-47q-66 0-113 47t-47 113q0 66 47 113t113 47Zm0-160Z" />
                                                         </svg>
                                                     @elseif($routine->routineTime?->name === 'Noche')
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="20px"
-                                                            viewBox="0 -960 960 960" width="20px" fill="#37A0AF"
-                                                            class="ms-1">
+                                                            viewBox="0 -960 960 960" width="20px"
+                                                            class="ms-1 fill-[#37A0AF] dark:fill-[#CCE2E5]">
                                                             <path
                                                                 d="M480.24-116.41q-153.63 0-258.73-104.98Q116.41-326.37 116.41-480q0-133.93 84.74-235.43t223.31-123.05q15.39-3.43 27.54 1.35 12.15 4.78 19.95 14.02 7.79 9.24 9.6 22.2 1.82 12.95-4.75 26.11-13.89 25.04-21.31 51.65-7.42 26.61-7.42 55.5 0 91.69 64.32 155.88 64.33 64.18 156.22 64.18 28.37 0 56.48-7.44 28.11-7.45 50.91-20.58 12.91-5.8 25.13-4.11 12.22 1.7 21.1 8.13 9.88 6.44 14.66 18.23 4.78 11.8 1.59 27.95Q820.17-291 717.63-203.71q-102.54 87.3-237.39 87.3Zm0-91q81.78 0 147.84-43.72 66.05-43.72 98.29-114.78-17.61 4.04-35.1 6.32-17.49 2.29-34.86 1.81-122.04-4.07-207.94-89.37-85.9-85.31-90.45-209.26-.24-17.37 1.93-34.98 2.16-17.61 6.44-34.98-70.82 32.48-114.78 98.65-43.96 66.18-43.96 147.72 0 112.93 79.83 192.76 79.83 79.83 192.76 79.83Zm-13.11-259.48Z" />
                                                         </svg>
@@ -332,13 +332,13 @@
                                             @endforelse
                                             @if ($remaining > 0)
                                                 <p
-                                                    class=" flex items-center justify-center text-[#2A4043] text-md font-black">
+                                                    class=" flex items-center justify-center text-[#2A4043] dark:text-[#CCE2E5] text-md font-black">
                                                     +{{ $remaining }}
                                                 </p>
                                             @endif
                                         </div>
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px"
-                                            viewBox="0 -960 960 960" width="24px" fill="#306067">
+                                            viewBox="0 -960 960 960" width="24px" class="fill-[#2A4043] dark:fill-[#CCE2E5]">
                                             <path
                                                 d="M496.35-480 344.17-632.17Q331.5-644.85 331.5-664t12.67-31.83Q356.85-708.5 376-708.5t31.83 12.67l183.76 183.76q6.71 6.72 9.81 14.92 3.1 8.19 3.1 17.15 0 8.96-3.1 17.15-3.1 8.2-9.81 14.92L407.83-264.17Q395.15-251.5 376-251.5t-31.83-12.67Q331.5-276.85 331.5-296t12.67-31.83L496.35-480Z" />
                                         </svg>

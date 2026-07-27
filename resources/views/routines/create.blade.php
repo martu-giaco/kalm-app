@@ -1,8 +1,8 @@
 <x-layout>
     <x-slot:title>Nueva Rutina</x-slot:title>
 
-    <section class="max-w-4xl min-h-screen px-6 py-8 mx-auto bg-white shadow-sm rounded-t-3xl">
-        <h1 class="text-2xl font-semibold text-[#306067] mb-6">Nueva Rutina</h1>
+    <section class="max-w-6xl min-h-screen px-5 mx-auto bg-white dark:bg-[#2A4043] pt-7 rounded-t-3xl">
+        <h1 class="text-2xl font-semibold text-[#306067] dark:text-[#CCE2E5] mb-5">Nueva Rutina</h1>
 
         @if ($errors->any())
             <div class="p-4 mb-6 text-sm text-red-700 border border-red-200 bg-red-50 rounded-xl">
@@ -21,25 +21,26 @@
             @csrf
 
             {{-- Nombre --}}
-            <div class="mb-5">
-                <label for="name" class="block mb-2 text-sm font-medium text-[#2A4043]">
-                    Nombre de la rutina <span class="text-red-500">*</span>
+            <div class="mb-4">
+                <label for="name" class="form-label mb-2 text-[#2A4043] dark:text-[#CCE2E5]">
+                    Nombre de la rutina
                 </label>
-                <input type="text" id="name" name="name"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 @error('name') border-red-400 @else border-[#CCE2E5] @enderror placeholder-[#CCE2E5] focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] transition"
-                    value="{{ old('name') }}" required placeholder="Ej. Rutina de Mañana">
+                <input type="text" id="name" name="name" placeholder="Nombre de la rutina"
+                    class="form-control @error('name') is-invalid @enderror w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:placeholder-[#CCE2E5]"
+                    @error('name') aria-invalid="true" aria-errormessage="error-name" @enderror
+                    value="{{ old('name') }}">
                 @error('name')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                 @enderror
             </div>
 
             {{-- Tipo de rutina --}}
-            <div class="mb-5">
-                <label for="type_id" class="block mb-2 text-sm font-medium text-[#2A4043]">
+            <div class="mb-4">
+                <label for="type_id" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">
                     Tipo de Rutina
                 </label>
                 <select name="type_id" id="type_id"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 @error('type_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] transition">
+                    class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
                     <option value="">Seleccionar tipo</option>
                     @foreach ($types as $type)
                         <option value="{{ $type->id }}"
@@ -54,13 +55,13 @@
                 @enderror
             </div>
 
-            {{-- Necesidad / Tipo de Piel o Pelo --}}
-            <div class="mb-5">
-                <label for="need_id" id="need_label" class="block mb-2 text-sm font-medium text-[#2A4043]">
+            {{-- Necesidad de rutina --}}
+            <div class="mb-4">
+                <label for="need_id" id="need_label" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">
                     {{ $needLabelText }}
                 </label>
                 <select name="need_id" id="need_id"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 @error('need_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] transition">
+                    class="w-full p-3 mb-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
                     <option value="" id="need_placeholder">Seleccionar {{ strtolower($needLabelText) }}</option>
                     @foreach ($routine_needs as $need)
                         <option value="{{ $need->need_id }}"
@@ -75,12 +76,12 @@
             </div>
 
             {{-- Tiempo de rutina --}}
-            <div class="mb-5">
-                <label for="time_id" class="block mb-2 text-sm font-medium text-[#2A4043]">
+            <div class="mb-4">
+                <label for="time_id" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">
                     Tiempo de rutina
                 </label>
                 <select name="time_id" id="time_id"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 @error('time_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] transition">
+                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#CCE2E5] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
                     <option value="">Seleccionar tiempo</option>
                     @foreach ($routine_times as $time)
                         <option value="{{ $time->time_id }}"
@@ -166,17 +167,12 @@
                 </div>
             </div>
 
-            {{-- Botones de Acción --}}
-            <div class="flex flex-col-reverse items-center justify-end gap-3 mb-8 md:flex-row">
-                <a href="{{ route('routines.index') }}"
-                    class="w-full md:w-auto px-6 py-3 text-center border-2 border-[#CCE2E5] text-[#2A4043] font-semibold rounded-xl hover:bg-gray-50 transition">
-                    Cancelar
-                </a>
-                <button type="submit"
-                    class="w-full md:w-auto px-8 py-3 bg-[#306067] hover:bg-[#254b51] text-white font-bold rounded-xl transition cursor-pointer">
-                    Crear Rutina
-                </button>
-            </div>
+            {{-- Botón --}}
+            <button type="submit"
+                class="btn border-none w-full mb-10 px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067] dark:bg-[#CCE2E5] dark:text-[#2A4043]">
+                Crear Rutina
+            </button>
+
         </form>
     </section>
 

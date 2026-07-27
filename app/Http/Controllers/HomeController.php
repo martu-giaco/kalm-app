@@ -20,22 +20,15 @@ class HomeController extends Controller
 
         // --- 0. Íconos de categorías y tipos ---
         $category_icons = [
-            'Limpiadores' => asset('images/icons/limpiadores.svg'),
-            'Hidratantes Corporales' => asset('images/icons/hidratantes-corporales.png'),
-            'Sérums' => asset('images/icons/serums.svg'),
-            'Tratamientos' => asset('images/icons/tratamientos.svg'),
-            'Exfoliantes' => asset('images/icons/exfoliacion.svg'),
-            'Shampoo' => asset('images/icons/shampoo.svg'),
-            'Acondicionador' => asset('images/icons/acondicionador.svg'),
-            'Hidratantes' => asset('images/icons/hidratante.svg'),
-            'Protectores Solares' => asset('images/icons/protector-uv.svg'),
-        ];
-
-        $type_icons = [
-            'skincare' => '<svg>...</svg>',
-            'haircare' => '<svg>...</svg>',
-            'limpieza' => '<svg>...</svg>',
-            'sol' => '<svg>...</svg>',
+            'Limpiadores' => ['light' => asset('images/icons/limpiadores.svg'), 'dark' => asset('images/icons/limpiadores-dark.svg')],
+            'Hidratantes Corporales' => ['light' => asset('images/icons/hidratantes-corporales.svg'), 'dark' => asset('images/icons/hidratantes-corporales-dark.svg')],
+            'Sérums' => ['light' => asset('images/icons/serums.svg'), 'dark' => asset('images/icons/serums-dark.svg')],
+            'Tratamientos' => ['light' => asset('images/icons/tratamientos.svg'), 'dark' => asset('images/icons/tratamientos-dark.svg')],
+            'Exfoliantes' => ['light' => asset('images/icons/exfoliacion.svg'), 'dark' => asset('images/icons/exfoliacion-dark.svg')],
+            'Shampoo' => ['light' => asset('images/icons/shampoo.svg'), 'dark' => asset('images/icons/shampoo-dark.svg')],
+            'Acondicionador' => ['light' => asset('images/icons/acondicionador.svg'), 'dark' => asset('images/icons/acondicionador-dark.svg')],
+            'Hidratantes' => ['light' => asset('images/icons/hidratante.svg'), 'dark' => asset('images/icons/hidratante-dark.svg')],
+            'Protectores Solares' => ['light' => asset('images/icons/protector-uv.svg'), 'dark' => asset('images/icons/protector-uv-dark.svg')],
         ];
 
         // --- 1. Categorías ---
@@ -43,7 +36,15 @@ class HomeController extends Controller
             if (!$category->slug) {
                 $category->slug = Str::slug($category->name); // Genera el slug
             }
-            $category->icon_svg = $category_icons[$category->name] ?? '<svg ...></svg>';
+
+            $icon = $category_icons[$category->name] ?? [
+                'light' => asset('images/icons/limpiadores.svg'),
+                'dark' => asset('images/icons/limpiadores.svg'),
+            ];
+
+            $category->icon_light = $icon['light'] ?? asset('images/icons/limpiadores.svg');
+            $category->icon_dark = $icon['dark'] ?? $category->icon_light;
+
             return $category;
         });
 
@@ -65,16 +66,6 @@ class HomeController extends Controller
                 'alt' => 'Banner Promoción',
             ],
         ];
-
-        // --- 4. Tipos de productos con íconos ---
-        $types = Type::all()->map(function ($type) use ($type_icons) {
-            $normalized = strtolower(str_replace([' ', '_'], '', $type->name));
-            return [
-                'name' => ucfirst($type->name),
-                'route' => route('products.type', ['tipo' => $normalized]),
-                'icon_svg' => $type_icons[$normalized] ?? $type_icons['skincare'],
-            ];
-        })->take(6);
 
         $productsForYouQuery = Product::with('brand', 'type');
         $titleForYou = 'Productos recomendados';
@@ -127,7 +118,6 @@ class HomeController extends Controller
             'recentProducts',
             'topRatedProducts',
             'banners',
-            'types',
             'product_sections'
         ));
     }

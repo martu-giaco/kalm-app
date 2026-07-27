@@ -67,7 +67,7 @@ class TestController extends Controller
 
             if (!$value) {
                 return back()->withInput()->with('feedback', [
-                    'message' => 'Falta responder la pregunta #' . ($index + 1), 
+                    'message' => 'Falta responder la pregunta #' . ($index + 1),
                     'type' => 'error'
                 ]);
             }
@@ -192,41 +192,89 @@ class TestController extends Controller
      * GUARDAR RESULTADO
      =========================== */
     public function saveResult(Request $request)
-    {
-        try {
-            $user = Auth::user();
-            if (!$user) return redirect()->route('auth.login');
+{
+    try {
+        $user = Auth::user();
 
-            $testKey = $request->input('test_key', session('test_key'));
-            $resultKey = $request->input('result_key', session('result_key'));
-            $answers = $request->input('answers', session('test_answers'));
-
-            if (!$resultKey || !$testKey) {
-                return redirect()->route('tests.index')->with('feedback', ['message' => 'No hay resultado.', 'type' => 'error']);
-            }
-
-            if (is_string($answers)) {
-                $decoded = json_decode($answers, true);
-                if (json_last_error() === JSON_ERROR_NONE) {
-                    $answers = $decoded;
-                }
-            }
-
-            $this->saveOrUpdateUserTestResult($user, $testKey, $resultKey, $answers);
-
-            return redirect()->route('profile.results')
-                ->with('feedback', ['message' => 'Resultado guardado correctamente.', 'type' => 'success']);
-        } catch (\Exception $e) {
-            Log::error('Error en saveResult', ['error' => $e->getMessage()]);
-            return redirect()->route('profile.results')
-                ->with('feedback', ['message' => 'Ocurrió un error al guardar el resultado: ' . $e->getMessage(), 'type' => 'error']);
+        if (!$user) {
+            return redirect()->route('auth.login');
         }
+
+        $testKey = $request->input('test_key', session('test_key'));
+        $resultKey = $request->input('result_key', session('result_key'));
+        $answers = $request->input('answers', session('test_answers'));
+        $saveOnlyResult = $request->boolean('save_only_result', false);
+
+        if (!$resultKey || !$testKey) {
+            return redirect()->route('tests.index')
+                ->with('feedback', [
+                    'message' => 'No hay resultado.',
+                    'type' => 'error'
+                ]);
+        }
+
+        if (is_string($answers)) {
+            $decoded = json_decode($answers, true);
+
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $answers = $decoded;
+            }
+        }
+
+        $result = $this->saveOrUpdateUserTestResult(
+            $user,
+            $testKey,
+            $resultKey,
+            $answers,
+            $saveOnlyResult
+        );
+
+        if ($result['status'] === 'success') {
+            return redirect()->route('profile.results')
+                ->with('feedback', [
+                    'message' => $saveOnlyResult
+                        ? 'Resultado guardado correctamente.'
+                        : 'Resultado y rutina guardados correctamente.',
+                    'type' => 'success'
+                ]);
+        }
+
+        if ($result['status'] === 'limit_reached') {
+            return redirect()->route('tests.result')
+                ->with('feedback', [
+                    'message' => 'Plan Free permite solo 2 rutinas guardadas.',
+                    'type' => 'warning',
+                    'routine_limit_info' => $result['limit_info'] ?? null
+                ]);
+        }
+
+        return redirect()->route('profile.results')
+            ->with('feedback', [
+                'message' => 'No se pudo guardar el resultado.',
+                'type' => 'error'
+            ]);
+
+    } catch (\Exception $e) {
+        Log::error('Error en saveResult', [
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+
+        return redirect()->route('profile.results')
+            ->with('feedback', [
+                'message' => 'Ocurrió un error al guardar el resultado.',
+                'type' => 'error'
+            ]);
     }
+}
 
     /**
      * Guarda o actualiza (sobreescribe) el resultado del test de un usuario sin duplicarlo.
+     * Verifica el plan del usuario y el límite de rutinas para usuarios free.
+     *
+     * @return array
      */
-    private function saveOrUpdateUserTestResult($user, $testKey, $resultKey, $answers)
+    private function saveOrUpdateUserTestResult( $user, $testKey, $resultKey, $answers, $saveOnlyResult = false)
     {
         $answersToStore = is_array($answers)
             ? json_encode($answers)
@@ -241,14 +289,68 @@ class TestController extends Controller
             ->first();
 
         $routineId = $testResult?->routine_id;
+        $routineCreated = false;
+
+        // Si el usuario eligió guardar solo el resultado,
+        // no crear ninguna rutina.
+        if ($saveOnlyResult) {
+
+            UserTestResult::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'test_key' => $testKey,
+                ],
+                [
+                    'routine_id' => null,
+                    'result_key' => $resultKey,
+                    'answers' => $answersToStore,
+                ]
+            );
+
+            return [
+                'status' => 'success',
+                'routine_created' => false,
+            ];
+        }
 
         // Si no tenía rutina o si cambió el tipo de resultado al rehacer el test
         if ($recommendedRoutine && (!$routineId || ($testResult && $testResult->result_key !== $resultKey))) {
-            $createdRoutine = $this->createRoutineFromRecommended($user, $recommendedRoutine, $testKey);
-            $routineId = $createdRoutine->getKey();
+
+            // Verificar si el usuario puede guardar una nueva rutina
+            $limitInfo = $user->getRoutineLimitInfo();
+
+            if (!$limitInfo['can_create']) {
+                // No puede crear más rutinas - guardar resultado sin rutina
+                UserTestResult::updateOrCreate(
+                    [
+                        'user_id'  => $user->id,
+                        'test_key' => $testKey,
+                    ],
+                    [
+                        'routine_id' => null,
+                        'result_key' => $resultKey,
+                        'answers'    => $answersToStore,
+                    ]
+                );
+
+                return [
+                    'status' => 'limit_reached',
+                    'limit_info' => $limitInfo,
+                ];
+            }
+
+            // Usuario puede crear la rutina
+            try {
+                $createdRoutine = $this->createRoutineFromRecommended($user, $recommendedRoutine, $testKey);
+                $routineId = $createdRoutine->getKey();
+                $routineCreated = true;
+            } catch (\Exception $e) {
+                Log::error('Error creando rutina desde test', ['error' => $e->getMessage()]);
+                // No duplicar error, simplemente no guardar rutina
+            }
         }
 
-        return UserTestResult::updateOrCreate(
+        UserTestResult::updateOrCreate(
             [
                 'user_id'  => $user->id,
                 'test_key' => $testKey,
@@ -259,10 +361,16 @@ class TestController extends Controller
                 'answers'    => $answersToStore,
             ]
         );
+
+        return [
+            'status' => 'success',
+            'routine_created' => $routineCreated,
+        ];
     }
 
     /**
      * Crear una rutina en el perfil del usuario basada en una rutina recomendada
+     * Asume que la validación de límite ya fue hecha
      */
     private function createRoutineFromRecommended($user, $recommendedRoutine, $testKey)
     {

@@ -75,6 +75,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Obtiene el número de rutinas guardadas del usuario.
+     *
+     * @return int
+     */
+    public function getRoutineCount(): int
+    {
+        return $this->routines()->count();
+    }
+
+    /**
      * Verifica si el usuario puede crear una nueva rutina.
      * Los usuarios free solo pueden tener hasta 2 rutinas.
      *
@@ -82,12 +92,35 @@ class User extends Authenticatable
      */
     public function canCreateRoutine(): bool
     {
-        if ($this->role === 'premium') {
+        if ($this->isPremium()) {
             return true;
         }
 
         // Si no es premium, cuenta las rutinas actuales y permite crear si tiene menos de 2
-        return $this->routines()->count() < 2;
+        return $this->getRoutineCount() < 2;
+    }
+
+    /**
+     * Obtiene información detallada sobre el límite de rutinas del usuario.
+     * Útil para validar si puede guardar una nueva rutina desde el test.
+     *
+     * @return array
+     */
+    public function getRoutineLimitInfo(): array
+    {
+        $count = $this->getRoutineCount();
+        $isPremium = $this->isPremium();
+        $limit = $isPremium ? null : 2;
+        $canCreate = $this->canCreateRoutine();
+
+        return [
+            'can_create' => $canCreate,
+            'current_count' => $count,
+            'plan' => $isPremium ? 'premium' : 'free',
+            'limit' => $limit,
+            'remaining' => !$isPremium ? max(0, $limit - $count) : null,
+            'routines' => $this->routines()->select('routine_id', 'name')->get()->toArray(),
+        ];
     }
 
     public function testResults()
