@@ -57,7 +57,12 @@
                                     class="h-21 w-21 rounded-full flex items-center justify-center p-3
                                     @if ($isActive) bg-[#2A4043] text-white @else bg-[var(--kalm-light)] text-[#2A4043] dark:text-[#E9E5E3] @endif">
 
-                                    <img class="w-full" src="{!! $category->icon_svg !!}" alt="{{ $category->name }}">
+                                    <picture>
+                                        @if (!empty($category->icon_dark))
+                                            <source srcset="{{ $category->icon_dark }}" media="(prefers-color-scheme: dark)">
+                                        @endif
+                                        <img class="w-full" src="{{ $category->icon_light ?? $category->icon_dark }}" alt="{{ $category->name }}">
+                                    </picture>
                                 </div>
 
                                 <span class="text-xs font-medium text-[#2A4043] dark:text-[#E9E5E3] mt-2 text-center leading-tight">
