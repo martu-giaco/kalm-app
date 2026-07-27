@@ -35,9 +35,14 @@ return [
     ],
 
     'web_push' => [
-    'public_key' => env('VAPID_PUBLIC_KEY'),
-    'private_key' => env('VAPID_PRIVATE_KEY'),
-    'subject' => env('VAPID_SUBJECT', 'mailto:kalmskinhair@gmail.com'),
-],
+        'public_key' => env('VAPID_PUBLIC_KEY'),
+        'private_key' => env('VAPID_PRIVATE_KEY'),
+        'subject' => env('VAPID_SUBJECT', 'mailto:kalmskinhair@gmail.com'),
+    ],
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
+    ],
 
 ];

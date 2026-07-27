@@ -6,32 +6,31 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
     /**
      * AuthController constructor.
-     *
-     * Aplicamos middleware 'auth' por defecto a todas las acciones y
-     * eximimos únicamente las que deben ser públicas para el flujo de
-     * autenticación/registro.
+     * Middleware 'auth' por defecto a todas las acciones excepto las públicas.
      */
     public function __construct()
     {
-        // Todas las rutas requieren auth excepto las listadas en except()
         $this->middleware('auth')->except([
             'logOrReg',
             'login',
             'authenticate',
             'register',
             'store',
+            'redirectToGoogle',     
+            'handleGoogleCallback',
         ]);
     }
 
     /**
      * Mostrar pantalla login o registrarse (vista híbrida).
-     * Si el usuario ya está autenticado lo redirigimos al home.
      */
     public function logOrReg()
     {
@@ -44,7 +43,6 @@ class AuthController extends Controller
 
     /**
      * Mostrar formulario de login.
-     * Si el usuario ya está autenticado lo redirigimos al home.
      */
     public function login()
     {
@@ -56,36 +54,30 @@ class AuthController extends Controller
     }
 
     /**
-     * Procesar login.
+     * Procesar login tradicional.
      */
     public function authenticate(Request $request)
     {
-        // Validación básica
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        // Intentamos autenticar
         if (Auth::attempt($credentials)) {
-            // Regenerar sesión por seguridad
             $request->session()->regenerate();
 
-            // Si el usuario es admin, redirigir al panel de admin
             $user = Auth::user();
-            if ($user && ((isset($user->role) && $user->role === 'admin'))) {
+            if ($user && isset($user->role) && $user->role === 'admin') {
                 return redirect()
                     ->route('admin.home')
                     ->with('feedback.message', 'Sesión iniciada con éxito.');
             }
 
-            // Redirigir al intended o a home
             return redirect()
                 ->intended(route('home'))
                 ->with('feedback.message', 'Sesión iniciada con éxito.');
         }
 
-        // Si falla la autenticación devolvemos error
         throw ValidationException::withMessages([
             'email' => ['Las credenciales ingresadas no coinciden con nuestros registros.'],
         ])->redirectTo(route('auth.login'));
@@ -93,7 +85,6 @@ class AuthController extends Controller
 
     /**
      * Mostrar formulario de registro.
-     * Si el usuario ya está autenticado lo redirigimos al home.
      */
     public function register()
     {
@@ -105,11 +96,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Procesar registro (guardamos temporalmente en sesión y redirigimos a Términos).
-     *
-     * NOTA: Guardamos la contraseña en sesión temporalmente para poder crear el usuario
-     * luego de que acepte los términos. La sesión debe expirar si el usuario no completa
-     * el flujo; en producción podés considerar alternativas (crear usuario "pendiente").
+     * Procesar registro (almacena en sesión antes de aceptación de términos).
      */
     public function store(Request $request)
     {
@@ -119,27 +106,22 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Guardamos los datos de registro temporalmente en sesión
         session([
             'registration' => [
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'password' => $data['password'], // temporal; se hasheará al crear el usuario
+                'password' => $data['password'],
             ],
-            // opcional: guardamos timestamp para expiración manual
             'registration_created_at' => now()->toDateTimeString(),
         ]);
 
-        // Redirigir a la vista de términos para que el usuario acepte
         return redirect()
             ->route('auth.terms.show')
             ->with('feedback.message', 'Por favor, revisar y aceptar los Términos y Condiciones para continuar con el registro.');
     }
 
     /**
-     * Logout.
-     *
-     * Protegido por auth (constructor). Cierra sesión y redirige al login.
+     * Cierre de sesión.
      */
     public function logout(Request $request)
     {
@@ -154,9 +136,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Listar usuarios (index).
-     *
-     * Protegido por auth (constructor). Si necesitás además admin-only, aplicá un middleware extra.
+     * Listar usuarios (Admin).
      */
     public function index()
     {
@@ -165,13 +145,77 @@ class AuthController extends Controller
     }
 
     /**
-     * Ver un usuario por id.
-     *
-     * Protegido por auth (constructor).
+     * Ver un usuario por ID.
      */
     public function view($id)
     {
         $user = User::findOrFail($id);
         return view('admin.users.view', compact('user'));
+    }
+
+    /**
+     * Redirige al usuario a la autenticación de Google.
+     */
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Recibe la respuesta Callback de Google.
+     */
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+
+            // Buscar si ya existe el usuario por google_id o por email
+            $user = User::where('google_id', $googleUser->getId())
+                ->orWhere('email', $googleUser->getEmail())
+                ->first();
+
+            if ($user) {
+                // Actualizar credenciales y tokens de vinculación
+                $user->update([
+                    'google_id' => $googleUser->getId(),
+                    'google_access_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken ?? $user->google_refresh_token,
+                ]);
+            } else {
+                // Formatear nombre seguro respetando la longitud
+                $rawName = $googleUser->getName() ?? $googleUser->getNickname() ?? 'Usuario';
+                $formattedName = Str::limit($rawName, 10, '');
+
+                // Crear nuevo usuario asignando valores por defecto
+                $user = User::create([
+                    'name' => !empty($formattedName) ? $formattedName : 'Usuario',
+                    'email' => $googleUser->getEmail(),
+                    'password' => Hash::make(Str::random(24)),
+                    'google_id' => $googleUser->getId(),
+                    'google_access_token' => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken,
+                    'role' => 'user',
+                    'accepted_terms' => true,
+                    'terms_accepted_at' => now(),
+                ]);
+            }
+
+            // Iniciar sesión y recordar usuario
+            Auth::login($user, true);
+
+            return redirect()
+                ->intended(route('home'))
+                ->with('feedback.message', '¡Bienvenida/o! Sesión iniciada con Google.');
+
+        } catch (\Exception $e) {
+            // Si la aplicación está en modo de depuración, muestra la excepción completa
+            if (config('app.debug')) {
+                throw $e;
+            }
+
+            return redirect()
+                ->route('auth.login')
+                ->with('error', 'Ocurrió un inconveniente al conectar con Google. Por favor, intentá nuevamente.');
+        }
     }
 }

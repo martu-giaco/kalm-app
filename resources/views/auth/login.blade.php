@@ -21,37 +21,58 @@
 
 <body class="min-h-screen bg-center bg-cover header-bg">
 
-    <div class="flex flex-col justify-between max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto w-full">
+    <div class="flex flex-col justify-between w-full max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto">
         <picture class="h-24 mx-auto mb-6">
-                <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)" type="image/svg+xml" />
-                <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-24 mx-auto mb-6" />
-            </picture>
+            <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)"
+                type="image/svg+xml" />
+            <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-20 mx-auto mb-6" />
+        </picture>
         <div>
             <h1 class="text-2xl font-bold text-[#2A4043] dark:text-[#CCE2E5]">Iniciar Sesión</h1>
 
-        <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-4">
-            @csrf
+            <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-4">
+                @csrf
 
-            <div>
-                <label for="email" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Email</label>
-                <input id="email" name="email" aria-label="Email" type="email" placeholder="Email"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
-                    required>
+                <div>
+                    <label for="email" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Email</label>
+                    <input id="email" name="email" aria-label="Email" type="email" placeholder="Email"
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
+                        required>
+                </div>
+
+                <div>
+                    <label for="password"
+                        class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Contraseña</label>
+                    <input id="password" name="password" aria-label="Contraseña" type="password"
+                        placeholder="Contraseña"
+                        class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
+                        required>
+                </div>
+
+                <input type="submit" value="Ingresar"
+                    class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067] dark:bg-[#E9E5E3] dark:hover:bg-[#E9E5E3] dark:text-[#306067] border-none">
+
+                <a class="block text-center font-bold text-sm text-[#2A4043] mt-2 dark:text-[#E9E5E3]"
+                    href="#">Olvidé la
+                    contraseña</a>
+            </form>
+            <!-- Botón de Google Social Login -->
+            <div class="my-4">
+                <a href="{{ route('auth.google.redirect') }}"
+                    class="flex items-center justify-center w-full gap-3 px-5 py-3 font-bold text-gray-700 transition-all duration-200 bg-white border border-gray-300 shadow-sm hover:bg-gray-100 rounded-xl">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#4285F4"
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path fill="#34A853"
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path fill="#FBBC05"
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                        <path fill="#EA4335"
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                    </svg>
+                    Continuar con Google
+                </a>
             </div>
-
-            <div>
-                <label for="password" class="block mb-1 text-sm text-[#2A4043] dark:text-[#E9E5E3]">Contraseña</label>
-                <input id="password" name="password" aria-label="Contraseña" type="password" placeholder="Contraseña"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 border-[#37A0AF] placeholder-[#CCE2E5] focus:outline-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] dark:border-[#CCE2E5]"
-                    required>
-            </div>
-
-            <input type="submit" value="Ingresar"
-                class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer disabled:opacity-80 disabled:cursor-not-allowed hover:bg-[#306067] bg-[#306067] dark:bg-[#E9E5E3] dark:hover:bg-[#E9E5E3] dark:text-[#306067] border-none">
-
-            <a class="block text-center font-bold text-sm text-[#2A4043] mt-2 dark:text-[#E9E5E3]" href="#">Olvidé la
-                contraseña</a>
-        </form>
         </div>
 
         <div>

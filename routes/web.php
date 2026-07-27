@@ -303,3 +303,7 @@ Route::get('/{routine}/notify/postpone', [RoutineController::class, 'notifyPostp
     ->name('notify.postpone');
     });
 });
+
+// Rutas de Login con Google
+Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');

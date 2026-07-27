@@ -26,6 +26,9 @@ class User extends Authenticatable
         'terms_accepted_at',
         'favoritos',
         'bookmarked_blogs',
+        'google_id',
+        'google_access_token',
+        'google_refresh_token',
     ];
 
     protected $hidden = [
