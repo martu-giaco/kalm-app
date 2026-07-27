@@ -36,9 +36,9 @@
 
     <section>
         {{-- Resultados container --}}
-        <div class="min-h-full pb-6 bg-white pt-7 rounded-t-3xl dark:bg-[#2A4043]">
+        <div class="min-h-full pb-20 bg-white pt-7 rounded-t-3xl dark:bg-[#2A4043]">
             {{-- Cabecera resultados --}}
-            <div class="px-5 flex items-start justify-between w-full gap-4">
+            <div class="flex items-start justify-between w-full gap-4 px-5">
                 <div class="flex justify-between w-full">
                     @php
                         $total = method_exists($products, 'total')
@@ -200,7 +200,7 @@
             </div>
 
             @if(request()->hasAny(['q','type_id','category_id','skin_type_id','concern_id']))
-            <div class="flex flex-wrap gap-2 mt-3 px-5">
+            <div class="flex flex-wrap gap-2 px-5 mt-3">
                 {{-- Tipo --}}
                 @if(request('type_id'))
                     @php $type = $types->firstWhere('id', request('type_id')); @endphp
@@ -310,6 +310,7 @@
 
             toggle();
         });
+    </script>
 
 
 </x-layout>
