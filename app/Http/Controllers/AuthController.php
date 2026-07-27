@@ -194,7 +194,7 @@ class AuthController extends Controller
                     'google_id' => $googleUser->getId(),
                     'google_access_token' => $googleUser->token,
                     'google_refresh_token' => $googleUser->refreshToken,
-                    'role' => 'user',
+                    'role' => 'free',
                     'accepted_terms' => true,
                     'terms_accepted_at' => now(),
                 ]);
