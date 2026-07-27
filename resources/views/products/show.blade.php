@@ -207,7 +207,7 @@
                 @endphp
 
                 <div class="pt-6 mt-6 border-t">
-                    <h2 class="text-xl font-bold text-[#306067] mb-2">{{ $section['title'] }}</h2>
+                    <h2 class="text-xl font-bold text-[#306067] dark:text-[#CCE2E5] mb-2">{{ $section['title'] }}</h2>
                     <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                         @foreach ($products_with_tag as $sectionProduct)
                             <x-product-card :product="$sectionProduct" />
@@ -218,27 +218,27 @@
 
             {{-- Detalles del producto --}}
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-semibold text-[#164d4f] mb-2">Detalles del producto</h2>
+                <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Detalles del producto</h2>
                 <div class="flex flex-wrap gap-4">
 
                     @if (!empty($product->ingredients))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="mb-1 text-sm text-gray-500">Ingredientes</h3>
-                            <p class="text-sm font-bold">{{ Str::limit($product->ingredients, 50) }}</p>
+                            <h3 class="mb-1 text-sm text-[#164d4f]">Ingredientes</h3>
+                            <p class="text-sm font-bold text-[#2A4043]">{{ Str::limit($product->ingredients, 50) }}</p>
                         </div>
                     @endif
 
                     @if (!empty($product->activos))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="mb-1 text-sm text-gray-500">Activos</h3>
-                            <p class="text-sm font-bold">{{ Str::limit($product->activos, 50) }}</p>
+                            <h3 class="mb-1 text-sm text-[#164d4f]">Activos</h3>
+                            <p class="text-sm font-bold text-[#2A4043]">{{ Str::limit($product->activos, 50) }}</p>
                         </div>
                     @endif
 
                     @if (!empty($product->formato))
                         <div class="p-3 bg-white shadow-md w-36 rounded-xl">
-                            <h3 class="mb-1 text-sm text-gray-500">Formato</h3>
-                            <p class="text-sm font-bold">{{ $product->formato }}</p>
+                            <h3 class="mb-1 text-sm text-[#164d4f]">Formato</h3>
+                            <p class="text-sm font-bold text-[#2A4043]">{{ $product->formato }}</p>
                         </div>
                     @endif
 
@@ -246,35 +246,35 @@
             </div>
 
             <div class="pt-6 mt-6 border-t">
-                <h2 class="text-lg font-bold text-[#164d4f] mb-2">Ingredientes</h2>
-                <p class="text-sm font-bold">{{ Str::limit($product->ingredients, 50) }}</p>
+                <h2 class="text-lg font-bold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Ingredientes</h2>
+                <p class="text-sm font-bold ">{{ Str::limit($product->ingredients, 50) }}</p>
             </div>
         </article>
     </div>
 
     <input type="checkbox" id="modal-routines" class="modal-toggle" />
     <div id="modal-routines" class="modal">
-        <div class="max-w-2xl p-6 modal-box w-90">
+        <div class="max-w-2xl p-6 modal-box w-90 bg-white dark:bg-[#2A4043]">
             <div class="flex items-center justify-between">
                 <label for="modal-routines"
                     class="absolute btn btn-sm btn-circle btn-ghost focus-visible:outline-0 right-4 top-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960" fill="#306067"
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#306067] dark:fill-[#CCE2E5]" viewBox="0 -960 960 960"
                         aria-hidden="true">
                         <path
                             d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                     </svg>
                 </label>
-                <h3 class="text-xl font-bold mb-4 text-[#306067]">Selecciona la rutina</h3>
+                <h3 class="text-xl font-bold mb-4 text-[#306067] dark:text-[#CCE2E5]">Selecciona la rutina</h3>
             </div>
 
             <div class="space-y-3">
                 @if (isset($routines) && $routines->count())
                     <div class="space-y-2 rounded-lg">
                         <a href="{{ route('routines.create') }}"
-                            class="rounded-lg p-3 bg-[#306067] flex items-center justify-between shadow-xl">
-                            <p class="text-white">Nueva Rutina</p>
+                            class="rounded-lg p-3 bg-[#306067] dark:bg-[#CCE2E5] flex items-center justify-between shadow-xl">
+                            <p class="dark:text-[#306067] text-[#CCE2E5]">Nueva Rutina</p>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                width="24px" fill="#FFFFFF">
+                                width="24px" class="fill-[#CCE2E5] dark:fill-[#306067]">
                                 <path
                                     d="M434.5-434.5H237.37q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H434.5v-197.13q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17t32.33 13.17q13.17 13.18 13.17 32.33v197.13h197.13q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H525.5v197.13q0 19.15-13.17 32.33-13.18 13.17-32.33 13.17t-32.33-13.17q-13.17-13.18-13.17-32.33V-434.5Z" />
                             </svg>

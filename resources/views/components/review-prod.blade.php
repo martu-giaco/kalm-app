@@ -1,4 +1,4 @@
-<div class="p-4 mb-4 bg-white rounded-lg shadow-md border-l-4 border-[#37A0AF]">
+<div class="p-4 mb-4 bg-white dark:bg-[#2A4043] rounded-lg shadow-md border-l-4 border-[#37A0AF]">
     <x-product-card-hor :product="$product"/>
     <div class="mt-4">
             <div class="flex justify-between items-center gap-2 mb-2">

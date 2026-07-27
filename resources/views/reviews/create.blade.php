@@ -1,7 +1,7 @@
 <x-layout :title="'Crear reseña de ' . $product->name">
-    <div class="max-w-3xl p-6 mx-auto mt-6 bg-white shadow-md rounded-t-3xl">
+    <div class="max-w-3xl p-6 mx-auto mt-6 bg-white dark:bg-[#2A4043]  shadow-md rounded-t-3xl">
 
-        <h1 class="text-2xl font-bold text-[#164d4f] mb-4">Crear reseña</h1>
+        <h1 class="text-2xl font-bold text-[#164d4f] dark:text-[#CCE2E5] mb-4">Crear reseña</h1>
 
         <!-- Información del producto -->
         <x-product-card-hor :product="$product"/>
@@ -12,7 +12,7 @@
 
                 <!-- Calificación con DaisyUI Mask Star -->
                 <div>
-                    <p>Calificación</p>
+                    <p class="text-[#164d4f] dark:text-[#CCE2E5]">Calificación</p>
                     <div class="flex flex-row justify-center gap-2 mt-2 rating">
                         @for ($i = 1; $i <= 5; $i++)
                             <input type="radio" name="rating" value="{{ $i }}"
@@ -27,7 +27,7 @@
 
                 <!-- Comentario -->
                 <div>
-                    <p class="mb-2">Reseña</p>
+                    <p class="text-[#164d4f] dark:text-[#CCE2E5] mb-2">Reseña</p>
                     <textarea name="comment" id="comment" rows="5" placeholder="Contános tu experiencia con este producto..."
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#37A0AF] resize-none">{{ old('comment') }}</textarea>
                     @error('comment')
@@ -36,11 +36,11 @@
                 </div>
 
                 <button type="submit"
-                    class="mt-1 btn w-full inline-flex border-2 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">
+                    class="border-none mt-1 btn w-full inline-flex border-2 bg-[#306067] text-white px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">
                     Publicar Reseña
                 </button>
                 <a href="{{ route('products.show', $product->id) }}"
-                        class=" btn w-full inline-flex border-2 border-[#306067] text-[#306067] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">Cancelar</a>
+                        class=" btn w-full inline-flex border-2 border-[#306067] text-[#306067] dark:border-[#CCE2E5] dark:text-[#CCE2E5] bg-transparent px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-center gap-2 text-sm font-bold">Cancelar</a>
             </form>
         @else
             <div class="p-6 border border-yellow-200 rounded-lg bg-yellow-50">
