@@ -28,6 +28,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Tabla de necesidades de rutina
         Schema::create('routine_needs', function (Blueprint $table) {
             $table->bigIncrements('need_id');
             $table->string('name');
@@ -42,6 +43,16 @@ return new class extends Migration
             // Columnas para notificaciones del dispositivo
             $table->time('reminder_time')->nullable();
             $table->boolean('is_reminder_enabled')->default(false);
+
+            // Frecuencia y configuración del recordatorio
+            $table->string('reminder_frequency')->default('none'); // none | daily | weekly | every_x_days
+            $table->json('reminder_days')->nullable(); // ['mon','wed','fri'] para frecuencia semanal
+            $table->unsignedTinyInteger('reminder_interval')->nullable(); // cada X días
+
+            // Seguimiento del estado del recordatorio (push notifications)
+            $table->date('last_completed_at')->nullable(); // última fecha en que se marcó como completada
+            $table->timestamp('last_notified_at')->nullable(); // última vez que se envió la notificación
+            $table->timestamp('snoozed_until')->nullable(); // si el usuario pospuso, hasta cuándo
 
             $table->timestamps();
 
@@ -64,7 +75,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('routine_id')->references('routine_id')->on('routines')->onDelete('cascade');
-            // Corregido: vuelve a apuntar a la columna 'id' de la tabla 'products'
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }

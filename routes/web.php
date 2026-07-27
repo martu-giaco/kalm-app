@@ -25,6 +25,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BrandController;
 use App\Models\Routine;
 use App\Notifications\RoutineReminderNotification;
+use App\Http\Controllers\PushSubscriptionController;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -62,6 +63,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+
+
+Route::middleware('auth')->group(function () {
+    Route::post('/push/subscribe', [PushSubscriptionController::class, 'store'])->name('push.subscribe');
+    Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'destroy'])->name('push.unsubscribe');
+});
 
 // Autenticación
 Route::get('/', [AuthController::class, 'logOrReg'])->name('auth.logreg');
@@ -276,5 +283,20 @@ Route::get('/premium/error', [SubscriptionController::class, 'failure'])->name('
 
         Route::post('/{routine_id}/add-product', [RoutineController::class, 'addProduct'])->name('addProduct');
         Route::delete('/{routine_id}/product/{product_id}', [RoutineController::class, 'removeProduct'])->name('product.remove');
+        Route::post('/{routine}/complete', [RoutineController::class, 'complete'])
+    ->middleware('auth')
+    ->name('complete');
+
+Route::post('/{routine}/postpone', [RoutineController::class, 'postpone'])
+    ->middleware('auth')
+    ->name('postpone');
+
+Route::get('/{routine}/notify/complete', [RoutineController::class, 'notifyComplete'])
+    ->middleware('signed')
+    ->name('notify.complete');
+
+Route::get('/{routine}/notify/postpone', [RoutineController::class, 'notifyPostpone'])
+    ->middleware('signed')
+    ->name('notify.postpone');
     });
 });

@@ -81,50 +81,57 @@ class RoutineController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'time_id' => 'nullable|exists:routine_times,time_id',
-            'type_id' => 'nullable|exists:types,id',
-            'need_id' => 'nullable|exists:routine_needs,need_id',
-            'products' => 'nullable|array',
-            'products.*' => 'nullable|exists:products,id',
-            'reminder_time' => 'nullable|date_format:H:i',
-            'is_reminder_enabled' => 'boolean',
-        ]);
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'time_id' => 'nullable|exists:routine_times,time_id',
+        'type_id' => 'nullable|exists:types,id',
+        'need_id' => 'nullable|exists:routine_needs,need_id',
+        'products' => 'nullable|array',
+        'products.*' => 'nullable|exists:products,id',
+        'reminder_time' => 'nullable|date_format:H:i',
+        'is_reminder_enabled' => 'boolean',
+        'reminder_frequency' => 'required|string|in:none,daily,weekly,every_x_days',
+        'reminder_days' => 'nullable|array',
+        'reminder_days.*' => 'string|in:mon,tue,wed,thu,fri,sat,sun',
+        'reminder_interval' => 'nullable|integer|min:1|max:30',
+    ]);
 
-        $user = Auth::user();
-        if ($user && !$user->canCreateRoutine()) {
-            return redirect()->route('routines.index')
-                ->with('feedback', [
-                    'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Prueba actualizar a Premium.', 
-                    'type' => 'error'
-                ]);
-        }
-
-        $routine = new Routine();
-        $routine->name = $validated['name'];
-        $routine->user_id = $user->getKey(); // Método seguro para obtener la PK del usuario
-        $routine->time_id = $validated['time_id'] ?? null;
-        $routine->type_id = $validated['type_id'] ?? null;
-        $routine->need_id = $validated['need_id'] ?? null;
-        $routine->reminder_time = $validated['reminder_time'] ?? null;
-        $routine->is_reminder_enabled = $request->has('is_reminder_enabled');
-        $routine->save();
-
-        if (!empty($validated['products'])) {
-            $productIds = array_filter($validated['products'], fn($id) => !empty($id));
-            if (!empty($productIds)) {
-                $routine->products()->sync($productIds);
-            }
-        }
-
+    $user = Auth::user();
+    if ($user && !$user->canCreateRoutine()) {
         return redirect()->route('routines.index')
             ->with('feedback', [
-                'message' => 'Rutina creada correctamente.', 
-                'type' => 'success'
+                'message' => 'Los usuarios free solo pueden crear hasta 2 rutinas. Prueba actualizar a Premium.', 
+                'type' => 'error'
             ]);
     }
+
+    $routine = new Routine();
+    $routine->name = $validated['name'];
+    $routine->user_id = $user->getKey();
+    $routine->time_id = $validated['time_id'] ?? null;
+    $routine->type_id = $validated['type_id'] ?? null;
+    $routine->need_id = $validated['need_id'] ?? null;
+    $routine->reminder_time = $validated['reminder_time'] ?? null;
+    $routine->is_reminder_enabled = $request->has('is_reminder_enabled');
+    $routine->reminder_frequency = $validated['reminder_frequency'] ?? 'none';
+    $routine->reminder_days = $validated['reminder_days'] ?? null;
+    $routine->reminder_interval = $validated['reminder_interval'] ?? null;
+    $routine->save();
+
+    if (!empty($validated['products'])) {
+        $productIds = array_filter($validated['products'], fn($id) => !empty($id));
+        if (!empty($productIds)) {
+            $routine->products()->sync($productIds);
+        }
+    }
+
+    return redirect()->route('routines.index')
+        ->with('feedback', [
+            'message' => 'Rutina creada correctamente.', 
+            'type' => 'success'
+        ]);
+}
 
     public function show($routine_id)
     {
@@ -298,4 +305,50 @@ class RoutineController extends Controller
             abort(403, 'No tenés permiso para realizar esta acción.');
         }
     }
+
+    public function complete(Routine $routine)
+{
+    $this->authorizeOwner($routine);
+    $routine->markCompletedToday();
+
+    return redirect()->back()->with('feedback', [
+        'message' => '¡Rutina marcada como completada por hoy! 🎉',
+        'type' => 'success',
+    ]);
+}
+
+public function postpone(Routine $routine)
+{
+    $this->authorizeOwner($routine);
+    $routine->snooze(15);
+
+    return redirect()->back()->with('feedback', [
+        'message' => 'Recordatorio pospuesto 15 minutos.',
+        'type' => 'success',
+    ]);
+}
+
+public function notifyComplete(Routine $routine)
+{
+    $routine->markCompletedToday();
+
+    return response(
+        '<html><body style="font-family:sans-serif;text-align:center;padding:40px;">
+            <h2>¡Listo! Marcamos tu rutina como completada 🎉</h2>
+            <p>Ya podés cerrar esta pestaña.</p>
+        </body></html>'
+    );
+}
+
+public function notifyPostpone(Routine $routine)
+{
+    $routine->snooze(15);
+
+    return response(
+        '<html><body style="font-family:sans-serif;text-align:center;padding:40px;">
+            <h2>Pospusimos tu recordatorio 15 minutos ⏰</h2>
+            <p>Ya podés cerrar esta pestaña.</p>
+        </body></html>'
+    );
+}
 }

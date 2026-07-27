@@ -2,66 +2,30 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Routine;
-use Carbon\Carbon;
+use App\Services\PushNotificationService;
+use Illuminate\Console\Command;
+use Illuminate\Support\Carbon;
 
 class SendRoutineReminders extends Command
 {
     protected $signature = 'routines:send-reminders';
-    protected $description = 'Envía notificaciones push a los usuarios que deben realizar su rutina ahora';
+    protected $description = 'Revisa las rutinas con recordatorio activo y envía notificaciones push cuando corresponda';
 
-    public function handle()
+    public function handle(PushNotificationService $pushService): int
     {
         $now = Carbon::now();
-        $currentTime = $now->format('H:i'); // Ej: "08:30"
-        $currentDayName = strtolower($now->format('D')); // Ej: "mon", "tue"...
 
-        // 1. Buscar rutinas activas cuya hora coincida con el minuto actual
-        $routines = Routine::where('is_reminder_enabled', true)
-            ->where('reminder_time', $currentTime)
-            ->with('user')
-            ->get();
+        Routine::where('is_reminder_enabled', true)
+            ->whereNotNull('reminder_time')
+            ->chunk(100, function ($routines) use ($now, $pushService) {
+                foreach ($routines as $routine) {
+                    if ($routine->isDueNow($now)) {
+                        $pushService->sendRoutineReminder($routine);
+                    }
+                }
+            });
 
-        foreach ($routines as $routine) {
-            if ($this->shouldSendToday($routine, $now, $currentDayName)) {
-                $this->dispatchPushNotification($routine);
-            }
-        }
+        return self::SUCCESS;
     }
-
-    private function shouldSendToday($routine, $now, $currentDayName)
-    {
-        // Validar lógica según frecuencia (diario, semanal, o x días)
-        if ($routine->reminder_frequency === 'daily') {
-            return true;
-        }
-
-        if ($routine->reminder_frequency === 'weekly') {
-    // Como ya es un array por el Cast de Eloquent, no hace falta el json_decode
-    $days = $routine->reminder_days ?? []; 
-    return in_array($currentDayName, $days);
-}
-
-        if ($routine->reminder_frequency === 'every_x_days') {
-            // Validar la diferencia de días usando la última fecha de ejecución guardada
-            // o calculando los días transcurridos desde que se creó la rutina
-            $createdAt = Carbon::parse($routine->created_at)->startOfDay();
-            $diffInDays = $now->startOfDay()->diffInDays($createdAt);
-            $interval = $routine->reminder_interval ?? 1;
-
-            return ($diffInDays % $interval) === 0;
-        }
-
-        return false;
-    }
-
-    private function dispatchPushNotification($routine)
-{
-    $user = $routine->user;
-    if (!$user) return;
-
-    // Descomentar e instanciar la clase de notificación real de tu app
-    $user->notify(new \App\Notifications\RoutineReminderNotification($routine));
-}
 }

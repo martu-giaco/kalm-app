@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="vapid-public-key" content="{{ config('services.web_push.public_key') }}">
 
     <title>{{ $title ?? 'Kälm - Skincare & Haircare' }}</title>
     <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-96x96.png') }}" sizes="96x96" />
@@ -66,9 +67,11 @@
     @endauth
 
     <script>
-        window.kalmFavoriteState = window.kalmFavoriteState || { isProcessing: false };
+        window.kalmFavoriteState = window.kalmFavoriteState || {
+            isProcessing: false
+        };
 
-        window.toggleFavorito = function (productId, btn) {
+        window.toggleFavorito = function(productId, btn) {
             if (window.kalmFavoriteState.isProcessing) {
                 return;
             }
@@ -80,37 +83,37 @@
             checkbox.checked = !initialState;
 
             fetch(`/productos/${productId}/favorito`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
-                }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Error del servidor');
-                return res.json();
-            })
-            .then(data => {
-                checkbox.checked = data.favorito;
-
-                if (!data.favorito && window.location.pathname.includes('favoritos')) {
-                    const card = btn.closest('a');
-                    if (card) {
-                        card.style.transition = 'all 0.3s ease';
-                        card.style.opacity = '0';
-                        card.style.transform = 'scale(0.95)';
-
-                        setTimeout(() => card.remove(), 300);
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
                     }
-                }
-            })
-            .catch(() => {
-                checkbox.checked = initialState;
-                alert('Error al actualizar favorito');
-            })
-            .finally(() => {
-                window.kalmFavoriteState.isProcessing = false;
-            });
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error('Error del servidor');
+                    return res.json();
+                })
+                .then(data => {
+                    checkbox.checked = data.favorito;
+
+                    if (!data.favorito && window.location.pathname.includes('favoritos')) {
+                        const card = btn.closest('a');
+                        if (card) {
+                            card.style.transition = 'all 0.3s ease';
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.95)';
+
+                            setTimeout(() => card.remove(), 300);
+                        }
+                    }
+                })
+                .catch(() => {
+                    checkbox.checked = initialState;
+                    alert('Error al actualizar favorito');
+                })
+                .finally(() => {
+                    window.kalmFavoriteState.isProcessing = false;
+                });
         };
     </script>
 
@@ -134,10 +137,11 @@
                         @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
                 @else
                 href="{{ route('admin.home') }}" @endif>
-                <picture class="h-8 flex ps-2">
-                    <source srcset="{{ asset('images/logo-kalm-light.svg') }}" class="h-8" media="(prefers-color-scheme: dark)" type="image/svg+xml" />
-                    <img src="{{ asset('images/logo-kalm.svg') }}" alt="Kälm logo" class="h-8">
-                </picture>
+                        <picture class="flex h-8 ps-2">
+                            <source srcset="{{ asset('images/logo-kalm-light.svg') }}" class="h-8"
+                                media="(prefers-color-scheme: dark)" type="image/svg+xml" />
+                            <img src="{{ asset('images/logo-kalm.svg') }}" alt="Kälm logo" class="h-8">
+                        </picture>
 
                     </a>
 
@@ -149,7 +153,11 @@
                                 @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
                         @else
                         href="{{ route('admin.home') }}" @endif>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" class="fill-[#306067] dark:fill-[#E9E5E3] w-auto h-8" ><path d="M200-200q-17 0-28.5-11.5T160-240q0-17 11.5-28.5T200-280h40v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h40q17 0 28.5 11.5T800-240q0 17-11.5 28.5T760-200H200ZM480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
+                                    class="fill-[#306067] dark:fill-[#E9E5E3] w-auto h-8">
+                                    <path
+                                        d="M200-200q-17 0-28.5-11.5T160-240q0-17 11.5-28.5T200-280h40v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h40q17 0 28.5 11.5T800-240q0 17-11.5 28.5T760-200H200ZM480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Z" />
+                                </svg>
                             </a>
 
                             <!-- Avatar y nombre -->
@@ -449,7 +457,8 @@
 
         <div class="z-50 drawer-side">
             <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay"></label>
-            <div class="flex flex-col justify-between min-h-full p-0 bg-white menu w-80 rounded-l-3xl dark:bg-[#2A4043]">
+            <div
+                class="flex flex-col justify-between min-h-full p-0 bg-white menu w-80 rounded-l-3xl dark:bg-[#2A4043]">
                 @auth
                     <div>
                         <div class="flex flex-col border-b p-5 pt-5 border-[#CCE2E5]">
@@ -471,7 +480,9 @@
                                     </div>
                                 @endif
                                 <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#2A4043] dark:fill-[#E9E5E3]" viewBox="0 -960 960 960" aria-hidden="true">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-7 w-7 fill-[#2A4043] dark:fill-[#E9E5E3]" viewBox="0 -960 960 960"
+                                        aria-hidden="true">
                                         <path
                                             d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                                     </svg>
@@ -481,7 +492,8 @@
                             <div class="flex items-center justify-between mt-4">
                                 <div>
                                     <p class="text-md text-[#37A0AF] dark:text-[#CCE2E5]">Hola,</p>
-                                    <h2 class="text-4xl text-[#306067] dark:text-[#E9E5E3]">{{ auth()->user()->name }}</h2>
+                                    <h2 class="text-4xl text-[#306067] dark:text-[#E9E5E3]">{{ auth()->user()->name }}
+                                    </h2>
                                 </div>
 
                                 <a href="{{ route('profile.show') }}">
@@ -656,7 +668,7 @@
     @auth
         <script>
             if ('serviceWorker' in navigator && 'PushManager' in window) {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('/service-worker.js')
                     .then(function(swReg) {
                         console.log('Service Worker registrado correctamente.');
 
@@ -671,20 +683,23 @@
                                         userVisibleOnly: true,
                                         // 3. CORRECCIÓN: Inyectar dinámicamente tu clave pública VAPID de Laravel
                                         // Cambiá 'VAPID_PUBLIC_KEY' por la variable exacta de tu .env o config
-                                        applicationServerKey: urlB64ToUint8Array("{{ env('VAPID_PUBLIC_KEY') }}")
+                                        applicationServerKey: urlB64ToUint8Array(
+                                            "{{ env('VAPID_PUBLIC_KEY') }}")
                                     })
                                     .then(function(subscription) {
                                         // Enviar la suscripción estructurada a tu ruta de Laravel
                                         fetch('/push-subscriptions', {
-                                            method: 'POST',
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'X-CSRF-TOKEN': csrfToken
-                                            },
-                                            body: JSON.stringify(subscription)
-                                        })
-                                        .then(res => console.log('Suscripción enviada al servidor backend con éxito.'))
-                                        .catch(err => console.error('Error al enviar la suscripción al servidor:', err));
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRF-TOKEN': csrfToken
+                                                },
+                                                body: JSON.stringify(subscription)
+                                            })
+                                            .then(res => console.log(
+                                                'Suscripción enviada al servidor backend con éxito.'))
+                                            .catch(err => console.error(
+                                                'Error al enviar la suscripción al servidor:', err));
                                     })
                                     .catch(function(err) {
                                         console.error('Error al suscribir el usuario a Pushmanager:', err);
@@ -707,5 +722,9 @@
             }
         </script>
     @endauth
+    @auth
+        <script src="{{ asset('js/push-notifications.js') }}" defer></script>
+    @endauth
 </body>
+
 </html>
