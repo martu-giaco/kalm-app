@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Type;
+use App\Models\SkinType;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        // --- 0. Íconos de categorías y tipos ---
+        // --- Íconos ---
         $category_icons = [
             'Limpiadores' => ['light' => asset('images/icons/limpiadores.svg'), 'dark' => asset('images/icons/limpiadores-dark.svg')],
             'Hidratantes Corporales' => ['light' => asset('images/icons/hidratantes-corporales.svg'), 'dark' => asset('images/icons/hidratantes-corporales-dark.svg')],
@@ -31,7 +32,7 @@ class HomeController extends Controller
             'Protectores Solares' => ['light' => asset('images/icons/protector-uv.svg'), 'dark' => asset('images/icons/protector-uv-dark.svg')],
         ];
 
-        // --- 1. Categorías ---
+        // --- Categorías ---
         $categories = ProductCategory::all()->map(function ($category) use ($category_icons) {
             if (!$category->slug) {
                 $category->slug = Str::slug($category->name); // Genera el slug
@@ -49,11 +50,11 @@ class HomeController extends Controller
         });
 
 
-        // --- 2. Productos recientes y mejor valorados ---
+        // --- Productos recientes y mejor valorados ---
         $recentProducts = Product::orderByDesc('created_at')->limit(6)->get();
         $topRatedProducts = Product::orderByDesc('rating')->limit(6)->get();
 
-        // --- 3. Banners ---
+        // --- Banners ---
         $banners = [
             [
                 'url' => route('subscription.show'),
@@ -65,22 +66,16 @@ class HomeController extends Controller
         $productsForYouQuery = Product::with('brand', 'type');
         $titleForYou = 'Productos recomendados';
 
-        $isPremiumUser = $user && $user->role === 'premium' && in_array($user->theme, ['skincare', 'haircare']);
-
-        if ($isPremiumUser) {
             $productsForYouQuery->whereHas('type', function ($query) use ($user) {
                 $query->where('name', $user->theme);
             });
-        } else {
-            $productsForYouQuery->latest()->inRandomOrder();
-        }
 
         $productsForYou = $productsForYouQuery->limit(12)->get();
 
-        // --- 6. Favoritos de la comunidad ---
+        // --- Favoritos de la comunidad ---
         $communityFavorites = Product::with('brand', 'type')->orderByDesc('rating')->limit(6)->get();
 
-        // --- 7. Secciones para la vista ---
+        // --- Secciones para la vista ---
         $product_sections = [
             [
                 'title' => $titleForYou,
