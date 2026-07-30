@@ -8,10 +8,10 @@
                     <div class="flex items-center justify-between">
                         <h2 class="text-3xl me-2 text-[#306067] dark:text-[#CCE2E5]">{{ $user->name ?? 'Invitado' }}</h2>
                         @if (auth()->user()?->role === 'free')
-                            <a href="{{ route('subscription.show') }}"
+                            <div onclick="premium_modal.showModal()"
                                 class="py-1 px-3 rounded-xl bg-[#CCE2E5] text-[#306067] dark:text-[#CCE2E5]">
                                 <p class="text-sm">Free</p>
-                            </a>
+                            </div>
                         @elseif(auth()->user()?->role === 'premium')
                             <div class="px-3 py-1 rounded-xl"
                                 style="background-image: linear-gradient(45deg, #37A0AF , #CCE2E5 88%);">
@@ -30,9 +30,9 @@
                     <div class="avatar">
     <div class="rounded-full h-28 w-28">
         <img src="{{ auth()->user()->avatar_url }}"
-             alt="{{ auth()->user()->name }}"
-             class="object-cover w-full h-full rounded-full"
-             loading="lazy" decoding="async">
+                alt="{{ auth()->user()->name }}"
+                class="object-cover w-full h-full rounded-full"
+                loading="lazy" decoding="async">
     </div>
 </div>
 

@@ -59,12 +59,7 @@ class HomeController extends Controller
                 'url' => route('subscription.show'),
                 'img_src' => asset('images/banner-home-1.jpg'),
                 'alt' => 'Banner Kälm Premium',
-            ],
-            [
-                'url' => route('subscription.show'),
-                'img_src' => asset('images/banner_discount.png'), //poner un banner para hacer los tests?
-                'alt' => 'Banner Promoción',
-            ],
+            ]
         ];
 
         $productsForYouQuery = Product::with('brand', 'type');
