@@ -24,9 +24,9 @@
                         <div class="avatar">
                             <div class="rounded-full h-28 w-28">
                                 @if (isset($user) && $user->avatar)
-                                    <img src="{{ asset('storage/' . $user->avatar) }}"
-                                        alt="{{ $user->name ?? 'Avatar usuario' }}" class="object-cover w-full h-full"
-                                        loading="lazy" decoding="async" />
+                                    <img src="{{ auth()->user()->avatar ? route('avatar.file', basename(auth()->user()->avatar)) : asset('images/pfp.svg') }}"
+     alt="{{ auth()->user()->name }}" 
+     class="object-cover w-10 h-10 rounded-full">
                                 @else
                                     <img src="{{ asset('images/pfp.svg') }}" alt="Avatar por defecto"
                                         class="object-contain w-full h-full" loading="lazy" decoding="async" />

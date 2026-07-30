@@ -12,6 +12,7 @@ class Review extends Model
         'product_id',
         'rating',
         'comment',
+        'image',
     ];
 
     // Relación con Product

@@ -11,7 +11,8 @@
         <div>
             @foreach($users->where('role', 'admin') as $user)
                 <div class="flex items-center mb-4 shadow-md p-4 rounded-xl bg-white">
-                    <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/pfp.svg') }}" alt="Avatar de {{ $user->name }}" class="h-20 w-20 rounded-full">
+                    <img src="{{ $user->avatar_url ?? asset('images/default-avatar.png') }}"
+                     alt="{{ $user->name }}" class="h-20 w-20 rounded-full">
                     <div class="ms-5">
                         <h3 class="font-semibold text-lg text-[#306067]">{{ $user->name }}</h3>
                         <p class="text-md text-[#37A0AF]">{{ $user->email }}</p>

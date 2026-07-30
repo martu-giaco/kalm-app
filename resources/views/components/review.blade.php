@@ -1,52 +1,71 @@
-<div class="p-4 mb-4 bg-white rounded-lg shadow-md border-l-4 border-[#37A0AF] dark:bg-[#306067]">
-    <div>
-            <div class="flex justify-between items-center gap-2 mb-2">
-                <div class="flex items-center gap-2 mb-2">
-                    <img src="{{ $review->user->avatar ? asset('storage/' . $review->user->avatar) : asset('images/pfp.svg') }}"
-                    alt="{{ $review->user->name }}" class="object-cover w-10 h-10 rounded-full">
-                    <div>
-                        <p class="font-bold dark:text-[#CCE2E5] text-[#306067]">{{ $review->user->name }}</p>
-                        <div class="flex items-center gap-1 mb-2">
-                            @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= $review->rating)
-                                    <span class="text-yellow-400">★</span>
-                                @else
-                                    <span class="text-gray-300">★</span>
-                                @endif
-                            @endfor
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <p class="text-xs dark:text-[#CCE2E5] text-[#306067]">{{ $review->created_at->diffForHumans() }}</p>
-                    <button onclick="event.stopPropagation(); document.getElementById('menu_review_{{ $review->id }}').showModal()">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-[#306067] dark:fill-[#CCE2E5]"><path d="M480.12-149q-34.55 0-59.13-24.55-24.58-24.56-24.58-59.04 0-34.58 24.56-59.2 24.55-24.62 59.03-24.62 34.67 0 59.13 24.59 24.46 24.6 24.46 59.13 0 34.54-24.46 59.11Q514.67-149 480.12-149Zm0-247.41q-34.55 0-59.13-24.56-24.58-24.55-24.58-59.03 0-34.67 24.56-59.13 24.55-24.46 59.03-24.46 34.67 0 59.13 24.46t24.46 59.01q0 34.55-24.46 59.13-24.46 24.58-59.01 24.58Zm0-247.18q-34.55 0-59.13-24.64-24.58-24.64-24.58-59.25t24.56-59.06Q445.52-811 480-811q34.67 0 59.13 24.46 24.46 24.45 24.46 59.06t-24.46 59.25q-24.46 24.64-59.01 24.64Z"/></svg>
-                    </button>
+<div class="p-4 mb-4 bg-white dark:bg-[#203235] rounded-xl shadow-md border-l-4 border-[#37A0AF]">
+    <div class="flex items-start justify-between gap-4">
+        <div class="flex-1">
+            {{-- Usuario y fecha --}}
+            <div class="flex items-center gap-2 mb-2">
+                <img src="{{ $review->user->avatar_url ?? asset('images/default-avatar.png') }}"
+                     alt="{{ $review->user->name }}" 
+                     class="object-cover w-10 h-10 rounded-full">
+                    
+                <div>
+                    <p class="font-bold text-gray-800 dark:text-[#CCE2E5]">{{ $review->user->name }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $review->created_at->diffForHumans() }}</p>
                 </div>
             </div>
-            <p class="text-sm text-wrap overflow-hidden text-clip dark:text-[#CCE2E5] text-[#306067]">{{ $review->comment }}</p>
+
+            {{-- Estrellas --}}
+            <div class="flex items-center gap-1 mb-2">
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $review->rating)
+                        <span class="text-yellow-400">★</span>
+                    @else
+                        <span class="text-gray-300 dark:text-gray-600">★</span>
+                    @endif
+                @endfor
+                <span class="ml-2 text-sm font-semibold text-gray-600 dark:text-[#CCE2E5]">{{ $review->rating }}/5</span>
+            </div>
+
+            {{-- Comentario --}}
+            <p class="text-sm leading-relaxed text-gray-700 dark:text-[#E9E5E3]">{{ $review->comment }}</p>
+
+            {{-- Imagen de la Reseña --}}
+            @if (!empty($review->image))
+                <div class="mt-3 overflow-hidden rounded-xl">
+                    <img src="{{ asset(ltrim($review->image, '/')) }}" 
+                         alt="Imagen de la reseña" 
+                         class="object-cover max-w-full h-40 rounded-xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                </div>
+            @endif
+        </div>
+
+        {{-- Acciones independientes para Mobile --}}
+        @if (auth()->check() && (auth()->id() === $review->user_id || auth()->user()->role === 'admin'))
+            <div class="flex items-center gap-3">
+                {{-- Botón Editar --}}
+                <a href="{{ route('reviews.edit', $review) }}"
+                   class="p-2.5 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50 text-blue-600 dark:text-blue-400 rounded-lg active:bg-blue-100 dark:active:bg-blue-900/60 transition-colors"
+                   aria-label="Editar reseña">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 -960 960 960">
+                        <path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/>
+                    </svg>
+                </a>
+
+                {{-- Botón Eliminar --}}
+                <form action="{{ route('reviews.destroy', [$review->product->id, $review->id]) }}"
+                      method="POST" 
+                      class="inline-flex" 
+                      onsubmit="return confirm('¿Estás seguro de eliminar esta reseña?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                            class="p-2.5 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-red-600 dark:text-red-400 rounded-lg active:bg-red-100 dark:active:bg-red-900/60 transition-colors"
+                            aria-label="Eliminar reseña">
+                        <svg class="w-4 h-4 fill-current" viewBox="0 -960 960 960">
+                            <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        @endif
     </div>
 </div>
-
-
-@if (auth()->check() && (auth()->id() === $review->user_id || auth()->user()->role === 'admin'))
-<dialog id="menu_review_{{ $review->id }}" class="modal modal-bottom">
-                                        <div class="modal-box bg-white dark:bg-[#2A4043]">
-                                            <a href="{{ route('reviews.edit', $review) }}" class=" btn w-full inline-flex border-0 bg-[#CCE2E5] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold">
-                                                <p class="text-[#306067]">Editar Reseña</p>
-                                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M202.63-202.87h57.24l374.74-374.74-56.76-57-375.22 375.22v56.52Zm-45.26 91q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33v-102.26q0-18.15 6.84-34.69 6.83-16.53 19.51-29.2l501.17-500.41q12.48-11.72 27.7-17.96 15.21-6.24 31.93-6.24 16.48 0 32.2 6.24 15.71 6.24 27.67 18.72l65.28 65.56q12.48 11.72 18.34 27.56 5.86 15.83 5.86 31.79 0 16.72-5.86 32.05-5.86 15.34-18.34 27.82L324-138.22q-12.67 12.68-29.21 19.51-16.53 6.84-34.68 6.84H157.37Zm597.37-586.39-56.24-56.48 56.24 56.48Zm-148.89 92.41-28-28.76 56.76 57-28.76-28.24Z"/></svg>
-                                            </a>
-                                            <form action="{{ route('reviews.destroy', [$review->product->id, $review->id]) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta reseña? Esta acción no se puede deshacer.')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semiboldbold transition-all duration-300 items-center justify-between gap-2 text-sm font-bold"">
-                                                    <p class="font-semibold text-white">Eliminar Reseña</p>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#CCE2E5"><path d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z"/></svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                        <form method="dialog" class="modal-backdrop">
-                                            <button>close</button>
-                                        </form>
-                            </dialog>
-@endif

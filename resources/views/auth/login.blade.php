@@ -19,18 +19,18 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-center bg-cover header-bg">
+<body class="overflow-hidden bg-center bg-cover h-dvh header-bg">
 
-    <div class="flex flex-col justify-between w-full max-w-2xl min-h-screen px-6 pt-32 pb-20 mx-auto">
-        <picture class="h-24 mx-auto mb-6">
+    <div class="flex flex-col justify-between w-full max-w-2xl px-6 py-3 mx-auto overflow-y-auto h-90">
+        <picture class="h-16 mx-auto">
             <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)"
                 type="image/svg+xml" />
-            <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-20 mx-auto mb-6" />
+            <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-16 mx-auto" />
         </picture>
         <div>
-            <h1 class="text-2xl font-bold text-[#2A4043] dark:text-[#CCE2E5]">Iniciar Sesión</h1>
+            <h1 class="text-2xl font-bold mt-5 text-[#2A4043] dark:text-[#CCE2E5]">Iniciar Sesión</h1>
 
-            <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-4">
+            <form action="{{ route('auth.authenticate') }}" method="POST" class="space-y-3">
                 @csrf
 
                 <div>

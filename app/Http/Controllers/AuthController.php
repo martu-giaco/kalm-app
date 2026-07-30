@@ -154,11 +154,14 @@ class AuthController extends Controller
     }
 
     /**
-     * Redirige al usuario a la autenticación de Google.
+     * Redirige al usuario a la autenticación de Google con permisos de Calendar.
      */
     public function redirectToGoogle()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->scopes(['https://www.googleapis.com/auth/calendar.events'])
+            ->with(['access_type' => 'offline', 'prompt' => 'consent'])
+            ->redirect();
     }
 
     /**
@@ -169,15 +172,31 @@ class AuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->user();
 
-            // Buscar si ya existe el usuario por google_id o por email
+            // CASO A: El usuario ya está autenticado en la app y está vinculando su cuenta de Google Calendar
+            if (Auth::check()) {
+                $user = Auth::user();
+                $user->update([
+                    'google_id'            => $googleUser->getId(),
+                    'google_token'         => $googleUser->token,
+                    'google_refresh_token' => $googleUser->refreshToken ?? $user->google_refresh_token,
+                ]);
+
+                return redirect()->route('routines.create')
+                    ->with('feedback', [
+                        'message' => '¡Cuenta de Google Calendar vinculada con éxito! 🎉',
+                        'type' => 'success'
+                    ]);
+            }
+
+            // CASO B: El usuario no ha iniciado sesión (Login o Registro mediante Google)
             $user = User::where('google_id', $googleUser->getId())
                 ->orWhere('email', $googleUser->getEmail())
                 ->first();
 
             if ($user) {
-                // Actualizar credenciales y tokens de vinculación
+                // Actualizar credenciales y preservación del refresh_token
                 $user->update([
-                    'google_id' => $googleUser->getId(),
+                    'google_id'            => $googleUser->getId(),
                     'google_access_token' => $googleUser->token,
                     'google_refresh_token' => $googleUser->refreshToken ?? $user->google_refresh_token,
                 ]);
@@ -186,18 +205,21 @@ class AuthController extends Controller
                 $rawName = $googleUser->getName() ?? $googleUser->getNickname() ?? 'Usuario';
                 $formattedName = Str::limit($rawName, 10, '');
 
-                // Crear nuevo usuario asignando valores por defecto
-                $user = User::create([
-                    'name' => !empty($formattedName) ? $formattedName : 'Usuario',
-                    'email' => $googleUser->getEmail(),
-                    'password' => Hash::make(Str::random(24)),
-                    'google_id' => $googleUser->getId(),
-                    'google_access_token' => $googleUser->token,
-                    'google_refresh_token' => $googleUser->refreshToken,
-                    'role' => 'free',
-                    'accepted_terms' => true,
-                    'terms_accepted_at' => now(),
+                session([
+                    'registration' => [
+                        'provider'             => 'google',
+                        'name'                 => !empty($formattedName) ? $formattedName : 'Usuario',
+                        'email'                => $googleUser->getEmail(),
+                        'google_id'            => $googleUser->getId(),
+                        'google_access_token'  => $googleUser->token,
+                        'google_refresh_token' => $googleUser->refreshToken,
+                    ],
+                    'registration_created_at' => now()->toDateTimeString(),
                 ]);
+
+                return redirect()
+                    ->route('auth.terms.show')
+                    ->with('feedback.message', 'Para finalizar el registro, aceptá los Términos y Condiciones.');
             }
 
             // Iniciar sesión y recordar usuario
@@ -208,7 +230,6 @@ class AuthController extends Controller
                 ->with('feedback.message', '¡Bienvenida/o! Sesión iniciada con Google.');
 
         } catch (\Exception $e) {
-            // Si la aplicación está en modo de depuración, muestra la excepción completa
             if (config('app.debug')) {
                 throw $e;
             }

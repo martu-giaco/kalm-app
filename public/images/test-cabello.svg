@@ -1,0 +1,58 @@
+<svg viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgHair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#37A0AF"/>
+      <stop offset="100%" stop-color="#173338"/>
+    </linearGradient>
+    <radialGradient id="glowHair" cx="55%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#9FE7EC" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#9FE7EC" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="800" height="480" fill="url(#bgHair)"/>
+  <rect width="800" height="480" fill="url(#glowHair)"/>
+
+  <circle cx="700" cy="80" r="140" fill="#2C8994" opacity="0.2"/>
+  <circle cx="60" cy="430" r="150" fill="#0F282B" opacity="0.35"/>
+
+  <g fill="#E7F7F8">
+    <path d="M110 90 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5 z" opacity="0.85"/>
+    <path d="M640 130 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 z" opacity="0.7"/>
+  </g>
+
+  <!-- Personaje: cabello largo con gotero de análisis -->
+  <g transform="translate(400,40)">
+    <!-- cabello largo detrás -->
+    <path d="M60 60 Q60 -10 150 -10 Q240 -10 240 60 Q250 200 210 340 L200 400 L170 400 L180 260 Q190 150 150 120 Q110 150 120 260 L130 400 L100 400 L90 340 Q50 200 60 60 Z" fill="#173338"/>
+
+    <!-- mechón claro brillante -->
+    <path d="M95 10 Q150 -15 205 15 Q210 40 195 55 Q150 20 105 55 Q90 35 95 10Z" fill="#37A0AF"/>
+
+    <!-- cuerpo -->
+    <path d="M55 300 Q55 220 150 220 Q245 220 245 300 L245 400 L55 400 Z" fill="#173338"/>
+    <path d="M55 300 Q55 235 115 222 L115 400 L55 400 Z" fill="#0F282B"/>
+
+    <!-- rostro de perfil, ojos cerrados relajado -->
+    <path d="M108 60 Q100 20 150 15 Q195 18 190 65 Q188 105 150 112 Q112 105 108 60Z" fill="#CFE7E8"/>
+    <path d="M120 65 Q135 58 150 65" stroke="#173338" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M155 65 Q168 58 180 65" stroke="#173338" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M133 90 Q150 98 163 90" stroke="#173338" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- mano sosteniendo gotero cerca del cabello -->
+    <g transform="translate(150,145) rotate(15)">
+      <rect x="0" y="0" width="10" height="60" rx="4" fill="#37A0AF"/>
+      <rect x="-6" y="-14" width="22" height="18" rx="6" fill="#173338"/>
+      <circle cx="5" cy="65" r="6" fill="#9FE7EC"/>
+    </g>
+    <ellipse cx="118" cy="150" rx="28" ry="20" fill="#DFF4F5" transform="rotate(-25 118 150)"/>
+    <path d="M100 165 Q80 200 100 240 L140 240 Q148 200 128 165 Z" fill="#CFE7E8"/>
+
+    <!-- otra mano sosteniendo mechón -->
+    <ellipse cx="205" cy="155" rx="26" ry="18" fill="#DFF4F5" transform="rotate(15 205 155)"/>
+    <path d="M195 168 Q220 195 210 235 L170 235 Q168 195 185 168 Z" fill="#CFE7E8"/>
+
+    <!-- destello sobre el mechón analizado -->
+    <path d="M145 175 l6 15 15 6 -15 6 -6 15 -6 -15 -15 -6 15 -6 z" fill="#FFFFFF" opacity="0.9"/>
+  </g>
+</svg>

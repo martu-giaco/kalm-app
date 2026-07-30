@@ -1,0 +1,33 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-dmYIG2Sg.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "name": "app",
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/css/fonts/tropiline/Tropiline-Bold.otf": {
+    "file": "assets/Tropiline-Bold-C5HS0wv2.otf",
+    "src": "resources/css/fonts/tropiline/Tropiline-Bold.otf"
+  },
+  "resources/css/fonts/tropiline/Tropiline-BoldItalic.otf": {
+    "file": "assets/Tropiline-BoldItalic-CoHHEnGy.otf",
+    "src": "resources/css/fonts/tropiline/Tropiline-BoldItalic.otf"
+  },
+  "resources/css/fonts/tropiline/Tropiline-Regular.otf": {
+    "file": "assets/Tropiline-Regular-DR8rWCgq.otf",
+    "src": "resources/css/fonts/tropiline/Tropiline-Regular.otf"
+  },
+  "resources/css/fonts/tropiline/Tropiline-SemiBold.otf": {
+    "file": "assets/Tropiline-SemiBold-C0B36Xy3.otf",
+    "src": "resources/css/fonts/tropiline/Tropiline-SemiBold.otf"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CAiCLEjY.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}

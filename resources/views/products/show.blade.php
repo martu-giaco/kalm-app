@@ -23,7 +23,7 @@
                         id="favoriteBtn" title="Marcar favorito"
                         onclick="event.preventDefault(); event.stopPropagation(); toggleFavorito({{ $product->id }}, this); return false;">
                         <label class="swap" id="swapLabel" style="--is-checked: {{ $isFavorito ? 1 : 0 }};">
-                            <!-- this hidden checkbox controls the state -->
+                            <!-- control hidden checkbox -->
                             <input type="checkbox" {{ $isFavorito ? 'checked' : '' }} />
                             <!-- filled heart icon (favorito) -->
                             <svg class="swap-on fill-[#430000]" xmlns="http://www.w3.org/2000/svg" height="24px"
@@ -109,13 +109,42 @@
 
                     <!-- Calificación con DaisyUI Mask Star -->
                     <div>
-                        <a href="{{ route('reviews.create', $product) }}" class="flex flex-row justify-center gap-2 mt-5 rating">
-                            @for ($i = 5; $i >= 1; $i--)
-                                <span class="w-7 h-7 bg-[#c7d9db] mask mask-star cursor-pointer"></span>
-                            @endfor
-                        </a>
-                        <p class="text-sm text-center mt-2">Dejar una reseña</p>
-                    </div>
+    @auth
+        @if (auth()->user()->role === 'premium' || auth()->user()->role === 'admin')
+            {{-- Usuario PREMIUM o ADMIN: Acceso directo a crear reseña --}}
+            <a href="{{ route('reviews.create', $product) }}" class="group block">
+                <div class="flex flex-row justify-center gap-2 mt-5 rating">
+                    @for ($i = 5; $i >= 1; $i--)
+                        <span class="w-7 h-7 bg-[#c7d9db] mask mask-star cursor-pointer"></span>
+                    @endfor
+                </div>
+                <p class="text-sm text-center mt-2 group-hover:underline">Dejar una reseña</p>
+            </a>
+        @else
+            {{-- Usuario FREE: Redirige a la suscripción --}}
+            <a href="{{ route('subscription.show') }}" class="group block">
+                <div class="flex flex-row justify-center gap-2 mt-5 rating">
+                    @for ($i = 5; $i >= 1; $i--)
+                        <span class="w-7 h-7 bg-[#c7d9db] mask mask-star cursor-pointer"></span>
+                    @endfor
+                </div>
+                <p class="text-sm text-center mt-2 group-hover:underline">
+                    Dejar una reseña <span class="text-xs text-[#37A0AF] font-semibold">(Exclusivo Premium)</span>
+                </p>
+            </a>
+        @endif
+    @else
+        {{-- Usuario NO AUTENTICADO: Redirige al login --}}
+        <a href="{{ route('auth.login') }}" class="group block">
+            <div class="flex flex-row justify-center gap-2 mt-5 rating">
+                @for ($i = 5; $i >= 1; $i--)
+                    <span class="w-7 h-7 bg-[#c7d9db] mask mask-star cursor-pointer"></span>
+                @endfor
+            </div>
+            <p class="text-sm text-center mt-2 group-hover:underline">Inicia sesión para dejar una reseña</p>
+        </a>
+    @endauth
+</div>
                 </div>
             </div>
 
@@ -158,8 +187,6 @@
                     $avgRating = $reviewCount > 0 ? round($product->reviews->avg('rating'), 1) : 0;
                 @endphp
 
-
-
                 {{-- Lista de últimas 3 reseñas --}}
                 @if ($reviewCount > 0)
                     <div class="space-y-4">
@@ -172,33 +199,6 @@
                         Este producto aún no tiene reseñas.
                     </p>
                 @endif
-
-                {{-- CTA --}}
-                <div class="mt-4">
-
-                    @auth
-
-                        {{-- USUARIO PREMIUM --}}
-                        @if (auth()->user()->isPremium())
-                            @if (!$reviews->where('user_id', auth()->id())->count())
-                                <a href="{{ route('reviews.create', $product) }}"
-                                    class="inline-block bg-[#306067] text-white w-full text-center px-5 py-2 rounded-lg font-bold hover:bg-[#164d4f]">
-                                    Escribir reseña de este Producto
-                                </a>
-                            @else
-                            @endif
-
-                            {{-- NO PREMIUM --}}
-                        @else
-                            <button onclick="document.getElementById('premium-modal').classList.remove('hidden')"
-                                class="inline-block bg-[#54cbcf] text-[#164d4f] px-5 py-2 rounded-lg font-bold">
-                                Hacerse Premium para crear Reseña
-                            </button>
-                        @endif
-
-                    @endauth
-
-                </div>
             </div>
 
             @foreach ($product_sections as $section)
@@ -322,7 +322,7 @@
                                                 $remaining = $products->count() - 3;
                                             @endphp
                                             @forelse($visible as $assignedProduct)
-                                                <img src="{{ $assignedProduct->image_url }}"
+                                                <img src="{{ asset($assignedProduct->image) }}"
                                                     alt="{{ $assignedProduct->name }}"
                                                     class="object-contain w-16 h-16 rounded-md">
                                             @empty
@@ -361,6 +361,5 @@
 
         </div>
     </div>
-
 
 </x-layout>

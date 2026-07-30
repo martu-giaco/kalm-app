@@ -9,7 +9,7 @@ use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\MercadoPagoConfig;
 use App\Models\User;
 
-class SubscriptionController extends Controller
+class PaymentController extends Controller
 {
     public function __construct()
     {

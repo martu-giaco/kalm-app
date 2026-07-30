@@ -1,0 +1,73 @@
+<svg viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgPiel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3E8E96"/>
+      <stop offset="100%" stop-color="#1F4548"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#7FD8DE" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#7FD8DE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fondo -->
+  <rect width="800" height="480" fill="url(#bgPiel)"/>
+  <rect width="800" height="480" fill="url(#glow)"/>
+
+  <!-- Formas decorativas -->
+  <circle cx="80" cy="90" r="120" fill="#37A0AF" opacity="0.15"/>
+  <circle cx="740" cy="440" r="160" fill="#173338" opacity="0.35"/>
+
+  <!-- Destellos -->
+  <g fill="#DFF4F5">
+    <path d="M120 70 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6 z" opacity="0.85"/>
+    <path d="M660 90 l4 10 10 4 -10 4 -4 10 -4 -10 -10 -4 10 -4 z" opacity="0.7"/>
+    <path d="M600 260 l5 13 13 5 -13 5 -5 13 -5 -13 -13 -5 13 -5 z" opacity="0.6"/>
+  </g>
+
+  <!-- Personaje: rostro en primer plano cuidando su piel -->
+  <g transform="translate(440,60)">
+    <!-- pelo recogido -->
+    <ellipse cx="120" cy="35" rx="42" ry="40" fill="#173338"/>
+    <circle cx="110" cy="-15" r="26" fill="#37A0AF"/>
+
+    <!-- cuerpo / remera -->
+    <path d="M20 300 Q20 190 120 190 Q220 190 220 300 L220 380 L20 380 Z" fill="#37A0AF"/>
+    <path d="M20 300 Q20 210 90 195 L90 380 L20 380 Z" fill="#2C8994"/>
+
+    <!-- cuello -->
+    <rect x="100" y="150" width="40" height="50" rx="16" fill="#CFE7E8"/>
+
+    <!-- rostro -->
+    <path d="M60 90 Q60 20 120 20 Q180 20 180 90 Q180 150 120 160 Q60 150 60 90 Z" fill="#CFE7E8"/>
+
+    <!-- pelo delantero -->
+    <path d="M62 90 Q55 30 120 22 Q185 30 178 90 Q170 55 150 55 Q140 75 122 60 Q108 78 92 58 Q75 60 62 90Z" fill="#173338"/>
+
+    <!-- ojos -->
+    <circle cx="100" cy="90" r="5" fill="#1F4548"/>
+    <circle cx="140" cy="90" r="5" fill="#1F4548"/>
+
+    <!-- rubor / marcas de piel -->
+    <circle cx="150" cy="105" r="3" fill="#E4685C"/>
+    <circle cx="158" cy="112" r="2" fill="#E4685C" opacity="0.7"/>
+
+    <!-- sonrisa -->
+    <path d="M105 112 Q120 122 135 112" stroke="#1F4548" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- mano con algodón sobre la mejilla -->
+    <ellipse cx="70" cy="118" rx="24" ry="20" fill="#DFF4F5" transform="rotate(-20 70 118)"/>
+    <path d="M55 150 Q45 190 55 230 L90 230 Q95 180 78 145 Z" fill="#CFE7E8"/>
+
+    <!-- brillo destello junto al rostro -->
+    <path d="M195 95 l6 15 15 6 -15 6 -6 15 -6 -15 -15 -6 15 -6 z" fill="#FFFFFF" opacity="0.9"/>
+
+    <!-- celular en la otra mano -->
+    <g transform="translate(150,190) rotate(8)">
+      <rect x="0" y="0" width="70" height="120" rx="12" fill="#173338"/>
+      <rect x="6" y="10" width="58" height="95" rx="4" fill="#2C8994"/>
+      <circle cx="35" cy="8" r="3" fill="#DFF4F5"/>
+    </g>
+    <path d="M150 210 Q130 240 150 280 L190 280 Q195 240 185 210 Z" fill="#CFE7E8"/>
+  </g>
+</svg>

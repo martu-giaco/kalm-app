@@ -45,6 +45,7 @@ $schedule->call(function () {
     }
 })->everyMinute();
         $schedule->command('routines:send-reminders')->everyMinute();
+        $schedule->command('subscriptions:check-expired')->dailyAt('03:00');
     }
 
     protected function commands(): void
@@ -52,4 +53,5 @@ $schedule->call(function () {
         $this->load(__DIR__.'/Commands');
         require base_path('routes/console.php');
     }
+    
 }

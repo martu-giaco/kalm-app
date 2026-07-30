@@ -28,17 +28,13 @@
                 {{-- Avatar --}}
                 <div class="flex items-center w-full gap-4 mt-4">
                     <div class="avatar">
-                        <div class="rounded-full h-28 w-28">
-                            @if (isset($user) && $user->avatar)
-                                <img src="{{ asset('storage/' . $user->avatar) }}"
-                                    alt="{{ $user->name ?? 'Avatar usuario' }}" class="object-cover w-full h-full"
-                                    loading="lazy" decoding="async" />
-                            @else
-                                <img src="{{ asset('images/pfp.svg') }}" alt="Avatar por defecto"
-                                    class="object-contain w-full h-full" loading="lazy" decoding="async" />
-                            @endif
-                        </div>
-                    </div>
+    <div class="rounded-full h-28 w-28">
+        <img src="{{ auth()->user()->avatar_url }}"
+             alt="{{ auth()->user()->name }}"
+             class="object-cover w-full h-full rounded-full"
+             loading="lazy" decoding="async">
+    </div>
+</div>
 
                     {{-- Stats  --}}
                     <div class="w-full">

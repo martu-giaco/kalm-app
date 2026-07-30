@@ -66,8 +66,6 @@
         </script>
     @endauth
 
-
-
     <script>
         window.kalmFavoriteState = window.kalmFavoriteState || {
             isProcessing: false
@@ -118,12 +116,9 @@
                 });
         };
     </script>
-
 </head>
 
 <body class="bg-light">
-
-
 
     <div class="drawer drawer-end">
         <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
@@ -135,38 +130,23 @@
                     class="flex items-center justify-between w-full max-w-[90%] mx-auto px-4 h-16 rounded-full fixed top-3 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out glass-effect">
 
                     <!-- Logo -->
-                    <a
-                        @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
-                @else
-                href="{{ route('admin.home') }}" @endif>
+                    <a @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
+                       @else href="{{ route('admin.home') }}" @endif>
                         <picture class="flex h-8 ps-2">
                             <source srcset="{{ asset('images/logo-kalm-light.svg') }}" class="h-8"
                                 media="(prefers-color-scheme: dark)" type="image/svg+xml" />
                             <img src="{{ asset('images/logo-kalm.svg') }}" alt="Kälm logo" class="h-8">
                         </picture>
-
                     </a>
 
                     @auth
                         <!-- Usuario autenticado -->
                         <div class="flex items-center h-full gap-5">
-                            <!-- Notificaciones -->
-                            <a
-                                @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
-                        @else
-                        href="{{ route('admin.home') }}" @endif>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
-                                    class="fill-[#306067] dark:fill-[#E9E5E3] w-auto h-8">
-                                    <path
-                                        d="M200-200q-17 0-28.5-11.5T160-240q0-17 11.5-28.5T200-280h40v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h40q17 0 28.5 11.5T800-240q0 17-11.5 28.5T760-200H200ZM480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Z" />
-                                </svg>
-                            </a>
-
                             <!-- Avatar y nombre -->
                             <label for="my-drawer-1" class="flex items-center h-full gap-2 cursor-pointer"
                                 aria-label="open sidebar">
-                                <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
-                                    alt="{{ auth()->user()->name }}" class="object-cover w-10 h-10 rounded-full">
+                                <img src="{{ auth()->user()->avatar ? route('avatar.file', basename(auth()->user()->avatar)) : asset('images/pfp.svg') }}"
+                                        alt="{{ auth()->user()->name }}" class="object-cover w-10 h-10 rounded-full">
                                 <span
                                     class="hidden md:inline-block font-medium text-sm text-[#2A4043] dark:text-[#E9E5E3] truncate max-w-[120px]">
                                     {{ \Illuminate\Support\Str::limit(auth()->user()->name, 18) }}
@@ -174,7 +154,6 @@
                             </label>
                         </div>
                     @endauth
-
                 </header>
             @endif
 
@@ -182,14 +161,14 @@
                 <div class="modal-box bg-[#2A4043]">
                     <form method="dialog">
                         <button class="absolute btn btn-sm btn-circle btn-ghost focus-visible:outline-0 right-4 top-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 -960 960 960"
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 -960 960 960"
                                 fill="#CCE2E5" aria-hidden="true">
                                 <path
                                     d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
                             </svg>
                         </button>
                     </form>
-                    <section class="flex flex-col flex-wrap h-full mt-5 space-between">
+                    <section class="flex flex-col flex-wrap h-full space-between mt-5">
                         <div class="mb-10">
                             <h2 class="text-2xl font-bold text-white">Perfeccioná tu rutina con</h2>
                             <p class="text-3xl font-bolder"
@@ -282,14 +261,11 @@
                 </div>
             </dialog>
 
-            {{-- Contenedor para el padding fijo del header (para que el contenido no quede debajo) --}}
+            {{-- Contenedor para el padding fijo del header --}}
             <div class="flex flex-col">
-
-                <main
-                    class="fixed left-0 right-0 w-screen pt-5 mx-auto overflow-hidden overflow-y-auto no-scrollbar grow rounded-t-4xl @if ($hideNavigation ?? false) top-0 bottom-0 @else top-20 bottom-20 @endif">
+                <main class="fixed left-0 right-0 w-screen pt-5 mx-auto overflow-hidden overflow-y-auto no-scrollbar grow rounded-t-4xl @if ($hideNavigation ?? false) bottom-0 @else top-20 bottom-16 @endif">
 
                     @php
-                        // Mensajes de feedback
                         $feedbackMessage =
                             session('feedback.message') ?? (session('status') ?? (session('message') ?? null));
                         $feedbackType =
@@ -314,7 +290,7 @@
                     {{-- Mostrar errores de validación --}}
                     @if ($errors->any())
                         <div class="mx-4 my-4">
-                            <div class="p-4 text-red-800 shadow-lg rounded-xl bg-red-50">
+                            <div class="p-4 text-red-800 bg-red-50 rounded-xl shadow-lg">
                                 <ul class="pl-5 list-disc">
                                     @foreach ($errors->all() as $err)
                                         <li>{{ $err }}</li>
@@ -324,16 +300,13 @@
                         </div>
                     @endif
 
-
                     {{ $slot }}
 
                     @auth
-                        {{-- Espacio inferior para usuarios autenticados --}}
                         <div></div>
                     @endauth
 
                 </main>
-
             </div>
 
             @if (!($hideNavigation ?? false))
@@ -341,7 +314,7 @@
                     <nav class="fixed bottom-0 z-50 flex items-center justify-between w-full h-20 max-w-3xl px-5 transition-all duration-500 ease-in-out -translate-x-1/2 bg-white shadow-md left-1/2 rounded-t-3xl dark:bg-[#2A4043]"
                         style="box-shadow: 1px -1px 20px 0px rgba(40, 40, 40, 0.25);">
 
-                        <ul class="flex items-center flex-1 w-full justify-evenly">
+                        <ul class="flex items-center justify-evenly flex-1 w-full">
                             @if (auth()->user()?->role !== 'admin')
                                 <!-- Inicio -->
                                 <li class="flex flex-col items-center font-bold">
@@ -455,6 +428,19 @@
                                         <span class="sr-only">Marcas</span>
                                     </a>
                                 </li>
+
+                                <!-- Reseñas / Reviews (Agregado para Admin) -->
+                                <li class="flex flex-col items-center font-bold">
+                                    <a href="{{ route('admin.reviews.index') }}" class="flex flex-col items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="35px" viewBox="0 -960 960 960"
+                                            width="35px"
+                                            class="{{ request()->routeIs('admin.reviews.*') ? 'fill-[#37A0AF]' : 'fill-[#306067] dark:fill-[#E9E5E3]' }}">
+                                            <path
+                                                d="m233-120 65-281L80-590l288-25 112-265 112 265 288 25-218 189 65 281-247-149-247 149Z" />
+                                        </svg>
+                                        <span class="sr-only">Reseñas</span>
+                                    </a>
+                                </li>
                             @endif
                         </ul>
                     </nav>
@@ -488,7 +474,7 @@
                                 @endif
                                 <label for="my-drawer-1" class="self-end cursor-pointer" aria-label="close sidebar">
                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-7 w-7 fill-[#2A4043] dark:fill-[#E9E5E3]" viewBox="0 -960 960 960"
+                                        class="w-7 h-7 fill-[#2A4043] dark:fill-[#E9E5E3]" viewBox="0 -960 960 960"
                                         aria-hidden="true">
                                         <path
                                             d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
@@ -504,8 +490,8 @@
                                 </div>
 
                                 <a href="{{ route('profile.show') }}">
-                                    <img src="{{ auth()->user()->avatar ? asset('storage/' . auth()->user()->avatar) : asset('images/pfp.svg') }}"
-                                        alt="{{ auth()->user()->name }}" class="object-cover rounded-full h-14 w-14">
+                                    <img src="{{ auth()->user()->avatar ? route('avatar.file', basename(auth()->user()->avatar)) : asset('images/pfp.svg') }}"
+                                        alt="{{ auth()->user()->name }}" class="object-cover w-10 h-10 rounded-full">
                                 </a>
                             </div>
                         </div>
@@ -638,7 +624,8 @@
                             </li>
                         @endif
                         <li>
-                            <form action="{{ route('auth.logout') }}" method="POST" class="flex justify-between w-full">
+                            <form action="{{ route('auth.logout') }}" method="POST"
+                                class="flex justify-between w-full">
                                 @csrf
                                 <button type="submit"
                                     class="flex flex-row text-lg text-[#741919] dark:text-[#E9E5E3] dark:bg-[#741919] dark:py-3 dark:px-4 dark:rounded-xl w-full justify-between items-center hover:bg-transparent">
@@ -680,20 +667,15 @@
 
                         Notification.requestPermission().then(permission => {
                             if (permission === 'granted') {
-
-                                // 2. CORRECCIÓN: Obtener de forma segura el meta tag
                                 const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
                                 const csrfToken = csrfTokenElement ? csrfTokenElement.getAttribute('content') : '';
 
                                 swReg.pushManager.subscribe({
                                         userVisibleOnly: true,
-                                        // 3. CORRECCIÓN: Inyectar dinámicamente tu clave pública VAPID de Laravel
-                                        // Cambiá 'VAPID_PUBLIC_KEY' por la variable exacta de tu .env o config
                                         applicationServerKey: urlB64ToUint8Array(
                                             "{{ env('VAPID_PUBLIC_KEY') }}")
                                     })
                                     .then(function(subscription) {
-                                        // Enviar la suscripción estructurada a tu ruta de Laravel
                                         fetch('/push-subscriptions', {
                                                 method: 'POST',
                                                 headers: {

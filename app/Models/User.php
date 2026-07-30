@@ -49,15 +49,14 @@ class User extends Authenticatable
 
     // Accessor para url de avatar
     public function getAvatarUrlAttribute()
-    {
-        if ($this->avatar) {
-            // si guardaste en storage
-            return asset('storage/' . $this->avatar);
-        }
-
-        // fallback
-        return asset('images/pfp.svg');
+{
+    if ($this->avatar) {
+        return route('avatar.file', $this->avatar);
+        // o si preferís servirlo directo sin pasar por el controller:
+        // return asset('images/avatars/' . $this->avatar);
     }
+    return asset('images/pfp.svg');
+}
 
     // Scope para admins
     public function scopeAdmins($query)
@@ -78,6 +77,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Historial completo de suscripciones premium (todas las filas).
+     */
+    public function premiumSubscriptions()
+    {
+        return $this->hasMany(PremiumSubscription::class);
+    }
+
+    /**
+     * La suscripción premium más reciente (activa, vencida o cancelada).
+     */
+    public function premiumSubscription()
+    {
+        return $this->hasOne(PremiumSubscription::class)->latestOfMany();
+    }
+
+    /**
      * Obtiene el número de rutinas guardadas del usuario.
      *
      * @return int
@@ -93,15 +108,18 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function canCreateRoutine(): bool
-    {
-        if ($this->isPremium()) {
-            return true;
-        }
+   // app/Models/User.php
 
-        // Si no es premium, cuenta las rutinas actuales y permite crear si tiene menos de 2
-        return $this->getRoutineCount() < 2;
+public function canCreateRoutine(): bool
+{
+    // Si es usuario Premium (o Admin), no tiene límite de rutinas
+    if ($this->role === 'premium' || $this->role === 'admin') {
+        return true;
     }
+
+    // Si es usuario Free, mantenemos el límite de 2 rutinas
+    return $this->routines()->count() < 2;
+}
 
     /**
      * Obtiene información detallada sobre el límite de rutinas del usuario.

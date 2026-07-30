@@ -19,19 +19,19 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body class="min-h-screen bg-center bg-cover header-bg">
+<body class="overflow-hidden bg-center bg-cover h-dvh header-bg">
 
-    <div class="flex flex-col justify-between w-full max-w-2xl min-h-screen px-6 py-10 mx-auto">
+    <div class="flex flex-col justify-between w-full max-w-2xl px-6 py-3 mx-auto overflow-y-auto h-95">
 
-        <picture class="h-20 mx-auto mb-2">
+        <picture class="mx-auto">
             <source srcset="{{ asset('images/logo-kalm-light.svg') }}" media="(prefers-color-scheme: dark)"
                 type="image/svg+xml" />
-            <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-20 mx-auto mb-2" />
+            <img src="{{ asset('images/logo-kalm.svg') }}" alt="logo Kälm" class="h-16 mx-auto" />
         </picture>
         <div>
-            <h1 class="text-2xl font-bold text-[#2A4043] dark:text-[#CCE2E5]">Crear Cuenta</h1>
+            <h1 class="mt-5 text-2xl font-bold text-[#2A4043] dark:text-[#CCE2E5]">Crear Cuenta</h1>
 
-            <form action="{{ route('auth.register.store') }}" method="POST" class="space-y-4" novalidate>
+            <form action="{{ route('auth.register.store') }}" method="POST" class="space-y-3" novalidate>
                 @csrf
 
                 <div>
@@ -86,7 +86,7 @@
                     class="btn w-full px-5 py-3 rounded-xl text-white font-bold transition cursor-pointer hover:bg-[#306067] bg-[#306067] border-none dark:bg-[#E9E5E3] dark:text-[#306067]">
             </form>
             <!-- Botón de Google Social Login -->
-            <div class="my-4">
+            <div class="mt-4">
                 <a href="{{ route('auth.google.redirect') }}"
                     class="flex items-center justify-center w-full gap-3 px-5 py-3 font-bold text-gray-700 transition-all duration-200 bg-white border border-gray-300 shadow-sm hover:bg-gray-100 rounded-xl">
                     <svg class="w-5 h-5" viewBox="0 0 24 24">

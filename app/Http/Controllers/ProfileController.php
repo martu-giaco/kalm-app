@@ -17,7 +17,8 @@ class ProfileController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        // Se excluye getAvatar para permitir que las imágenes se carguen sin exigir inicio de sesión previo
+        $this->middleware('auth')->except(['getAvatar']);
     }
 
     /**
@@ -31,9 +32,7 @@ class ProfileController extends Controller
         $routines = $user->routines()->with('routineTime')->latest()->get();
 
         // Traer solo reviews hechas por el usuario
-        $reviews = $user->reviews()->latest()->get(); // esto asume que tu relación 'reviews' está definida como reviews hechas por el user
-        // Si la relación 'reviews' devuelve reviews recibidas, hacé esto:
-        // $reviews = \App\Models\Review::where('user_id', $user->id)->latest()->get();
+        $reviews = $user->reviews()->latest()->get();
 
         return view('user.profile', compact('user', 'routines', 'reviews'));
     }
@@ -62,13 +61,17 @@ class ProfileController extends Controller
 
         // Subida de avatar
         if ($request->hasFile('avatar')) {
-            // Borrar avatar anterior si existe
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
-            }
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $data['avatar'] = $path;
-        }
+    // Borrar avatar anterior si existe
+    if ($user->avatar && file_exists(public_path('images/avatars/' . $user->avatar))) {
+        unlink(public_path('images/avatars/' . $user->avatar));
+    }
+
+    $file = $request->file('avatar');
+    $filename = uniqid() . '_' . $file->getClientOriginalName();
+    $file->move(public_path('images/avatars'), $filename);
+
+    $data['avatar'] = $filename; // guardamos solo el nombre del archivo
+}
 
         $user->update($data);
 
@@ -148,13 +151,13 @@ class ProfileController extends Controller
         return view('admin.equipokalm', compact('users'));
     }
 
-    // Ver detalle de un usuario (route model binding posible)
+    // Ver detalle de un usuario
     public function view(User $user)
     {
         return view('admin.users.view', compact('user'));
     }
 
-    //Formulario de edición.
+    // Formulario de edición.
     public function adminEdit($id)
     {
         $this->authorizeAdmin();
@@ -210,4 +213,18 @@ class ProfileController extends Controller
             abort(403, 'No tenés permiso para realizar esta acción.');
         }
     }
+
+    /**
+     * Servir la imagen de avatar directamente desde storage/app/public/avatars
+     */
+    public function getAvatar($filename)
+{
+    $path = public_path('images/avatars/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->file($path);
+}
 }
