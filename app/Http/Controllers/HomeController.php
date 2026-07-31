@@ -66,16 +66,22 @@ class HomeController extends Controller
         $productsForYouQuery = Product::with('brand', 'type');
         $titleForYou = 'Productos recomendados';
 
+        $isPremiumUser = $user && $user->role === 'premium' && in_array($user->theme, ['skincare', 'haircare']);
+
+        if ($isPremiumUser) {
             $productsForYouQuery->whereHas('type', function ($query) use ($user) {
                 $query->where('name', $user->theme);
             });
+        } else {
+            $productsForYouQuery->latest()->inRandomOrder();
+        }
 
         $productsForYou = $productsForYouQuery->limit(12)->get();
 
-        // --- Favoritos de la comunidad ---
+        // --- 6. Favoritos de la comunidad ---
         $communityFavorites = Product::with('brand', 'type')->orderByDesc('rating')->limit(6)->get();
 
-        // --- Secciones para la vista ---
+        // --- 7. Secciones para la vista ---
         $product_sections = [
             [
                 'title' => $titleForYou,
