@@ -133,8 +133,9 @@
             @endphp
 
             <div class="mb-10">
-                <h2 class="text-xl font-bold text-[#306067] dark:text-[#CCE2E5] mb-2">{{ $section['title'] }}</h2>
-
+                <div class="flex items-center justify-between mb-2">
+                    <h2 class="text-xl font-bold text-[#306067] dark:text-[#CCE2E5]">{{ $section['title'] }}</h2>
+                </div>
                 <div class="flex pb-4 space-x-6 overflow-x-auto scrollbar-hide">
                     @foreach ($products_with_tag as $product)
                         <x-product-card :product="$product" />

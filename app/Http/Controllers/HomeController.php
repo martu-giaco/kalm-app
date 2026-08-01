@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Type;
+use App\Models\UserTestResult;
 use App\Models\SkinType;
 use App\Models\ProductCategory;
 use Illuminate\Http\Request;
@@ -63,20 +64,56 @@ class HomeController extends Controller
             ]
         ];
 
-        $productsForYouQuery = Product::with('brand', 'type');
+        $productsForYou = collect();
         $titleForYou = 'Productos recomendados';
 
-        $isPremiumUser = $user && $user->role === 'premium' && in_array($user->theme, ['skincare', 'haircare']);
 
-        if ($isPremiumUser) {
-            $productsForYouQuery->whereHas('type', function ($query) use ($user) {
-                $query->where('name', $user->theme);
-            });
-        } else {
-            $productsForYouQuery->latest()->inRandomOrder();
+        $latestTestResult = $user
+            ? UserTestResult::where('user_id', $user->id)->latest('updated_at')->first()
+            : null;
+
+        $resultKey = $latestTestResult?->result_key;
+
+        if ($resultKey) {
+            $skinTypeMap = [
+                'normal' => 'Normal',
+                'seco' => 'Seca',
+                'graso' => 'Oleosa',
+                'mixto' => 'Mixta',
+                'sensible' => 'Sensible',
+            ];
+
+            $matchedSkinType = $skinTypeMap[strtolower($resultKey)] ?? null;
+
+            if ($matchedSkinType) {
+                $productsForYou = Product::with('brand', 'type', 'skinTypes')
+                    ->whereHas('skinTypes', function ($query) use ($matchedSkinType) {
+                        $query->where('name', $matchedSkinType);
+                    })
+                    ->orderByDesc('rating')
+                    ->limit(12)
+                    ->get();
+
+                $titleForYou = 'Productos recomendados para ti';
+                $tagText = 'Tu tipo';
+                $tagClass = 'bg-indigo-100 text-indigo-800';
+            }
         }
 
-        $productsForYou = $productsForYouQuery->limit(12)->get();
+        if ($productsForYou->isEmpty()) {
+            $productsForYouQuery = Product::with('brand', 'type', 'skinTypes');
+            $isPremiumUser = $user && $user->role === 'premium' && in_array($user->theme, ['skincare', 'haircare']);
+
+            if ($isPremiumUser) {
+                $productsForYouQuery->whereHas('type', function ($query) use ($user) {
+                    $query->where('name', $user->theme);
+                });
+            } else {
+                $productsForYouQuery->latest()->inRandomOrder();
+            }
+
+            $productsForYou = $productsForYouQuery->limit(12)->get();
+        }
 
         // --- 6. Favoritos de la comunidad ---
         $communityFavorites = Product::with('brand', 'type')->orderByDesc('rating')->limit(6)->get();
@@ -86,8 +123,6 @@ class HomeController extends Controller
             [
                 'title' => $titleForYou,
                 'products' => $productsForYou,
-                'tag_text' => $isPremiumUser ? 'Tu Tema' : 'Novedad',
-                'tag_class' => $isPremiumUser ? 'bg-indigo-100 text-indigo-800' : 'bg-teal-100 text-teal-800',
             ],
             [
                 'title' => 'Favoritos de la Comunidad',
