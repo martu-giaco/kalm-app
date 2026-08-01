@@ -27,6 +27,9 @@ class ProductController extends Controller
         // Categorías
         $categories = ProductCategory::all();
 
+        // Categorías
+        $skinTypes = SkinType::all();
+
         // Rutinas del usuario autenticado
         $routines = auth()->user()->routines()->get();
 
@@ -94,6 +97,7 @@ class ProductController extends Controller
         return view('products.show', compact(
             'product',
             'categories',
+            'skinTypes',
             'routines',
             'banners',
             'product_sections',

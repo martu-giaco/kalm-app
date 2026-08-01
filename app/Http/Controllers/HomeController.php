@@ -66,7 +66,9 @@ class HomeController extends Controller
 
         $productsForYou = collect();
         $titleForYou = 'Productos recomendados';
-
+        $matchedSkinType = null;
+        $tagText = 'Novedad';
+        $tagClass = 'bg-teal-100 text-teal-800';
 
         $latestTestResult = $user
             ? UserTestResult::where('user_id', $user->id)->latest('updated_at')->first()

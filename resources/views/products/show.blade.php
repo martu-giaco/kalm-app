@@ -156,12 +156,21 @@
                 </p>
             </div>
 
+            {{-- Recommended --}}
+            <div class="pt-6 mt-6 border-t">
+                <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Recomendado para pieles</h2>
+                @foreach ($product->skinTypes as $skintype)
+                    <span
+                        class="inline-block px-3 py-1 mb-1 text-sm text-white bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] rounded-full">{{ $skintype->name }}</span>
+                @endforeach
+            </div>
+
             {{-- Concerns --}}
             <div class="pt-6 mt-6 border-t">
                 <h2 class="text-lg font-semibold text-[#164d4f] dark:text-[#CCE2E5] mb-2">Preocupaciones</h2>
                 @foreach ($product->concerns as $concern)
                     <span
-                        class="inline-block px-3 py-1 mb-2 text-sm text-white bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] rounded-full">{{ $concern->name }}</span>
+                        class="inline-block px-3 py-1 mb-1 text-sm text-white bg-[#37A0AF] dark:bg-[#CCE2E5] dark:text-[#37A0AF] rounded-full">{{ $concern->name }}</span>
                 @endforeach
             </div>
 
