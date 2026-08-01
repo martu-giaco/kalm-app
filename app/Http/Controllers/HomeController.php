@@ -139,6 +139,9 @@ class HomeController extends Controller
         foreach ($product_sections as &$section) {
             foreach ($section['products'] as $product) {
                 $product->isFavorito = in_array((int) $product->id, $idsFavoritos);
+                $product->is_personalized = $matchedSkinType && $section['title'] === $titleForYou && $product->relationLoaded('skinTypes')
+                    ? $product->skinTypes->contains('name', $matchedSkinType)
+                    : false;
             }
         }
         unset($section);

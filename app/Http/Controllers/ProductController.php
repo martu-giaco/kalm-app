@@ -10,6 +10,7 @@ use App\Models\ProductCategory;
 use App\Models\SkinType;
 use App\Models\Concern;
 use App\Models\Brand;
+use App\Models\UserTestResult;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
@@ -21,7 +22,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::with(['type', 'category', 'brand', 'concerns', 'reviews'])->findOrFail($id);
+        $product = Product::with(['type', 'category', 'brand', 'concerns', 'reviews', 'skinTypes'])->findOrFail($id);
 
         // Categorías
         $categories = ProductCategory::all();
@@ -35,6 +36,29 @@ class ProductController extends Controller
         $idsFavoritos = array_map('intval', $idsFavoritos);
         $isFavorito = in_array((int) $product->id, $idsFavoritos);
 
+        $latestTestResult = auth()->check()
+            ? UserTestResult::where('user_id', auth()->id())->latest('updated_at')->first()
+            : null;
+
+        $resultKey = $latestTestResult?->result_key;
+        $matchedSkinType = null;
+
+        if ($resultKey) {
+            $skinTypeMap = [
+                'normal' => 'Normal',
+                'seco' => 'Seca',
+                'graso' => 'Oleosa',
+                'mixto' => 'Mixta',
+                'sensible' => 'Sensible',
+            ];
+
+            $matchedSkinType = $skinTypeMap[strtolower($resultKey)] ?? null;
+        }
+
+        $product->is_personalized = $matchedSkinType
+            ? $product->skinTypes->contains('name', $matchedSkinType)
+            : false;
+
         // Banners
         $banners = [
             ['img_src' => 'banners/banner1.jpg', 'alt' => 'Banner 1'],
@@ -42,12 +66,21 @@ class ProductController extends Controller
         ];
 
         // Secciones de productos relacionadas
+        $similarProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->with('skinTypes')
+            ->get();
+
+        foreach ($similarProducts as $similarProduct) {
+            $similarProduct->is_personalized = $matchedSkinType
+                ? $similarProduct->skinTypes->contains('name', $matchedSkinType)
+                : false;
+        }
+
         $product_sections = [
             [
                 'title' => 'Productos similares',
-                'products' => Product::where('category_id', $product->category_id)
-                    ->where('id', '!=', $product->id)
-                    ->get(),
+                'products' => $similarProducts,
             ],
         ];
 

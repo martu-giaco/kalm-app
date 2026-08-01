@@ -41,7 +41,7 @@
                     </button>
 
                     {{-- Badge "Para vos!" --}}
-                    @if (isset($product->tag) || session('personalized', false))
+                    @if (!empty($product->is_personalized) || isset($product->tag) || session('personalized', false))
                         <span
                             class="absolute inline-block px-3 py-1 text-sm text-white bg-[#37A0AF] rounded-full shadow bottom-4 right-4">
                             Para vos!
