@@ -4,16 +4,6 @@
         <div class="max-w-3xl px-4 mx-auto">
             <h1 class="text-2xl font-semibold mb-6 text-[#306067] dark:text-[#CCE2E5]">Editar cuenta</h1>
 
-            @if ($errors->any())
-                <div class="p-4 mb-4 text-red-800 rounded-xl bg-red-50">
-                    <ul class="pl-5 list-disc">
-                        @foreach ($errors->all() as $err)
-                            <li>{{ $err }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
@@ -25,7 +15,7 @@
                             <div class="rounded-full h-28 w-28">
                                 @if (isset($user) && $user->avatar)
                                     <img src="{{ auth()->user()->avatar ? route('avatar.file', basename(auth()->user()->avatar)) : asset('images/pfp.svg') }}"
-     alt="{{ auth()->user()->name }}" 
+     alt="{{ auth()->user()->name }}"
      class="object-cover w-10 h-10 rounded-full">
                                 @else
                                     <img src="{{ asset('images/pfp.svg') }}" alt="Avatar por defecto"

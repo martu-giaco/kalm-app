@@ -4,16 +4,6 @@
         <div class="max-w-3xl px-4 mx-auto">
             <h1 class="text-2xl font-semibold mb-6 text-[#306067]">Editar cuenta</h1>
 
-            @if ($errors->any())
-                <div class="p-4 mb-4 text-red-800 rounded-xl bg-red-50">
-                    <ul class="pl-5 list-disc">
-                        @foreach ($errors->all() as $err)
-                            <li>{{ $err }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('admin.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
