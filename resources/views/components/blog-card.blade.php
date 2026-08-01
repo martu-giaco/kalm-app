@@ -52,18 +52,19 @@
                             </p>
                         @endif
 
-                        <p class="mt-2 text-sm text-[#306067] dark:text-[#E9E5E3]  line-clamp-3 {{ ($blog->canView ?? true) ? '' : 'blur-sm' }}">
-                            {{ $blog->description }}
-                        </p>
+                        {{-- Contenedor de la descripción con el candado superpuesto --}}
+                        <div class="relative mt-2">
+                            <p class="text-sm text-[#306067] dark:text-[#CCE2E5] line-clamp-3 {{ ($blog->canView ?? true) ? '' : 'blur-sm' }}">
+                                {{ $blog->description }}
+                            </p>
 
-                        {{-- Botón Premium debajo del contenido --}}
-                        @if(auth()->user()?->role === 'free' && $blog->is_premium === true)
-                            @if (file_exists(public_path('images/plan-premium.png')))
-                                <div class="absolute bottom-3 left-0 right-0 justify-center mt-2">
-                                    <img src="{{ asset('images/plan-premium.png') }}" alt="Premium"
-                                        class="px-4 py-2 font-bold transition cursor-pointer hover:scale-105">
+                            @if(auth()->user()?->role === 'free' && $blog->is_premium === true)
+                                <div class="absolute inset-0 flex items-center justify-center z-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="drop-shadow-lg transition-transform transform hover:scale-110 fill-[#306067] dark:fill-[#CCE2E5]" height="32px" viewBox="0 -960 960 960" width="32px">
+                                        <path d="M246.78-62.48q-43.72 0-74.86-31.14-31.14-31.13-31.14-74.86v-386.43q0-43.73 31.14-74.87 31.14-31.13 74.86-31.13h24.74v-63.61q0-87.52 60.76-148.85T480-934.7q86.96 0 147.72 61.33 60.76 61.33 60.76 148.85v63.61h24.74q43.72 0 74.86 31.13 31.14 31.14 31.14 74.87v386.43q0 43.73-31.14 74.86-31.14 31.14-74.86 31.14H246.78ZM536.5-305.2q23.5-23.5 23.5-56.5t-23.5-56.5Q513-441.7 480-441.7t-56.5 23.5Q400-394.7 400-361.7t23.5 56.5q23.5 23.5 56.5 23.5t56.5-23.5ZM377.52-660.91h204.96v-63.61q0-43.41-29.63-73.79Q523.22-828.7 480-828.7t-72.85 30.39q-29.63 30.38-29.63 73.79v63.61Z"/>
+                                    </svg>
                                 </div>
                             @endif
-                        @endif
+                        </div>
                     </div>
 </a>

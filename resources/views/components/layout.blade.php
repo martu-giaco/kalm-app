@@ -131,7 +131,7 @@
 
                     <!-- Logo -->
                     <a @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
-                       @else href="{{ route('admin.home') }}" @endif>
+                        @else href="{{ route('admin.home') }}" @endif>
                         <picture class="flex h-8 ps-2">
                             <source srcset="{{ asset('images/logo-kalm-light.svg') }}" class="h-8"
                                 media="(prefers-color-scheme: dark)" type="image/svg+xml" />
