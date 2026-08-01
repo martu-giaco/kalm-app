@@ -56,7 +56,7 @@ class ProfileController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:10'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
+            'avatar' => ['nullable', 'image', 'max:4000'], // 4MB máximo
         ]);
 
         // Subida de avatar
@@ -176,7 +176,7 @@ class ProfileController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:10'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'avatar' => ['nullable', 'image', 'max:2048'], // 2MB máximo
+            'avatar' => ['nullable', 'image', 'max:4000'], // 4MB máximo
             'role' => ['required', 'string', 'max:255'],
         ]);
 
