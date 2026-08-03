@@ -292,9 +292,7 @@ class SubscriptionController extends Controller
      */
     public function failure(Request $request)
     {
-        return view('subscription.failure')
-            ->with('feedback.message', 'El pago fue rechazado.')
-            ->with('feedback.type', 'error');
+        return view('user.subscription-failure');
     }
 
     /**
@@ -302,9 +300,7 @@ class SubscriptionController extends Controller
      */
     public function pending(Request $request)
     {
-        return view('subscription.pending')
-            ->with('feedback.message', 'El pago está pendiente.')
-            ->with('feedback.type', 'info');
+        return view('user.subscription-pending');
     }
 
     /**

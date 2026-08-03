@@ -21,9 +21,15 @@
 
 <body class="flex flex-col flex-wrap justify-between min-h-screen bg-center bg-cover px-5 py-10 header-bg">
         <div class="flex items-center justify-between max-w-3xl pb-8 mx-auto w-full">
-            <button type="button" id="prevBtn" disabled>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#2A4043] dark:fill-[#CCE2E5]" height="24px" viewBox="0 -960 960 960" width="24px" ><path d="m326.15-434.5 186.68 186.67q13.67 13.68 13.29 32.07-.38 18.39-14.05 32.06-13.68 12.68-32.07 13.06-18.39.38-32.07-13.29l-264-264q-6.71-6.72-9.81-14.92-3.1-8.19-3.1-17.15 0-8.96 3.1-17.15 3.1-8.2 9.81-14.92L448.17-776.3q12.92-12.92 31.57-12.92t32.33 12.92q13.67 13.67 13.67 32.44 0 18.77-13.67 32.45L326.15-525.5h436.48q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17H326.15Z"/></svg>
-            </button>
+            <!-- Logo -->
+                    <a @if (auth()->check() && auth()->user()?->role != 'admin') href="{{ route('home') }}"
+                        @else href="{{ route('admin.home') }}" @endif>
+                        <picture class="flex h-8 ps-2">
+                            <source srcset="{{ asset('images/logo-kalm-light.svg') }}" class="h-8"
+                                media="(prefers-color-scheme: dark)" type="image/svg+xml" />
+                            <img src="{{ asset('images/logo-kalm.svg') }}" alt="Kälm logo" class="h-8">
+                        </picture>
+                    </a>
             <a href="{{ route('home') }}" class="self-end cursor-pointer" aria-label="close sidebar">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 fill-[#2A4043] dark:fill-[#CCE2E5]" viewBox="0 -960 960 960"  aria-hidden="true">
                     <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
@@ -84,7 +90,6 @@
         (function() {
             const questions = Array.from(document.querySelectorAll('.question'));
             const progressBar = document.getElementById('progressBar');
-            const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const form = document.getElementById('testForm');
 
@@ -92,17 +97,11 @@
 
             function showQuestion(index) {
                 questions.forEach((q, i) => q.style.display = i === index ? 'block' : 'none');
-                prevBtn.disabled = index === 0;
                 const isLast = index === questions.length - 1;
                 nextBtn.textContent = isLast ? 'Finalizar Test' : 'Siguiente pregunta';
                 nextBtn.dataset.isLast = isLast ? '1' : '0';
                 progressBar.style.width = ((index + 1) / questions.length * 100) + '%';
             }
-
-            prevBtn.addEventListener('click', () => {
-                if (current > 0) current--;
-                showQuestion(current);
-            });
 
             document.querySelectorAll('.option-card').forEach(card => {
                 card.addEventListener('click', () => {
@@ -154,7 +153,6 @@
                 }
 
                 nextBtn.disabled = true;
-                prevBtn.disabled = true;
                 form.submit();
             });
 
