@@ -54,7 +54,19 @@ class RoutineController extends Controller
                 ]);
         }
 
-        return view('routines.create', compact('types', 'routine_needs', 'routine_times', 'products'));
+        $routineNeedDefaults = $user ? $this->getRoutineNeedDefaultsFromUserTest($user) : [];
+        $routineTypeDefaults = $user ? $this->getRoutineTypeDefaultsFromUserTest($user) : [];
+        $lockedRoutineTypeId = $user ? $this->getLockedRoutineTypeIdFromUserTest($user) : null;
+
+        return view('routines.create', compact(
+            'types',
+            'routine_needs',
+            'routine_times',
+            'products',
+            'routineNeedDefaults',
+            'routineTypeDefaults',
+            'lockedRoutineTypeId'
+        ));
     }
 
     public function storeFromRecommended($id)
@@ -62,15 +74,13 @@ class RoutineController extends Controller
         $rec = RecommendedRoutine::findOrFail($id);
 
         $user = Auth::user();
-        // En RoutineController.php
-
-if ($user && !$user->canCreateRoutine()) {
-    return redirect()->route('routines.index')
-        ->with('feedback', [
-            'message' => 'Has alcanzado el límite de rutinas permitidas para tu plan.',
-            'type' => 'error'
-        ]);
-}
+        if ($user && !$user->canCreateRoutine()) {
+            return redirect()->route('routines.index')
+                ->with('feedback', [
+                    'message' => 'Has alcanzado el límite de rutinas permitidas para tu plan.',
+                    'type' => 'error'
+                ]);
+        }
 
         $routine = Routine::create([
             'name' => $rec->name,
@@ -119,12 +129,19 @@ if ($user && !$user->canCreateRoutine()) {
 
         $isReminderEnabled = $request->boolean('is_reminder_enabled');
 
+        $typeId = $this->resolveRoutineTypeId($user, null, $validated['type_id'] ?? null);
+        $needId = $this->resolveRoutineNeedId(
+            $user,
+            $typeId,
+            $validated['need_id'] ?? null
+        );
+
         $routine = Routine::create([
             'user_id' => $user->getKey(),
             'name' => $validated['name'],
             'time_id' => $validated['time_id'] ?? null,
-            'type_id' => $validated['type_id'] ?? null,
-            'need_id' => $validated['need_id'] ?? null,
+            'type_id' => $typeId,
+            'need_id' => $needId,
             'reminder_time' => $isReminderEnabled ? ($validated['reminder_time'] ?? '08:00') : null,
             'is_reminder_enabled' => $isReminderEnabled,
             'reminder_frequency' => $isReminderEnabled ? ($validated['reminder_frequency'] ?? 'daily') : 'none',
@@ -235,12 +252,20 @@ if ($user && !$user->canCreateRoutine()) {
             $isFromRecommended = UserTestResult::where('routine_id', $routineKey)->exists();
         }
 
+        $user = Auth::user();
+        $routineNeedDefaults = $user ? $this->getRoutineNeedDefaultsFromUserTest($user) : [];
+        $routineTypeDefaults = $user ? $this->getRoutineTypeDefaultsFromUserTest($user) : [];
+        $shouldLockType = $user ? $this->shouldLockRoutineTypeForRoutine($user, $routine) : false;
+
         return view('routines.edit', compact(
             'routine',
             'types',
             'routine_needs',
             'routine_times',
-            'isFromRecommended'
+            'isFromRecommended',
+            'routineNeedDefaults',
+            'routineTypeDefaults',
+            'shouldLockType'
         ));
     }
 
@@ -267,11 +292,18 @@ if ($user && !$user->canCreateRoutine()) {
         $user = Auth::user();
         $isReminderEnabled = $request->boolean('is_reminder_enabled');
 
+        $typeId = $this->resolveRoutineTypeId($user, $routine, $validated['type_id'] ?? null);
+        $needId = $this->resolveRoutineNeedId(
+            $user,
+            $typeId,
+            $validated['need_id'] ?? null
+        );
+
         $routine->update([
             'name' => $validated['name'],
             'time_id' => $validated['time_id'] ?? null,
-            'type_id' => $validated['type_id'] ?? null,
-            'need_id' => $validated['need_id'] ?? null,
+            'type_id' => $typeId,
+            'need_id' => $needId,
             'reminder_time' => $isReminderEnabled ? ($validated['reminder_time'] ?? '08:00') : null,
             'is_reminder_enabled' => $isReminderEnabled,
             'reminder_frequency' => $isReminderEnabled ? ($validated['reminder_frequency'] ?? 'daily') : 'none',
@@ -507,5 +539,125 @@ if ($user && !$user->canCreateRoutine()) {
                 <p>Ya podés cerrar esta pestaña.</p>
             </body></html>'
         );
+    }
+
+    private function getRoutineNeedDefaultsFromUserTest(User $user): array
+    {
+        $skinResult = UserTestResult::where('user_id', $user->id)
+            ->where('test_key', 'piel')
+            ->latest('updated_at')
+            ->first();
+
+        $hairResult = UserTestResult::where('user_id', $user->id)
+            ->where('test_key', 'cabello')
+            ->latest('updated_at')
+            ->first();
+
+        return [
+            'piel' => $this->getRoutineNeedIdByResultKey($skinResult?->result_key),
+            'cabello' => $this->getRoutineNeedIdByResultKey($hairResult?->result_key),
+        ];
+    }
+
+    private function getRoutineTypeDefaultsFromUserTest(User $user): array
+    {
+        $skinResult = UserTestResult::where('user_id', $user->id)
+            ->where('test_key', 'piel')
+            ->latest('updated_at')
+            ->first();
+
+        $hairResult = UserTestResult::where('user_id', $user->id)
+            ->where('test_key', 'cabello')
+            ->latest('updated_at')
+            ->first();
+
+        $skincareType = RoutineType::where('name', 'Skincare')->first();
+        $haircareType = RoutineType::where('name', 'Haircare')->first();
+
+        return [
+            'piel' => $skinResult ? ($skincareType?->id ?? $skincareType?->type_id) : null,
+            'cabello' => $hairResult ? ($haircareType?->id ?? $haircareType?->type_id) : null,
+        ];
+    }
+
+    private function getLockedRoutineTypeIdFromUserTest(User $user): ?int
+    {
+        $routineTypeDefaults = $this->getRoutineTypeDefaultsFromUserTest($user);
+        $hasSkin = !empty($routineTypeDefaults['piel']);
+        $hasHair = !empty($routineTypeDefaults['cabello']);
+
+        if ($hasSkin && !$hasHair) {
+            return $routineTypeDefaults['piel'];
+        }
+
+        if ($hasHair && !$hasSkin) {
+            return $routineTypeDefaults['cabello'];
+        }
+
+        return null;
+    }
+
+    private function resolveRoutineTypeId(User $user, ?Routine $routine, ?int $requestedTypeId): ?int
+    {
+        if ($routine && $this->shouldLockRoutineTypeForRoutine($user, $routine)) {
+            return $routine->type_id;
+        }
+
+        return $requestedTypeId ?? $this->getLockedRoutineTypeIdFromUserTest($user);
+    }
+
+    private function shouldLockRoutineTypeForRoutine(User $user, Routine $routine): bool
+    {
+        $routineTypeDefaults = $this->getRoutineTypeDefaultsFromUserTest($user);
+        $typeName = strtolower($routine->type?->name ?? '');
+
+        return ($typeName === 'skincare' && !empty($routineTypeDefaults['piel'])) ||
+               ($typeName === 'haircare' && !empty($routineTypeDefaults['cabello']));
+    }
+
+    private function getRoutineNeedIdByResultKey(?string $resultKey): ?int
+    {
+        if (!$resultKey) {
+            return null;
+        }
+
+        $mapping = [
+            'normal' => 'Normal',
+            'seco' => 'Seca',
+            'graso' => 'Oleosa',
+            'mixto' => 'Mixta',
+            'sensible' => 'Sensible',
+        ];
+
+        $needName = $mapping[strtolower($resultKey)] ?? null;
+        if (!$needName) {
+            return null;
+        }
+
+        return RoutineNeed::where('name', $needName)->first()?->need_id;
+    }
+
+    private function resolveRoutineNeedId(User $user, ?int $typeId, ?int $requestNeedId): ?int
+    {
+        if (!$typeId) {
+            return $requestNeedId;
+        }
+
+        $type = RoutineType::find($typeId);
+        if (!$type) {
+            return $requestNeedId;
+        }
+
+        $typeName = strtolower($type->name);
+        if (!str_contains($typeName, 'hair') && !str_contains($typeName, 'skin')) {
+            return $requestNeedId;
+        }
+
+        $routineNeedDefaults = $this->getRoutineNeedDefaultsFromUserTest($user);
+        $defaultNeedId = str_contains($typeName, 'hair')
+            ? $routineNeedDefaults['cabello'] ?? null
+            : $routineNeedDefaults['piel'] ?? null;
+
+        return $defaultNeedId ?? $requestNeedId;
     }
 }

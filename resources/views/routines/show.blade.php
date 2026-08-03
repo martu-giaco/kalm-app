@@ -78,7 +78,7 @@
                 </div>
 
                 <button
-                    onclick="event.stopPropagation(); document.getElementById('menu_rutina_{{ $routine->getKey() }}').showModal()"
+                    onclick="event.stopPropagation(); document.getElementById('menu_rutina_{{ $routine->id }}').showModal()"
                     class="shrink-0 p-1 rounded-full hover:bg-[#F1F6F6] dark:hover:bg-[#2A4043] transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="fill-[#306067] dark:fill-[#CCE2E5]">
                         <path
@@ -207,36 +207,31 @@
     </section>
 
 
-    <dialog id="menu_rutina_{{ $routine->id }}" class="modal modal-bottom">
-        <div class="modal-box bg-white dark:bg-[#2A4043]">
-            <a href="{{ route('routines.edit', $routine) }}"
-                class="btn w-full inline-flex border-0 bg-[#CCE2E5] px-6 py-3 rounded-xl font-semibold transition-all duration-300 items-center justify-between gap-2 text-sm">
-                <p class="text-[#306067]">Editar Rutina</p>
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                    fill="#306067">
-                    <path
-                        d="M202.63-202.87h57.24l374.74-374.74-56.76-57-375.22 375.22v56.52Zm-45.26 91q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33v-102.26q0-18.15 6.84-34.69 6.83-16.53 19.51-29.2l501.17-500.41q12.48-11.72 27.7-17.96 15.21-6.24 31.93-6.24 16.48 0 32.2 6.24 15.71 6.24 27.67 18.72l65.28 65.56q12.48 11.72 18.34 27.56 5.86 15.83 5.86 31.79 0 16.72-5.86 32.05-5.86 15.34-18.34 27.82L324-138.22q-12.67 12.68-29.21 19.51-16.53 6.84-34.68 6.84H157.37Zm597.37-586.39-56.24-56.48 56.24 56.48Zm-148.89 92.41-28-28.76 56.76 57-28.76-28.24Z" />
-                </svg>
-            </a>
-            <form action="{{ route('routines.destroy', $routine) }}" method="POST"
-                onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                    class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semibold transition-all duration-300 items-center justify-between gap-2 text-sm">
-                    <p class="font-semibold text-white">Eliminar rutina</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                        fill="#CCE2E5">
-                        <path
-                            d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z" />
-                    </svg>
-                </button>
-            </form>
-        </div>
-        <form method="dialog" class="modal-backdrop">
-            <button>close</button>
+<dialog id="menu_rutina_{{ $routine->id }}" class="modal modal-bottom">
+    <div class="modal-box bg-white dark:bg-[#2A4043]">
+        <a href="" class="btn w-full inline-flex border-0 bg-[#CCE2E5] px-6 py-3 rounded-xl font-semibold transition-all duration-300 items-center justify-between gap-2 text-sm">
+            <p class="text-[#306067]">Compartir Rutina</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067">
+                <path d="M680.94-71.87q-53.09 0-90.24-37.09-37.16-37.09-37.16-90.08 0-5.76 2.76-25.85L283.43-383.87q-16.71 14.76-38.17 23.14t-45.98 8.38q-53.09 0-90.25-37.21-37.16-37.22-37.16-90.38 0-53.17 37.16-90.44 37.16-37.27 90.25-37.27 24.48 0 46.2 8.5 21.72 8.5 38.67 23.5l271.92-158.5q-1.77-6.52-2.15-12.9-.38-6.38-.38-13.67 0-53.09 37.17-90.25t90.26-37.16q53.1 0 90.25 37.17 37.15 37.16 37.15 90.26 0 53.09-37.16 90.24-37.16 37.16-90.25 37.16-25.05 0-46.96-8.74t-38.87-24.22L324.17-508.72q2 7.25 2.5 13.99.5 6.73.5 14.85t-.62 15.1q-.62 6.98-2.62 14.21l270.72 157.55q16.96-15.72 39.02-24.7 22.07-8.98 47.29-8.98 53.09 0 90.25 37.22t37.16 90.38q0 53.17-37.17 90.2-37.16 37.03-90.26 37.03Zm-.13-88.61q16.43 0 27.69-11.16 11.26-11.16 11.26-27.66t-11.22-27.65q-11.23-11.14-27.82-11.14-16.39 0-27.48 11.26t-11.09 27.55q0 16.28 11.12 27.54 11.11 11.26 27.54 11.26ZM199.3-440.96q16.5 0 27.88-11.21 11.39-11.21 11.39-27.78t-11.39-27.83q-11.38-11.26-27.88-11.26t-27.66 11.21q-11.16 11.21-11.16 27.78t11.16 27.83q11.16 11.26 27.66 11.26Zm481.66-280.95q16.28 0 27.42-11.12 11.14-11.11 11.14-27.54t-11.11-27.69q-11.12-11.26-27.55-11.26t-27.69 11.22q-11.26 11.23-11.26 27.82 0 16.39 11.38 27.48t27.67 11.09Zm.24 522.63ZM199.52-480Zm481.44-280.72Z"/>
+            </svg>
+        </a>
+        <a href="{{ route('routines.edit', $routine) }}" class="mt-3 btn w-full inline-flex border-0 bg-[#CCE2E5] px-6 py-3 rounded-xl font-semibold transition-all duration-300 items-center justify-between gap-2 text-sm">
+            <p class="text-[#306067]">Editar Rutina</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#306067"><path d="M202.63-202.87h57.24l374.74-374.74-56.76-57-375.22 375.22v56.52Zm-45.26 91q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33v-102.26q0-18.15 6.84-34.69 6.83-16.53 19.51-29.2l501.17-500.41q12.48-11.72 27.7-17.96 15.21-6.24 31.93-6.24 16.48 0 32.2 6.24 15.71 6.24 27.67 18.72l65.28 65.56q12.48 11.72 18.34 27.56 5.86 15.83 5.86 31.79 0 16.72-5.86 32.05-5.86 15.34-18.34 27.82L324-138.22q-12.67 12.68-29.21 19.51-16.53 6.84-34.68 6.84H157.37Zm597.37-586.39-56.24-56.48 56.24 56.48Zm-148.89 92.41-28-28.76 56.76 57-28.76-28.24Z"/></svg>
+        </a>
+        <form action="{{ route('routines.destroy', $routine) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar esta rutina? Esta acción no se puede deshacer.')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="mt-3 btn w-full inline-flex border-0 bg-[#741919] px-6 py-3 rounded-xl font-semibold transition-all duration-300 items-center justify-between gap-2 text-sm">
+                <p class="font-semibold text-white">Eliminar Rutina</p>
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#CCE2E5"><path d="M277.37-111.87q-37.78 0-64.39-26.61t-26.61-64.39v-514.5q-19.15 0-32.33-13.17-13.17-13.18-13.17-32.33t13.17-32.33q13.18-13.17 32.33-13.17H354.5q0-19.15 13.17-32.33 13.18-13.17 32.33-13.17h159.52q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33h168.61q19.15 0 32.33 13.17 13.17 13.18 13.17 32.33t-13.17 32.33q-13.18 13.17-32.33 13.17v514.5q0 37.78-26.61 64.39t-64.39 26.61H277.37Zm405.26-605.5H277.37v514.5h405.26v-514.5ZM398.57-280.24q17.95 0 30.29-12.34 12.34-12.33 12.34-30.29v-274.74q0-17.96-12.34-30.29-12.34-12.34-30.29-12.34-17.96 0-30.42 12.34-12.45 12.33-12.45 30.29v274.74q0 17.96 12.45 30.29 12.46 12.34 30.42 12.34Zm163.1 0q17.96 0 30.3-12.34 12.33-12.33 12.33-30.29v-274.74q0-17.96-12.33-30.29-12.34-12.34-30.3-12.34-17.95 0-30.41 12.34-12.46 12.33-12.46 30.29v274.74q0 17.96 12.46 30.29 12.46 12.34 30.41 12.34Zm-284.3-437.13v514.5-514.5Z"/></svg>
+            </button>
         </form>
-    </dialog>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
 
 
 </x-layout>

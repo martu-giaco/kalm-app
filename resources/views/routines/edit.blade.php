@@ -9,15 +9,21 @@
         @endif
 
         @php
-            $selectedType = null;
-            if (old('type_id')) {
-                $selectedType = $types->firstWhere('id', old('type_id'));
-            } elseif ($routine->type) {
-                $selectedType = $routine->type;
-            }
+            $shouldLockType = $shouldLockType ?? false;
+            $selectedType = $shouldLockType
+                ? $routine->type
+                : (old('type_id') ? $types->firstWhere('id', old('type_id')) : $routine->type);
             $needLabelText =
                 $selectedType && strtolower($selectedType->name) === 'haircare' ? 'Tipo de cabello' : 'Tipo de piel';
             $hasGoogleConnected = (bool) auth()->user()->google_refresh_token;
+            $routineNeedDefaults = $routineNeedDefaults ?? ['piel' => null, 'cabello' => null];
+            $defaultNeedId = $selectedType
+                ? (strtolower($selectedType->name) === 'haircare'
+                    ? $routineNeedDefaults['cabello']
+                    : $routineNeedDefaults['piel'])
+                : null;
+            $shouldLockNeed = $selectedType && in_array(strtolower($selectedType->name), ['skincare', 'haircare']) && $defaultNeedId;
+            $selectedNeedId = $shouldLockNeed ? $defaultNeedId : old('need_id', $routine->need_id ?? $defaultNeedId);
         @endphp
 
         <form id="editRoutineForm" action="{{ route('routines.update', $routine->getKey()) }}" method="POST">
@@ -42,14 +48,16 @@
             {{-- Tipo de rutina --}}
             <div class="mb-5">
                 <label for="type_id" class="block mb-2 text-sm font-medium text-[#2A4043] dark:text-[#CCE2E5]">Tipo de rutina</label>
-                @if ($isFromRecommended && $routine->type_id)
+                @if ($shouldLockType && $routine->type)
                     <div
                         class="w-full p-3 bg-[#CCE2E5]/40 rounded-xl border-2 border-[#37A0AF] text-md text-[#306067] dark:text-[#CCE2E5] font-semibold">
-                        {{ $routine->type?->name ?? 'No especificado' }}
+                        {{ $routine->type->name ?? 'No especificado' }}
                     </div>
-                    <input type="hidden" name="type_id" value="{{ $routine->type_id }}">
+                    <input type="hidden" name="type_id" value="{{ $routine->type->getKey() }}">
                 @else
                     <select name="type_id" id="type_id"
+                        data-default-skin-need-id="{{ $routineNeedDefaults['piel'] }}"
+                        data-default-hair-need-id="{{ $routineNeedDefaults['cabello'] }}"
                         class="w-full p-3 bg-transparent rounded-xl border-2 @error('type_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] transition">
                         <option value="" class="dark:bg-[#2A4043]">Seleccionar tipo de rutina</option>
                         @foreach ($types as $type)
@@ -70,16 +78,23 @@
             <div class="mb-5">
                 <label for="need_id" id="need_label"
                     class="block mb-2 text-sm font-medium text-[#2A4043] dark:text-[#CCE2E5]">{{ $needLabelText }}</label>
-                <select name="need_id" id="need_id"
-                    class="w-full p-3 bg-transparent rounded-xl border-2 @error('need_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] transition">
-                    <option value="" id="need_placeholder" class="dark:bg-[#2A4043]">Seleccionar {{ strtolower($needLabelText) }}</option>
-                    @foreach ($routine_needs as $need)
-                        <option value="{{ $need->need_id }}" class="dark:bg-[#2A4043]"
-                            {{ old('need_id', $routine->need_id) == $need->need_id ? 'selected' : '' }}>
-                            {{ $need->name }}
-                        </option>
-                    @endforeach
-                </select>
+                @if ($shouldLockNeed)
+                    <div class="w-full p-3 bg-[#F3F9FA] dark:bg-[#1E3238] rounded-xl border-2 border-[#CCE2E5] text-[#2A4043] dark:text-[#CCE2E5]">
+                        {{ $routine_needs->firstWhere('need_id', $selectedNeedId)?->name ?? 'Seleccionado automáticamente' }}
+                    </div>
+                    <input type="hidden" name="need_id" value="{{ $selectedNeedId }}">
+                @else
+                    <select name="need_id" id="need_id"
+                        class="w-full p-3 bg-transparent rounded-xl border-2 @error('need_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3] transition">
+                        <option value="" id="need_placeholder" class="dark:bg-[#2A4043]">Seleccionar {{ strtolower($needLabelText) }}</option>
+                        @foreach ($routine_needs as $need)
+                            <option value="{{ $need->need_id }}" class="dark:bg-[#2A4043]"
+                                {{ $selectedNeedId == $need->need_id ? 'selected' : '' }}>
+                                {{ $need->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                @endif
                 @error('need_id')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                 @enderror
@@ -255,6 +270,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const hasGoogleConnected = @json($hasGoogleConnected);
             const typeSelect = document.getElementById('type_id');
+            const needSelect = document.getElementById('need_id');
             const needLabel = document.getElementById('need_label');
             const needPlaceholder = document.getElementById('need_placeholder');
             const reminderCheckbox = document.getElementById('is_reminder_enabled');
@@ -266,6 +282,30 @@
             const form = document.getElementById('editRoutineForm');
 
             // Cambio dinámico de etiqueta Tipo de piel / Tipo de pelo
+            const defaultSkinNeedId = typeSelect?.dataset.defaultSkinNeedId;
+            const defaultHairNeedId = typeSelect?.dataset.defaultHairNeedId;
+            let needTouched = false;
+
+            const updateNeedControl = (labelText) => {
+                if (!needSelect) {
+                    return;
+                }
+
+                const defaultNeedId = labelText === 'Tipo de cabello' ? defaultHairNeedId : defaultSkinNeedId;
+                if (defaultNeedId && !needTouched) {
+                    needSelect.value = defaultNeedId;
+                    needSelect.disabled = true;
+                } else {
+                    needSelect.disabled = false;
+                }
+            };
+
+            const currentOption = typeSelect?.options[typeSelect.selectedIndex];
+            const initialLabel = currentOption ? currentOption.getAttribute('data-need-label') : null;
+            if (initialLabel) {
+                updateNeedControl(initialLabel);
+            }
+
             if (typeSelect) {
                 typeSelect.addEventListener('change', function() {
                     const selectedOption = typeSelect.options[typeSelect.selectedIndex];
@@ -274,6 +314,15 @@
 
                     if (needLabel) needLabel.textContent = labelText;
                     if (needPlaceholder) needPlaceholder.textContent = 'Seleccionar ' + labelText.toLowerCase();
+
+                    updateNeedControl(labelText);
+                });
+            }
+
+            if (needSelect) {
+                needSelect.addEventListener('change', function() {
+                    needTouched = true;
+                    needSelect.disabled = false;
                 });
             }
 

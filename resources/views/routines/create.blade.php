@@ -5,10 +5,22 @@
         <h1 class="text-2xl font-semibold text-[#306067] dark:text-[#CCE2E5] mb-5">Nueva Rutina</h1>
 
         @php
-            $selectedType = $types->firstWhere('id', old('type_id'));
+            $lockedRoutineTypeId = $lockedRoutineTypeId ?? null;
+            $shouldLockType = !empty($lockedRoutineTypeId);
+            $selectedType = $shouldLockType
+                ? $types->firstWhere('id', $lockedRoutineTypeId)
+                : $types->firstWhere('id', old('type_id'));
             $needLabelText =
                 $selectedType && strtolower($selectedType->name) === 'haircare' ? 'Tipo de cabello' : 'Tipo de piel';
             $hasGoogleConnected = (bool) auth()->user()->google_refresh_token;
+            $routineNeedDefaults = $routineNeedDefaults ?? ['piel' => null, 'cabello' => null];
+            $defaultNeedId = $selectedType
+                ? (strtolower($selectedType->name) === 'haircare'
+                    ? $routineNeedDefaults['cabello']
+                    : $routineNeedDefaults['piel'])
+                : null;
+            $shouldLockNeed = $selectedType && in_array(strtolower($selectedType->name), ['skincare', 'haircare']) && $defaultNeedId;
+            $selectedNeedId = $shouldLockNeed ? $defaultNeedId : old('need_id', $defaultNeedId);
         @endphp
 
         <form id="routineForm" action="{{ route('routines.store') }}" method="POST">
@@ -32,20 +44,29 @@
 
             {{-- Tipo de rutina --}}
             <div class="mb-4">
-                <label for="type_id" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">
+                <label class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">
                     Tipo de Rutina
                 </label>
-                <select name="type_id" id="type_id"
-                    class="w-full p-3 mb-1 bg-transparent rounded-xl border-2 @error('type_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
-                    <option value="" class="dark:bg-[#2A4043]">Seleccionar tipo</option>
-                    @foreach ($types as $type)
-                        <option value="{{ $type->id }}" class="dark:bg-[#2A4043]"
-                            data-need-label="{{ strtolower($type->name) === 'haircare' ? 'Tipo de cabello' : 'Tipo de piel' }}"
-                            {{ old('type_id') == $type->id ? 'selected' : '' }}>
-                            {{ $type->name }}
-                        </option>
-                    @endforeach
-                </select>
+                @if ($shouldLockType && $selectedType)
+                    <div class="w-full p-3 mb-1 bg-[#CCE2E5]/40 rounded-xl border-2 border-[#37A0AF] text-md text-[#306067] dark:text-[#CCE2E5] font-semibold">
+                        {{ $selectedType->name }}
+                    </div>
+                    <input type="hidden" name="type_id" value="{{ $selectedType->getKey() }}">
+                @else
+                    <select name="type_id" id="type_id"
+                        data-default-skin-need-id="{{ $routineNeedDefaults['piel'] }}"
+                        data-default-hair-need-id="{{ $routineNeedDefaults['cabello'] }}"
+                        class="w-full p-3 mb-1 bg-transparent rounded-xl border-2 @error('type_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
+                        <option value="" class="dark:bg-[#2A4043]">Seleccionar tipo</option>
+                        @foreach ($types as $type)
+                            <option value="{{ $type->id }}" class="dark:bg-[#2A4043]"
+                                data-need-label="{{ strtolower($type->name) === 'haircare' ? 'Tipo de cabello' : 'Tipo de piel' }}"
+                                {{ old('type_id') == $type->id ? 'selected' : '' }}>
+                                {{ $type->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                @endif
                 @error('type_id')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                 @enderror
@@ -56,15 +77,22 @@
                 <label for="need_id" id="need_label" class="block mb-1 text-sm text-[#2A4043] dark:text-[#CCE2E5]">
                     {{ $needLabelText }}
                 </label>
-                <select name="need_id" id="need_id"
-                    class="w-full p-3 mb-1 bg-transparent rounded-xl border-2 @error('need_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
-                    <option value="" id="need_placeholder" class="dark:bg-[#2A4043]">Seleccionar {{ strtolower($needLabelText) }}</option>
-                    @foreach ($routine_needs as $need)
-                        <option value="{{ $need->need_id }}" class="dark:bg-[#2A4043]" {{ old('need_id') == $need->need_id ? 'selected' : '' }}>
-                            {{ $need->name }}
-                        </option>
-                    @endforeach
-                </select>
+                @if ($shouldLockNeed)
+                    <div class="w-full p-3 mb-1 bg-[#F3F9FA] dark:bg-[#1E3238] rounded-xl border-2 border-[#CCE2E5] text-[#2A4043] dark:text-[#CCE2E5]">
+                        {{ $routine_needs->firstWhere('need_id', $selectedNeedId)?->name ?? 'Seleccionado automáticamente' }}
+                    </div>
+                    <input type="hidden" name="need_id" value="{{ $selectedNeedId }}">
+                @else
+                    <select name="need_id" id="need_id"
+                        class="w-full p-3 mb-1 bg-transparent rounded-xl border-2 @error('need_id') border-red-400 @else border-[#CCE2E5] @enderror focus:outline-none focus:border-[#37A0AF] text-md text-[#2A4043] dark:text-[#E9E5E3]">
+                        <option value="" id="need_placeholder" class="dark:bg-[#2A4043]">Seleccionar {{ strtolower($needLabelText) }}</option>
+                        @foreach ($routine_needs as $need)
+                            <option value="{{ $need->need_id }}" class="dark:bg-[#2A4043]" {{ $selectedNeedId == $need->need_id ? 'selected' : '' }}>
+                                {{ $need->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                @endif
                 @error('need_id')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                 @enderror
@@ -217,6 +245,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const hasGoogleConnected = @json($hasGoogleConnected);
             const typeSelect = document.getElementById('type_id');
+            const needSelect = document.getElementById('need_id');
             const needLabel = document.getElementById('need_label');
             const needPlaceholder = document.getElementById('need_placeholder');
             const reminderCheckbox = document.getElementById('is_reminder_enabled');
@@ -228,6 +257,30 @@
             const form = document.getElementById('routineForm');
 
             // Cambio dinámico de etiqueta Tipo de piel / Tipo de pelo
+            const defaultSkinNeedId = typeSelect?.dataset.defaultSkinNeedId;
+            const defaultHairNeedId = typeSelect?.dataset.defaultHairNeedId;
+            let needTouched = false;
+
+            const updateNeedControl = (labelText) => {
+                if (!needSelect) {
+                    return;
+                }
+
+                const defaultNeedId = labelText === 'Tipo de cabello' ? defaultHairNeedId : defaultSkinNeedId;
+                if (defaultNeedId && !needTouched) {
+                    needSelect.value = defaultNeedId;
+                    needSelect.disabled = true;
+                } else {
+                    needSelect.disabled = false;
+                }
+            };
+
+            const currentOption = typeSelect?.options[typeSelect.selectedIndex];
+            const initialLabel = currentOption ? currentOption.getAttribute('data-need-label') : null;
+            if (initialLabel) {
+                updateNeedControl(initialLabel);
+            }
+
             if (typeSelect) {
                 typeSelect.addEventListener('change', function() {
                     const selectedOption = typeSelect.options[typeSelect.selectedIndex];
@@ -236,6 +289,15 @@
 
                     if (needLabel) needLabel.textContent = labelText;
                     if (needPlaceholder) needPlaceholder.textContent = 'Seleccionar ' + labelText.toLowerCase();
+
+                    updateNeedControl(labelText);
+                });
+            }
+
+            if (needSelect) {
+                needSelect.addEventListener('change', function() {
+                    needTouched = true;
+                    needSelect.disabled = false;
                 });
             }
 
